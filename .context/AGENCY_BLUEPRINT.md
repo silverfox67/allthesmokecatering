@@ -39,3 +39,13 @@ Replace generic promotional fluff and standard FAQs with this 4-step diagnostic 
 ## 4. Dual PWA Setup
 - Public Marketing Site: Root / linked to public/manifest.json. Standard browser rendering with subtle install prompt.
 - Authenticated Client/ERP Portal: Route group /(portal) or /admin linked to public/portal-manifest.json with display: "standalone", orientation: "portrait-primary", and offline fallback caching via public/sw.js.
+
+---
+
+## 5. Pre-Flight Launch Checklist (Core Web Vitals Guardrails)
+Before releasing to production or handing off client builds, verify compliance with these 4 non-negotiable performance guardrails:
+1. Font Policy: Strictly self-host 1–2 `.woff2` files in `/public/fonts/` via `@font-face` with `font-display: swap` (or Next.js `next/font/local`). Explicitly forbid external `fonts.googleapis.com` or `fonts.gstatic.com` links in `<head>`.
+2. Hydration Rule: Keep the root application container (`<div id="root">` or Next.js body shell) clean of injected static HTML to prevent React Hydration Error #418.
+3. Preload Guardrails: Any above-the-fold desktop hero image preload must include `fetchpriority="high"` and `media="(min-width: 641px)"` so mobile bandwidth is never split on 4G throttling.
+4. Audit Protocol: Performance optimization iterations must be capped at 3 passes and run strictly against local production builds (`npm run build && local Lighthouse`). Never trigger remote deployments for incremental performance checks.
+
