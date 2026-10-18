@@ -49,3 +49,20 @@ Before releasing to production or handing off client builds, verify compliance w
 3. Preload Guardrails: Any above-the-fold desktop hero image preload must include `fetchpriority="high"` and `media="(min-width: 641px)"` so mobile bandwidth is never split on 4G throttling.
 4. Audit Protocol: Performance optimization iterations must be capped at 3 passes and run strictly against local production builds (`npm run build && local Lighthouse`). Never trigger remote deployments for incremental performance checks.
 
+---
+
+## 6. 2026–2027 Bespoke Design System & Niche Benchmarking Standard
+
+### A. Pre-Scaffold Niche Discovery (Top 5 Benchmark)
+Before writing UI markup, analyze the design conventions, color schemes, and visual hierarchy of the top 5 ranking sites in the target niche:
+1. Identify the industry's visual vernacular (e.g., heavy industrial/rugged for contracting, refined muted luxury for equine/equestrian, bold editorial high-contrast for modern food & beverage).
+2. Extract high-performing conversion anchors (sticky estimate builders, direct dispatch badges, credential chips).
+3. Identify what makes competitors look dated (cluttered sliders, generic stock photography, low-contrast text) and explicitly design the antithesis.
+
+### B. Anti-Generic AI Aesthetic Directives
+Reject default AI web-design templates by enforcing these rules:
+- Zero Centered AI Feature Rows: Never default to the generic "3 identical rounded cards with an icon on top." Use asymmetrical bento grids, staggered split layouts, or interactive proof panels.
+- Sophisticated Color Palettes: Strictly avoid generic Tailwind `indigo-600` or `blue-600` hero gradients. Use custom CSS variables with rich, grounded brand tones (e.g., deep charcoal `#0f172a`, warm bone `#fcfbf9`, forest spruce `#1b382b`, or oxidized bronze) accented by sharp, deliberate contrast pops.
+- Modern Editorial Typography: Enforce strict font pairing via `next/font`. Pair a high-character display headline font (tight tracking: `tracking-tight` or `tracking-tighter`, high optical weight) with an ultra-legible neutral body sans. Avoid default browser system fonts.
+- Tactile Depth & Micro-Surfaces: Replace plain flat cards with modern subtle borders (`border-neutral-200/80` or `border-white/10` in dark themes), subtle mesh backdrops, micro-divider rules, and muted noise/grain overlays.
+- High-Credibility Proof Strips: Include live status badges (e.g., pulsing green "Dispatch Active", verified contractor badge ribbons, licensing statutory chips) instead of generic floating checkmark icons.
