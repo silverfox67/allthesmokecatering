@@ -147,10 +147,10 @@ export default function HomePage() {
             <div className="flex items-center gap-3">
               <div className="relative w-10 h-10 flex-shrink-0">
                 <Image
-                  src="/brand/ats-monogram.png"
-                  alt="ATS Monogram"
-                  width={40}
-                  height={40}
+                  src="/brand/allthesmoke-logo.png"
+                  alt="All The Smoke Official Master Crest"
+                  width={44}
+                  height={44}
                   className="object-contain"
                 />
               </div>
