@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/config/site-config";
 
@@ -15,25 +15,27 @@ export function Hero() {
   };
 
   return (
-    <div className="relative w-full bg-[#0A0A0A] text-neutral-100 overflow-hidden border-b border-white/10">
-      {/* Ambient Smoke & Fire Backlight Glows */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-1/4 right-0 h-[650px] w-[650px] -translate-y-1/2 rounded-full bg-amber-600/15 blur-[150px]"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-1/3 left-1/4 h-[450px] w-[450px] -translate-y-1/2 rounded-full bg-orange-700/10 blur-[130px]"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-10 right-1/4 h-[350px] w-[350px] rounded-full bg-amber-500/10 blur-[100px]"
-      />
+    <section className="relative w-full overflow-hidden bg-[#0A0A0A]">
+      {/* 1. FULL-WIDTH BACKGROUND CANVAS (Edge-to-Edge) */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/hero-brisket-carve.jpg"
+          alt="Pitmaster Marion Bolden carving slow-smoked Texas brisket with deep mahogany bark"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-right-top md:object-right"
+        />
+        {/* Left-to-Right Directional Scrim: Solid black on the left, smoothly dissolving to reveal pitmaster hands & cutting board */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/90 via-45% to-transparent" />
+        {/* Top & Bottom Vignettes for seamless header and footer transitions */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-black/70" />
+      </div>
 
-      {/* 1. Top Utility Bar: Phone, Location, Direct Email with sleek amber SVGs */}
+      {/* 2. TOP UTILITY BAR (Phone, Location, Direct Email) */}
       <aside
         aria-label="Service Alert and Dispatch Contacts"
-        className="bg-[#0e0e0e] border-b border-white/10 text-xs py-2 px-4 sm:px-8"
+        className="relative z-20 bg-black/60 border-b border-white/10 backdrop-blur-sm text-xs py-2 px-4 sm:px-8"
       >
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between sm:justify-center gap-y-2 gap-x-6 text-zinc-300">
           {/* Phone */}
@@ -109,11 +111,11 @@ export function Hero() {
         </div>
       </aside>
 
-      {/* 2. Main Navigation Bar with the Master Circular Crest */}
-      <header className="px-4 sm:px-8 py-4 sm:py-5 max-w-7xl mx-auto flex items-center justify-between relative z-20">
-        {/* Brand Logo & Name */}
+      {/* 3. MAIN NAVIGATION BAR (Master Crest + Nav Links + Request Quote) */}
+      <header className="relative z-20 px-4 sm:px-8 py-3 max-w-7xl mx-auto flex items-center justify-between">
+        {/* Brand Master Circular Emblem Crest */}
         <a href="/" className="flex items-center gap-3.5 group">
-          <div className="relative h-16 w-16 sm:h-20 sm:w-20 lg:h-24 lg:w-24 shrink-0 transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_4px_24px_rgba(245,158,11,0.35)]">
+          <div className="relative h-20 w-20 sm:h-24 sm:w-24 lg:h-28 lg:w-28 shrink-0 transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)]">
             <Image
               src="/brand/allthesmoke-logo.png"
               alt="All The Smoke BBQ & Catering Official Master Crest"
@@ -123,7 +125,7 @@ export function Hero() {
             />
           </div>
           <div className="flex flex-col">
-            <span className="font-display text-2xl sm:text-3xl lg:text-4xl font-black tracking-wide text-white uppercase leading-none">
+            <span className="font-display text-2xl sm:text-3xl font-black tracking-wide text-white uppercase leading-none">
               ALL THE SMOKE
             </span>
             <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-amber-500 uppercase leading-tight mt-0.5">
@@ -161,7 +163,7 @@ export function Hero() {
           </a>
         </nav>
 
-        {/* CTA Button: REQUEST A QUOTE (Warm Amber Neon Glow) */}
+        {/* CTA: REQUEST A QUOTE (Warm Amber Neon Glow) */}
         <div className="flex items-center gap-3">
           <a
             href="#quote"
@@ -191,20 +193,13 @@ export function Hero() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-zinc-950 border-b border-zinc-800 px-6 py-4 space-y-3 text-sm font-semibold">
+        <div className="relative z-30 lg:hidden bg-zinc-950 border-b border-zinc-800 px-6 py-4 space-y-3 text-sm font-semibold">
           <a
             href="#hero"
             onClick={() => setMobileMenuOpen(false)}
             className="block text-zinc-300 hover:text-amber-400"
           >
             Home
-          </a>
-          <a
-            href="#experience"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-zinc-300 hover:text-amber-400"
-          >
-            The Experience
           </a>
           <a
             href="#packages"
@@ -240,161 +235,120 @@ export function Hero() {
         </div>
       )}
 
-      {/* 3. Hero Main Section: Split Layout (Left Copy & CTAs, Right Unboxed Documentary Visual) */}
-      <section id="hero" className="relative px-4 sm:px-8 pt-4 pb-12 sm:pb-20 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+      {/* 4. FOREGROUND STAGE CONTENT LAYER */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-12 pb-16 sm:px-6 sm:pt-20 sm:pb-24 lg:px-8">
+        <div className="max-w-2xl space-y-6">
           
-          {/* Left Column: Core Positioning, Headline & Dual CTAs */}
-          <div className="z-10 lg:col-span-7 space-y-6 sm:space-y-7">
-            
-            {/* Star Kicker: ★ CHICAGOLAND'S PREMIER LIVE-FIRE CATERING ★ */}
-            <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold tracking-[0.2em] text-amber-500 uppercase">
-              <span className="text-amber-400">★</span>
-              <span>CHICAGOLAND’S PREMIER LIVE-FIRE CATERING</span>
-              <span className="text-amber-400">★</span>
-            </div>
+          {/* Subheading Star Kicker */}
+          <p className="flex items-center gap-2 text-xs sm:text-sm font-bold tracking-[0.2em] text-amber-500 uppercase">
+            <span>★</span>
+            <span>CHICAGOLAND’S PREMIER LIVE-FIRE CATERING</span>
+            <span>★</span>
+          </p>
 
-            {/* Headline */}
-            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-tight text-white leading-[0.94]">
-              Elevated BBQ &amp;<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-amber-200">
-                Smokehouse Catering
-              </span><br />
-              For Your Special Events
-            </h1>
+          {/* Main Headline */}
+          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white leading-[0.95]">
+            Elevated BBQ &amp; <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-amber-200">
+              Smokehouse Catering
+            </span> <br />
+            For Your Special Events
+          </h1>
 
-            {/* Subhead */}
-            <p className="max-w-xl text-base sm:text-lg leading-relaxed text-zinc-300">
-              Bringing the rich, authentic artistry of slow-smoked brisket, ribs, and theatrical culinary
-              experiences to your weddings, corporate gatherings, and private celebrations.
-            </p>
+          {/* Value Proposition Subhead */}
+          <p className="max-w-xl text-base sm:text-lg leading-relaxed text-zinc-300">
+            Bringing the rich, authentic artistry of slow-smoked brisket, ribs, and theatrical culinary 
+            experiences to your weddings, corporate gatherings, and private celebrations.
+          </p>
 
-            {/* Action Buttons: VIEW OUR MENUS & BOOK YOUR DATE */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              {/* Primary: VIEW OUR MENUS (Glowing amber/orange gradient) */}
-              <a
-                href="#packages"
-                className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-600 via-amber-500 to-orange-600 px-7 sm:px-8 py-3.5 sm:py-4 text-sm sm:text-base font-extrabold text-white uppercase tracking-wider shadow-[0_0_25px_rgba(245,158,11,0.5)] hover:shadow-[0_0_35px_rgba(245,158,11,0.7)] hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] transition-all min-h-[48px]"
-              >
-                VIEW OUR MENUS
-              </a>
-
-              {/* Secondary: BOOK YOUR DATE (Translucent dark with amber border) */}
-              <a
-                href="#quote"
-                onClick={handleOpenQuoteModal}
-                className="inline-flex items-center justify-center rounded-lg border border-amber-600/40 bg-zinc-950/60 px-7 sm:px-8 py-3.5 sm:py-4 text-sm sm:text-base font-extrabold text-zinc-200 hover:text-white hover:border-amber-400 hover:bg-amber-500/10 uppercase tracking-wider backdrop-blur-sm transition-all min-h-[48px]"
-              >
-                BOOK YOUR DATE
-              </a>
-            </div>
-
-            {/* Credential Checks */}
-            <div className="flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-zinc-400 font-medium pt-2">
-              <div className="flex items-center gap-1.5">
-                <svg className="h-4 w-4 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Exclusive Booked-to-Order
-              </div>
-              <div className="flex items-center gap-1.5">
-                <svg className="h-4 w-4 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                48–72 Hr Pit Curing
-              </div>
-              <div className="flex items-center gap-1.5">
-                <svg className="h-4 w-4 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Marion Bolden, Lead Pitmaster
-              </div>
-            </div>
+          {/* Action CTAs */}
+          <div className="pt-2 flex flex-wrap items-center gap-4">
+            <a
+              href="#packages"
+              className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-600 via-amber-500 to-orange-600 px-8 py-4 text-sm font-black tracking-wider text-white uppercase shadow-[0_0_25px_rgba(245,158,11,0.5)] transition-all hover:brightness-110 hover:shadow-[0_0_35px_rgba(245,158,11,0.7)] hover:scale-[1.02] active:scale-[0.98] min-h-[48px]"
+            >
+              VIEW OUR MENUS
+            </a>
+            <a
+              href="#quote"
+              onClick={handleOpenQuoteModal}
+              className="inline-flex items-center justify-center rounded-lg border border-amber-600/40 bg-black/60 px-8 py-4 text-sm font-black tracking-wider text-zinc-200 uppercase backdrop-blur-sm transition-all hover:border-amber-400 hover:text-white hover:bg-black/80 min-h-[48px]"
+            >
+              BOOK YOUR DATE
+            </a>
           </div>
 
-          {/* Right Column: Borderless Uncontained Documentary Visual */}
-          <div className="relative lg:col-span-5">
-            {/* Seamless edge blend wrapper — ZERO BORDERS, ZERO CARDS, ZERO PICTURE FRAMES */}
-            <div className="relative h-[420px] w-full sm:h-[500px] lg:h-[560px]">
-              <Image
-                src="/images/hero-brisket-carve.jpg"
-                alt="Pitmaster Marion Bolden carving slow-smoked Texas brisket with deep mahogany bark"
-                fill
-                priority
-                className="object-cover object-center [mask-image:radial-gradient(ellipse_at_center,black_65%,transparent_100%)]"
-              />
-              {/* Subtle vignette gradient that melts dark cutting board into #0A0A0A */}
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent opacity-85" />
+          {/* Credential Checks */}
+          <div className="pt-2 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-zinc-400 font-medium">
+            <div className="flex items-center gap-1.5">
+              <svg className="h-4 w-4 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Exclusive Booked-to-Order
             </div>
-
-            {/* Authenticity Caption Pill */}
-            <div className="absolute bottom-3 right-2 flex items-center gap-2 rounded-full border border-amber-500/30 bg-black/85 px-3.5 py-1.5 backdrop-blur-md">
-              <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
-              <span className="text-[11px] font-semibold tracking-wider text-zinc-300 uppercase">
-                Verified Documentary Smoke • Natural Bark &amp; Smoke Ring
-              </span>
+            <div className="flex items-center gap-1.5">
+              <svg className="h-4 w-4 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              48–72 Hr Pit Curing
+            </div>
+            <div className="flex items-center gap-1.5">
+              <svg className="h-4 w-4 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Marion Bolden, Lead Pitmaster
             </div>
           </div>
 
         </div>
+      </div>
 
-        {/* 4. The Elevated Trust Bar — REFINED VECTOR SVGs, ZERO EMOJIS */}
-        <div className="mt-14 pt-8 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-5 lg:gap-6">
-          
-          {/* Item 1: On-Site Pitmasters (Chef / Pitmaster Hat SVG) */}
-          <div className="flex items-center gap-4 rounded-xl border border-zinc-800/80 bg-zinc-950/60 p-4 backdrop-blur-sm">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-amber-500/20 bg-amber-500/10 text-amber-400">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      {/* 5. INTEGRATED BOTTOM TRUST BAR (Translucent Over the Base of the Stage) */}
+      <div className="relative z-10 border-t border-zinc-800/80 bg-black/75 backdrop-blur-md">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            
+            {/* Feature 1: On-Site Pitmasters */}
+            <div className="flex items-center justify-center gap-3 text-center sm:justify-start">
+              <svg className="h-5 w-5 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
+              <span className="text-sm font-semibold tracking-wide text-zinc-200">On-Site Pitmasters</span>
             </div>
-            <div>
-              <h3 className="text-sm font-bold tracking-wide text-zinc-100 uppercase">On-Site Pitmasters</h3>
-              <p className="mt-1 text-xs text-zinc-400">Live-fire smoker trailer &amp; pitmaster theatrics for rallies and weddings.</p>
-            </div>
-          </div>
 
-          {/* Item 2: Tailored Event Menus (Menu / Clipboard SVG) */}
-          <div className="flex items-center gap-4 rounded-xl border border-zinc-800/80 bg-zinc-950/60 p-4 backdrop-blur-sm">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-amber-500/20 bg-amber-500/10 text-amber-400">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+            {/* Feature 2: Tailored Event Menus */}
+            <div className="flex items-center justify-center gap-3 text-center">
+              <svg className="h-5 w-5 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
               </svg>
+              <span className="text-sm font-semibold tracking-wide text-zinc-200">Tailored Event Menus</span>
             </div>
-            <div>
-              <h3 className="text-sm font-bold tracking-wide text-zinc-100 uppercase">Tailored Event Menus</h3>
-              <p className="mt-1 text-xs text-zinc-400">Custom smokehouse packages, whole briskets, and artisan scratch sides.</p>
-            </div>
-          </div>
 
-          {/* Item 3: Full-Service Hospitality (Serving / Hospitality SVG) */}
-          <div className="flex items-center gap-4 rounded-xl border border-zinc-800/80 bg-zinc-950/60 p-4 backdrop-blur-sm">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-amber-500/20 bg-amber-500/10 text-amber-400">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+            {/* Feature 3: Full-Service Hospitality */}
+            <div className="flex items-center justify-center gap-3 text-center sm:justify-end">
+              <svg className="h-5 w-5 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
+              <span className="text-sm font-semibold tracking-wide text-zinc-200">Full-Service Hospitality</span>
             </div>
-            <div>
-              <h3 className="text-sm font-bold tracking-wide text-zinc-100 uppercase">Full-Service Hospitality</h3>
-              <p className="mt-1 text-xs text-zinc-400">Cambro heated delivery at 150°F+, chafing setup, or staffed carving stations.</p>
-            </div>
+
           </div>
-
         </div>
-
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }
+
+export default Hero;
