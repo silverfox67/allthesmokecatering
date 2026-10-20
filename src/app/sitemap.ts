@@ -1,4 +1,4 @@
-﻿import { MetadataRoute } from "next";
+import { MetadataRoute } from "next";
 import { SITE_CONFIG } from "@/config/site-config";
 
 /**

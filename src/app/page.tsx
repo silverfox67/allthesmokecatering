@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/config/site-config";
 import { Hero } from "@/components/home/Hero";

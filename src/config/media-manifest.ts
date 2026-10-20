@@ -1,4 +1,4 @@
-﻿export type VerificationMethod =
+export type VerificationMethod =
   | 'on_site_camera_raw'
   | 'client_menu_documentary'
   | 'pitmaster_signature'
