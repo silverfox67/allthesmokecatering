@@ -15,34 +15,25 @@ export function Hero() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#0A0A0A] min-h-[680px] lg:min-h-[780px] xl:min-h-[840px] flex flex-col justify-between">
+    <section className="relative w-full overflow-hidden bg-[#0A0A0A] min-h-[700px] lg:min-h-[820px] flex flex-col justify-between">
       
-      {/* 1. RIGHT-SIDE CINEMATIC VISUAL (NATURAL SCALE, NOT BLOWN UP) */}
-      <div className="absolute right-0 top-0 bottom-0 w-full lg:w-[58%] xl:w-[54%] z-0 pointer-events-none overflow-hidden">
+      {/* 1. FULL-WIDTH BACKGROUND CANVAS (Edge-to-Edge) */}
+      <div className="absolute inset-0 z-0">
         <Image
           src="/images/hero-brisket-carve.jpg"
           alt="Pitmaster Marion Bolden carving slow-smoked Texas brisket with deep mahogany bark"
           fill
           priority
-          sizes="(max-width: 1024px) 100vw, 55vw"
-          className="object-cover object-right sm:object-center lg:object-left-center"
+          sizes="100vw"
+          className="object-cover object-[center_70%] lg:object-[right_bottom]"
         />
 
-        {/* Directional Scrim on Left Edge: Seamlessly dissolves cutting board & smoke into the #0A0A0A canvas */}
-        <div className="absolute inset-y-0 left-0 w-28 sm:w-48 lg:w-72 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/70 to-transparent z-10" />
+        {/* Targeted Radial Scrim: Darkens upper-left quadrant directly behind headline text, preserving bottom-left glowing coals & right-side live fire */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(10,10,10,0.95)_0%,rgba(10,10,10,0.75)_45%,transparent_80%)] pointer-events-none" />
         
-        {/* Top Vignette for Nav Area */}
-        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#0A0A0A] via-[#0A0A0A]/60 to-transparent z-10" />
-
-        {/* Bottom Vignette for Trust Bar */}
-        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/60 to-transparent z-10" />
+        {/* Subtle Top Vignette for Nav Area */}
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#0A0A0A]/80 to-transparent pointer-events-none" />
       </div>
-
-      {/* Ambient Ember Backlight in Bottom Left to match Gemini concept */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-12 left-4 w-80 h-56 bg-orange-600/15 blur-[90px] rounded-full z-0"
-      />
 
       {/* 2. TOP UTILITY BAR (Phone, Location, Direct Email) */}
       <aside
@@ -125,7 +116,7 @@ export function Hero() {
 
       {/* 3. MAIN HEADER / NAVIGATION (Master Circular Crest Alone on Left, Nav Links on Right) */}
       <header className="relative z-20 px-4 sm:px-8 pt-3 pb-2 max-w-7xl mx-auto w-full flex items-center justify-between">
-        {/* Official Master Crest Alone (No redundant text box next to it!) */}
+        {/* Official Master Crest Alone (Clean transparent PNG, no duplicate text box) */}
         <a href="/" className="group flex-shrink-0">
           <div className="relative h-20 w-20 sm:h-24 sm:w-24 lg:h-28 lg:w-28 transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)]">
             <Image
@@ -239,8 +230,8 @@ export function Hero() {
         </div>
       )}
 
-      {/* 4. FOREGROUND CONTENT LAYER (Left ~50% of the Screen) */}
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-10 lg:py-14 w-full flex-1 flex flex-col justify-center">
+      {/* 4. FOREGROUND CONTENT LAYER (Positioned over clean upper-left quadrant) */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 w-full flex-1 flex flex-col justify-center">
         <div className="max-w-xl lg:max-w-2xl space-y-5 sm:space-y-6">
           
           {/* Subheading Star Kicker */}
@@ -317,14 +308,14 @@ export function Hero() {
         </div>
       </div>
 
-      {/* 5. INTEGRATED BOTTOM TRUST BAR (Translucent Over the Base of the Stage) */}
-      <div className="relative z-20 border-t border-zinc-800/80 bg-black/75 backdrop-blur-md">
+      {/* 5. EXACT TRUST BAR STYLING (Target Mockup Specification) */}
+      <div className="relative z-20 bg-black/80 backdrop-blur-md border-t border-amber-900/40">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             
             {/* Feature 1: On-Site Pitmasters */}
             <div className="flex items-center justify-center gap-3 text-center sm:justify-start">
-              <svg className="h-5 w-5 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <svg className="h-5 w-5 text-[#D4AF37] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
               <span className="text-sm font-semibold tracking-wide text-zinc-200">On-Site Pitmasters</span>
@@ -332,7 +323,7 @@ export function Hero() {
 
             {/* Feature 2: Tailored Event Menus */}
             <div className="flex items-center justify-center gap-3 text-center">
-              <svg className="h-5 w-5 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <svg className="h-5 w-5 text-[#D4AF37] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
               </svg>
               <span className="text-sm font-semibold tracking-wide text-zinc-200">Tailored Event Menus</span>
@@ -340,7 +331,7 @@ export function Hero() {
 
             {/* Feature 3: Full-Service Hospitality */}
             <div className="flex items-center justify-center gap-3 text-center sm:justify-end">
-              <svg className="h-5 w-5 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <svg className="h-5 w-5 text-[#D4AF37] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
               <span className="text-sm font-semibold tracking-wide text-zinc-200">Full-Service Hospitality</span>
