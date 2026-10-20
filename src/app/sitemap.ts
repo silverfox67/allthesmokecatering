@@ -1,11 +1,47 @@
-import { MetadataRoute } from 'next';
+﻿import { MetadataRoute } from "next";
+import { SITE_CONFIG } from "@/config/site-config";
 
+/**
+ * Dynamic XML Sitemap targeting primary Chicagoland Smokehouse Keywords:
+ * - "Chicago BBQ catering"
+ * - "Live fire catering Chicago"
+ * - "Wedding BBQ catering 60634"
+ * - "Slow smoked brisket Chicago"
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yourdomain.com';
+  const baseUrl = `https://${SITE_CONFIG.primaryDomain}`;
+  const now = new Date();
 
   return [
-    { url: baseUrl, lastModified: new Date(), changeFrequency: 'weekly', priority: 1.0 },
-    { url: `${baseUrl}/services`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    {
+      url: baseUrl,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 1.0,
+    },
+    {
+      url: `${baseUrl}#packages`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}#delivery`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}#reels`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}#quote`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
   ];
 }
