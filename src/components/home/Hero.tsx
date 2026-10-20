@@ -15,22 +15,34 @@ export function Hero() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#0A0A0A]">
-      {/* 1. FULL-WIDTH BACKGROUND CANVAS (Edge-to-Edge) */}
-      <div className="absolute inset-0 z-0">
+    <section className="relative w-full overflow-hidden bg-[#0A0A0A] min-h-[680px] lg:min-h-[780px] xl:min-h-[840px] flex flex-col justify-between">
+      
+      {/* 1. RIGHT-SIDE CINEMATIC VISUAL (NATURAL SCALE, NOT BLOWN UP) */}
+      <div className="absolute right-0 top-0 bottom-0 w-full lg:w-[58%] xl:w-[54%] z-0 pointer-events-none overflow-hidden">
         <Image
           src="/images/hero-brisket-carve.jpg"
           alt="Pitmaster Marion Bolden carving slow-smoked Texas brisket with deep mahogany bark"
           fill
           priority
-          sizes="100vw"
-          className="object-cover object-right-top md:object-right"
+          sizes="(max-width: 1024px) 100vw, 55vw"
+          className="object-cover object-right sm:object-center lg:object-left-center"
         />
-        {/* Left-to-Right Directional Scrim: Solid black on the left, smoothly dissolving to reveal pitmaster hands & cutting board */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/90 via-45% to-transparent" />
-        {/* Top & Bottom Vignettes for seamless header and footer transitions */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-black/70" />
+
+        {/* Directional Scrim on Left Edge: Seamlessly dissolves cutting board & smoke into the #0A0A0A canvas */}
+        <div className="absolute inset-y-0 left-0 w-28 sm:w-48 lg:w-72 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/70 to-transparent z-10" />
+        
+        {/* Top Vignette for Nav Area */}
+        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#0A0A0A] via-[#0A0A0A]/60 to-transparent z-10" />
+
+        {/* Bottom Vignette for Trust Bar */}
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/60 to-transparent z-10" />
       </div>
+
+      {/* Ambient Ember Backlight in Bottom Left to match Gemini concept */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-12 left-4 w-80 h-56 bg-orange-600/15 blur-[90px] rounded-full z-0"
+      />
 
       {/* 2. TOP UTILITY BAR (Phone, Location, Direct Email) */}
       <aside
@@ -111,26 +123,18 @@ export function Hero() {
         </div>
       </aside>
 
-      {/* 3. MAIN NAVIGATION BAR (Master Crest + Nav Links + Request Quote) */}
-      <header className="relative z-20 px-4 sm:px-8 py-3 max-w-7xl mx-auto flex items-center justify-between">
-        {/* Brand Master Circular Emblem Crest */}
-        <a href="/" className="flex items-center gap-3.5 group">
-          <div className="relative h-20 w-20 sm:h-24 sm:w-24 lg:h-28 lg:w-28 shrink-0 transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)]">
+      {/* 3. MAIN HEADER / NAVIGATION (Master Circular Crest Alone on Left, Nav Links on Right) */}
+      <header className="relative z-20 px-4 sm:px-8 pt-3 pb-2 max-w-7xl mx-auto w-full flex items-center justify-between">
+        {/* Official Master Crest Alone (No redundant text box next to it!) */}
+        <a href="/" className="group flex-shrink-0">
+          <div className="relative h-20 w-20 sm:h-24 sm:w-24 lg:h-28 lg:w-28 transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)]">
             <Image
               src="/brand/allthesmoke-logo.png"
-              alt="All The Smoke BBQ & Catering Official Master Crest"
+              alt="All The Smoke BBQ &amp; Catering Official Master Crest"
               fill
               className="object-contain"
               priority
             />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-display text-2xl sm:text-3xl font-black tracking-wide text-white uppercase leading-none">
-              ALL THE SMOKE
-            </span>
-            <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-amber-500 uppercase leading-tight mt-0.5">
-              BBQ &amp; CATERING • CHICAGO
-            </span>
           </div>
         </a>
 
@@ -235,9 +239,9 @@ export function Hero() {
         </div>
       )}
 
-      {/* 4. FOREGROUND STAGE CONTENT LAYER */}
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-12 pb-16 sm:px-6 sm:pt-20 sm:pb-24 lg:px-8">
-        <div className="max-w-2xl space-y-6">
+      {/* 4. FOREGROUND CONTENT LAYER (Left ~50% of the Screen) */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-10 lg:py-14 w-full flex-1 flex flex-col justify-center">
+        <div className="max-w-xl lg:max-w-2xl space-y-5 sm:space-y-6">
           
           {/* Subheading Star Kicker */}
           <p className="flex items-center gap-2 text-xs sm:text-sm font-bold tracking-[0.2em] text-amber-500 uppercase">
@@ -249,9 +253,7 @@ export function Hero() {
           {/* Main Headline */}
           <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white leading-[0.95]">
             Elevated BBQ &amp; <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-amber-200">
-              Smokehouse Catering
-            </span> <br />
+            Smokehouse Catering <br />
             For Your Special Events
           </h1>
 
@@ -316,7 +318,7 @@ export function Hero() {
       </div>
 
       {/* 5. INTEGRATED BOTTOM TRUST BAR (Translucent Over the Base of the Stage) */}
-      <div className="relative z-10 border-t border-zinc-800/80 bg-black/75 backdrop-blur-md">
+      <div className="relative z-20 border-t border-zinc-800/80 bg-black/75 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             
