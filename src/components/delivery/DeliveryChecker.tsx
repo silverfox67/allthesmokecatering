@@ -55,7 +55,6 @@ export function DeliveryChecker() {
     } else if (ZONE_3_ZIPS.has(clean)) {
       setResult({ zone: SITE_CONFIG.deliveryZones[2], zip: clean });
     } else if (clean.startsWith("60")) {
-      // Heuristic fallback for outer Chicagoland
       const num = parseInt(clean, 10);
       if (num >= 60000 && num <= 60699) {
         setResult({ zone: SITE_CONFIG.deliveryZones[1], zip: clean });
@@ -93,22 +92,32 @@ export function DeliveryChecker() {
   return (
     <section
       id="delivery"
-      className="py-20 sm:py-28 px-4 sm:px-8 bg-charcoal/40 border-b border-white/10"
+      className="py-20 sm:py-28 px-4 sm:px-8 bg-[#0A0A0A] border-b border-zinc-800/80 relative overflow-hidden"
       aria-labelledby="delivery-heading"
     >
-      <div className="max-w-7xl mx-auto space-y-12">
+      {/* Ambient Radial Ember Glow behind Calculator */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[450px] w-[750px] rounded-full bg-amber-600/5 blur-[150px]"
+      />
+
+      <div className="max-w-7xl mx-auto space-y-12 relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <span className="text-ember text-xs uppercase font-bold tracking-widest bg-charcoal px-3 py-1 rounded-full border border-ember/30 inline-block">
-            📍 Chicagoland Delivery Radius
+          <span className="text-amber-400 text-xs uppercase font-bold tracking-widest bg-zinc-900 px-3.5 py-1.5 rounded-full border border-amber-500/30 inline-flex items-center gap-1.5">
+            <svg className="h-3.5 w-3.5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>Chicagoland Delivery Radius</span>
           </span>
           <h2
             id="delivery-heading"
-            className="font-display text-4xl sm:text-6xl font-bold tracking-tight text-white uppercase leading-none"
+            className="font-display text-4xl sm:text-6xl font-black tracking-tight text-white uppercase leading-none"
           >
             Delivery Radius Calculator
           </h2>
-          <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
+          <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
             All orders dispatch hot directly from our commercial kitchen hub at{" "}
             <strong className="text-white">3401 N Orange Ave, Chicago, IL 60634</strong>.
             Enter your event ZIP code below to see instant delivery fees and minimum food requirements.
@@ -116,11 +125,14 @@ export function DeliveryChecker() {
         </div>
 
         {/* Calculator Card */}
-        <div className="max-w-3xl mx-auto bg-charcoal border border-white/15 rounded-3xl p-6 sm:p-10 shadow-2xl space-y-8">
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="max-w-3xl mx-auto bg-[#141417] border border-zinc-800 rounded-3xl p-6 sm:p-10 shadow-2xl shadow-black/80 space-y-8 relative overflow-hidden">
+          {/* Subtle Corner Glow */}
+          <div className="pointer-events-none absolute -top-16 -right-16 h-48 w-48 rounded-full bg-amber-500/10 blur-[60px]" />
+
+          <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
             <label
               htmlFor="zip-input"
-              className="block text-xs font-bold text-neutral-300 uppercase tracking-wider"
+              className="block text-xs font-bold text-zinc-300 uppercase tracking-wider"
             >
               Enter Event or Venue ZIP Code:
             </label>
@@ -133,51 +145,51 @@ export function DeliveryChecker() {
                 value={zipInput}
                 onChange={(e) => setZipInput(e.target.value)}
                 placeholder="e.g. 60634, 60607, 60540"
-                className="flex-1 bg-obsidian border border-white/20 focus:border-ember focus:ring-1 focus:ring-ember rounded-xl px-5 py-3.5 text-white placeholder-neutral-500 font-mono text-base outline-none transition-all"
+                className="flex-1 bg-zinc-950 border border-zinc-700 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 rounded-xl px-5 py-3.5 text-white placeholder-zinc-500 font-mono text-base outline-none transition-all"
                 aria-describedby="zip-error"
                 required
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-ember to-ember-dark text-obsidian font-extrabold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider hover:brightness-110 transition-all shadow-lg min-h-[48px] flex items-center justify-center flex-shrink-0"
+                className="bg-gradient-to-r from-amber-500 to-amber-600 text-black font-extrabold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider hover:brightness-110 transition-all shadow-lg min-h-[48px] flex items-center justify-center shrink-0"
               >
                 CHECK DELIVERY ZONE
               </button>
             </div>
             {errorMsg && (
-              <p id="zip-error" className="text-xs text-crimson font-semibold" role="alert">
+              <p id="zip-error" className="text-xs text-red-500 font-semibold" role="alert">
                 {errorMsg}
               </p>
             )}
 
             {/* Quick Test Chips */}
-            <div className="pt-2 flex flex-wrap items-center gap-2 text-xs text-neutral-400">
+            <div className="pt-2 flex flex-wrap items-center gap-2 text-xs text-zinc-400">
               <span>Quick Test:</span>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60634")}
-                className="bg-obsidian hover:bg-white/10 text-neutral-300 px-3 py-1.5 rounded-lg border border-white/10 transition-colors"
+                className="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-3 py-1.5 rounded-lg border border-zinc-700 transition-colors"
               >
                 60634 (Hub)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60607")}
-                className="bg-obsidian hover:bg-white/10 text-neutral-300 px-3 py-1.5 rounded-lg border border-white/10 transition-colors"
+                className="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-3 py-1.5 rounded-lg border border-zinc-700 transition-colors"
               >
                 60607 (West Loop)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60201")}
-                className="bg-obsidian hover:bg-white/10 text-neutral-300 px-3 py-1.5 rounded-lg border border-white/10 transition-colors"
+                className="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-3 py-1.5 rounded-lg border border-zinc-700 transition-colors"
               >
                 60201 (Evanston)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60540")}
-                className="bg-obsidian hover:bg-white/10 text-neutral-300 px-3 py-1.5 rounded-lg border border-white/10 transition-colors"
+                className="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-3 py-1.5 rounded-lg border border-zinc-700 transition-colors"
               >
                 60540 (Naperville)
               </button>
@@ -185,65 +197,76 @@ export function DeliveryChecker() {
           </form>
 
           {/* Dynamic Result Panel */}
-          <div aria-live="polite">
+          <div aria-live="polite" className="relative z-10">
             {result && (
-              <div className="p-6 rounded-2xl bg-obsidian border border-ember/40 space-y-6 shadow-inner animate-in fade-in duration-300">
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+              <div className="p-6 rounded-2xl bg-zinc-950 border border-amber-500/40 space-y-6 shadow-inner animate-in fade-in duration-300">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-800 pb-4">
                   <div>
-                    <span className="text-[11px] font-mono text-neutral-400 block uppercase">
+                    <span className="text-[11px] font-mono text-zinc-400 block uppercase">
                       Calculated Result for ZIP: <strong className="text-white">{result.zip}</strong>
                     </span>
                     <h3 className="font-display text-2xl sm:text-3xl text-white">
                       {result.zone.name}
                     </h3>
                   </div>
-                  <span className="bg-ember text-obsidian text-xs font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider">
+                  <span className="bg-amber-500 text-black text-xs font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider">
                     Zone {result.zone.zone} Active
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-charcoal p-4 rounded-xl border border-white/10 space-y-1">
-                    <span className="text-xs text-neutral-400 block font-semibold uppercase">
+                  <div className="bg-zinc-900 p-4 rounded-xl border border-zinc-800 space-y-1">
+                    <span className="text-xs text-zinc-400 block font-semibold uppercase">
                       Estimated Transit Fee:
                     </span>
-                    <span className="text-3xl font-extrabold text-ember">
+                    <span className="text-3xl font-black text-amber-400">
                       ${result.zone.fee.toFixed(2)}
                     </span>
-                    <p className="text-[11px] text-neutral-400">
+                    <p className="text-[11px] text-zinc-400">
                       Cambro insulated heated carrier dispatch
                     </p>
                   </div>
 
-                  <div className="bg-charcoal p-4 rounded-xl border border-white/10 space-y-1">
-                    <span className="text-xs text-neutral-400 block font-semibold uppercase">
+                  <div className="bg-zinc-900 p-4 rounded-xl border border-zinc-800 space-y-1">
+                    <span className="text-xs text-zinc-400 block font-semibold uppercase">
                       Minimum Food Order:
                     </span>
-                    <span className="text-3xl font-extrabold text-white">
+                    <span className="text-3xl font-black text-white">
                       ${result.zone.minOrder.toFixed(2)}
                     </span>
-                    <p className="text-[11px] text-neutral-400">
+                    <p className="text-[11px] text-zinc-400">
                       Food package &amp; pan subtotal threshold
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-2 text-xs text-neutral-300 pt-1">
-                  <span className="font-bold text-neutral-200 block uppercase">
+                <div className="space-y-2 text-xs text-zinc-300 pt-1">
+                  <span className="font-bold text-zinc-200 block uppercase">
                     Delivery Corridor Coverage:
                   </span>
-                  <p className="leading-relaxed text-neutral-400">
+                  <p className="leading-relaxed text-zinc-400">
                     {result.zone.description}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <span className="text-xs text-neutral-400">
-                    🚚 Dispatched from 3401 N Orange Ave, Chicago 60634
+                <div className="pt-4 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <span className="text-xs text-zinc-400 flex items-center gap-1.5">
+                    <svg className="h-4 w-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 17a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4zM3 9h12a2 2 0 012 2v6H3V9zm14 3h3.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V17h-7v-5zM6 9V5a1 1 0 011-1h6a1 1 0 011 1v4" />
+                    </svg>
+                    Dispatched from 3401 N Orange Ave, Chicago 60634
                   </span>
                   <a
                     href={`#quote?zip=${result.zip}&zone=${result.zone.zone}`}
-                    className="w-full sm:w-auto bg-ember hover:bg-ember-dark text-obsidian font-extrabold px-6 py-3 rounded-xl text-center text-sm uppercase tracking-wider transition-all min-h-[48px] flex items-center justify-center shadow-lg"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (typeof window !== "undefined") {
+                        window.dispatchEvent(
+                          new CustomEvent("open-quote-modal", { detail: { packageId: "pitmaster-feast" } })
+                        );
+                      }
+                    }}
+                    className="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-6 py-3 rounded-xl text-center text-sm uppercase tracking-wider transition-all min-h-[48px] flex items-center justify-center shadow-lg"
                   >
                     Lock In Delivery for {result.zip}
                   </a>
@@ -253,30 +276,30 @@ export function DeliveryChecker() {
           </div>
 
           {/* Static Zone Overview Matrix */}
-          <div className="pt-6 border-t border-white/10 space-y-3">
-            <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider block">
+          <div className="pt-6 border-t border-zinc-800 space-y-3 relative z-10">
+            <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider block">
               Official Chicagoland Zone Matrix:
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-              <div className="bg-obsidian/70 p-3.5 rounded-xl border border-white/10 space-y-1">
-                <span className="text-ember font-bold block">Zone 1 (0–10 mi)</span>
+              <div className="bg-zinc-950/80 p-3.5 rounded-xl border border-zinc-800 space-y-1">
+                <span className="text-amber-400 font-bold block">Zone 1 (0–10 mi)</span>
                 <span className="text-white font-extrabold text-base">$35 Fee</span>
-                <span className="text-neutral-400 block">$150 Min Order</span>
-                <span className="text-[11px] text-neutral-500 block">NW Side, O’Hare, Portage Park</span>
+                <span className="text-zinc-400 block">$150 Min Order</span>
+                <span className="text-[11px] text-zinc-500 block">NW Side, O’Hare, Portage Park</span>
               </div>
 
-              <div className="bg-obsidian/70 p-3.5 rounded-xl border border-white/10 space-y-1">
-                <span className="text-ember font-bold block">Zone 2 (10–20 mi)</span>
+              <div className="bg-zinc-950/80 p-3.5 rounded-xl border border-zinc-800 space-y-1">
+                <span className="text-amber-400 font-bold block">Zone 2 (10–20 mi)</span>
                 <span className="text-white font-extrabold text-base">$65 Fee</span>
-                <span className="text-neutral-400 block">$300 Min Order</span>
-                <span className="text-[11px] text-neutral-500 block">The Loop, West Loop, Evanston</span>
+                <span className="text-zinc-400 block">$300 Min Order</span>
+                <span className="text-[11px] text-zinc-500 block">The Loop, West Loop, Evanston</span>
               </div>
 
-              <div className="bg-obsidian/70 p-3.5 rounded-xl border border-white/10 space-y-1">
-                <span className="text-ember font-bold block">Zone 3 (20–35 mi)</span>
+              <div className="bg-zinc-950/80 p-3.5 rounded-xl border border-zinc-800 space-y-1">
+                <span className="text-amber-400 font-bold block">Zone 3 (20–35 mi)</span>
                 <span className="text-white font-extrabold text-base">$95 Fee</span>
-                <span className="text-neutral-400 block">$500 Min Order</span>
-                <span className="text-[11px] text-neutral-500 block">Naperville, Aurora, South Side</span>
+                <span className="text-zinc-400 block">$500 Min Order</span>
+                <span className="text-[11px] text-zinc-500 block">Naperville, Aurora, South Side</span>
               </div>
             </div>
           </div>

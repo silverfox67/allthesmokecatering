@@ -76,30 +76,43 @@ export function TikTokReels() {
   return (
     <section
       id="reels"
-      className="py-20 sm:py-28 px-4 sm:px-8 bg-obsidian border-b border-white/10 relative"
+      className="py-20 sm:py-28 px-4 sm:px-8 relative bg-gradient-to-b from-[#0A0A0A] via-[#161311] to-[#0A0A0A] border-y border-amber-950/40 overflow-hidden"
       aria-labelledby="reels-heading"
     >
-      <div className="max-w-7xl mx-auto space-y-12">
+      {/* Warm Ambient Hickory Smoke Backlight */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/3 right-10 h-[500px] w-[500px] rounded-full bg-orange-700/5 blur-[150px]"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-10 left-10 h-[400px] w-[400px] rounded-full bg-amber-600/5 blur-[130px]"
+      />
+
+      <div className="max-w-7xl mx-auto space-y-12 relative z-10">
         {/* Header & Controls */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
-            <span className="text-ember text-xs uppercase font-bold tracking-widest bg-charcoal px-3 py-1 rounded-full border border-ember/30 inline-block">
-              🔥 Live Smokehouse Content
+            <span className="text-amber-400 text-xs uppercase font-bold tracking-widest bg-zinc-900 px-3.5 py-1.5 rounded-full border border-amber-500/30 inline-flex items-center gap-1.5">
+              <svg className="h-3.5 w-3.5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343a7.975 7.975 0 012.344 5.657 7.974 7.974 0 01-2.343 5.657z" />
+              </svg>
+              <span>Live Smokehouse Content</span>
             </span>
             <h2
               id="reels-heading"
-              className="font-display text-4xl sm:text-6xl font-bold tracking-tight text-white uppercase leading-none"
+              className="font-display text-4xl sm:text-6xl font-black tracking-tight text-white uppercase leading-none"
             >
               TikTok Pitmaster Showcase
             </h2>
-            <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
+            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
               Real documentary footage of our hardwood pit sessions, whole brisket carving,
               and live catering operations. Follow Marion on TikTok at{" "}
               <a
                 href={SITE_CONFIG.socials.tiktok}
                 target="_blank"
                 rel="noreferrer"
-                className="text-ember font-bold hover:underline"
+                className="text-amber-400 font-bold hover:underline"
               >
                 @allthesmokebbq_catering
               </a>
@@ -112,14 +125,14 @@ export function TikTokReels() {
             <button
               onClick={scrollLeft}
               aria-label="Scroll left through reels"
-              className="w-12 h-12 rounded-full bg-charcoal border border-white/20 hover:border-ember text-white hover:text-ember flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-ember"
+              className="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-700 hover:border-amber-500 text-zinc-300 hover:text-amber-400 flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-lg"
             >
               ←
             </button>
             <button
               onClick={scrollRight}
               aria-label="Scroll right through reels"
-              className="w-12 h-12 rounded-full bg-charcoal border border-white/20 hover:border-ember text-white hover:text-ember flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-ember"
+              className="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-700 hover:border-amber-500 text-zinc-300 hover:text-amber-400 flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-lg"
             >
               →
             </button>
@@ -132,15 +145,15 @@ export function TikTokReels() {
           tabIndex={0}
           role="region"
           aria-label="TikTok Smoked Meat Reels Carousel"
-          className="flex gap-6 overflow-x-auto pb-6 pt-2 scroll-smooth snap-x snap-mandatory focus:outline-none focus:ring-1 focus:ring-ember rounded-2xl scrollbar-thin scrollbar-thumb-ember/30"
+          className="flex gap-6 overflow-x-auto pb-6 pt-2 scroll-smooth snap-x snap-mandatory focus:outline-none focus:ring-1 focus:ring-amber-500 rounded-2xl"
         >
           {REELS_DATA.map((reel) => (
             <div
               key={reel.id}
-              className="snap-start flex-shrink-0 w-[280px] sm:w-[320px] rounded-3xl overflow-hidden bg-charcoal border border-white/15 hover:border-ember shadow-2xl relative group transition-all duration-300"
+              className="snap-start shrink-0 w-[280px] sm:w-[320px] rounded-3xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-amber-500/60 shadow-2xl relative group transition-all duration-300"
             >
               {/* Vertical 9:16 Video Poster */}
-              <div className="relative aspect-[9/16] w-full overflow-hidden bg-obsidian">
+              <div className="relative aspect-[9/16] w-full overflow-hidden bg-black">
                 <Image
                   src={reel.poster}
                   alt={reel.title}
@@ -151,11 +164,11 @@ export function TikTokReels() {
 
                 {/* Top Overlay: TikTok Badge & Views */}
                 <div className="absolute top-4 inset-x-4 flex items-center justify-between z-10">
-                  <span className="bg-obsidian/80 backdrop-blur-md text-[11px] font-bold text-white px-2.5 py-1 rounded-full border border-white/20 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-crimson animate-pulse" />
+                  <span className="bg-black/80 backdrop-blur-md text-[11px] font-bold text-white px-2.5 py-1 rounded-full border border-white/20 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
                     {reel.views} views
                   </span>
-                  <div className="w-8 h-8 rounded-full bg-obsidian/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-white text-xs font-bold">
+                  <div className="w-8 h-8 rounded-full bg-black/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-amber-400 text-xs font-bold">
                     ♪
                   </div>
                 </div>
@@ -166,39 +179,42 @@ export function TikTokReels() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label={`Watch ${reel.title} on TikTok`}
-                  className="absolute inset-0 flex items-center justify-center z-10 bg-obsidian/20 group-hover:bg-obsidian/40 transition-colors"
+                  className="absolute inset-0 flex items-center justify-center z-10 bg-black/20 group-hover:bg-black/40 transition-colors"
                 >
-                  <div className="w-16 h-16 rounded-full bg-ember/90 text-obsidian flex items-center justify-center text-2xl pl-1 shadow-2xl group-hover:scale-110 group-hover:bg-ember transition-all">
+                  <div className="w-16 h-16 rounded-full bg-amber-500/90 text-black flex items-center justify-center text-2xl pl-1 shadow-2xl group-hover:scale-110 group-hover:bg-amber-400 transition-all font-bold">
                     ▶
                   </div>
                 </a>
 
-                {/* Right Floating Actions (TikTok style) */}
+                {/* Right Floating Actions with Clean Vector SVGs */}
                 <div className="absolute right-3 bottom-24 z-10 flex flex-col items-center gap-3 text-white text-center">
-                  <div className="w-10 h-10 rounded-full bg-obsidian/70 backdrop-blur-md border border-white/20 flex items-center justify-center text-ember text-base">
-                    ❤️
+                  <div className="w-10 h-10 rounded-full bg-black/70 backdrop-blur-md border border-white/20 flex items-center justify-center text-amber-400">
+                    <svg className="h-5 w-5 fill-current" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                    </svg>
                   </div>
                   <span className="text-[10px] font-bold">{reel.likes}</span>
 
-                  <div className="w-10 h-10 rounded-full bg-obsidian/70 backdrop-blur-md border border-white/20 flex items-center justify-center text-white text-base">
-                    💬
+                  <div className="w-10 h-10 rounded-full bg-black/70 backdrop-blur-md border border-white/20 flex items-center justify-center text-white">
+                    <svg className="h-5 w-5 fill-current" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zm-4 0H9v2h2V9z" clipRule="evenodd" />
+                    </svg>
                   </div>
                   <span className="text-[10px] font-bold">{reel.shares}</span>
                 </div>
 
                 {/* Bottom Overlay: Metadata & Link */}
-                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-obsidian via-obsidian/90 to-transparent p-5 pt-10 z-10 space-y-2">
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black via-black/90 to-transparent p-5 pt-10 z-10 space-y-2">
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full overflow-hidden border border-ember relative flex-shrink-0">
+                    <div className="w-6 h-6 rounded-full overflow-hidden border border-amber-500/50 relative shrink-0">
                       <Image
-                        src="/brand/ats-monogram.png"
-                        alt="All The Smoke Monogram"
-                        width={24}
-                        height={24}
-                        className="object-contain"
+                        src="/brand/allthesmoke-logo.png"
+                        alt="All The Smoke Master Crest"
+                        fill
+                        className="object-cover"
                       />
                     </div>
-                    <span className="text-xs font-bold text-white hover:text-ember">
+                    <span className="text-xs font-bold text-white hover:text-amber-400">
                       @allthesmokebbq_catering
                     </span>
                   </div>
@@ -207,7 +223,7 @@ export function TikTokReels() {
                     {reel.title}
                   </h3>
 
-                  <p className="text-[11px] text-neutral-300 line-clamp-2 leading-tight">
+                  <p className="text-[11px] text-zinc-300 line-clamp-2 leading-tight">
                     {reel.tagline}
                   </p>
 
@@ -215,7 +231,7 @@ export function TikTokReels() {
                     href={SITE_CONFIG.socials.tiktok}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 w-full bg-white/10 hover:bg-ember hover:text-obsidian text-white font-bold text-xs py-2.5 rounded-xl transition-all border border-white/20 min-h-[44px] uppercase tracking-wider"
+                    className="inline-flex items-center justify-center gap-2 w-full bg-zinc-800/80 hover:bg-amber-500 hover:text-black text-white font-bold text-xs py-2.5 rounded-xl transition-all border border-zinc-700 min-h-[44px] uppercase tracking-wider"
                   >
                     <span>Watch on TikTok</span>
                     <span>↗</span>
@@ -227,14 +243,14 @@ export function TikTokReels() {
         </div>
 
         {/* Channel Banner */}
-        <div className="p-6 rounded-2xl bg-charcoal border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="p-6 rounded-2xl bg-[#161619] border border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-obsidian border border-ember flex items-center justify-center p-2 flex-shrink-0">
+            <div className="w-14 h-14 rounded-full bg-zinc-950 border border-amber-500/50 flex items-center justify-center p-1 shrink-0 overflow-hidden">
               <Image
-                src="/brand/ats-monogram.png"
-                alt="ATS Avatar"
-                width={40}
-                height={40}
+                src="/brand/allthesmoke-logo.png"
+                alt="All The Smoke Master Crest"
+                width={48}
+                height={48}
                 className="object-contain"
               />
             </div>
@@ -242,7 +258,7 @@ export function TikTokReels() {
               <span className="font-display text-2xl text-white block">
                 FOLLOW THE LIVE HARDWOOD SMOKE
               </span>
-              <span className="text-xs text-neutral-400">
+              <span className="text-xs text-zinc-400">
                 New pitmaster carvings, event recaps, and weekly drop announcements posted weekly.
               </span>
             </div>
@@ -252,7 +268,7 @@ export function TikTokReels() {
             href={SITE_CONFIG.socials.tiktok}
             target="_blank"
             rel="noreferrer"
-            className="bg-ember hover:bg-ember-dark text-obsidian font-extrabold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition-all min-h-[48px] flex items-center justify-center flex-shrink-0 shadow-lg"
+            className="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition-all min-h-[48px] flex items-center justify-center shrink-0 shadow-lg"
           >
             VIEW OFFICIAL TIKTOK CHANNEL ↗
           </a>

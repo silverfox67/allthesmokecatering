@@ -151,17 +151,23 @@ export function QuoteModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="quote-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-obsidian/80 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
     >
-      {/* Modal Container */}
+      {/* Modal Container: Warm Charcoal Frame */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-2xl bg-charcoal border border-white/20 rounded-3xl shadow-2xl overflow-hidden my-8"
+        className="relative w-full max-w-2xl bg-[#121214] border border-zinc-800 rounded-3xl shadow-2xl shadow-black/80 overflow-hidden my-8"
       >
+        {/* Ambient Corner Ember Glow */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-amber-500/10 blur-[80px]"
+        />
+
         {/* Header Bar */}
-        <div className="bg-obsidian border-b border-white/10 px-6 py-4 flex items-center justify-between">
+        <div className="bg-zinc-950 border-b border-zinc-800 px-6 py-4 flex items-center justify-between relative z-10">
           <div className="flex items-center gap-2.5">
-            <span className="w-3 h-3 rounded-full bg-ember animate-pulse" aria-hidden="true" />
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" aria-hidden="true" />
             <h2 id="quote-modal-title" className="font-display text-xl sm:text-2xl text-white tracking-wide">
               All The Smoke Catering Quote &amp; Booking
             </h2>
@@ -169,7 +175,7 @@ export function QuoteModal({
           <button
             onClick={handleClose}
             aria-label="Close quote modal"
-            className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white flex items-center justify-center text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ember"
+            className="w-10 h-10 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white flex items-center justify-center text-lg transition-colors border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-amber-500"
           >
             ✕
           </button>
@@ -177,19 +183,19 @@ export function QuoteModal({
 
         {/* Progress Bar (if not submitted) */}
         {!submitSuccess && (
-          <div className="bg-obsidian/50 px-6 py-3 border-b border-white/10 flex items-center justify-between text-xs text-neutral-400">
-            <span className="font-mono text-ember font-bold">STEP {step} OF 4</span>
+          <div className="bg-zinc-950/60 px-6 py-3 border-b border-zinc-800 flex items-center justify-between text-xs text-zinc-400 relative z-10">
+            <span className="font-mono text-amber-400 font-bold">STEP {step} OF 4</span>
             <div className="flex gap-2">
               {[1, 2, 3, 4].map((s) => (
                 <div
                   key={s}
                   className={`w-8 h-1.5 rounded-full transition-all ${
-                    s <= step ? "bg-ember" : "bg-white/10"
+                    s <= step ? "bg-amber-500" : "bg-zinc-800"
                   }`}
                 />
               ))}
             </div>
-            <span className="text-neutral-300 font-semibold">
+            <span className="text-zinc-300 font-semibold">
               {step === 1 && "Event & Guests"}
               {step === 2 && "Smokehouse Menu"}
               {step === 3 && "Venue & Logistics"}
@@ -199,27 +205,29 @@ export function QuoteModal({
         )}
 
         {/* Modal Body */}
-        <div className="p-6 sm:p-8 max-h-[75vh] overflow-y-auto">
+        <div className="p-6 sm:p-8 max-h-[75vh] overflow-y-auto relative z-10">
           {submitSuccess ? (
             /* Success Screen */
             <div className="text-center py-8 space-y-6 animate-in zoom-in-95 duration-300">
-              <div className="w-20 h-20 mx-auto rounded-full bg-ember/20 border-2 border-ember flex items-center justify-center text-ember text-4xl">
-                🔥
+              <div className="w-20 h-20 mx-auto rounded-full bg-amber-500/20 border-2 border-amber-500 flex items-center justify-center text-amber-400">
+                <svg className="h-10 w-10 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
               </div>
               <div className="space-y-2">
-                <span className="text-xs uppercase tracking-widest text-ember font-bold">
+                <span className="text-xs uppercase tracking-widest text-amber-400 font-bold">
                   Inquiry Dispatched Successfully
                 </span>
                 <h3 className="font-display text-3xl sm:text-4xl text-white">
                   Ticket #{ticketId} Logged
                 </h3>
-                <p className="text-sm text-neutral-300 max-w-md mx-auto leading-relaxed">
+                <p className="text-sm text-zinc-300 max-w-md mx-auto leading-relaxed">
                   Thank you, <strong>{clientName}</strong>! Marion Bolden and the pitmaster crew have received your catering inquiry.
                   We will review our smoker schedule and follow up within <strong>12 business hours</strong>.
                 </p>
               </div>
 
-              <div className="bg-obsidian p-5 rounded-2xl border border-white/10 max-w-md mx-auto text-xs text-neutral-300 space-y-2 text-left">
+              <div className="bg-zinc-950 p-5 rounded-2xl border border-zinc-800 max-w-md mx-auto text-xs text-zinc-300 space-y-2 text-left">
                 <p><strong>Client:</strong> {clientName} ({clientPhone})</p>
                 <p><strong>Event Date:</strong> {eventDate || "Date TBD"}</p>
                 <p><strong>Guests:</strong> {guestCount} Guests</p>
@@ -229,13 +237,13 @@ export function QuoteModal({
               <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
                 <a
                   href={`tel:${SITE_CONFIG.phoneFormatted}`}
-                  className="bg-ember hover:bg-ember-dark text-obsidian font-extrabold px-6 py-3 rounded-xl text-sm uppercase tracking-wider transition-all min-h-[48px] flex items-center justify-center"
+                  className="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-6 py-3 rounded-xl text-sm uppercase tracking-wider transition-all min-h-[48px] flex items-center justify-center"
                 >
                   Call Marion Directly: {SITE_CONFIG.phone}
                 </a>
                 <button
                   onClick={handleClose}
-                  className="bg-white/10 hover:bg-white/20 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all min-h-[48px]"
+                  className="bg-zinc-800 hover:bg-zinc-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all min-h-[48px]"
                 >
                   Close Window
                 </button>
@@ -244,7 +252,7 @@ export function QuoteModal({
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               {errorMessage && (
-                <div className="p-4 rounded-xl bg-crimson/20 border border-crimson text-white text-xs font-semibold">
+                <div className="p-4 rounded-xl bg-red-950/40 border border-red-800 text-white text-xs font-semibold">
                   {errorMessage}
                 </div>
               )}
@@ -253,7 +261,7 @@ export function QuoteModal({
               {step === 1 && (
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-neutral-300 uppercase tracking-wider block">
+                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
                       Select Event Type *
                     </label>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
@@ -271,8 +279,8 @@ export function QuoteModal({
                           onClick={() => setEventType(t)}
                           className={`p-3 rounded-xl border text-xs font-bold text-left transition-all ${
                             eventType === t
-                              ? "bg-ember text-obsidian border-ember shadow-md"
-                              : "bg-obsidian border-white/10 text-neutral-300 hover:border-white/30"
+                              ? "bg-amber-500 text-black border-amber-500 shadow-md"
+                              : "bg-zinc-950 border-zinc-800 text-zinc-300 hover:border-zinc-700"
                           }`}
                         >
                           {t}
@@ -283,10 +291,10 @@ export function QuoteModal({
 
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <label htmlFor="modal-guest-count" className="text-xs font-bold text-neutral-300 uppercase tracking-wider">
-                        Estimated Guest Count: <strong className="text-ember text-base">{guestCount} Guests</strong>
+                      <label htmlFor="modal-guest-count" className="text-xs font-bold text-zinc-300 uppercase tracking-wider">
+                        Estimated Guest Count: <strong className="text-amber-400 text-base">{guestCount} Guests</strong>
                       </label>
-                      <span className="text-[11px] text-neutral-400">Min 15 — 500+</span>
+                      <span className="text-[11px] text-zinc-400">Min 15 — 500+</span>
                     </div>
                     <input
                       id="modal-guest-count"
@@ -296,12 +304,12 @@ export function QuoteModal({
                       step="5"
                       value={guestCount}
                       onChange={(e) => setGuestCount(Number(e.target.value))}
-                      className="w-full accent-ember bg-obsidian cursor-pointer"
+                      className="w-full accent-amber-500 bg-zinc-950 cursor-pointer"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="modal-event-date" className="text-xs font-bold text-neutral-300 uppercase tracking-wider block">
+                    <label htmlFor="modal-event-date" className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
                       Target Event Date *
                     </label>
                     <input
@@ -310,18 +318,18 @@ export function QuoteModal({
                       value={eventDate}
                       onChange={(e) => setEventDate(e.target.value)}
                       required
-                      className="w-full bg-obsidian border border-white/20 focus:border-ember focus:ring-1 focus:ring-ember rounded-xl px-4 py-3 text-white text-sm outline-none"
+                      className="w-full bg-zinc-950 border border-zinc-700 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 rounded-xl px-4 py-3 text-white text-sm outline-none"
                     />
-                    <p className="text-[11px] text-neutral-400">
+                    <p className="text-[11px] text-zinc-400">
                       * 48 to 72 hours advance notice required for whole meats and live-fire pit rigs.
                     </p>
                   </div>
 
-                  <div className="flex justify-end pt-4 border-t border-white/10">
+                  <div className="flex justify-end pt-4 border-t border-zinc-800">
                     <button
                       type="button"
                       onClick={() => setStep(2)}
-                      className="bg-ember hover:bg-ember-dark text-obsidian font-extrabold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all min-h-[48px]"
+                      className="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all min-h-[48px]"
                     >
                       Next: Choose Menu →
                     </button>
@@ -333,7 +341,7 @@ export function QuoteModal({
               {step === 2 && (
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div className="space-y-3">
-                    <label className="text-xs font-bold text-neutral-300 uppercase tracking-wider block">
+                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
                       Select Base Smokehouse Package:
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -343,17 +351,17 @@ export function QuoteModal({
                           onClick={() => setPackageId(pkg.id)}
                           className={`p-4 rounded-xl border cursor-pointer transition-all ${
                             packageId === pkg.id
-                              ? "bg-charcoal border-ember shadow-md ring-1 ring-ember"
-                              : "bg-obsidian border-white/10 hover:border-white/20"
+                              ? "bg-zinc-900 border-amber-500 shadow-md ring-1 ring-amber-500"
+                              : "bg-zinc-950 border-zinc-800 hover:border-zinc-700"
                           }`}
                         >
                           <span className="font-display text-lg text-white block">
                             {pkg.name}
                           </span>
-                          <span className="text-ember font-extrabold text-sm block">
+                          <span className="text-amber-400 font-extrabold text-sm block">
                             ${pkg.pricePerPerson.toFixed(2)}/pp
                           </span>
-                          <span className="text-[10px] text-neutral-400 block mt-1">
+                          <span className="text-[10px] text-zinc-400 block mt-1">
                             Min {pkg.minimumGuests} guests
                           </span>
                         </div>
@@ -363,7 +371,7 @@ export function QuoteModal({
 
                   {/* Protein Selections */}
                   <div className="space-y-2">
-                    <span className="text-xs font-bold text-neutral-300 uppercase tracking-wider block">
+                    <span className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
                       Preferred Smoked Proteins:
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -378,13 +386,13 @@ export function QuoteModal({
                       ].map((prot) => (
                         <label
                           key={prot}
-                          className="flex items-center gap-2 p-2.5 rounded-lg bg-obsidian border border-white/10 hover:border-white/20 cursor-pointer text-xs text-neutral-200"
+                          className="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 hover:border-zinc-700 cursor-pointer text-xs text-zinc-200"
                         >
                           <input
                             type="checkbox"
                             checked={selectedProteins.includes(prot)}
                             onChange={() => toggleProtein(prot)}
-                            className="accent-ember w-4 h-4 rounded"
+                            className="accent-amber-500 w-4 h-4 rounded"
                           />
                           <span>{prot}</span>
                         </label>
@@ -394,7 +402,7 @@ export function QuoteModal({
 
                   {/* Sides Selections */}
                   <div className="space-y-2">
-                    <span className="text-xs font-bold text-neutral-300 uppercase tracking-wider block">
+                    <span className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
                       Preferred Scratch Sides:
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -408,13 +416,13 @@ export function QuoteModal({
                       ].map((side) => (
                         <label
                           key={side}
-                          className="flex items-center gap-2 p-2.5 rounded-lg bg-obsidian border border-white/10 hover:border-white/20 cursor-pointer text-xs text-neutral-200"
+                          className="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 hover:border-zinc-700 cursor-pointer text-xs text-zinc-200"
                         >
                           <input
                             type="checkbox"
                             checked={selectedSides.includes(side)}
                             onChange={() => toggleSide(side)}
-                            className="accent-ember w-4 h-4 rounded"
+                            className="accent-amber-500 w-4 h-4 rounded"
                           />
                           <span>{side}</span>
                         </label>
@@ -422,18 +430,18 @@ export function QuoteModal({
                     </div>
                   </div>
 
-                  <div className="flex justify-between pt-4 border-t border-white/10">
+                  <div className="flex justify-between pt-4 border-t border-zinc-800">
                     <button
                       type="button"
                       onClick={() => setStep(1)}
-                      className="text-neutral-400 hover:text-white text-xs font-bold px-4 py-3"
+                      className="text-zinc-400 hover:text-white text-xs font-bold px-4 py-3"
                     >
                       ← Back
                     </button>
                     <button
                       type="button"
                       onClick={() => setStep(3)}
-                      className="bg-ember hover:bg-ember-dark text-obsidian font-extrabold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all min-h-[48px]"
+                      className="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all min-h-[48px]"
                     >
                       Next: Venue Details →
                     </button>
@@ -445,7 +453,7 @@ export function QuoteModal({
               {step === 3 && (
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div className="space-y-3">
-                    <label className="text-xs font-bold text-neutral-300 uppercase tracking-wider block">
+                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
                       Choose Service Execution Style *
                     </label>
                     <div className="space-y-2.5">
@@ -467,8 +475,8 @@ export function QuoteModal({
                           key={item.title}
                           className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${
                             serviceStyle === item.title
-                              ? "bg-charcoal border-ember ring-1 ring-ember"
-                              : "bg-obsidian border-white/10 hover:border-white/20"
+                              ? "bg-zinc-900 border-amber-500 ring-1 ring-amber-500"
+                              : "bg-zinc-950 border-zinc-800 hover:border-zinc-700"
                           }`}
                         >
                           <input
@@ -476,13 +484,13 @@ export function QuoteModal({
                             name="serviceStyle"
                             checked={serviceStyle === item.title}
                             onChange={() => setServiceStyle(item.title)}
-                            className="accent-ember mt-1 w-4 h-4"
+                            className="accent-amber-500 mt-1 w-4 h-4"
                           />
                           <div>
                             <span className="font-bold text-white text-xs block">
                               {item.title}
                             </span>
-                            <span className="text-[11px] text-neutral-400">
+                            <span className="text-[11px] text-zinc-400">
                               {item.desc}
                             </span>
                           </div>
@@ -492,7 +500,7 @@ export function QuoteModal({
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="modal-venue-address" className="text-xs font-bold text-neutral-300 uppercase tracking-wider block">
+                    <label htmlFor="modal-venue-address" className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
                       Venue Address / Street:
                     </label>
                     <input
@@ -501,12 +509,12 @@ export function QuoteModal({
                       value={venueAddress}
                       onChange={(e) => setVenueAddress(e.target.value)}
                       placeholder="e.g. 1200 S Lake Shore Dr, Chicago"
-                      className="w-full bg-obsidian border border-white/20 focus:border-ember focus:ring-1 focus:ring-ember rounded-xl px-4 py-3 text-white text-sm outline-none"
+                      className="w-full bg-zinc-950 border border-zinc-700 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 rounded-xl px-4 py-3 text-white text-sm outline-none"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="modal-venue-zip" className="text-xs font-bold text-neutral-300 uppercase tracking-wider block">
+                    <label htmlFor="modal-venue-zip" className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
                       Event ZIP Code:
                     </label>
                     <input
@@ -516,22 +524,22 @@ export function QuoteModal({
                       value={venueZip}
                       onChange={(e) => setVenueZip(e.target.value)}
                       placeholder="e.g. 60605"
-                      className="w-full bg-obsidian border border-white/20 focus:border-ember focus:ring-1 focus:ring-ember rounded-xl px-4 py-3 text-white text-sm outline-none font-mono"
+                      className="w-full bg-zinc-950 border border-zinc-700 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 rounded-xl px-4 py-3 text-white text-sm outline-none font-mono"
                     />
                   </div>
 
-                  <div className="flex justify-between pt-4 border-t border-white/10">
+                  <div className="flex justify-between pt-4 border-t border-zinc-800">
                     <button
                       type="button"
                       onClick={() => setStep(2)}
-                      className="text-neutral-400 hover:text-white text-xs font-bold px-4 py-3"
+                      className="text-zinc-400 hover:text-white text-xs font-bold px-4 py-3"
                     >
                       ← Back
                     </button>
                     <button
                       type="button"
                       onClick={() => setStep(4)}
-                      className="bg-ember hover:bg-ember-dark text-obsidian font-extrabold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all min-h-[48px]"
+                      className="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all min-h-[48px]"
                     >
                       Next: Contact Info →
                     </button>
@@ -544,7 +552,7 @@ export function QuoteModal({
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label htmlFor="modal-client-name" className="text-xs font-bold text-neutral-300 uppercase tracking-wider block">
+                      <label htmlFor="modal-client-name" className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
                         Your Full Name *
                       </label>
                       <input
@@ -554,12 +562,12 @@ export function QuoteModal({
                         value={clientName}
                         onChange={(e) => setClientName(e.target.value)}
                         placeholder="e.g. Marcus Vance"
-                        className="w-full bg-obsidian border border-white/20 focus:border-ember focus:ring-1 focus:ring-ember rounded-xl px-4 py-3 text-white text-sm outline-none"
+                        className="w-full bg-zinc-950 border border-zinc-700 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 rounded-xl px-4 py-3 text-white text-sm outline-none"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <label htmlFor="modal-client-phone" className="text-xs font-bold text-neutral-300 uppercase tracking-wider block">
+                      <label htmlFor="modal-client-phone" className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
                         Phone Number *
                       </label>
                       <input
@@ -569,13 +577,13 @@ export function QuoteModal({
                         value={clientPhone}
                         onChange={(e) => setClientPhone(e.target.value)}
                         placeholder="(773) 555-0199"
-                        className="w-full bg-obsidian border border-white/20 focus:border-ember focus:ring-1 focus:ring-ember rounded-xl px-4 py-3 text-white text-sm outline-none"
+                        className="w-full bg-zinc-950 border border-zinc-700 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 rounded-xl px-4 py-3 text-white text-sm outline-none"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="modal-client-email" className="text-xs font-bold text-neutral-300 uppercase tracking-wider block">
+                    <label htmlFor="modal-client-email" className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
                       Email Address *
                     </label>
                     <input
@@ -585,12 +593,12 @@ export function QuoteModal({
                       value={clientEmail}
                       onChange={(e) => setClientEmail(e.target.value)}
                       placeholder="marcus@example.com"
-                      className="w-full bg-obsidian border border-white/20 focus:border-ember focus:ring-1 focus:ring-ember rounded-xl px-4 py-3 text-white text-sm outline-none"
+                      className="w-full bg-zinc-950 border border-zinc-700 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 rounded-xl px-4 py-3 text-white text-sm outline-none"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="modal-client-notes" className="text-xs font-bold text-neutral-300 uppercase tracking-wider block">
+                    <label htmlFor="modal-client-notes" className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
                       Special Pitmaster Requests / Notes:
                     </label>
                     <textarea
@@ -599,24 +607,24 @@ export function QuoteModal({
                       value={notes}
                       onChange={(e) => setNotes(e.target.value)}
                       placeholder="Dietary requests, timing nuances, specific meat cuts..."
-                      className="w-full bg-obsidian border border-white/20 focus:border-ember focus:ring-1 focus:ring-ember rounded-xl px-4 py-3 text-white text-sm outline-none"
+                      className="w-full bg-zinc-950 border border-zinc-700 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 rounded-xl px-4 py-3 text-white text-sm outline-none"
                     />
                   </div>
 
-                  <div className="flex justify-between pt-4 border-t border-white/10">
+                  <div className="flex justify-between pt-4 border-t border-zinc-800">
                     <button
                       type="button"
                       onClick={() => setStep(3)}
-                      className="text-neutral-400 hover:text-white text-xs font-bold px-4 py-3"
+                      className="text-zinc-400 hover:text-white text-xs font-bold px-4 py-3"
                     >
                       ← Back
                     </button>
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-gradient-to-r from-ember to-ember-dark text-obsidian font-extrabold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all min-h-[48px] flex items-center justify-center shadow-xl disabled:opacity-50"
+                      className="bg-gradient-to-r from-amber-500 to-amber-600 text-black font-extrabold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all min-h-[48px] flex items-center justify-center shadow-xl disabled:opacity-50"
                     >
-                      {isSubmitting ? "DISPATCHING INQUIRY..." : "SUBMIT CATERING INQUIRY 🔥"}
+                      {isSubmitting ? "DISPATCHING INQUIRY..." : "SUBMIT CATERING INQUIRY"}
                     </button>
                   </div>
                 </div>
