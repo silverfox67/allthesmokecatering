@@ -28,11 +28,8 @@ export function Hero() {
           className="object-cover object-[center_70%] lg:object-[right_bottom]"
         />
 
-        {/* Targeted Radial Scrim: Darkens upper-left quadrant directly behind headline text, preserving bottom-left glowing coals & right-side live fire */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(10,10,10,0.95)_0%,rgba(10,10,10,0.75)_45%,transparent_80%)] pointer-events-none" />
-        
-        {/* Subtle Top Vignette for Nav Area */}
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#0A0A0A]/80 to-transparent pointer-events-none" />
+        {/* Soft Directional Gradient on Left Side: Protects headline text contrast while letting the right side (brisket, embers, flames) shine at 100% natural saturation & contrast */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/85 via-40% to-transparent pointer-events-none" />
       </div>
 
       {/* 2. TOP UTILITY BAR (Phone, Location, Direct Email) */}
@@ -308,33 +305,33 @@ export function Hero() {
         </div>
       </div>
 
-      {/* 5. EXACT TRUST BAR STYLING (Target Mockup Specification) */}
-      <div className="relative z-20 bg-black/80 backdrop-blur-md border-t border-amber-900/40">
-        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+      {/* 5. UNIFIED TRUST BAR (Single Tier React Component) */}
+      <div className="relative z-20 bg-black/80 backdrop-blur-md border-t border-zinc-800/80 py-4">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             
             {/* Feature 1: On-Site Pitmasters */}
             <div className="flex items-center justify-center gap-3 text-center sm:justify-start">
-              <svg className="h-5 w-5 text-[#D4AF37] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <svg className="h-5 w-5 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
-              <span className="text-sm font-semibold tracking-wide text-zinc-200">On-Site Pitmasters</span>
+              <span className="text-sm font-semibold tracking-wide text-amber-400">On-Site Pitmasters</span>
             </div>
 
             {/* Feature 2: Tailored Event Menus */}
             <div className="flex items-center justify-center gap-3 text-center">
-              <svg className="h-5 w-5 text-[#D4AF37] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <svg className="h-5 w-5 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
               </svg>
-              <span className="text-sm font-semibold tracking-wide text-zinc-200">Tailored Event Menus</span>
+              <span className="text-sm font-semibold tracking-wide text-amber-400">Tailored Event Menus</span>
             </div>
 
             {/* Feature 3: Full-Service Hospitality */}
             <div className="flex items-center justify-center gap-3 text-center sm:justify-end">
-              <svg className="h-5 w-5 text-[#D4AF37] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <svg className="h-5 w-5 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
-              <span className="text-sm font-semibold tracking-wide text-zinc-200">Full-Service Hospitality</span>
+              <span className="text-sm font-semibold tracking-wide text-amber-400">Full-Service Hospitality</span>
             </div>
 
           </div>
