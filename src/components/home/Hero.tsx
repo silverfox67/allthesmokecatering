@@ -28,10 +28,7 @@ export function Hero() {
           className="object-cover object-[center_70%] lg:object-[right_bottom]"
         />
 
-        {/* Soft Directional Gradient on Left Side: Protects headline text contrast while letting the right side (brisket, embers, flames) shine at 100% natural saturation & contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/85 via-40% to-transparent pointer-events-none" />
       </div>
-
       {/* 2. TOP UTILITY BAR (Phone, Location, Direct Email) */}
       <aside
         aria-label="Service Alert and Dispatch Contacts"
