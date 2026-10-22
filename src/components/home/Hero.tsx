@@ -112,8 +112,8 @@ export function Hero() {
       <div className="relative z-20 w-full bg-[#0A0A0A]/70 backdrop-blur-md border-b border-zinc-800/50">
         <header className="px-4 sm:px-8 py-3.5 max-w-7xl mx-auto w-full flex items-center justify-between">
           {/* Official Master Crest Alone (Clean transparent PNG, no duplicate text box) */}
-          <a href="/" className="group flex-shrink-0">
-            <div className="relative h-20 w-20 sm:h-24 sm:w-24 lg:h-28 lg:w-28 transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)]">
+          <a href="/" className="group flex-shrink-0 relative z-30 -mb-10 sm:-mb-12 lg:-mb-14">
+            <div className="relative h-28 w-28 sm:h-32 sm:w-32 lg:h-36 lg:w-36 drop-shadow-[0_12px_28px_rgba(0,0,0,0.9)]">
               <Image
                 src="/brand/allthesmoke-logo.png"
                 alt="All The Smoke BBQ &amp; Catering Official Master Crest"

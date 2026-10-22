@@ -7,24 +7,16 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full bg-[#0A0A0A]/70 backdrop-blur-md border-b border-zinc-800/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between">
-        {/* Brand Logo & Name */}
-        <Link href="/" className="flex items-center gap-3.5 group">
-          <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border border-amber-500/40 shadow-sm shadow-amber-500/20">
+        {/* Official Master Crest Alone Breakout */}
+        <Link href="/" className="group flex-shrink-0 relative z-30 -mb-10 sm:-mb-12 lg:-mb-14">
+          <div className="relative h-28 w-28 sm:h-32 sm:w-32 lg:h-36 lg:w-36 drop-shadow-[0_12px_28px_rgba(0,0,0,0.9)]">
             <Image
               src="/brand/allthesmoke-logo.png"
-              alt="All The Smoke BBQ & Catering Official Master Crest"
+              alt="All The Smoke BBQ &amp; Catering Official Master Crest"
               fill
-              className="object-cover"
+              className="object-contain"
               priority
             />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-display text-lg sm:text-xl font-black tracking-wider text-white uppercase leading-none">
-              All The Smoke
-            </span>
-            <span className="text-[10px] font-bold tracking-widest text-amber-500 uppercase leading-tight mt-0.5">
-              BBQ &amp; Catering • Chicago
-            </span>
           </div>
         </Link>
 
