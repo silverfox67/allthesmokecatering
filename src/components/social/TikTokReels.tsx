@@ -54,7 +54,7 @@ const REELS_DATA: ReelItem[] = [
     shares: "168",
     poster: "/reels/reel-buffet-pan.jpg",
     soundTitle: "Soul Kitchen Grooves - Marion Bolden",
-    tagline: "Scratch southern sides pulled fresh from our 3401 N Orange Ave commercial hub."
+    tagline: "Scratch southern sides pulled fresh from our Northwest Side commercial kitchen hub."
   }
 ];
 
@@ -145,7 +145,7 @@ export function TikTokReels() {
           tabIndex={0}
           role="region"
           aria-label="TikTok Smoked Meat Reels Carousel"
-          className="flex gap-6 overflow-x-auto pb-6 pt-2 scroll-smooth snap-x snap-mandatory focus:outline-none focus:ring-1 focus:ring-[#C8A97E] rounded-2xl"
+          className="flex gap-6 overflow-x-auto scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-6 pt-2 scroll-smooth snap-x snap-mandatory focus:outline-none focus:ring-1 focus:ring-[#C8A97E] rounded-2xl"
         >
           {REELS_DATA.map((reel) => (
             <div
