@@ -108,10 +108,10 @@ export function Hero() {
       <div className="relative z-20 w-full bg-[#0A0A0A]/75 backdrop-blur-md border-b border-zinc-800/50 overflow-visible">
         <header className="px-4 sm:px-8 py-3.5 max-w-7xl mx-auto w-full flex items-center justify-between relative overflow-visible">
           {/* Official Master Crest Alone Breakout */}
-          <div className="absolute top-2 left-4 sm:left-8 z-50">
+          <div className="absolute top-1 sm:top-2 left-3 sm:left-8 z-50">
             <a
               href="/"
-              className="block relative w-[150px] h-[150px] sm:w-[175px] sm:h-[175px] lg:w-[200px] lg:h-[200px] drop-shadow-[0_16px_32px_rgba(0,0,0,0.95)] z-50 transition-transform hover:scale-105"
+              className="block relative w-[76px] h-[76px] xs:w-[92px] xs:h-[92px] sm:w-[150px] sm:h-[150px] lg:w-[200px] lg:h-[200px] drop-shadow-[0_16px_32px_rgba(0,0,0,0.95)] z-50 transition-transform hover:scale-105"
             >
               <Image
                 src="/brand/allthesmoke-logo.png"
@@ -168,13 +168,14 @@ export function Hero() {
           </nav>
 
           {/* CTA: REQUEST A QUOTE (Header CTA Button) */}
-          <div className="ml-auto lg:ml-0 flex items-center gap-3">
+          <div className="ml-auto lg:ml-0 flex items-center gap-2 sm:gap-3">
             <a
               href="#quote"
               onClick={handleOpenQuoteModal}
-              className="inline-flex h-11 px-6 items-center justify-center rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-base sm:text-lg font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+              className="inline-flex h-9 sm:h-11 px-3 sm:px-6 items-center justify-center rounded-[12px] sm:rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-xs sm:text-base lg:text-lg font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer whitespace-nowrap"
             >
-              REQUEST A QUOTE
+              <span className="hidden sm:inline">REQUEST A QUOTE</span>
+              <span className="sm:hidden">GET QUOTE</span>
             </a>
 
             {/* Mobile Menu Button */}
