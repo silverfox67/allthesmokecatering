@@ -108,8 +108,8 @@ export function DeliveryChecker() {
             Delivery Radius Calculator
           </h2>
           <p className="text-stone-600 text-sm sm:text-base max-w-2xl mx-auto text-center mb-8">
-            All orders dispatch hot directly from our commercial kitchen hub at{" "}
-            <strong className="text-stone-900 font-semibold">3401 N Orange Ave, Chicago, IL 60634</strong>.
+            All orders dispatch hot directly from our commercial kitchen hub on{" "}
+            <strong className="text-stone-900 font-semibold">Chicago’s Northwest Side (Dunning / 60634)</strong>.
             Enter your event ZIP code below to see instant delivery fees and minimum food requirements.
           </p>
         </div>
@@ -209,7 +209,7 @@ export function DeliveryChecker() {
                     <span className="text-xs text-stone-400 block font-semibold uppercase">
                       Estimated Transit Fee:
                     </span>
-                    <span className="text-3xl font-black text-amber-400">
+                    <span className="text-3xl font-black text-[#C8A97E]">
                       ${result.zone.fee.toFixed(2)}
                     </span>
                     <p className="text-[11px] text-stone-400">
@@ -244,7 +244,7 @@ export function DeliveryChecker() {
                     <svg className="h-4 w-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 17a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4zM3 9h12a2 2 0 012 2v6H3V9zm14 3h3.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V17h-7v-5zM6 9V5a1 1 0 011-1h6a1 1 0 011 1v4" />
                     </svg>
-                    Dispatched from 3401 N Orange Ave, Chicago 60634
+                    Dispatched from Chicago’s Northwest Side (Dunning / 60634)
                   </span>
                   <a
                     href={`#quote?zip=${result.zip}&zone=${result.zone.zone}`}
@@ -273,21 +273,21 @@ export function DeliveryChecker() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
               <div className="group rounded-xl border border-amber-500/50 bg-[#0D0B0A] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-amber-400 hover:bg-[#1A1410] hover:shadow-[0_12px_28px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
                 <span className="text-stone-200 font-bold text-sm block group-hover:text-white transition-colors">Zone 1 (0–10 mi)</span>
-                <span className="text-amber-400 font-black text-lg block group-hover:text-amber-300 group-hover:scale-105 transition-all">$35 Fee</span>
+                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#DFCAAA] group-hover:scale-105 transition-all">$35 Fee</span>
                 <span className="text-stone-300 text-xs block font-medium">$150 Min Order</span>
                 <span className="text-stone-400 text-xs block group-hover:text-stone-300 transition-colors">NW Side, O’Hare, Portage Park</span>
               </div>
 
               <div className="group rounded-xl border border-amber-500/50 bg-[#0D0B0A] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-amber-400 hover:bg-[#1A1410] hover:shadow-[0_12px_28px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
                 <span className="text-stone-200 font-bold text-sm block group-hover:text-white transition-colors">Zone 2 (10–20 mi)</span>
-                <span className="text-amber-400 font-black text-lg block group-hover:text-amber-300 group-hover:scale-105 transition-all">$65 Fee</span>
+                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#DFCAAA] group-hover:scale-105 transition-all">$65 Fee</span>
                 <span className="text-stone-300 text-xs block font-medium">$300 Min Order</span>
                 <span className="text-stone-400 text-xs block group-hover:text-stone-300 transition-colors">The Loop, West Loop, Evanston</span>
               </div>
 
               <div className="group rounded-xl border border-amber-500/50 bg-[#0D0B0A] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-amber-400 hover:bg-[#1A1410] hover:shadow-[0_12px_28px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
                 <span className="text-stone-200 font-bold text-sm block group-hover:text-white transition-colors">Zone 3 (20–35 mi)</span>
-                <span className="text-amber-400 font-black text-lg block group-hover:text-amber-300 group-hover:scale-105 transition-all">$95 Fee</span>
+                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#DFCAAA] group-hover:scale-105 transition-all">$95 Fee</span>
                 <span className="text-stone-300 text-xs block font-medium">$500 Min Order</span>
                 <span className="text-stone-400 text-xs block group-hover:text-stone-300 transition-colors">Naperville, Aurora, South Side</span>
               </div>
