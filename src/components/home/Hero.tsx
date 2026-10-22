@@ -242,7 +242,7 @@ export function Hero() {
 
       {/* 4. FOREGROUND CONTENT LAYER (Positioned over clean upper-left quadrant) */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 w-full flex-1 flex flex-col justify-center">
-        <div className="max-w-xl lg:max-w-2xl space-y-5 sm:space-y-6 pt-8 sm:pt-10 lg:pt-12">
+        <div className="max-w-xl lg:max-w-2xl space-y-5 sm:space-y-6 pt-16 sm:pt-20 lg:pt-24 flex flex-col justify-center">
           
           {/* Subheading Star Kicker */}
           <p className="flex items-center gap-2 text-xs sm:text-sm font-bold tracking-[0.2em] text-[#C8A97E] uppercase">
