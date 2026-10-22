@@ -74,7 +74,7 @@ export function Navbar() {
         {/* Action CTA */}
         <a
           href="#quote"
-          className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 px-6 py-2.5 text-xs font-bold tracking-wider text-white uppercase shadow-[0_0_20px_rgba(245,158,11,0.35)]"
+          className="rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 px-6 py-2.5 text-xs font-bold tracking-wider text-white uppercase shadow-[0_0_20px_rgba(245,158,11,0.35)] inline-flex items-center justify-center"
         >
           REQUEST A QUOTE
         </a>
