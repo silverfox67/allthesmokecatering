@@ -168,12 +168,12 @@ export function Hero() {
             </a>
           </nav>
 
-          {/* CTA: REQUEST A QUOTE (Radiant Amber-Orange with Specular Sheen) */}
+          {/* CTA: REQUEST A QUOTE (Header CTA Button) */}
           <div className="flex items-center gap-3">
             <a
               href="#quote"
               onClick={handleOpenQuoteModal}
-              className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 px-6 py-2.5 text-xs font-bold tracking-wider text-white uppercase border border-amber-400/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_4px_20px_rgba(245,158,11,0.35)] hover:brightness-110 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_6px_25px_rgba(245,158,11,0.55)] hover:scale-[1.02] active:scale-[0.98] transition-all"
+              className="inline-flex items-center justify-center px-6 py-2.5 rounded-xl font-display font-bold uppercase tracking-wider text-sm text-white bg-gradient-to-r from-amber-500 to-orange-600 shadow-[0_0_22px_rgba(234,88,12,0.5)] border border-amber-400/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               REQUEST A QUOTE
             </a>
@@ -269,14 +269,14 @@ export function Hero() {
           <div className="pt-2 flex flex-wrap items-center gap-4">
             <a
               href="#packages"
-              className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 px-8 py-3.5 text-sm font-bold tracking-wider text-white uppercase border-t border-amber-300/40 border-b border-amber-700/60 border-x border-amber-600/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_8px_24px_-4px_rgba(245,158,11,0.5)] transition-all hover:brightness-110 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_12px_32px_-4px_rgba(245,158,11,0.7)] hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-display font-bold uppercase tracking-wider text-base text-white bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 shadow-[0_0_28px_rgba(234,88,12,0.55)] border border-amber-400/30 transition-all hover:scale-[1.02] hover:shadow-[0_0_35px_rgba(234,88,12,0.75)] active:scale-[0.98]"
             >
               VIEW OUR MENUS
             </a>
             <a
               href="#quote"
               onClick={handleOpenQuoteModal}
-              className="inline-flex items-center justify-center rounded-lg border border-[#C8A97E]/40 bg-black/50 px-8 py-3.5 text-sm font-bold tracking-wider text-[#F4EFEA] uppercase backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_16px_rgba(0,0,0,0.5)] transition-all hover:border-[#C8A97E]/90 hover:bg-black/70 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_24px_rgba(200,169,126,0.25)] hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-display font-bold uppercase tracking-wider text-base text-[#F4EFEA] bg-black/50 border border-amber-900/50 backdrop-blur-sm hover:border-amber-500/60 transition-colors active:scale-[0.98]"
             >
               BOOK YOUR DATE
             </a>
@@ -286,32 +286,32 @@ export function Hero() {
       </div>
 
       {/* 5. UNIFIED TRUST BAR (Single Tier React Component) */}
-      <div className="relative z-20 bg-black/80 backdrop-blur-md border-t border-zinc-800/80 py-4">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="relative z-20 bg-black/80 backdrop-blur-md border-t border-zinc-800/80">
+        <div className="mx-auto max-w-6xl px-6 py-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center">
             
             {/* Feature 1: On-Site Pitmasters */}
-            <div className="flex items-center justify-center gap-3 text-center sm:justify-start">
-              <svg className="h-5 w-5 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            <div className="flex items-center justify-center gap-3.5">
+              <svg className="h-8 w-8 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 13.87A4 4 0 017.41 6.3 5.11 5.11 0 0112 4a5.11 5.11 0 014.59 2.3A4 4 0 0118 13.87V17H6v-3.13zM6 17h12M6 20h12" />
               </svg>
-              <span className="text-sm font-semibold tracking-wide text-[#C8A97E]">On-Site Pitmasters</span>
+              <span className="font-display font-bold text-lg tracking-wide text-[#C8A97E]">On-Site Pitmasters</span>
             </div>
 
             {/* Feature 2: Tailored Event Menus */}
-            <div className="flex items-center justify-center gap-3 text-center">
-              <svg className="h-5 w-5 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+            <div className="flex items-center justify-center gap-3.5">
+              <svg className="h-8 w-8 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
               </svg>
-              <span className="text-sm font-semibold tracking-wide text-[#C8A97E]">Tailored Event Menus</span>
+              <span className="font-display font-bold text-lg tracking-wide text-[#C8A97E]">Tailored Event Menus</span>
             </div>
 
             {/* Feature 3: Full-Service Hospitality */}
-            <div className="flex items-center justify-center gap-3 text-center sm:justify-end">
-              <svg className="h-5 w-5 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+            <div className="flex items-center justify-center gap-3.5">
+              <svg className="h-8 w-8 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
-              <span className="text-sm font-semibold tracking-wide text-[#C8A97E]">Full-Service Hospitality</span>
+              <span className="font-display font-bold text-lg tracking-wide text-[#C8A97E]">Full-Service Hospitality</span>
             </div>
 
           </div>
