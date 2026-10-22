@@ -114,7 +114,7 @@ export function TikTokReels() {
                 rel="noreferrer"
                 className="text-[#C8A97E] font-bold hover:underline hover:text-white transition-colors"
               >
-                @allthesmokecatering
+                @allthesmokebbq_catering
               </a>
               .
             </p>
@@ -217,7 +217,7 @@ export function TikTokReels() {
                       />
                     </div>
                     <span className="text-xs font-bold text-white hover:text-[#C8A97E] transition-colors">
-                      @allthesmokecatering
+                      @allthesmokebbq_catering
                     </span>
                   </div>
 
