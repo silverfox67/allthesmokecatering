@@ -291,7 +291,7 @@ export function PackageGrid() {
                       {bundle.serves}
                     </span>
                     {bundle.popular && (
-                      <span className="inline-flex items-center gap-1 text-[11px] bg-gradient-to-r from-[#EA580C] to-[#9A3412] border border-[#FF7A00]/80 text-white font-display font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-[0_0_12px_rgba(234,88,12,0.4)]">
+                      <span className="inline-flex items-center gap-1 text-[11px] bg-gradient-to-r from-[#EA580C] to-[#9A3412] border border-[#FF7A00]/80 text-white font-display font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-[0_0_14px_rgba(234,88,12,0.5)]">
                         ★ MOST POPULAR ★
                       </span>
                     )}
@@ -331,7 +331,7 @@ export function PackageGrid() {
                       e.preventDefault();
                       if (typeof window !== "undefined") {
                         window.dispatchEvent(
-                          new CustomEvent("open-quote-modal", { detail: { packageId: "pitmaster-feast" } })
+                          new CustomEvent("open-quote-modal", { detail: { packageId: bundle.id } })
                         );
                       }
                     }}
@@ -358,7 +358,7 @@ export function PackageGrid() {
             className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch pt-4"
           >
             {MEAL_PREP_TIERS.map((tier) => {
-              const isPopularPrep = tier.id === "prep-10";
+              const isPopularPrep = tier.id === "mp-10" || tier.mealCount === 10;
               return (
                 <SpotlightCard key={tier.id} isHighlighted={isPopularPrep}>
                   <div className="space-y-4">
@@ -367,7 +367,7 @@ export function PackageGrid() {
                         {tier.mealCount} Vacuum-Sealed Meals
                       </span>
                       {isPopularPrep && (
-                        <span className="inline-flex items-center gap-1 text-[11px] bg-gradient-to-r from-[#EA580C] to-[#9A3412] border border-[#FF7A00]/80 text-white font-display font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-[0_0_12px_rgba(234,88,12,0.4)]">
+                        <span className="inline-flex items-center gap-1 text-[11px] bg-gradient-to-r from-[#EA580C] to-[#9A3412] border border-[#FF7A00]/80 text-white font-display font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-[0_0_14px_rgba(234,88,12,0.5)]">
                           ★ MOST POPULAR ★
                         </span>
                       )}
@@ -414,7 +414,7 @@ export function PackageGrid() {
                         e.preventDefault();
                         if (typeof window !== "undefined") {
                           window.dispatchEvent(
-                            new CustomEvent("open-quote-modal", { detail: { packageId: "southside-smoke" } })
+                            new CustomEvent("open-quote-modal", { detail: { packageId: tier.id } })
                           );
                         }
                       }}
