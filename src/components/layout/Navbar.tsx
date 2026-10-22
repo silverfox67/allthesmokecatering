@@ -66,7 +66,7 @@ export function Navbar() {
         {/* Action CTA */}
         <a
           href="#quote"
-          className="inline-flex items-center justify-center px-6 py-2.5 rounded-xl font-display font-bold uppercase tracking-wider text-sm text-white bg-gradient-to-r from-amber-500 to-orange-600 shadow-[0_0_22px_rgba(234,88,12,0.5)] border border-amber-400/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+          className="inline-flex h-11 px-6 items-center justify-center rounded-[12px] bg-gradient-to-b from-[#EA580C] to-[#9A3412] border border-[#FF8C38]/80 shadow-[0_0_20px_rgba(234,88,12,0.55)] font-display text-sm font-black tracking-wider text-white uppercase transition-transform hover:scale-[1.02] active:scale-[0.98]"
         >
           REQUEST A QUOTE
         </a>
