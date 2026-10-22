@@ -158,28 +158,28 @@ export function DeliveryChecker() {
               <button
                 type="button"
                 onClick={() => handleQuickZip("60634")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-amber-500/50 hover:border-amber-400 hover:bg-gradient-to-r hover:from-amber-500/20 hover:to-orange-500/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-[#C8A97E]/30 hover:border-[#FF7A00] hover:bg-gradient-to-r hover:from-[#EA580C]/20 hover:to-[#C84A0A]/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
               >
                 60634 (Hub)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60607")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-amber-500/50 hover:border-amber-400 hover:bg-gradient-to-r hover:from-amber-500/20 hover:to-orange-500/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-[#C8A97E]/30 hover:border-[#FF7A00] hover:bg-gradient-to-r hover:from-[#EA580C]/20 hover:to-[#C84A0A]/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
               >
                 60607 (West Loop)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60201")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-amber-500/50 hover:border-amber-400 hover:bg-gradient-to-r hover:from-amber-500/20 hover:to-orange-500/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-[#C8A97E]/30 hover:border-[#FF7A00] hover:bg-gradient-to-r hover:from-[#EA580C]/20 hover:to-[#C84A0A]/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
               >
                 60201 (Evanston)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60540")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-amber-500/50 hover:border-amber-400 hover:bg-gradient-to-r hover:from-amber-500/20 hover:to-orange-500/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-[#C8A97E]/30 hover:border-[#FF7A00] hover:bg-gradient-to-r hover:from-[#EA580C]/20 hover:to-[#C84A0A]/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
               >
                 60540 (Naperville)
               </button>
@@ -271,23 +271,23 @@ export function DeliveryChecker() {
               Official Chicagoland Zone Matrix:
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-              <div className="group rounded-xl border border-amber-500/50 bg-[#0D0B0A] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-amber-400 hover:bg-[#1A1410] hover:shadow-[0_12px_28px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
-                <span className="text-stone-200 font-bold text-sm block group-hover:text-white transition-colors">Zone 1 (0–10 mi)</span>
-                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#DFCAAA] group-hover:scale-105 transition-all">$35 Fee</span>
+              <div className="group rounded-xl border border-[#C8A97E]/30 bg-[#0D0B0A] hover:bg-[#161311] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-[#EA580C]/90 hover:shadow-[0_8px_25px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
+                <span className="text-stone-200 font-bold text-sm block group-hover:text-[#F4EFEA] transition-colors">Zone 1 (0–10 mi)</span>
+                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#FF8C38] group-hover:scale-105 transition-all">$35 Fee</span>
                 <span className="text-stone-300 text-xs block font-medium">$150 Min Order</span>
                 <span className="text-stone-400 text-xs block group-hover:text-stone-300 transition-colors">NW Side, O’Hare, Portage Park</span>
               </div>
 
-              <div className="group rounded-xl border border-amber-500/50 bg-[#0D0B0A] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-amber-400 hover:bg-[#1A1410] hover:shadow-[0_12px_28px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
-                <span className="text-stone-200 font-bold text-sm block group-hover:text-white transition-colors">Zone 2 (10–20 mi)</span>
-                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#DFCAAA] group-hover:scale-105 transition-all">$65 Fee</span>
+              <div className="group rounded-xl border border-[#C8A97E]/30 bg-[#0D0B0A] hover:bg-[#161311] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-[#EA580C]/90 hover:shadow-[0_8px_25px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
+                <span className="text-stone-200 font-bold text-sm block group-hover:text-[#F4EFEA] transition-colors">Zone 2 (10–20 mi)</span>
+                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#FF8C38] group-hover:scale-105 transition-all">$65 Fee</span>
                 <span className="text-stone-300 text-xs block font-medium">$300 Min Order</span>
                 <span className="text-stone-400 text-xs block group-hover:text-stone-300 transition-colors">The Loop, West Loop, Evanston</span>
               </div>
 
-              <div className="group rounded-xl border border-amber-500/50 bg-[#0D0B0A] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-amber-400 hover:bg-[#1A1410] hover:shadow-[0_12px_28px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
-                <span className="text-stone-200 font-bold text-sm block group-hover:text-white transition-colors">Zone 3 (20–35 mi)</span>
-                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#DFCAAA] group-hover:scale-105 transition-all">$95 Fee</span>
+              <div className="group rounded-xl border border-[#C8A97E]/30 bg-[#0D0B0A] hover:bg-[#161311] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-[#EA580C]/90 hover:shadow-[0_8px_25px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
+                <span className="text-stone-200 font-bold text-sm block group-hover:text-[#F4EFEA] transition-colors">Zone 3 (20–35 mi)</span>
+                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#FF8C38] group-hover:scale-105 transition-all">$95 Fee</span>
                 <span className="text-stone-300 text-xs block font-medium">$500 Min Order</span>
                 <span className="text-stone-400 text-xs block group-hover:text-stone-300 transition-colors">Naperville, Aurora, South Side</span>
               </div>
