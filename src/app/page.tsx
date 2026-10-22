@@ -77,7 +77,7 @@ export default function HomePage() {
                     name="name"
                     required
                     placeholder="e.g. Marcus Vance"
-                    className="w-full h-12 px-4 rounded-xl bg-white border-2 border-stone-200 text-stone-900 placeholder:text-stone-400 text-sm font-semibold focus:outline-none focus:border-[#EA580C] focus:ring-2 focus:ring-[#EA580C]/25 shadow-inner transition-all"
+                    className="w-full h-12 px-4 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all"
                   />
                 </div>
 
@@ -91,7 +91,7 @@ export default function HomePage() {
                     name="phone"
                     required
                     placeholder="(773) 555-0199"
-                    className="w-full h-12 px-4 rounded-xl bg-white border-2 border-stone-200 text-stone-900 placeholder:text-stone-400 text-sm font-semibold focus:outline-none focus:border-[#EA580C] focus:ring-2 focus:ring-[#EA580C]/25 shadow-inner transition-all"
+                    className="w-full h-12 px-4 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all"
                   />
                 </div>
               </div>
@@ -107,7 +107,7 @@ export default function HomePage() {
                     name="email"
                     required
                     placeholder="marcus@example.com"
-                    className="w-full h-12 px-4 rounded-xl bg-white border-2 border-stone-200 text-stone-900 placeholder:text-stone-400 text-sm font-semibold focus:outline-none focus:border-[#EA580C] focus:ring-2 focus:ring-[#EA580C]/25 shadow-inner transition-all"
+                    className="w-full h-12 px-4 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all"
                   />
                 </div>
 
@@ -121,7 +121,7 @@ export default function HomePage() {
                     name="guestCount"
                     min="10"
                     defaultValue="35"
-                    className="w-full h-12 px-4 rounded-xl bg-white border-2 border-stone-200 text-stone-900 placeholder:text-stone-400 text-sm font-semibold focus:outline-none focus:border-[#EA580C] focus:ring-2 focus:ring-[#EA580C]/25 shadow-inner transition-all"
+                    className="w-full h-12 px-4 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all"
                   />
                 </div>
               </div>
@@ -135,13 +135,13 @@ export default function HomePage() {
                   name="message"
                   rows={4}
                   placeholder="Details on event venue, requested packages (The Pitmaster Feast, Brisket, Turkey Chops), serving style..."
-                  className="w-full p-4 rounded-xl bg-white border-2 border-stone-200 text-stone-900 placeholder:text-stone-400 text-sm font-semibold focus:outline-none focus:border-[#EA580C] focus:ring-2 focus:ring-[#EA580C]/25 shadow-inner transition-all resize-y"
+                  className="w-full bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] resize-none min-h-[110px] p-4 rounded-xl transition-all"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full h-14 rounded-xl bg-gradient-to-r from-[#EA580C] to-[#9A3412] text-white font-display font-black text-sm sm:text-base tracking-wider uppercase shadow-[0_4px_16px_rgba(234,88,12,0.35)] hover:scale-[1.01] active:scale-[0.99] transition-transform flex items-center justify-center"
+                className="w-full h-14 mt-4 inline-flex items-center justify-center rounded-xl bg-gradient-to-b from-[#EA580C] to-[#9A3412] border border-[#FF8C38]/80 shadow-[0_0_24px_rgba(234,88,12,0.55)] font-display text-lg font-black tracking-wider text-white uppercase transition-transform hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
               >
                 SUBMIT CATERING INQUIRY
               </button>
