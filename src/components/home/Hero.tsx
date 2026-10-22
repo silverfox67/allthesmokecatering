@@ -253,7 +253,7 @@ export function Hero() {
           </p>
 
           {/* Main Headline */}
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-black tracking-normal text-[#F4EFEA] leading-[0.95]">
+          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight text-[#F4EFEA] leading-[0.95]">
             Elevated BBQ &amp; <br />
             Smokehouse Catering <br />
             For Your Special Events
