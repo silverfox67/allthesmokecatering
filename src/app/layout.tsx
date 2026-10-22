@@ -1,13 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Bebas_Neue, Inter } from "next/font/google";
+import { Oswald, Inter } from "next/font/google";
 import "./globals.css";
 import { SITE_CONFIG } from "@/config/site-config";
 
-const bebasNeue = Bebas_Neue({
-  weight: "400",
+const fontDisplay = Oswald({
   subsets: ["latin"],
+  weight: ["600", "700"],
   variable: "--font-display",
-  display: "swap",
 });
 
 const inter = Inter({
@@ -122,7 +121,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bebasNeue.variable} ${inter.variable} dark scroll-smooth`}
+      className={`${fontDisplay.variable} ${inter.variable} dark scroll-smooth`}
     >
       <head>
         <script
@@ -130,7 +129,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
       </head>
-      <body className="min-h-screen bg-obsidian text-neutral-100 font-sans antialiased selection:bg-ember selection:text-obsidian">
+      <body className={`${fontDisplay.variable} min-h-screen bg-obsidian text-neutral-100 font-sans antialiased selection:bg-ember selection:text-obsidian`}>
         {children}
       </body>
     </html>

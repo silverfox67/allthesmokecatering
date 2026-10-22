@@ -108,16 +108,17 @@ export function Hero() {
       <div className="relative z-20 w-full bg-[#0A0A0A]/75 backdrop-blur-md border-b border-zinc-800/50">
         <header className="px-4 sm:px-8 py-3.5 max-w-7xl mx-auto w-full flex items-center justify-between">
           {/* Official Master Crest Alone (Clean transparent PNG, no duplicate text box) */}
-          <a href="/" className="group flex-shrink-0 relative z-30 -mb-10 sm:-mb-12 lg:-mb-14">
-            <div className="relative h-28 w-28 sm:h-32 sm:w-32 lg:h-36 lg:w-36 drop-shadow-[0_12px_28px_rgba(0,0,0,0.9)]">
-              <Image
-                src="/brand/allthesmoke-logo.png"
-                alt="All The Smoke BBQ &amp; Catering Official Master Crest"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
+          <a
+            href="/"
+            className="relative -mb-10 h-28 w-28 sm:h-32 sm:w-32 drop-shadow-[0_12px_24px_rgba(0,0,0,0.9)] z-20 transition-transform hover:scale-105 flex-shrink-0"
+          >
+            <Image
+              src="/brand/allthesmoke-logo.png"
+              alt="All The Smoke BBQ &amp; Catering Official Master Crest"
+              fill
+              className="object-contain"
+              priority
+            />
           </a>
 
           {/* Desktop Navigation Links */}
@@ -249,10 +250,10 @@ export function Hero() {
           </p>
 
           {/* Main Headline */}
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight text-[#F4EFEA] leading-[0.95]">
-            Elevated BBQ &amp; <br />
-            Smokehouse Catering <br />
-            For Your Special Events
+          <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-[#F4EFEA] tracking-tight leading-[1.08]">
+            <span className="block">Elevated BBQ &amp;</span>
+            <span className="block">Smokehouse Catering</span>
+            <span className="block">For Your Special Events</span>
           </h1>
 
           {/* Value Proposition Subhead */}

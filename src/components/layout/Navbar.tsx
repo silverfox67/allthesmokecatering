@@ -8,16 +8,17 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full bg-[#0A0A0A]/75 backdrop-blur-md border-b border-zinc-800/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between">
         {/* Official Master Crest Alone Breakout */}
-        <Link href="/" className="group flex-shrink-0 relative z-30 -mb-10 sm:-mb-12 lg:-mb-14">
-          <div className="relative h-28 w-28 sm:h-32 sm:w-32 lg:h-36 lg:w-36 drop-shadow-[0_12px_28px_rgba(0,0,0,0.9)]">
-            <Image
-              src="/brand/allthesmoke-logo.png"
-              alt="All The Smoke BBQ &amp; Catering Official Master Crest"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
+        <Link
+          href="/"
+          className="relative -mb-10 h-28 w-28 sm:h-32 sm:w-32 drop-shadow-[0_12px_24px_rgba(0,0,0,0.9)] z-20 transition-transform hover:scale-105 flex-shrink-0"
+        >
+          <Image
+            src="/brand/allthesmoke-logo.png"
+            alt="All The Smoke BBQ &amp; Catering Official Master Crest"
+            fill
+            className="object-contain"
+            priority
+          />
         </Link>
 
         {/* Desktop Navigation Links */}
