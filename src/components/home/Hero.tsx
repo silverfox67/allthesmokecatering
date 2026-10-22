@@ -27,7 +27,7 @@ export function Hero() {
           sizes="100vw"
           className="object-cover object-[center_70%] lg:object-[right_bottom]"
         />
-
+        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-[#0A0A0A]/95 via-[#0A0A0A]/40 to-transparent pointer-events-none z-[1]" />
       </div>
       {/* 2. TOP UTILITY BAR (Phone, Location, Direct Email) */}
       <aside
