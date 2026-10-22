@@ -258,10 +258,10 @@ export function PackageGrid() {
                           );
                         }
                       }}
-                      className={`w-full font-bold py-3.5 rounded-xl text-center transition-all block min-h-[48px] flex items-center justify-center text-sm uppercase tracking-wider ${
+                      className={`w-full min-h-[48px] px-6 py-3.5 items-center justify-center rounded-[14px] font-display text-lg sm:text-xl font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex text-center ${
                         isPitmasterFeast
-                          ? "bg-gradient-to-r from-amber-500 to-amber-600 text-black shadow-xl hover:brightness-110"
-                          : "bg-zinc-800 hover:bg-amber-500 hover:text-black text-white"
+                          ? "bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] text-white [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)]"
+                          : "bg-black/60 border border-[#C8A97E] backdrop-blur-md shadow-[0_0_12px_rgba(200,169,126,0.15)] text-[#C8A97E] hover:border-[#FF7A00] hover:text-white hover:bg-black/80 hover:shadow-[0_0_18px_rgba(255,122,0,0.4)] [text-shadow:_0_1px_2px_rgba(0,0,0,0.95)]"
                       }`}
                     >
                       Book {pkg.name}
@@ -333,7 +333,11 @@ export function PackageGrid() {
                         );
                       }
                     }}
-                    className="w-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold py-3.5 rounded-xl text-center transition-all block min-h-[48px] flex items-center justify-center text-sm uppercase tracking-wider shadow-lg"
+                    className={`w-full min-h-[48px] px-6 py-3.5 items-center justify-center rounded-[14px] font-display text-lg sm:text-xl font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex text-center ${
+                      bundle.popular
+                        ? "bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] text-white [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)]"
+                        : "bg-black/60 border border-[#C8A97E] backdrop-blur-md shadow-[0_0_12px_rgba(200,169,126,0.15)] text-[#C8A97E] hover:border-[#FF7A00] hover:text-white hover:bg-black/80 hover:shadow-[0_0_18px_rgba(255,122,0,0.4)] [text-shadow:_0_1px_2px_rgba(0,0,0,0.95)]"
+                    }`}
                   >
                     Reserve {bundle.name}
                   </a>
@@ -403,7 +407,11 @@ export function PackageGrid() {
                         );
                       }
                     }}
-                    className="w-full bg-zinc-800 hover:bg-amber-500 hover:text-black text-white font-bold py-3.5 rounded-xl text-center transition-all block min-h-[48px] flex items-center justify-center text-sm uppercase tracking-wider"
+                    className={`w-full min-h-[48px] px-6 py-3.5 items-center justify-center rounded-[14px] font-display text-lg sm:text-xl font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex text-center ${
+                      tier.id === "prep-10"
+                        ? "bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] text-white [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)]"
+                        : "bg-black/60 border border-[#C8A97E] backdrop-blur-md shadow-[0_0_12px_rgba(200,169,126,0.15)] text-[#C8A97E] hover:border-[#FF7A00] hover:text-white hover:bg-black/80 hover:shadow-[0_0_18px_rgba(255,122,0,0.4)] [text-shadow:_0_1px_2px_rgba(0,0,0,0.95)]"
+                    }`}
                   >
                     Order {tier.name}
                   </a>

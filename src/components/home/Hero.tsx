@@ -275,7 +275,7 @@ export function Hero() {
             <a
               href="#quote"
               onClick={handleOpenQuoteModal}
-              className="inline-flex h-[48px] px-7 items-center justify-center rounded-[12px] bg-black/60 border border-[#C8A97E] backdrop-blur-md font-display text-xl sm:text-2xl font-bold tracking-wide text-[#C8A97E] uppercase [text-shadow:_0_2px_4px_rgba(0,0,0,0.95)] transition-all hover:border-[#FF7A00] hover:text-white"
+              className="inline-flex h-[48px] px-7 items-center justify-center rounded-[14px] bg-black/60 border border-[#C8A97E] backdrop-blur-md shadow-[0_0_12px_rgba(200,169,126,0.15)] font-display text-xl sm:text-2xl font-bold tracking-wider text-[#C8A97E] uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.95)] transition-all hover:scale-[1.02] active:scale-[0.98] hover:border-[#FF7A00] hover:text-white hover:bg-black/80 hover:shadow-[0_0_18px_rgba(255,122,0,0.4)] cursor-pointer"
             >
               BOOK YOUR DATE
             </a>

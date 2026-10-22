@@ -329,7 +329,7 @@ export function QuoteModal({
                     <button
                       type="button"
                       onClick={() => setStep(2)}
-                      className="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all min-h-[48px]"
+                      className="rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-base font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] hover:scale-[1.02] active:scale-[0.98] transition-all px-8 py-3.5 min-h-[48px] flex items-center justify-center cursor-pointer"
                     >
                       Next: Choose Menu →
                     </button>
@@ -441,7 +441,7 @@ export function QuoteModal({
                     <button
                       type="button"
                       onClick={() => setStep(3)}
-                      className="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all min-h-[48px]"
+                      className="rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-base font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] hover:scale-[1.02] active:scale-[0.98] transition-all px-8 py-3.5 min-h-[48px] flex items-center justify-center cursor-pointer"
                     >
                       Next: Venue Details →
                     </button>
@@ -539,7 +539,7 @@ export function QuoteModal({
                     <button
                       type="button"
                       onClick={() => setStep(4)}
-                      className="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all min-h-[48px]"
+                      className="rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-base font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] hover:scale-[1.02] active:scale-[0.98] transition-all px-8 py-3.5 min-h-[48px] flex items-center justify-center cursor-pointer"
                     >
                       Next: Contact Info →
                     </button>
@@ -622,7 +622,7 @@ export function QuoteModal({
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-gradient-to-r from-amber-500 to-amber-600 text-black font-extrabold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all min-h-[48px] flex items-center justify-center shadow-xl disabled:opacity-50"
+                      className="rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-base font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] hover:scale-[1.02] active:scale-[0.98] transition-all px-8 py-3.5 min-h-[48px] flex items-center justify-center cursor-pointer disabled:opacity-50"
                     >
                       {isSubmitting ? "DISPATCHING INQUIRY..." : "SUBMIT CATERING INQUIRY"}
                     </button>

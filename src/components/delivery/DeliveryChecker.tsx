@@ -141,7 +141,7 @@ export function DeliveryChecker() {
               />
               <button
                 type="submit"
-                className="h-12 px-6 rounded-xl bg-gradient-to-b from-[#EA580C] to-[#9A3412] border border-[#FF8C38]/80 shadow-[0_0_24px_rgba(234,88,12,0.55)] text-white font-display font-black text-sm tracking-wider uppercase transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center shrink-0 cursor-pointer"
+                className="h-12 px-6 rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] text-white font-display font-bold text-base tracking-wider uppercase transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center shrink-0 cursor-pointer [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)]"
               >
                 CHECK DELIVERY ZONE
               </button>
@@ -256,7 +256,7 @@ export function DeliveryChecker() {
                         );
                       }
                     }}
-                    className="w-full sm:w-auto min-h-[48px] px-6 py-3 rounded-xl bg-gradient-to-b from-[#EA580C] to-[#9A3412] border border-[#FF8C38]/80 shadow-[0_0_24px_rgba(234,88,12,0.55)] text-white font-display font-black text-sm tracking-wider uppercase transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center text-center cursor-pointer"
+                    className="w-full sm:w-auto min-h-[48px] px-7 py-3 rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] text-white font-display font-bold text-base tracking-wider uppercase transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center text-center cursor-pointer [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)]"
                   >
                     Lock In Delivery for {result.zip}
                   </a>

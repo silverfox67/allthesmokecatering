@@ -141,7 +141,7 @@ export default function HomePage() {
 
               <button
                 type="submit"
-                className="w-full h-14 mt-4 inline-flex items-center justify-center rounded-xl bg-gradient-to-b from-[#EA580C] to-[#9A3412] border border-[#FF8C38]/80 shadow-[0_0_24px_rgba(234,88,12,0.55)] font-display text-lg font-black tracking-wider text-white uppercase transition-transform hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
+                className="w-full h-14 mt-4 inline-flex items-center justify-center rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-xl font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-transform hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
               >
                 SUBMIT CATERING INQUIRY
               </button>

@@ -231,7 +231,7 @@ export function TikTokReels() {
                     href={SITE_CONFIG.socials.tiktok}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 w-full bg-zinc-800/80 hover:bg-amber-500 hover:text-black text-white font-bold text-xs py-2.5 rounded-xl transition-all border border-zinc-700 min-h-[44px] uppercase tracking-wider"
+                    className="inline-flex items-center justify-center gap-2 w-full min-h-[44px] py-2.5 px-4 rounded-[12px] bg-black/60 border border-[#C8A97E]/70 backdrop-blur-md shadow-[0_0_10px_rgba(200,169,126,0.1)] text-[#C8A97E] font-display font-bold text-sm tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] hover:border-[#FF7A00] hover:text-white hover:bg-black/80 hover:shadow-[0_0_14px_rgba(255,122,0,0.35)] cursor-pointer [text-shadow:_0_1px_2px_rgba(0,0,0,0.95)]"
                   >
                     <span>Watch on TikTok</span>
                     <span>↗</span>
@@ -268,7 +268,7 @@ export function TikTokReels() {
             href={SITE_CONFIG.socials.tiktok}
             target="_blank"
             rel="noreferrer"
-            className="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition-all min-h-[48px] flex items-center justify-center shrink-0 shadow-lg"
+            className="min-h-[48px] px-7 py-3 rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-sm sm:text-base font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center shrink-0 cursor-pointer"
           >
             VIEW OFFICIAL TIKTOK CHANNEL ↗
           </a>
