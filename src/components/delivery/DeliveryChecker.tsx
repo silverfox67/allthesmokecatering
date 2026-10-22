@@ -135,13 +135,13 @@ export function DeliveryChecker() {
                 value={zipInput}
                 onChange={(e) => setZipInput(e.target.value)}
                 placeholder="e.g. 60634, 60607, 60540"
-                className="w-full h-12 px-4 rounded-xl bg-white border-2 border-stone-200 text-stone-900 placeholder:text-stone-400 font-mono text-base font-semibold focus:outline-none focus:border-[#EA580C] focus:ring-2 focus:ring-[#EA580C]/25 shadow-inner transition-all"
+                className="w-full h-12 px-4 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 font-mono text-base font-semibold focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all"
                 aria-describedby="zip-error"
                 required
               />
               <button
                 type="submit"
-                className="h-12 px-6 rounded-xl bg-gradient-to-r from-[#EA580C] to-[#9A3412] text-white font-display font-black text-sm tracking-wider uppercase shadow-[0_4px_16px_rgba(234,88,12,0.35)] hover:scale-[1.02] active:scale-[0.98] transition-transform flex items-center justify-center shrink-0"
+                className="h-12 px-6 rounded-xl bg-gradient-to-b from-[#EA580C] to-[#9A3412] border border-[#FF8C38]/80 shadow-[0_0_24px_rgba(234,88,12,0.55)] text-white font-display font-black text-sm tracking-wider uppercase transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center shrink-0 cursor-pointer"
               >
                 CHECK DELIVERY ZONE
               </button>
@@ -256,7 +256,7 @@ export function DeliveryChecker() {
                         );
                       }
                     }}
-                    className="w-full sm:w-auto bg-gradient-to-r from-[#EA580C] to-[#9A3412] text-white font-display font-black px-6 py-3 rounded-xl text-center text-sm uppercase tracking-wider hover:scale-[1.02] active:scale-[0.98] transition-transform min-h-[48px] flex items-center justify-center shadow-[0_4px_16px_rgba(234,88,12,0.35)]"
+                    className="w-full sm:w-auto min-h-[48px] px-6 py-3 rounded-xl bg-gradient-to-b from-[#EA580C] to-[#9A3412] border border-[#FF8C38]/80 shadow-[0_0_24px_rgba(234,88,12,0.55)] text-white font-display font-black text-sm tracking-wider uppercase transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center text-center cursor-pointer"
                   >
                     Lock In Delivery for {result.zip}
                   </a>
