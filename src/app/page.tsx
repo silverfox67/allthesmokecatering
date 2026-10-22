@@ -5,6 +5,7 @@ import { Hero } from "@/components/home/Hero";
 import { PackageGrid } from "@/components/catering/PackageGrid";
 import { DeliveryChecker } from "@/components/delivery/DeliveryChecker";
 import { TikTokReels } from "@/components/social/TikTokReels";
+import { Footer } from "@/components/layout/Footer";
 import { QuoteModal } from "@/components/forms/QuoteModal";
 
 export default function HomePage() {
@@ -151,84 +152,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer with statutory notices, hub details, and official master circular crest */}
-      <footer className="bg-[#0e0e10] border-t border-zinc-800/80 py-14 px-4 sm:px-8 text-zinc-400 text-xs mt-auto">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="relative w-11 h-11 shrink-0 overflow-hidden rounded-full border border-amber-500/40">
-                <Image
-                  src="/brand/allthesmoke-logo.png"
-                  alt="All The Smoke Official Master Crest"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <span className="font-display text-2xl text-white">ALL THE SMOKE</span>
-            </div>
-            <p className="text-zinc-400 leading-relaxed">
-              Booked-to-order live-fire smokehouse &amp; culinary commissary operations.
-              Exclusive Chicago wedding, corporate, and private catering dispatch.
-            </p>
-          </div>
-
-          <div>
-            <span className="font-bold text-white block mb-3 uppercase tracking-wider text-sm">
-              Operations Hub
-            </span>
-            <p className="text-zinc-300 leading-relaxed">
-              {SITE_CONFIG.hubAddress.street}
-              <br />
-              Chicago, IL {SITE_CONFIG.hubAddress.zip}
-              <br />
-              <span className="text-zinc-500 text-[11px] block mt-1">
-                (By booked dispatch only; exclusive smokehouse commissary)
-              </span>
-            </p>
-          </div>
-
-          <div>
-            <span className="font-bold text-white block mb-3 uppercase tracking-wider text-sm">
-              Direct Dispatch
-            </span>
-            <p className="text-zinc-300 leading-relaxed space-y-1">
-              <span>Direct: </span>
-              <a href={`tel:${SITE_CONFIG.phoneFormatted}`} className="text-amber-400 font-semibold hover:underline">
-                {SITE_CONFIG.phone}
-              </a>
-              <br />
-              <span>Inquiries: </span>
-              <a href={`mailto:${SITE_CONFIG.brandEmail}`} className="text-zinc-300 hover:text-white">
-                {SITE_CONFIG.brandEmail}
-              </a>
-              <br />
-              <span>TikTok: </span>
-              <a
-                href={SITE_CONFIG.socials.tiktok}
-                target="_blank"
-                rel="noreferrer"
-                className="text-amber-400 hover:underline font-semibold"
-              >
-                @allthesmokebbq_catering
-              </a>
-            </p>
-          </div>
-
-          <div>
-            <span className="font-bold text-white block mb-3 uppercase tracking-wider text-sm">
-              Authentic Credentials
-            </span>
-            <p className="text-zinc-300 leading-relaxed space-y-1">
-              <span>© {new Date().getFullYear()} {SITE_CONFIG.brandName}.</span>
-              <br />
-              <span>Principal: <strong>{SITE_CONFIG.legalName}</strong></span>
-              <br />
-              <span className="text-[11px] text-zinc-400 block pt-1">
-                Anti-AI Documentary Image Verification: Passed &amp; Certified.
-              </span>
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       {/* Multi-Step Interactive Quote & Booking Modal */}
       <QuoteModal />
