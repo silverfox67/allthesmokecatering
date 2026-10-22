@@ -183,19 +183,19 @@ export function QuoteModal({
 
         {/* Progress Bar (if not submitted) */}
         {!submitSuccess && (
-          <div className="bg-zinc-950/60 px-6 py-3 border-b border-zinc-800 flex items-center justify-between text-xs text-zinc-400 relative z-10">
-            <span className="font-mono text-amber-400 font-bold">STEP {step} OF 4</span>
-            <div className="flex gap-2">
+          <div className="bg-zinc-950/60 px-4 sm:px-6 py-3 border-b border-zinc-800 flex items-center justify-between text-xs text-zinc-400 relative z-10 gap-2">
+            <span className="font-mono text-amber-400 font-bold shrink-0">STEP {step}/4</span>
+            <div className="flex gap-1.5 sm:gap-2 shrink-0">
               {[1, 2, 3, 4].map((s) => (
                 <div
                   key={s}
-                  className={`w-8 h-1.5 rounded-full transition-all ${
+                  className={`w-5 sm:w-8 h-1.5 rounded-full transition-all ${
                     s <= step ? "bg-amber-500" : "bg-zinc-800"
                   }`}
                 />
               ))}
             </div>
-            <span className="text-zinc-300 font-semibold">
+            <span className="text-zinc-300 font-semibold truncate text-right">
               {step === 1 && "Event & Guests"}
               {step === 2 && "Smokehouse Menu"}
               {step === 3 && "Venue & Logistics"}
@@ -329,7 +329,7 @@ export function QuoteModal({
                     <button
                       type="button"
                       onClick={() => setStep(2)}
-                      className="rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-base font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] hover:scale-[1.02] active:scale-[0.98] transition-all px-8 py-3.5 min-h-[48px] flex items-center justify-center cursor-pointer"
+                      className="w-full sm:w-auto rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-base font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] hover:scale-[1.02] active:scale-[0.98] transition-all px-8 py-3.5 min-h-[48px] flex items-center justify-center cursor-pointer text-center"
                     >
                       Next: Choose Menu →
                     </button>
@@ -430,18 +430,18 @@ export function QuoteModal({
                     </div>
                   </div>
 
-                  <div className="flex justify-between pt-4 border-t border-zinc-800">
+                  <div className="flex flex-col-reverse sm:flex-row sm:justify-between items-stretch sm:items-center gap-3 pt-4 border-t border-zinc-800">
                     <button
                       type="button"
                       onClick={() => setStep(1)}
-                      className="text-zinc-400 hover:text-white text-xs font-bold px-4 py-3"
+                      className="text-zinc-400 hover:text-white text-xs font-bold px-4 py-2.5 text-center"
                     >
                       ← Back
                     </button>
                     <button
                       type="button"
                       onClick={() => setStep(3)}
-                      className="rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-base font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] hover:scale-[1.02] active:scale-[0.98] transition-all px-8 py-3.5 min-h-[48px] flex items-center justify-center cursor-pointer"
+                      className="w-full sm:w-auto rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-base font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] hover:scale-[1.02] active:scale-[0.98] transition-all px-8 py-3.5 min-h-[48px] flex items-center justify-center cursor-pointer text-center"
                     >
                       Next: Venue Details →
                     </button>
@@ -528,18 +528,18 @@ export function QuoteModal({
                     />
                   </div>
 
-                  <div className="flex justify-between pt-4 border-t border-zinc-800">
+                  <div className="flex flex-col-reverse sm:flex-row sm:justify-between items-stretch sm:items-center gap-3 pt-4 border-t border-zinc-800">
                     <button
                       type="button"
                       onClick={() => setStep(2)}
-                      className="text-zinc-400 hover:text-white text-xs font-bold px-4 py-3"
+                      className="text-zinc-400 hover:text-white text-xs font-bold px-4 py-2.5 text-center"
                     >
                       ← Back
                     </button>
                     <button
                       type="button"
                       onClick={() => setStep(4)}
-                      className="rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-base font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] hover:scale-[1.02] active:scale-[0.98] transition-all px-8 py-3.5 min-h-[48px] flex items-center justify-center cursor-pointer"
+                      className="w-full sm:w-auto rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-base font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] hover:scale-[1.02] active:scale-[0.98] transition-all px-8 py-3.5 min-h-[48px] flex items-center justify-center cursor-pointer text-center"
                     >
                       Next: Contact Info →
                     </button>
@@ -611,18 +611,18 @@ export function QuoteModal({
                     />
                   </div>
 
-                  <div className="flex justify-between pt-4 border-t border-zinc-800">
+                  <div className="flex flex-col-reverse sm:flex-row sm:justify-between items-stretch sm:items-center gap-3 pt-4 border-t border-zinc-800">
                     <button
                       type="button"
                       onClick={() => setStep(3)}
-                      className="text-zinc-400 hover:text-white text-xs font-bold px-4 py-3"
+                      className="text-zinc-400 hover:text-white text-xs font-bold px-4 py-2.5 text-center"
                     >
                       ← Back
                     </button>
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-base font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] hover:scale-[1.02] active:scale-[0.98] transition-all px-8 py-3.5 min-h-[48px] flex items-center justify-center cursor-pointer disabled:opacity-50"
+                      className="w-full sm:w-auto rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-base font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] hover:scale-[1.02] active:scale-[0.98] transition-all px-8 py-3.5 min-h-[48px] flex items-center justify-center cursor-pointer disabled:opacity-50 text-center"
                     >
                       {isSubmitting ? "DISPATCHING INQUIRY..." : "SUBMIT CATERING INQUIRY"}
                     </button>
