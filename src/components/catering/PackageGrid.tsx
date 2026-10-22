@@ -120,7 +120,7 @@ export function PackageGrid() {
           <div
             role="tablist"
             aria-label="Catering package categories"
-            className="inline-flex p-1.5 rounded-xl bg-zinc-950 border border-zinc-800 mt-4 shadow-lg flex-wrap justify-center gap-1"
+            className="inline-flex p-1.5 rounded-2xl bg-zinc-950/90 border-2 border-[#EA580C]/70 shadow-[0_0_24px_rgba(234,88,12,0.25)] mt-4 flex-wrap justify-center gap-1.5 backdrop-blur-md"
           >
             <button
               role="tab"
@@ -128,10 +128,10 @@ export function PackageGrid() {
               aria-selected={activeTab === "per-person"}
               aria-controls="panel-per-person"
               onClick={() => setActiveTab("per-person")}
-              className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all min-h-[48px] flex items-center justify-center ${
+              className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all min-h-[48px] flex items-center justify-center ${
                 activeTab === "per-person"
                   ? "bg-[#C8A97E] text-[#0A0A0A] shadow-md font-extrabold"
-                  : "text-zinc-300 hover:text-white hover:bg-zinc-900"
+                  : "text-stone-300 hover:text-[#FF8C38] hover:bg-zinc-900/80"
               }`}
             >
               Per-Person Catering
@@ -142,10 +142,10 @@ export function PackageGrid() {
               aria-selected={activeTab === "turnkey"}
               aria-controls="panel-turnkey"
               onClick={() => setActiveTab("turnkey")}
-              className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all min-h-[48px] flex items-center justify-center ${
+              className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all min-h-[48px] flex items-center justify-center ${
                 activeTab === "turnkey"
                   ? "bg-[#C8A97E] text-[#0A0A0A] shadow-md font-extrabold"
-                  : "text-zinc-300 hover:text-white hover:bg-zinc-900"
+                  : "text-stone-300 hover:text-[#FF8C38] hover:bg-zinc-900/80"
               }`}
             >
               Turnkey Party Pans
@@ -156,10 +156,10 @@ export function PackageGrid() {
               aria-selected={activeTab === "meal-prep"}
               aria-controls="panel-meal-prep"
               onClick={() => setActiveTab("meal-prep")}
-              className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all min-h-[48px] flex items-center justify-center ${
+              className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all min-h-[48px] flex items-center justify-center ${
                 activeTab === "meal-prep"
                   ? "bg-[#C8A97E] text-[#0A0A0A] shadow-md font-extrabold"
-                  : "text-zinc-300 hover:text-white hover:bg-zinc-900"
+                  : "text-stone-300 hover:text-[#FF8C38] hover:bg-zinc-900/80"
               }`}
             >
               Weekly Meal Prep
