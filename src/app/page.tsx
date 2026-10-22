@@ -22,133 +22,131 @@ export default function HomePage() {
       {/* 4. TikTok Pitmaster Reels: Warm Hickory Smoke Tint (#161311) */}
       <TikTokReels />
 
-      {/* 5. Quote Inquiry & Date Booking Form: Deep Obsidian (#0A0A0A) with Framed Warm Card */}
+      {/* 5. Quote Inquiry & Date Booking Form: Warm Butcher-Paper Section + Cast-Iron Card */}
       <section
         id="quote"
-        className="py-20 sm:py-28 px-4 sm:px-8 bg-[#0A0A0A] border-b border-zinc-800/80 relative overflow-hidden"
+        className="w-full bg-[#F5F0EB] py-20 px-4 sm:px-6 lg:px-8 border-y border-stone-300/70 relative overflow-hidden"
         aria-labelledby="quote-heading"
       >
-        {/* Ambient Ember Backlight in the background */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute bottom-1/4 left-1/4 h-[500px] w-[500px] rounded-full bg-amber-600/5 blur-[150px]"
-        />
-
-        <div className="mx-auto max-w-4xl rounded-3xl border border-zinc-800 bg-[#121214] p-8 sm:p-14 shadow-2xl shadow-black/80 relative overflow-hidden space-y-8">
-          {/* Ambient Ember Backlight in the form corner */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-amber-500/10 blur-[80px]"
-          />
-
-          <div className="space-y-3 relative z-10">
-            <span className="text-amber-400 text-xs uppercase font-extrabold tracking-widest bg-zinc-900 px-3.5 py-1.5 rounded-full border border-amber-500/30 inline-block">
-              ★ Live-Fire Smoker Reservation ★
+        <div className="max-w-7xl mx-auto space-y-10 relative z-10">
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#B45309] block mb-2 text-center">
+              ★ LIVE-FIRE SMOKER RESERVATION ★
             </span>
             <h2
               id="quote-heading"
-              className="font-display text-4xl sm:text-6xl text-white font-black uppercase leading-none"
+              className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#1C1917] text-center mb-3"
             >
               Reserve Your Catering Date
             </h2>
-            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
+            <p className="text-stone-600 text-sm sm:text-base max-w-2xl mx-auto text-center mb-8">
               Lock in Marion Bolden’s live-fire pitmaster trailers for your Chicago wedding,
               corporate summit, or private backyard celebration. Inquiries are audited and responded to within 12 business hours.
             </p>
           </div>
 
-          <form action="/api/lead" method="POST" className="space-y-6 relative z-10">
-            <input type="hidden" name="formLoadedAt" value={Date.now().toString()} />
-            {/* Honeypot anti-spam */}
-            <input
-              type="text"
-              name="honey"
-              className="hidden"
-              tabIndex={-1}
-              autoComplete="off"
+          {/* Cast-Iron Reservation Form Card */}
+          <div className="mx-auto max-w-4xl rounded-2xl sm:rounded-3xl border border-stone-800/80 bg-[#141210] p-6 sm:p-12 shadow-2xl shadow-stone-900/40 relative overflow-hidden space-y-8">
+            {/* Ambient Ember Backlight in the form corner */}
+            <div
               aria-hidden="true"
+              className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-amber-500/10 blur-[80px]"
             />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label htmlFor="lead-name" className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
-                  Your Full Name *
-                </label>
-                <input
-                  id="lead-name"
-                  type="text"
-                  name="name"
-                  required
-                  placeholder="e.g. Marcus Vance"
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-3.5 text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500 text-sm"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="lead-phone" className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
-                  Contact Phone Number *
-                </label>
-                <input
-                  id="lead-phone"
-                  type="tel"
-                  name="phone"
-                  required
-                  placeholder="(773) 555-0199"
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-3.5 text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500 text-sm"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label htmlFor="lead-email" className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
-                  Email Address *
-                </label>
-                <input
-                  id="lead-email"
-                  type="email"
-                  name="email"
-                  required
-                  placeholder="marcus@example.com"
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-3.5 text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500 text-sm"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="lead-guestCount" className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
-                  Estimated Guest Count *
-                </label>
-                <input
-                  id="lead-guestCount"
-                  type="number"
-                  name="guestCount"
-                  min="10"
-                  defaultValue="35"
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-amber-500 text-sm"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="lead-message" className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
-                Event Type, Desired Menu, or Preferred Date
-              </label>
-              <textarea
-                id="lead-message"
-                name="message"
-                rows={4}
-                placeholder="Details on event venue, requested packages (The Pitmaster Feast, Brisket, Turkey Chops), serving style..."
-                className="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-3.5 text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500 text-sm"
+            <form action="/api/lead" method="POST" className="space-y-6 relative z-10">
+              <input type="hidden" name="formLoadedAt" value={Date.now().toString()} />
+              {/* Honeypot anti-spam */}
+              <input
+                type="text"
+                name="honey"
+                className="hidden"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
               />
-            </div>
 
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-black font-extrabold py-4 rounded-xl text-base tracking-wider hover:brightness-110 transition-all shadow-xl min-h-[48px] flex items-center justify-center uppercase"
-            >
-              SUBMIT CATERING INQUIRY
-            </button>
-          </form>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="lead-name" className="text-xs font-bold text-stone-300 uppercase tracking-wider block">
+                    Your Full Name *
+                  </label>
+                  <input
+                    id="lead-name"
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="e.g. Marcus Vance"
+                    className="w-full h-12 px-4 rounded-xl bg-white border-2 border-stone-200 text-stone-900 placeholder:text-stone-400 text-sm font-semibold focus:outline-none focus:border-[#EA580C] focus:ring-2 focus:ring-[#EA580C]/25 shadow-inner transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="lead-phone" className="text-xs font-bold text-stone-300 uppercase tracking-wider block">
+                    Contact Phone Number *
+                  </label>
+                  <input
+                    id="lead-phone"
+                    type="tel"
+                    name="phone"
+                    required
+                    placeholder="(773) 555-0199"
+                    className="w-full h-12 px-4 rounded-xl bg-white border-2 border-stone-200 text-stone-900 placeholder:text-stone-400 text-sm font-semibold focus:outline-none focus:border-[#EA580C] focus:ring-2 focus:ring-[#EA580C]/25 shadow-inner transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="lead-email" className="text-xs font-bold text-stone-300 uppercase tracking-wider block">
+                    Email Address *
+                  </label>
+                  <input
+                    id="lead-email"
+                    type="email"
+                    name="email"
+                    required
+                    placeholder="marcus@example.com"
+                    className="w-full h-12 px-4 rounded-xl bg-white border-2 border-stone-200 text-stone-900 placeholder:text-stone-400 text-sm font-semibold focus:outline-none focus:border-[#EA580C] focus:ring-2 focus:ring-[#EA580C]/25 shadow-inner transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="lead-guestCount" className="text-xs font-bold text-stone-300 uppercase tracking-wider block">
+                    Estimated Guest Count *
+                  </label>
+                  <input
+                    id="lead-guestCount"
+                    type="number"
+                    name="guestCount"
+                    min="10"
+                    defaultValue="35"
+                    className="w-full h-12 px-4 rounded-xl bg-white border-2 border-stone-200 text-stone-900 placeholder:text-stone-400 text-sm font-semibold focus:outline-none focus:border-[#EA580C] focus:ring-2 focus:ring-[#EA580C]/25 shadow-inner transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="lead-message" className="text-xs font-bold text-stone-300 uppercase tracking-wider block">
+                  Event Type, Desired Menu, or Preferred Date
+                </label>
+                <textarea
+                  id="lead-message"
+                  name="message"
+                  rows={4}
+                  placeholder="Details on event venue, requested packages (The Pitmaster Feast, Brisket, Turkey Chops), serving style..."
+                  className="w-full p-4 rounded-xl bg-white border-2 border-stone-200 text-stone-900 placeholder:text-stone-400 text-sm font-semibold focus:outline-none focus:border-[#EA580C] focus:ring-2 focus:ring-[#EA580C]/25 shadow-inner transition-all resize-y"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full h-14 rounded-xl bg-gradient-to-r from-[#EA580C] to-[#9A3412] text-white font-display font-black text-sm sm:text-base tracking-wider uppercase shadow-[0_4px_16px_rgba(234,88,12,0.35)] hover:scale-[1.01] active:scale-[0.99] transition-transform flex items-center justify-center"
+              >
+                SUBMIT CATERING INQUIRY
+              </button>
+            </form>
+          </div>
         </div>
       </section>
 
