@@ -135,7 +135,7 @@ export function DeliveryChecker() {
                 value={zipInput}
                 onChange={(e) => setZipInput(e.target.value)}
                 placeholder="e.g. 60634, 60607, 60540"
-                className="w-full h-12 px-4 rounded-xl bg-[#0A0A0A] border border-stone-700/80 text-white placeholder:text-stone-500 font-mono text-base focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-colors"
+                className="w-full h-12 px-4 rounded-xl bg-white border-2 border-stone-200 text-stone-900 placeholder:text-stone-400 font-mono text-base font-semibold focus:outline-none focus:border-[#EA580C] focus:ring-2 focus:ring-[#EA580C]/25 shadow-inner transition-all"
                 aria-describedby="zip-error"
                 required
               />
@@ -154,32 +154,32 @@ export function DeliveryChecker() {
 
             {/* Quick Test Chips */}
             <div className="pt-2 flex flex-wrap items-center gap-2 text-xs text-stone-400">
-              <span className="font-semibold text-stone-400">Quick Test:</span>
+              <span className="font-semibold text-stone-300">Quick Test:</span>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60634")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#211E1A] hover:bg-[#2C2722] text-stone-300 border border-stone-700/60 transition-colors"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-amber-500/50 hover:border-amber-400 hover:bg-gradient-to-r hover:from-amber-500/20 hover:to-orange-500/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
               >
                 60634 (Hub)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60607")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#211E1A] hover:bg-[#2C2722] text-stone-300 border border-stone-700/60 transition-colors"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-amber-500/50 hover:border-amber-400 hover:bg-gradient-to-r hover:from-amber-500/20 hover:to-orange-500/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
               >
                 60607 (West Loop)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60201")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#211E1A] hover:bg-[#2C2722] text-stone-300 border border-stone-700/60 transition-colors"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-amber-500/50 hover:border-amber-400 hover:bg-gradient-to-r hover:from-amber-500/20 hover:to-orange-500/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
               >
                 60201 (Evanston)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60540")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#211E1A] hover:bg-[#2C2722] text-stone-300 border border-stone-700/60 transition-colors"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-amber-500/50 hover:border-amber-400 hover:bg-gradient-to-r hover:from-amber-500/20 hover:to-orange-500/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
               >
                 60540 (Naperville)
               </button>
@@ -267,29 +267,29 @@ export function DeliveryChecker() {
 
           {/* Static Zone Overview Matrix */}
           <div className="pt-6 border-t border-stone-800/80 space-y-3 relative z-10">
-            <span className="text-xs font-bold text-stone-400 uppercase tracking-wider block">
+            <span className="text-xs font-bold text-stone-300 uppercase tracking-wider block">
               Official Chicagoland Zone Matrix:
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-              <div className="rounded-xl border border-stone-800/80 bg-[#0A0A0A] p-4 text-center transition-all hover:border-amber-500/50 hover:shadow-lg space-y-1">
-                <span className="text-stone-200 font-bold text-sm block">Zone 1 (0–10 mi)</span>
-                <span className="text-amber-400 font-black text-lg block">$35 Fee</span>
-                <span className="text-stone-400 text-xs block">$150 Min Order</span>
-                <span className="text-stone-500 text-xs block">NW Side, O’Hare, Portage Park</span>
+              <div className="group rounded-xl border border-amber-500/50 bg-[#0D0B0A] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-amber-400 hover:bg-[#1A1410] hover:shadow-[0_12px_28px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
+                <span className="text-stone-200 font-bold text-sm block group-hover:text-white transition-colors">Zone 1 (0–10 mi)</span>
+                <span className="text-amber-400 font-black text-lg block group-hover:text-amber-300 group-hover:scale-105 transition-all">$35 Fee</span>
+                <span className="text-stone-300 text-xs block font-medium">$150 Min Order</span>
+                <span className="text-stone-400 text-xs block group-hover:text-stone-300 transition-colors">NW Side, O’Hare, Portage Park</span>
               </div>
 
-              <div className="rounded-xl border border-stone-800/80 bg-[#0A0A0A] p-4 text-center transition-all hover:border-amber-500/50 hover:shadow-lg space-y-1">
-                <span className="text-stone-200 font-bold text-sm block">Zone 2 (10–20 mi)</span>
-                <span className="text-amber-400 font-black text-lg block">$65 Fee</span>
-                <span className="text-stone-400 text-xs block">$300 Min Order</span>
-                <span className="text-stone-500 text-xs block">The Loop, West Loop, Evanston</span>
+              <div className="group rounded-xl border border-amber-500/50 bg-[#0D0B0A] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-amber-400 hover:bg-[#1A1410] hover:shadow-[0_12px_28px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
+                <span className="text-stone-200 font-bold text-sm block group-hover:text-white transition-colors">Zone 2 (10–20 mi)</span>
+                <span className="text-amber-400 font-black text-lg block group-hover:text-amber-300 group-hover:scale-105 transition-all">$65 Fee</span>
+                <span className="text-stone-300 text-xs block font-medium">$300 Min Order</span>
+                <span className="text-stone-400 text-xs block group-hover:text-stone-300 transition-colors">The Loop, West Loop, Evanston</span>
               </div>
 
-              <div className="rounded-xl border border-stone-800/80 bg-[#0A0A0A] p-4 text-center transition-all hover:border-amber-500/50 hover:shadow-lg space-y-1">
-                <span className="text-stone-200 font-bold text-sm block">Zone 3 (20–35 mi)</span>
-                <span className="text-amber-400 font-black text-lg block">$95 Fee</span>
-                <span className="text-stone-400 text-xs block">$500 Min Order</span>
-                <span className="text-stone-500 text-xs block">Naperville, Aurora, South Side</span>
+              <div className="group rounded-xl border border-amber-500/50 bg-[#0D0B0A] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-amber-400 hover:bg-[#1A1410] hover:shadow-[0_12px_28px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
+                <span className="text-stone-200 font-bold text-sm block group-hover:text-white transition-colors">Zone 3 (20–35 mi)</span>
+                <span className="text-amber-400 font-black text-lg block group-hover:text-amber-300 group-hover:scale-105 transition-all">$95 Fee</span>
+                <span className="text-stone-300 text-xs block font-medium">$500 Min Order</span>
+                <span className="text-stone-400 text-xs block group-hover:text-stone-300 transition-colors">Naperville, Aurora, South Side</span>
               </div>
             </div>
           </div>
