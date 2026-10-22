@@ -229,7 +229,7 @@ export function Hero() {
         <div className="max-w-xl lg:max-w-2xl space-y-5 sm:space-y-6">
           
           {/* Subheading Star Kicker */}
-          <p className="flex items-center gap-2 text-xs sm:text-sm font-bold tracking-[0.2em] text-amber-500 uppercase">
+          <p className="flex items-center gap-2 text-xs sm:text-sm font-bold tracking-[0.2em] text-[#C8A97E] uppercase">
             <span>★</span>
             <span>CHICAGOLAND’S PREMIER LIVE-FIRE CATERING</span>
             <span>★</span>
@@ -252,14 +252,14 @@ export function Hero() {
           <div className="pt-2 flex flex-wrap items-center gap-4">
             <a
               href="#packages"
-              className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-600 via-amber-500 to-orange-600 px-8 py-4 text-sm font-black tracking-wider text-white uppercase shadow-[0_0_25px_rgba(245,158,11,0.5)] transition-all hover:brightness-110 hover:shadow-[0_0_35px_rgba(245,158,11,0.7)] hover:scale-[1.02] active:scale-[0.98] min-h-[48px]"
+              className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 px-8 py-3.5 text-sm font-bold tracking-wider text-white uppercase shadow-[0_0_28px_rgba(245,158,11,0.45)] transition-all hover:scale-[1.02] hover:shadow-[0_0_35px_rgba(245,158,11,0.65)] active:scale-[0.98]"
             >
               VIEW OUR MENUS
             </a>
             <a
               href="#quote"
               onClick={handleOpenQuoteModal}
-              className="inline-flex items-center justify-center rounded-lg border border-amber-600/40 bg-black/60 px-8 py-4 text-sm font-black tracking-wider text-zinc-200 uppercase backdrop-blur-sm transition-all hover:border-amber-400 hover:text-white hover:bg-black/80 min-h-[48px]"
+              className="inline-flex items-center justify-center rounded-lg border border-amber-900/40 bg-black/40 px-8 py-3.5 text-sm font-bold tracking-wider text-[#F4EFEA] uppercase backdrop-blur-sm transition-all hover:border-amber-500/60 hover:bg-black/60"
             >
               BOOK YOUR DATE
             </a>
@@ -275,26 +275,26 @@ export function Hero() {
             
             {/* Feature 1: On-Site Pitmasters */}
             <div className="flex items-center justify-center gap-3 text-center sm:justify-start">
-              <svg className="h-5 w-5 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <svg className="h-5 w-5 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
-              <span className="text-sm font-semibold tracking-wide text-amber-400">On-Site Pitmasters</span>
+              <span className="text-sm font-semibold tracking-wide text-[#C8A97E]">On-Site Pitmasters</span>
             </div>
 
             {/* Feature 2: Tailored Event Menus */}
             <div className="flex items-center justify-center gap-3 text-center">
-              <svg className="h-5 w-5 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <svg className="h-5 w-5 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
               </svg>
-              <span className="text-sm font-semibold tracking-wide text-amber-400">Tailored Event Menus</span>
+              <span className="text-sm font-semibold tracking-wide text-[#C8A97E]">Tailored Event Menus</span>
             </div>
 
             {/* Feature 3: Full-Service Hospitality */}
             <div className="flex items-center justify-center gap-3 text-center sm:justify-end">
-              <svg className="h-5 w-5 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <svg className="h-5 w-5 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
-              <span className="text-sm font-semibold tracking-wide text-amber-400">Full-Service Hospitality</span>
+              <span className="text-sm font-semibold tracking-wide text-[#C8A97E]">Full-Service Hospitality</span>
             </div>
 
           </div>
