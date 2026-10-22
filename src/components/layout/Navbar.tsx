@@ -5,7 +5,7 @@ import { SITE_CONFIG } from "@/config/site-config";
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#0A0A0A]/70 backdrop-blur-md border-b border-zinc-800/50">
+    <header className="sticky top-0 z-50 w-full bg-[#0A0A0A]/75 backdrop-blur-md border-b border-zinc-800/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between">
         {/* Official Master Crest Alone Breakout */}
         <Link href="/" className="group flex-shrink-0 relative z-30 -mb-10 sm:-mb-12 lg:-mb-14">

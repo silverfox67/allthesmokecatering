@@ -27,7 +27,7 @@ export function Hero() {
           sizes="100vw"
           className="object-cover object-[center_70%] lg:object-[right_bottom]"
         />
-        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-[#0A0A0A]/95 via-[#0A0A0A]/40 to-transparent pointer-events-none z-[1]" />
+        <div className="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-[#0A0A0A]/90 via-[#0A0A0A]/40 to-transparent pointer-events-none z-[1]" />
       </div>
       {/* 2. TOP UTILITY BAR (Phone, Location, Direct Email) */}
       <aside
@@ -109,7 +109,7 @@ export function Hero() {
       </aside>
 
       {/* 3. MAIN HEADER / NAVIGATION (Full-Width Frosted Backdrop) */}
-      <div className="relative z-20 w-full bg-[#0A0A0A]/70 backdrop-blur-md border-b border-zinc-800/50">
+      <div className="relative z-20 w-full bg-[#0A0A0A]/75 backdrop-blur-md border-b border-zinc-800/50">
         <header className="px-4 sm:px-8 py-3.5 max-w-7xl mx-auto w-full flex items-center justify-between">
           {/* Official Master Crest Alone (Clean transparent PNG, no duplicate text box) */}
           <a href="/" className="group flex-shrink-0 relative z-30 -mb-10 sm:-mb-12 lg:-mb-14">
