@@ -22,8 +22,13 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.CF_PAGES_URL ? `https://${process.env.CF_PAGES_URL}` : undefined) ||
+  `https://${SITE_CONFIG.primaryDomain}`;
+
 export const metadata: Metadata = {
-  metadataBase: new URL(`https://${SITE_CONFIG.primaryDomain}`),
+  metadataBase: new URL(siteUrl),
   title: {
     default: SITE_CONFIG.meta.title,
     template: `%s | ${SITE_CONFIG.brandName}`,
@@ -56,7 +61,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: SITE_CONFIG.meta.title,
     description: SITE_CONFIG.meta.description,
-    url: `https://${SITE_CONFIG.primaryDomain}`,
+    url: siteUrl,
     siteName: SITE_CONFIG.brandName,
     locale: "en_US",
     type: "website",
@@ -65,6 +70,7 @@ export const metadata: Metadata = {
         url: "/allthesmoke-og-card.png",
         width: 1200,
         height: 630,
+        type: "image/png",
         alt: `${SITE_CONFIG.brandName} - Premium Live-Fire Smokehouse Catering`,
       },
     ],
@@ -76,7 +82,7 @@ export const metadata: Metadata = {
     images: ["/allthesmoke-og-card.png"],
   },
   alternates: {
-    canonical: `https://${SITE_CONFIG.primaryDomain}`,
+    canonical: siteUrl,
   },
 };
 
