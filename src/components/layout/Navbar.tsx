@@ -5,13 +5,13 @@ import { SITE_CONFIG } from "@/config/site-config";
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#0A0A0A]/75 backdrop-blur-md border-b border-zinc-800/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between relative">
+    <header className="sticky top-0 z-50 w-full bg-[#0A0A0A]/75 backdrop-blur-md border-b border-zinc-800/50 overflow-visible">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between relative overflow-visible">
         {/* Official Master Crest Alone Breakout */}
-        <div className="absolute top-2 left-4 z-50 sm:left-8 lg:left-12">
+        <div className="absolute top-2 left-4 sm:left-8 z-50">
           <Link
             href="/"
-            className="block relative h-28 w-28 sm:h-32 sm:w-32 lg:h-36 lg:w-36 drop-shadow-[0_14px_28px_rgba(0,0,0,0.95)] transition-transform hover:scale-105"
+            className="block relative w-[120px] h-[120px] sm:w-[135px] sm:h-[135px] drop-shadow-[0_14px_24px_rgba(0,0,0,0.95)] transition-transform hover:scale-105"
           >
             <Image
               src="/brand/allthesmoke-logo.png"
@@ -26,7 +26,7 @@ export function Navbar() {
         {/* Desktop Navigation Links */}
         <nav
           aria-label="Main Navigation"
-          className="hidden lg:flex items-center gap-7 pl-32 sm:pl-36 lg:pl-44"
+          className="hidden lg:flex items-center gap-7 pl-36 lg:pl-40 overflow-visible"
         >
           <Link
             href="#hero"
