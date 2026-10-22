@@ -111,7 +111,7 @@ export function Hero() {
           <div className="absolute top-2 left-4 sm:left-8 z-50">
             <a
               href="/"
-              className="block relative w-[120px] h-[120px] sm:w-[135px] sm:h-[135px] drop-shadow-[0_14px_24px_rgba(0,0,0,0.95)] transition-transform hover:scale-105"
+              className="block relative w-[150px] h-[150px] sm:w-[175px] sm:h-[175px] lg:w-[200px] lg:h-[200px] drop-shadow-[0_16px_32px_rgba(0,0,0,0.95)] z-50 transition-transform hover:scale-105"
             >
               <Image
                 src="/brand/allthesmoke-logo.png"
@@ -126,7 +126,7 @@ export function Hero() {
           {/* Desktop Navigation Links */}
           <nav
             aria-label="Main Navigation"
-            className="hidden lg:flex items-center gap-7 pl-36 lg:pl-40 overflow-visible"
+            className="hidden lg:flex items-center gap-7 pl-48 lg:pl-56 overflow-visible"
           >
             <a
               href="#hero"
