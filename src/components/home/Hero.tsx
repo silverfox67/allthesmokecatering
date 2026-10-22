@@ -27,7 +27,7 @@ export function Hero() {
           sizes="100vw"
           className="object-cover object-[center_70%] lg:object-[right_bottom]"
         />
-        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-[#0A0A0A]/95 via-[#0A0A0A]/40 to-transparent pointer-events-none z-[1]" />
+        <div className="absolute top-0 left-0 right-0 h-72 sm:h-96 bg-gradient-to-b from-[#0A0A0A] via-[#0A0A0A]/80 to-transparent pointer-events-none z-[1]" />
       </div>
       {/* 2. TOP UTILITY BAR (Phone, Location, Direct Email) */}
       <aside
@@ -108,77 +108,94 @@ export function Hero() {
         </div>
       </aside>
 
-      {/* 3. MAIN HEADER / NAVIGATION (Master Circular Crest Alone on Left, Nav Links on Right) */}
-      <header className="relative z-20 px-4 sm:px-8 pt-3 pb-2 max-w-7xl mx-auto w-full flex items-center justify-between">
-        {/* Official Master Crest Alone (Clean transparent PNG, no duplicate text box) */}
-        <a href="/" className="group flex-shrink-0">
-          <div className="relative h-20 w-20 sm:h-24 sm:w-24 lg:h-28 lg:w-28 transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)]">
-            <Image
-              src="/brand/allthesmoke-logo.png"
-              alt="All The Smoke BBQ &amp; Catering Official Master Crest"
-              fill
-              className="object-contain"
-              priority
-            />
+      {/* 3. MAIN HEADER / NAVIGATION (Full-Width Frosted Backdrop) */}
+      <div className="relative z-20 w-full bg-[#0A0A0A]/75 backdrop-blur-md border-b border-zinc-800/60">
+        <header className="px-4 sm:px-8 py-3.5 max-w-7xl mx-auto w-full flex items-center justify-between">
+          {/* Official Master Crest Alone (Clean transparent PNG, no duplicate text box) */}
+          <a href="/" className="group flex-shrink-0">
+            <div className="relative h-20 w-20 sm:h-24 sm:w-24 lg:h-28 lg:w-28 transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)]">
+              <Image
+                src="/brand/allthesmoke-logo.png"
+                alt="All The Smoke BBQ &amp; Catering Official Master Crest"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+          </a>
+
+          {/* Desktop Navigation Links */}
+          <nav
+            aria-label="Main Navigation"
+            className="hidden lg:flex items-center gap-7"
+          >
+            <a
+              href="#hero"
+              className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+            >
+              Home
+            </a>
+            <a
+              href="#experience"
+              className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+            >
+              The Experience
+            </a>
+            <a
+              href="#packages"
+              className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+            >
+              Menus
+            </a>
+            <a
+              href="#reels"
+              className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+            >
+              Gallery
+            </a>
+            <a
+              href="#delivery"
+              className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+            >
+              About
+            </a>
+            <a
+              href="#quote"
+              onClick={handleOpenQuoteModal}
+              className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+            >
+              Contact
+            </a>
+          </nav>
+
+          {/* CTA: REQUEST A QUOTE (Radiant Amber-Orange with Specular Sheen) */}
+          <div className="flex items-center gap-3">
+            <a
+              href="#quote"
+              onClick={handleOpenQuoteModal}
+              className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 px-6 py-2.5 text-xs font-bold tracking-wider text-white uppercase border border-amber-400/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_4px_20px_rgba(245,158,11,0.35)] hover:brightness-110 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_6px_25px_rgba(245,158,11,0.55)] hover:scale-[1.02] active:scale-[0.98] transition-all"
+            >
+              REQUEST A QUOTE
+            </a>
+
+            {/* Mobile Menu Button */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 border border-zinc-800"
+              aria-label="Toggle mobile menu"
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
           </div>
-        </a>
-
-        {/* Desktop Navigation Links */}
-        <nav
-          aria-label="Main Navigation"
-          className="hidden lg:flex items-center gap-7 text-sm font-semibold text-zinc-300"
-        >
-          <a href="#hero" className="hover:text-amber-400 transition-colors">
-            Home
-          </a>
-          <a href="#experience" className="hover:text-amber-400 transition-colors">
-            The Experience
-          </a>
-          <a href="#packages" className="hover:text-amber-400 transition-colors">
-            Menus
-          </a>
-          <a href="#reels" className="hover:text-amber-400 transition-colors">
-            Gallery
-          </a>
-          <a href="#delivery" className="hover:text-amber-400 transition-colors">
-            About
-          </a>
-          <a
-            href="#quote"
-            onClick={handleOpenQuoteModal}
-            className="hover:text-amber-400 transition-colors"
-          >
-            Contact
-          </a>
-        </nav>
-
-        {/* CTA: REQUEST A QUOTE (Warm Amber Neon Glow) */}
-        <div className="flex items-center gap-3">
-          <a
-            href="#quote"
-            onClick={handleOpenQuoteModal}
-            className="relative inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-600 via-orange-500 to-amber-600 px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-extrabold text-white uppercase tracking-wider shadow-[0_0_20px_rgba(245,158,11,0.5)] border border-amber-400/50 hover:brightness-110 hover:shadow-[0_0_30px_rgba(245,158,11,0.7)] transition-all active:scale-95"
-          >
-            REQUEST A QUOTE
-          </a>
-
-          {/* Mobile Menu Button */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 border border-zinc-800"
-            aria-label="Toggle mobile menu"
-          >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              {mobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
-        </div>
-      </header>
+        </header>
+      </div>
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
@@ -186,28 +203,28 @@ export function Hero() {
           <a
             href="#hero"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-zinc-300 hover:text-amber-400"
+            className="block text-zinc-300 hover:text-[#C8A97E]"
           >
             Home
           </a>
           <a
             href="#packages"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-zinc-300 hover:text-amber-400"
+            className="block text-zinc-300 hover:text-[#C8A97E]"
           >
             Menus
           </a>
           <a
             href="#reels"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-zinc-300 hover:text-amber-400"
+            className="block text-zinc-300 hover:text-[#C8A97E]"
           >
             Gallery
           </a>
           <a
             href="#delivery"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-zinc-300 hover:text-amber-400"
+            className="block text-zinc-300 hover:text-[#C8A97E]"
           >
             About
           </a>
@@ -217,7 +234,7 @@ export function Hero() {
               setMobileMenuOpen(false);
               handleOpenQuoteModal(e);
             }}
-            className="block text-amber-400 font-bold"
+            className="block text-[#C8A97E] font-bold"
           >
             Contact
           </a>
@@ -252,14 +269,14 @@ export function Hero() {
           <div className="pt-2 flex flex-wrap items-center gap-4">
             <a
               href="#packages"
-              className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 px-8 py-3.5 text-sm font-bold tracking-wider text-white uppercase shadow-[0_0_28px_rgba(245,158,11,0.45)] transition-all hover:scale-[1.02] hover:shadow-[0_0_35px_rgba(245,158,11,0.65)] active:scale-[0.98]"
+              className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 px-8 py-3.5 text-sm font-bold tracking-wider text-white uppercase border-t border-amber-300/40 border-b border-amber-700/60 border-x border-amber-600/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_8px_24px_-4px_rgba(245,158,11,0.5)] transition-all hover:brightness-110 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_12px_32px_-4px_rgba(245,158,11,0.7)] hover:scale-[1.02] active:scale-[0.98]"
             >
               VIEW OUR MENUS
             </a>
             <a
               href="#quote"
               onClick={handleOpenQuoteModal}
-              className="inline-flex items-center justify-center rounded-lg border border-amber-900/40 bg-black/40 px-8 py-3.5 text-sm font-bold tracking-wider text-[#F4EFEA] uppercase backdrop-blur-sm transition-all hover:border-amber-500/60 hover:bg-black/60"
+              className="inline-flex items-center justify-center rounded-lg border border-[#C8A97E]/40 bg-black/50 px-8 py-3.5 text-sm font-bold tracking-wider text-[#F4EFEA] uppercase backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_16px_rgba(0,0,0,0.5)] transition-all hover:border-[#C8A97E]/90 hover:bg-black/70 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_24px_rgba(200,169,126,0.25)] hover:scale-[1.02] active:scale-[0.98]"
             >
               BOOK YOUR DATE
             </a>
