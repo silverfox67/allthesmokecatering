@@ -93,15 +93,15 @@ export function TikTokReels() {
         {/* Header & Controls */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
-            <span className="text-amber-400 text-xs uppercase font-bold tracking-widest bg-zinc-900 px-3.5 py-1.5 rounded-full border border-amber-500/30 inline-flex items-center gap-1.5">
-              <svg className="h-3.5 w-3.5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
+              <svg className="h-3.5 w-3.5 text-[#C8A97E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343a7.975 7.975 0 012.344 5.657 7.974 7.974 0 01-2.343 5.657z" />
               </svg>
               <span>Live Smokehouse Content</span>
             </span>
             <h2
               id="reels-heading"
-              className="font-display text-4xl sm:text-6xl font-black tracking-tight text-white uppercase leading-none"
+              className="font-display text-4xl sm:text-6xl font-bold tracking-tight text-[#F4EFEA] leading-tight"
             >
               TikTok Pitmaster Showcase
             </h2>
@@ -112,9 +112,9 @@ export function TikTokReels() {
                 href={SITE_CONFIG.socials.tiktok}
                 target="_blank"
                 rel="noreferrer"
-                className="text-amber-400 font-bold hover:underline"
+                className="text-[#C8A97E] font-bold hover:underline hover:text-white transition-colors"
               >
-                @allthesmokebbq_catering
+                @allthesmokecatering
               </a>
               .
             </p>
@@ -214,8 +214,8 @@ export function TikTokReels() {
                         className="object-cover"
                       />
                     </div>
-                    <span className="text-xs font-bold text-white hover:text-amber-400">
-                      @allthesmokebbq_catering
+                    <span className="text-xs font-bold text-white hover:text-[#C8A97E] transition-colors">
+                      @allthesmokecatering
                     </span>
                   </div>
 
@@ -255,8 +255,8 @@ export function TikTokReels() {
               />
             </div>
             <div>
-              <span className="font-display text-2xl text-white block">
-                FOLLOW THE LIVE HARDWOOD SMOKE
+              <span className="font-display text-2xl text-[#F4EFEA] font-bold block">
+                Follow the Live Hardwood Smoke
               </span>
               <span className="text-xs text-zinc-400">
                 New pitmaster carvings, event recaps, and weekly drop announcements posted weekly.
