@@ -6,25 +6,27 @@ import { SITE_CONFIG } from "@/config/site-config";
 export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full bg-[#0A0A0A]/75 backdrop-blur-md border-b border-zinc-800/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between relative">
         {/* Official Master Crest Alone Breakout */}
-        <Link
-          href="/"
-          className="relative -mb-10 h-28 w-28 sm:h-32 sm:w-32 drop-shadow-[0_12px_24px_rgba(0,0,0,0.9)] z-20 transition-transform hover:scale-105 flex-shrink-0"
-        >
-          <Image
-            src="/brand/allthesmoke-logo.png"
-            alt="All The Smoke BBQ &amp; Catering Official Master Crest"
-            fill
-            className="object-contain"
-            priority
-          />
-        </Link>
+        <div className="absolute top-2 left-4 z-50 sm:left-8 lg:left-12">
+          <Link
+            href="/"
+            className="block relative h-28 w-28 sm:h-32 sm:w-32 lg:h-36 lg:w-36 drop-shadow-[0_14px_28px_rgba(0,0,0,0.95)] transition-transform hover:scale-105"
+          >
+            <Image
+              src="/brand/allthesmoke-logo.png"
+              alt="All The Smoke BBQ &amp; Catering Official Emblem"
+              fill
+              priority
+              className="object-contain"
+            />
+          </Link>
+        </div>
 
         {/* Desktop Navigation Links */}
         <nav
           aria-label="Main Navigation"
-          className="hidden lg:flex items-center gap-7"
+          className="hidden lg:flex items-center gap-7 pl-32 sm:pl-36 lg:pl-44"
         >
           <Link
             href="#hero"
@@ -67,7 +69,7 @@ export function Navbar() {
         {/* Action CTA */}
         <a
           href="#quote"
-          className="inline-flex h-11 px-6 items-center justify-center rounded-[12px] bg-gradient-to-b from-[#EA580C] to-[#9A3412] border-2 border-[#FF7A00] shadow-[0_0_16px_rgba(255,106,0,0.45)] font-display text-base sm:text-lg font-bold tracking-wide text-white uppercase [text-shadow:_0_2px_4px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98]"
+          className="ml-auto lg:ml-0 inline-flex h-11 px-6 items-center justify-center rounded-[12px] bg-gradient-to-b from-[#EA580C] to-[#9A3412] border-2 border-[#FF7A00] shadow-[0_0_16px_rgba(255,106,0,0.45)] font-display text-base sm:text-lg font-bold tracking-wide text-white uppercase [text-shadow:_0_2px_4px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98]"
         >
           REQUEST A QUOTE
         </a>

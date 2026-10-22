@@ -106,25 +106,27 @@ export function Hero() {
 
       {/* 3. MAIN HEADER / NAVIGATION (Full-Width Frosted Backdrop) */}
       <div className="relative z-20 w-full bg-[#0A0A0A]/75 backdrop-blur-md border-b border-zinc-800/50">
-        <header className="px-4 sm:px-8 py-3.5 max-w-7xl mx-auto w-full flex items-center justify-between">
-          {/* Official Master Crest Alone (Clean transparent PNG, no duplicate text box) */}
-          <a
-            href="/"
-            className="relative -mb-10 h-28 w-28 sm:h-32 sm:w-32 drop-shadow-[0_12px_24px_rgba(0,0,0,0.9)] z-20 transition-transform hover:scale-105 flex-shrink-0"
-          >
-            <Image
-              src="/brand/allthesmoke-logo.png"
-              alt="All The Smoke BBQ &amp; Catering Official Master Crest"
-              fill
-              className="object-contain"
-              priority
-            />
-          </a>
+        <header className="px-4 sm:px-8 py-3.5 max-w-7xl mx-auto w-full flex items-center justify-between relative">
+          {/* Official Master Crest Alone Breakout */}
+          <div className="absolute top-2 left-4 z-50 sm:left-8 lg:left-12">
+            <a
+              href="/"
+              className="block relative h-28 w-28 sm:h-32 sm:w-32 lg:h-36 lg:w-36 drop-shadow-[0_14px_28px_rgba(0,0,0,0.95)] transition-transform hover:scale-105"
+            >
+              <Image
+                src="/brand/allthesmoke-logo.png"
+                alt="All The Smoke BBQ &amp; Catering Official Emblem"
+                fill
+                priority
+                className="object-contain"
+              />
+            </a>
+          </div>
 
           {/* Desktop Navigation Links */}
           <nav
             aria-label="Main Navigation"
-            className="hidden lg:flex items-center gap-7"
+            className="hidden lg:flex items-center gap-7 pl-32 sm:pl-36 lg:pl-44"
           >
             <a
               href="#hero"
@@ -166,7 +168,7 @@ export function Hero() {
           </nav>
 
           {/* CTA: REQUEST A QUOTE (Header CTA Button) */}
-          <div className="flex items-center gap-3">
+          <div className="ml-auto lg:ml-0 flex items-center gap-3">
             <a
               href="#quote"
               onClick={handleOpenQuoteModal}
