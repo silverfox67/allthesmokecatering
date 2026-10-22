@@ -125,14 +125,14 @@ export function TikTokReels() {
             <button
               onClick={scrollLeft}
               aria-label="Scroll left through reels"
-              className="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-700 hover:border-amber-500 text-zinc-300 hover:text-amber-400 flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-lg"
+              className="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-700 hover:border-[#C8A97E] text-zinc-300 hover:text-[#C8A97E] flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-[#C8A97E] shadow-lg"
             >
               ←
             </button>
             <button
               onClick={scrollRight}
               aria-label="Scroll right through reels"
-              className="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-700 hover:border-amber-500 text-zinc-300 hover:text-amber-400 flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-lg"
+              className="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-700 hover:border-[#C8A97E] text-zinc-300 hover:text-[#C8A97E] flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-[#C8A97E] shadow-lg"
             >
               →
             </button>
@@ -145,12 +145,12 @@ export function TikTokReels() {
           tabIndex={0}
           role="region"
           aria-label="TikTok Smoked Meat Reels Carousel"
-          className="flex gap-6 overflow-x-auto pb-6 pt-2 scroll-smooth snap-x snap-mandatory focus:outline-none focus:ring-1 focus:ring-amber-500 rounded-2xl"
+          className="flex gap-6 overflow-x-auto pb-6 pt-2 scroll-smooth snap-x snap-mandatory focus:outline-none focus:ring-1 focus:ring-[#C8A97E] rounded-2xl"
         >
           {REELS_DATA.map((reel) => (
             <div
               key={reel.id}
-              className="snap-start shrink-0 w-[280px] sm:w-[320px] rounded-3xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-amber-500/60 shadow-2xl relative group transition-all duration-300"
+              className="snap-start shrink-0 w-[280px] sm:w-[320px] rounded-3xl overflow-hidden bg-[#161619] border border-zinc-800 hover:border-[#EA580C]/80 hover:shadow-[0_0_30px_rgba(234,88,12,0.3)] shadow-2xl relative group transition-all duration-300"
             >
               {/* Vertical 9:16 Video Poster */}
               <div className="relative aspect-[9/16] w-full overflow-hidden bg-black">
@@ -168,7 +168,7 @@ export function TikTokReels() {
                     <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
                     {reel.views} views
                   </span>
-                  <div className="w-8 h-8 rounded-full bg-black/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-amber-400 text-xs font-bold">
+                  <div className="w-8 h-8 rounded-full bg-black/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#C8A97E] text-xs font-bold">
                     ♪
                   </div>
                 </div>
@@ -181,14 +181,16 @@ export function TikTokReels() {
                   aria-label={`Watch ${reel.title} on TikTok`}
                   className="absolute inset-0 flex items-center justify-center z-10 bg-black/20 group-hover:bg-black/40 transition-colors"
                 >
-                  <div className="w-16 h-16 rounded-full bg-amber-500/90 text-black flex items-center justify-center text-2xl pl-1 shadow-2xl group-hover:scale-110 group-hover:bg-amber-400 transition-all font-bold">
-                    ▶
+                  <div className="w-16 h-16 rounded-full bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] text-white flex items-center justify-center shadow-[0_0_20px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.3)] group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(255,122,0,0.8),_inset_0_0_12px_rgba(255,122,0,0.5)] group-hover:border-[#FFA040] transition-all duration-300 font-bold [filter:drop-shadow(0_1px_2px_rgba(0,0,0,0.9))]">
+                    <svg className="w-7 h-7 fill-white translate-x-0.5" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
                   </div>
                 </a>
 
                 {/* Right Floating Actions with Clean Vector SVGs */}
                 <div className="absolute right-3 bottom-24 z-10 flex flex-col items-center gap-3 text-white text-center">
-                  <div className="w-10 h-10 rounded-full bg-black/70 backdrop-blur-md border border-white/20 flex items-center justify-center text-amber-400">
+                  <div className="w-10 h-10 rounded-full bg-black/70 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#FF8C38]">
                     <svg className="h-5 w-5 fill-current" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                     </svg>
@@ -206,7 +208,7 @@ export function TikTokReels() {
                 {/* Bottom Overlay: Metadata & Link */}
                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black via-black/90 to-transparent p-5 pt-10 z-10 space-y-2">
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full overflow-hidden border border-amber-500/50 relative shrink-0">
+                    <div className="w-6 h-6 rounded-full overflow-hidden border border-[#C8A97E]/50 relative shrink-0">
                       <Image
                         src="/brand/allthesmoke-logo.png"
                         alt="All The Smoke Master Crest"
@@ -245,7 +247,7 @@ export function TikTokReels() {
         {/* Channel Banner */}
         <div className="p-6 rounded-2xl bg-[#161619] border border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-zinc-950 border border-amber-500/50 flex items-center justify-center p-1 shrink-0 overflow-hidden">
+            <div className="w-14 h-14 rounded-full bg-zinc-950 border border-[#C8A97E]/50 shadow-[0_0_12px_rgba(200,169,126,0.15)] flex items-center justify-center p-1 shrink-0 overflow-hidden">
               <Image
                 src="/brand/allthesmoke-logo.png"
                 alt="All The Smoke Master Crest"
