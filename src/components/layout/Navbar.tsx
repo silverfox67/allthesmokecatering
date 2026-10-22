@@ -27,37 +27,37 @@ export function Navbar() {
         >
           <Link
             href="#hero"
-            className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+            className="text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
           >
             Home
           </Link>
           <Link
             href="#experience"
-            className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
           >
             The Experience
           </Link>
           <Link
             href="#packages"
-            className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
           >
             Menus
           </Link>
           <Link
             href="#reels"
-            className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
           >
             Gallery
           </Link>
           <Link
             href="#delivery"
-            className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
           >
             About
           </Link>
           <Link
             href="#quote"
-            className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
           >
             Contact
           </Link>

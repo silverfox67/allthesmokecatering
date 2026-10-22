@@ -34,15 +34,15 @@ export function Hero() {
         aria-label="Service Alert and Dispatch Contacts"
         className="relative z-20 bg-black/60 border-b border-white/10 backdrop-blur-sm text-xs py-2 px-4 sm:px-8"
       >
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between sm:justify-center gap-y-2 gap-x-6 text-zinc-300">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between sm:justify-center gap-y-2 gap-x-6 sm:gap-x-8 text-[#C8A97E]">
           {/* Phone */}
           <a
             href={`tel:${SITE_CONFIG.phoneFormatted}`}
-            className="inline-flex items-center gap-2 hover:text-amber-400 transition-colors font-medium"
+            className="inline-flex items-center gap-2 text-[#C8A97E] hover:text-[#FF7A00] transition-colors font-medium"
             aria-label={`Call Marion Bolden at ${SITE_CONFIG.phone}`}
           >
             <svg
-              className="h-3.5 w-3.5 text-amber-500 shrink-0"
+              className="h-3.5 w-3.5 text-[#C8A97E] shrink-0"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -57,12 +57,10 @@ export function Hero() {
             <span>{SITE_CONFIG.phone}</span>
           </a>
 
-          <span className="hidden sm:inline text-zinc-700" aria-hidden="true">•</span>
-
           {/* Location */}
-          <div className="inline-flex items-center gap-2 font-medium">
+          <div className="inline-flex items-center gap-2 text-[#C8A97E] font-medium">
             <svg
-              className="h-3.5 w-3.5 text-amber-500 shrink-0"
+              className="h-3.5 w-3.5 text-[#C8A97E] shrink-0"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -82,16 +80,14 @@ export function Hero() {
             <span>Based in Chicago</span>
           </div>
 
-          <span className="hidden sm:inline text-zinc-700" aria-hidden="true">•</span>
-
           {/* Email */}
           <a
             href={`mailto:${SITE_CONFIG.brandEmail}`}
-            className="inline-flex items-center gap-2 hover:text-amber-400 transition-colors font-medium"
+            className="inline-flex items-center gap-2 text-[#C8A97E] hover:text-[#FF7A00] transition-colors font-medium"
             aria-label={`Email Marion Bolden at ${SITE_CONFIG.brandEmail}`}
           >
             <svg
-              className="h-3.5 w-3.5 text-amber-500 shrink-0"
+              className="h-3.5 w-3.5 text-[#C8A97E] shrink-0"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -131,38 +127,38 @@ export function Hero() {
           >
             <a
               href="#hero"
-              className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+              className="text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
             >
               Home
             </a>
             <a
               href="#experience"
-              className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
             >
               The Experience
             </a>
             <a
               href="#packages"
-              className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
             >
               Menus
             </a>
             <a
               href="#reels"
-              className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
             >
               Gallery
             </a>
             <a
               href="#delivery"
-              className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
             >
               About
             </a>
             <a
               href="#quote"
               onClick={handleOpenQuoteModal}
-              className="text-zinc-200 hover:text-[#C8A97E] text-sm font-medium tracking-wide transition-colors"
+              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
             >
               Contact
             </a>
@@ -203,28 +199,28 @@ export function Hero() {
           <a
             href="#hero"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-zinc-300 hover:text-[#C8A97E]"
+            className="block text-[#FF7A00]"
           >
             Home
           </a>
           <a
             href="#packages"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-zinc-300 hover:text-[#C8A97E]"
+            className="block text-[#C8A97E] hover:text-[#FF7A00]"
           >
             Menus
           </a>
           <a
             href="#reels"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-zinc-300 hover:text-[#C8A97E]"
+            className="block text-[#C8A97E] hover:text-[#FF7A00]"
           >
             Gallery
           </a>
           <a
             href="#delivery"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-zinc-300 hover:text-[#C8A97E]"
+            className="block text-[#C8A97E] hover:text-[#FF7A00]"
           >
             About
           </a>
@@ -234,7 +230,7 @@ export function Hero() {
               setMobileMenuOpen(false);
               handleOpenQuoteModal(e);
             }}
-            className="block text-[#C8A97E] font-bold"
+            className="block text-[#C8A97E] hover:text-[#FF7A00] font-bold"
           >
             Contact
           </a>
