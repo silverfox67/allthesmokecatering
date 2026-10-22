@@ -173,7 +173,7 @@ export function Hero() {
             <a
               href="#quote"
               onClick={handleOpenQuoteModal}
-              className="inline-flex h-11 px-6 items-center justify-center rounded-[12px] bg-gradient-to-b from-[#EA580C] to-[#9A3412] border border-[#FF8C38]/80 shadow-[0_0_20px_rgba(234,88,12,0.55)] font-display text-sm font-black tracking-wider text-white uppercase transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex h-11 px-6 items-center justify-center rounded-[12px] bg-gradient-to-b from-[#EA580C] to-[#9A3412] border-2 border-[#FF7A00] shadow-[0_0_16px_rgba(255,106,0,0.45)] font-display text-base sm:text-lg font-bold tracking-wide text-white uppercase [text-shadow:_0_2px_4px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               REQUEST A QUOTE
             </a>
@@ -269,14 +269,14 @@ export function Hero() {
           <div className="pt-2 flex flex-wrap items-center gap-4">
             <a
               href="#packages"
-              className="inline-flex h-[54px] px-8 items-center justify-center rounded-[14px] bg-gradient-to-b from-[#EA580C] to-[#9A3412] border border-[#FF8C38]/80 shadow-[0_0_24px_rgba(234,88,12,0.65)] font-display text-lg font-black tracking-wider text-white uppercase transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex h-[48px] px-7 items-center justify-center rounded-[12px] bg-gradient-to-b from-[#EA580C] to-[#9A3412] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,106,0,0.45)] font-display text-xl sm:text-2xl font-bold tracking-wide text-white uppercase [text-shadow:_0_2px_4px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               VIEW OUR MENUS
             </a>
             <a
               href="#quote"
               onClick={handleOpenQuoteModal}
-              className="inline-flex h-[54px] px-8 items-center justify-center rounded-[14px] bg-[#0A0A0A]/70 border border-[#C8A97E]/70 backdrop-blur-md font-display text-lg font-black tracking-wider text-[#C8A97E] uppercase transition-colors hover:border-[#FF8C38] hover:text-white"
+              className="inline-flex h-[48px] px-7 items-center justify-center rounded-[12px] bg-black/60 border border-[#C8A97E] backdrop-blur-md font-display text-xl sm:text-2xl font-bold tracking-wide text-[#C8A97E] uppercase [text-shadow:_0_2px_4px_rgba(0,0,0,0.95)] transition-all hover:border-[#FF7A00] hover:text-white"
             >
               BOOK YOUR DATE
             </a>
