@@ -286,35 +286,33 @@ export function Hero() {
       </div>
 
       {/* 5. UNIFIED TRUST BAR (Single Tier React Component) */}
-      <div className="relative z-20 bg-black/80 backdrop-blur-md border-t border-zinc-800/80">
-        <div className="mx-auto max-w-6xl px-6 py-5">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center">
-            
-            {/* Feature 1: On-Site Pitmasters */}
-            <div className="flex items-center justify-center gap-3.5">
-              <svg className="h-8 w-8 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 13.87A4 4 0 017.41 6.3 5.11 5.11 0 0112 4a5.11 5.11 0 014.59 2.3A4 4 0 0118 13.87V17H6v-3.13zM6 17h12M6 20h12" />
-              </svg>
-              <span className="font-display font-bold text-lg tracking-wide text-[#C8A97E]">On-Site Pitmasters</span>
-            </div>
-
-            {/* Feature 2: Tailored Event Menus */}
-            <div className="flex items-center justify-center gap-3.5">
-              <svg className="h-8 w-8 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-              </svg>
-              <span className="font-display font-bold text-lg tracking-wide text-[#C8A97E]">Tailored Event Menus</span>
-            </div>
-
-            {/* Feature 3: Full-Service Hospitality */}
-            <div className="flex items-center justify-center gap-3.5">
-              <svg className="h-8 w-8 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-              <span className="font-display font-bold text-lg tracking-wide text-[#C8A97E]">Full-Service Hospitality</span>
-            </div>
-
+      <div className="relative z-20 border-t border-zinc-800/80 bg-black/80 backdrop-blur-md">
+        <div className="w-full max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-6">
+          
+          {/* Feature 1: On-Site Pitmasters */}
+          <div className="flex items-center gap-3.5">
+            <svg className="h-8 w-8 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2 17c3.5-1.5 6.5-2 10-2s6.5.5 10 2M6.5 15.2c0-4.2 1.5-8.2 5.5-8.2s5.5 4 5.5 8.2" />
+            </svg>
+            <span className="font-display text-lg font-bold tracking-wide text-[#C8A97E]">On-Site Pitmasters</span>
           </div>
+
+          {/* Feature 2: Tailored Event Menus */}
+          <div className="flex items-center gap-3.5">
+            <svg className="h-8 w-8 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+            <span className="font-display text-lg font-bold tracking-wide text-[#C8A97E]">Tailored Event Menus</span>
+          </div>
+
+          {/* Feature 3: Full-Service Hospitality */}
+          <div className="flex items-center gap-3.5">
+            <svg className="h-8 w-8 text-[#C8A97E] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+            <span className="font-display text-lg font-bold tracking-wide text-[#C8A97E]">Full-Service Hospitality</span>
+          </div>
+
         </div>
       </div>
     </section>
