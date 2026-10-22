@@ -114,12 +114,15 @@ export function DeliveryChecker() {
           </p>
         </div>
 
-        {/* Calculator Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-stone-200/80 p-6 sm:p-8 max-w-3xl mx-auto space-y-8">
-          <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Calculator Card: Cast-Iron Charcoal Card on Butcher Paper */}
+        <div className="bg-[#141210] rounded-2xl sm:rounded-3xl shadow-2xl shadow-stone-900/40 border border-stone-800/80 p-6 sm:p-8 max-w-3xl mx-auto space-y-8 relative overflow-hidden">
+          {/* Subtle Ambient Amber Glow inside the dark card */}
+          <div className="pointer-events-none absolute -top-16 -right-16 h-48 w-48 rounded-full bg-amber-500/10 blur-[60px]" />
+
+          <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
             <label
               htmlFor="zip-input"
-              className="block text-xs font-bold text-stone-700 uppercase tracking-wider"
+              className="block text-xs font-bold text-stone-300 uppercase tracking-wider"
             >
               Enter Event or Venue ZIP Code:
             </label>
@@ -132,51 +135,51 @@ export function DeliveryChecker() {
                 value={zipInput}
                 onChange={(e) => setZipInput(e.target.value)}
                 placeholder="e.g. 60634, 60607, 60540"
-                className="w-full h-12 px-4 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-colors"
+                className="w-full h-12 px-4 rounded-xl bg-[#0A0A0A] border border-stone-700/80 text-white placeholder:text-stone-500 font-mono text-base focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-colors"
                 aria-describedby="zip-error"
                 required
               />
               <button
                 type="submit"
-                className="h-12 px-6 rounded-xl bg-gradient-to-r from-[#EA580C] to-[#9A3412] text-white font-display font-black text-sm tracking-wider uppercase shadow-[0_4px_16px_rgba(234,88,12,0.35)] hover:scale-[1.02] active:scale-[0.98] transition-transform"
+                className="h-12 px-6 rounded-xl bg-gradient-to-r from-[#EA580C] to-[#9A3412] text-white font-display font-black text-sm tracking-wider uppercase shadow-[0_4px_16px_rgba(234,88,12,0.35)] hover:scale-[1.02] active:scale-[0.98] transition-transform flex items-center justify-center shrink-0"
               >
                 CHECK DELIVERY ZONE
               </button>
             </div>
             {errorMsg && (
-              <p id="zip-error" className="text-xs text-red-600 font-semibold" role="alert">
+              <p id="zip-error" className="text-xs text-red-400 font-semibold" role="alert">
                 {errorMsg}
               </p>
             )}
 
             {/* Quick Test Chips */}
-            <div className="pt-2 flex flex-wrap items-center gap-2 text-xs text-stone-500">
-              <span className="font-semibold text-stone-600">Quick Test:</span>
+            <div className="pt-2 flex flex-wrap items-center gap-2 text-xs text-stone-400">
+              <span className="font-semibold text-stone-400">Quick Test:</span>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60634")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200 transition-colors"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#211E1A] hover:bg-[#2C2722] text-stone-300 border border-stone-700/60 transition-colors"
               >
                 60634 (Hub)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60607")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200 transition-colors"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#211E1A] hover:bg-[#2C2722] text-stone-300 border border-stone-700/60 transition-colors"
               >
                 60607 (West Loop)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60201")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200 transition-colors"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#211E1A] hover:bg-[#2C2722] text-stone-300 border border-stone-700/60 transition-colors"
               >
                 60201 (Evanston)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60540")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200 transition-colors"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#211E1A] hover:bg-[#2C2722] text-stone-300 border border-stone-700/60 transition-colors"
               >
                 60540 (Naperville)
               </button>
@@ -184,61 +187,61 @@ export function DeliveryChecker() {
           </form>
 
           {/* Dynamic Result Panel */}
-          <div aria-live="polite">
+          <div aria-live="polite" className="relative z-10">
             {result && (
-              <div className="p-6 rounded-2xl bg-[#FAF8F5] border border-amber-500/40 space-y-6 shadow-sm animate-in fade-in duration-300">
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-200 pb-4">
+              <div className="p-6 rounded-2xl bg-[#0A0A0A] border border-amber-500/40 space-y-6 shadow-inner animate-in fade-in duration-300">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-800 pb-4">
                   <div>
-                    <span className="text-[11px] font-mono text-stone-500 block uppercase">
-                      Calculated Result for ZIP: <strong className="text-stone-900">{result.zip}</strong>
+                    <span className="text-[11px] font-mono text-stone-400 block uppercase">
+                      Calculated Result for ZIP: <strong className="text-white">{result.zip}</strong>
                     </span>
-                    <h3 className="font-display text-2xl sm:text-3xl font-bold text-stone-900">
+                    <h3 className="font-display text-2xl sm:text-3xl font-bold text-white">
                       {result.zone.name}
                     </h3>
                   </div>
-                  <span className="bg-[#B45309] text-white text-xs font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
+                  <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-black text-xs font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
                     Zone {result.zone.zone} Active
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-white p-4 rounded-xl border border-stone-200 space-y-1 shadow-sm">
-                    <span className="text-xs text-stone-500 block font-semibold uppercase">
+                  <div className="bg-[#181512] p-4 rounded-xl border border-stone-800 space-y-1">
+                    <span className="text-xs text-stone-400 block font-semibold uppercase">
                       Estimated Transit Fee:
                     </span>
-                    <span className="text-3xl font-black text-[#B45309]">
+                    <span className="text-3xl font-black text-amber-400">
                       ${result.zone.fee.toFixed(2)}
                     </span>
-                    <p className="text-[11px] text-stone-500">
+                    <p className="text-[11px] text-stone-400">
                       Cambro insulated heated carrier dispatch
                     </p>
                   </div>
 
-                  <div className="bg-white p-4 rounded-xl border border-stone-200 space-y-1 shadow-sm">
-                    <span className="text-xs text-stone-500 block font-semibold uppercase">
+                  <div className="bg-[#181512] p-4 rounded-xl border border-stone-800 space-y-1">
+                    <span className="text-xs text-stone-400 block font-semibold uppercase">
                       Minimum Food Order:
                     </span>
-                    <span className="text-3xl font-black text-stone-900">
+                    <span className="text-3xl font-black text-white">
                       ${result.zone.minOrder.toFixed(2)}
                     </span>
-                    <p className="text-[11px] text-stone-500">
+                    <p className="text-[11px] text-stone-400">
                       Food package &amp; pan subtotal threshold
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-2 text-xs text-stone-600 pt-1">
-                  <span className="font-bold text-stone-800 block uppercase">
+                <div className="space-y-2 text-xs text-stone-300 pt-1">
+                  <span className="font-bold text-stone-200 block uppercase">
                     Delivery Corridor Coverage:
                   </span>
-                  <p className="leading-relaxed text-stone-600">
+                  <p className="leading-relaxed text-stone-400">
                     {result.zone.description}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-stone-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <span className="text-xs text-stone-500 flex items-center gap-1.5">
-                    <svg className="h-4 w-4 text-[#B45309]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="pt-4 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <span className="text-xs text-stone-400 flex items-center gap-1.5">
+                    <svg className="h-4 w-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 17a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4zM3 9h12a2 2 0 012 2v6H3V9zm14 3h3.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V17h-7v-5zM6 9V5a1 1 0 011-1h6a1 1 0 011 1v4" />
                     </svg>
                     Dispatched from 3401 N Orange Ave, Chicago 60634
@@ -263,29 +266,29 @@ export function DeliveryChecker() {
           </div>
 
           {/* Static Zone Overview Matrix */}
-          <div className="pt-6 border-t border-stone-200 space-y-3">
-            <span className="text-xs font-bold text-stone-700 uppercase tracking-wider block">
+          <div className="pt-6 border-t border-stone-800/80 space-y-3 relative z-10">
+            <span className="text-xs font-bold text-stone-400 uppercase tracking-wider block">
               Official Chicagoland Zone Matrix:
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-              <div className="rounded-xl border border-stone-200 bg-[#FAF8F5] p-4 text-center transition-all hover:border-amber-500/50 hover:shadow-md">
-                <span className="text-stone-900 font-bold text-sm block">Zone 1 (0–10 mi)</span>
-                <span className="text-[#B45309] font-black text-lg block">$35 Fee</span>
-                <span className="text-stone-600 text-xs block">$150 Min Order</span>
+              <div className="rounded-xl border border-stone-800/80 bg-[#0A0A0A] p-4 text-center transition-all hover:border-amber-500/50 hover:shadow-lg space-y-1">
+                <span className="text-stone-200 font-bold text-sm block">Zone 1 (0–10 mi)</span>
+                <span className="text-amber-400 font-black text-lg block">$35 Fee</span>
+                <span className="text-stone-400 text-xs block">$150 Min Order</span>
                 <span className="text-stone-500 text-xs block">NW Side, O’Hare, Portage Park</span>
               </div>
 
-              <div className="rounded-xl border border-stone-200 bg-[#FAF8F5] p-4 text-center transition-all hover:border-amber-500/50 hover:shadow-md">
-                <span className="text-stone-900 font-bold text-sm block">Zone 2 (10–20 mi)</span>
-                <span className="text-[#B45309] font-black text-lg block">$65 Fee</span>
-                <span className="text-stone-600 text-xs block">$300 Min Order</span>
+              <div className="rounded-xl border border-stone-800/80 bg-[#0A0A0A] p-4 text-center transition-all hover:border-amber-500/50 hover:shadow-lg space-y-1">
+                <span className="text-stone-200 font-bold text-sm block">Zone 2 (10–20 mi)</span>
+                <span className="text-amber-400 font-black text-lg block">$65 Fee</span>
+                <span className="text-stone-400 text-xs block">$300 Min Order</span>
                 <span className="text-stone-500 text-xs block">The Loop, West Loop, Evanston</span>
               </div>
 
-              <div className="rounded-xl border border-stone-200 bg-[#FAF8F5] p-4 text-center transition-all hover:border-amber-500/50 hover:shadow-md">
-                <span className="text-stone-900 font-bold text-sm block">Zone 3 (20–35 mi)</span>
-                <span className="text-[#B45309] font-black text-lg block">$95 Fee</span>
-                <span className="text-stone-600 text-xs block">$500 Min Order</span>
+              <div className="rounded-xl border border-stone-800/80 bg-[#0A0A0A] p-4 text-center transition-all hover:border-amber-500/50 hover:shadow-lg space-y-1">
+                <span className="text-stone-200 font-bold text-sm block">Zone 3 (20–35 mi)</span>
+                <span className="text-amber-400 font-black text-lg block">$95 Fee</span>
+                <span className="text-stone-400 text-xs block">$500 Min Order</span>
                 <span className="text-stone-500 text-xs block">Naperville, Aurora, South Side</span>
               </div>
             </div>
