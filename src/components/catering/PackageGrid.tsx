@@ -38,28 +38,28 @@ function SpotlightCard({
     setCoords((prev) => ({ ...prev, active: false }));
   };
 
-  // If highlighted with animated gold border-beam effect
+  // If highlighted with animated amber/gold border-beam effect
   if (isHighlighted) {
     return (
       <div
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="relative p-[2px] rounded-2xl overflow-hidden shadow-2xl transition-all duration-300"
+        className="relative p-[2px] rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 lg:-translate-y-2 z-20"
       >
-        {/* Animated Gold Border Beam */}
+        {/* Animated Illuminated Amber Border Beam */}
         <div
           aria-hidden="true"
-          className="absolute inset-[-150%] animate-border-beam bg-[conic-gradient(from_0deg_at_50%_50%,transparent_0deg,transparent_60deg,#F59E0B_120deg,#D97706_180deg,transparent_240deg)]"
+          className="absolute inset-[-150%] animate-border-beam bg-[conic-gradient(from_0deg_at_50%_50%,transparent_0deg,transparent_60deg,#EA580C_120deg,#FF8C38_180deg,transparent_240deg)]"
         />
 
         {/* Inner Card Container */}
         <div
           style={{
             background: coords.active
-              ? `radial-gradient(400px circle at ${coords.x}px ${coords.y}px, rgba(245, 158, 11, 0.15), rgba(20, 20, 22, 0.98) 70%)`
+              ? `radial-gradient(400px circle at ${coords.x}px ${coords.y}px, rgba(234, 88, 12, 0.18), rgba(20, 20, 22, 0.98) 70%)`
               : undefined,
           }}
-          className={`relative z-10 bg-[#161619] rounded-[14px] p-7 flex flex-col justify-between h-full border border-amber-500/50 shadow-xl ${className}`}
+          className={`relative z-10 bg-[#161619] rounded-[14px] p-7 flex flex-col justify-between h-full border-2 border-[#EA580C]/80 shadow-[0_0_30px_rgba(234,88,12,0.25)] ${className}`}
         >
           {children}
         </div>
@@ -74,10 +74,10 @@ function SpotlightCard({
       onMouseLeave={handleMouseLeave}
       style={{
         background: coords.active
-          ? `radial-gradient(400px circle at ${coords.x}px ${coords.y}px, rgba(245, 158, 11, 0.12), rgba(20, 20, 22, 0.92) 70%)`
+          ? `radial-gradient(400px circle at ${coords.x}px ${coords.y}px, rgba(200, 169, 126, 0.12), rgba(20, 20, 22, 0.92) 70%)`
           : undefined,
       }}
-      className={`relative rounded-2xl p-7 flex flex-col justify-between border border-zinc-800 hover:border-zinc-700 bg-[#161619]/90 transition-all duration-300 shadow-xl ${className}`}
+      className={`relative rounded-2xl p-7 flex flex-col justify-between border border-zinc-800 hover:border-[#C8A97E]/40 bg-[#161619]/90 transition-all duration-300 shadow-xl ${className}`}
     >
       {children}
     </div>
@@ -102,12 +102,12 @@ export function PackageGrid() {
       <div className="max-w-7xl mx-auto space-y-12 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <span className="text-amber-400 text-xs uppercase font-bold tracking-widest bg-zinc-900 px-3.5 py-1.5 rounded-full border border-amber-500/30 inline-block">
-            ★ Live-Fire Smokehouse Menus ★
+          <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
+            ★ SMOKEHOUSE MENU TIERS ★
           </span>
           <h2
             id="packages-heading"
-            className="font-display text-4xl sm:text-6xl font-black tracking-tight text-white uppercase leading-none"
+            className="font-display text-4xl sm:text-6xl font-bold tracking-tight text-[#F4EFEA] leading-tight"
           >
             Spotlight Catering Packages
           </h2>
@@ -130,7 +130,7 @@ export function PackageGrid() {
               onClick={() => setActiveTab("per-person")}
               className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all min-h-[48px] flex items-center justify-center ${
                 activeTab === "per-person"
-                  ? "bg-amber-500 text-black shadow-md"
+                  ? "bg-[#C8A97E] text-[#0A0A0A] shadow-md font-extrabold"
                   : "text-zinc-300 hover:text-white hover:bg-zinc-900"
               }`}
             >
@@ -144,7 +144,7 @@ export function PackageGrid() {
               onClick={() => setActiveTab("turnkey")}
               className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all min-h-[48px] flex items-center justify-center ${
                 activeTab === "turnkey"
-                  ? "bg-amber-500 text-black shadow-md"
+                  ? "bg-[#C8A97E] text-[#0A0A0A] shadow-md font-extrabold"
                   : "text-zinc-300 hover:text-white hover:bg-zinc-900"
               }`}
             >
@@ -158,7 +158,7 @@ export function PackageGrid() {
               onClick={() => setActiveTab("meal-prep")}
               className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all min-h-[48px] flex items-center justify-center ${
                 activeTab === "meal-prep"
-                  ? "bg-amber-500 text-black shadow-md"
+                  ? "bg-[#C8A97E] text-[#0A0A0A] shadow-md font-extrabold"
                   : "text-zinc-300 hover:text-white hover:bg-zinc-900"
               }`}
             >
@@ -184,12 +184,12 @@ export function PackageGrid() {
                 >
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs uppercase font-extrabold tracking-widest text-amber-400">
+                      <span className={`text-xs uppercase font-extrabold tracking-widest ${isPitmasterFeast ? "text-[#FF8C38]" : "text-[#C8A97E]"}`}>
                         {pkg.minimumGuests}+ Guests Minimum
                       </span>
                       {isPitmasterFeast && (
-                        <span className="text-[10px] bg-gradient-to-r from-amber-500 to-amber-600 text-black font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow">
-                          ★ Pitmaster Gold Pick
+                        <span className="inline-flex items-center gap-1 text-[11px] bg-gradient-to-r from-[#EA580C] to-[#9A3412] border border-[#FF7A00]/80 text-white font-display font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-[0_0_14px_rgba(234,88,12,0.5)]">
+                          ★ MOST POPULAR ★
                         </span>
                       )}
                     </div>
@@ -199,7 +199,7 @@ export function PackageGrid() {
                     </h3>
 
                     <div className="flex items-baseline gap-2">
-                      <span className="text-4xl sm:text-5xl font-black text-amber-400">
+                      <span className={`text-4xl sm:text-5xl font-black ${isPitmasterFeast ? "text-[#FF8C38]" : "text-[#C8A97E]"}`}>
                         ${pkg.pricePerPerson.toFixed(2)}
                       </span>
                       <span className="text-sm text-zinc-400 font-medium">
@@ -218,7 +218,7 @@ export function PackageGrid() {
                       <ul className="text-xs text-zinc-300 space-y-1">
                         {pkg.meatOptions.map((meat, idx) => (
                           <li key={idx} className="flex items-center gap-2">
-                            <span className="text-amber-400 font-bold">▪</span>
+                            <span className={`${isPitmasterFeast ? "text-[#FF8C38]" : "text-[#C8A97E]"} font-bold`}>▪</span>
                             <span>{meat}</span>
                           </li>
                         ))}
@@ -232,7 +232,7 @@ export function PackageGrid() {
                       <ul className="text-xs text-zinc-300 space-y-1">
                         {pkg.sideOptions.map((side, idx) => (
                           <li key={idx} className="flex items-center gap-2">
-                            <span className="text-amber-400 font-bold">▪</span>
+                            <span className={`${isPitmasterFeast ? "text-[#FF8C38]" : "text-[#C8A97E]"} font-bold`}>▪</span>
                             <span>{side}</span>
                           </li>
                         ))}
@@ -242,7 +242,9 @@ export function PackageGrid() {
                     <div className="pt-3 border-t border-zinc-800 space-y-1 text-xs text-zinc-400">
                       <span className="font-bold text-zinc-300 block">Includes:</span>
                       {pkg.includes.map((inc, idx) => (
-                        <p key={idx} className="text-zinc-300">✓ {inc}</p>
+                        <p key={idx} className="text-zinc-300">
+                          <span className={isPitmasterFeast ? "text-[#FF8C38]" : "text-[#C8A97E]"}>✓</span> {inc}
+                        </p>
                       ))}
                     </div>
                   </div>
@@ -282,15 +284,15 @@ export function PackageGrid() {
             className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch pt-4"
           >
             {TURNKEY_BUNDLES.map((bundle) => (
-              <SpotlightCard key={bundle.id}>
+              <SpotlightCard key={bundle.id} isHighlighted={bundle.popular}>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs uppercase font-extrabold text-amber-400 tracking-wider">
+                    <span className={`text-xs uppercase font-extrabold tracking-wider ${bundle.popular ? "text-[#FF8C38]" : "text-[#C8A97E]"}`}>
                       {bundle.serves}
                     </span>
                     {bundle.popular && (
-                      <span className="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/40 px-2.5 py-0.5 rounded-full font-bold">
-                        Crowd Favorite
+                      <span className="inline-flex items-center gap-1 text-[11px] bg-gradient-to-r from-[#EA580C] to-[#9A3412] border border-[#FF7A00]/80 text-white font-display font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-[0_0_12px_rgba(234,88,12,0.4)]">
+                        ★ MOST POPULAR ★
                       </span>
                     )}
                   </div>
@@ -299,7 +301,7 @@ export function PackageGrid() {
                     {bundle.name}
                   </h3>
 
-                  <div className="text-4xl sm:text-5xl font-black text-white">
+                  <div className={`text-4xl sm:text-5xl font-black ${bundle.popular ? "text-[#FF8C38]" : "text-[#C8A97E]"}`}>
                     ${bundle.price.toFixed(2)}
                   </div>
 
@@ -314,7 +316,7 @@ export function PackageGrid() {
                     <ul className="text-xs text-zinc-300 space-y-2">
                       {bundle.items.map((item, idx) => (
                         <li key={idx} className="flex items-start gap-2">
-                          <span className="text-amber-400 font-bold mt-0.5">▪</span>
+                          <span className={`${bundle.popular ? "text-[#FF8C38]" : "text-[#C8A97E]"} font-bold mt-0.5`}>▪</span>
                           <span>{item}</span>
                         </li>
                       ))}
@@ -355,69 +357,79 @@ export function PackageGrid() {
             aria-labelledby="tab-meal-prep"
             className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch pt-4"
           >
-            {MEAL_PREP_TIERS.map((tier) => (
-              <SpotlightCard key={tier.id}>
-                <div className="space-y-4">
-                  <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                    {tier.mealCount} Vacuum-Sealed Meals
-                  </span>
-
-                  <h3 className="font-display text-3xl sm:text-4xl text-white tracking-wide leading-none">
-                    {tier.name}
-                  </h3>
-
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-4xl sm:text-5xl font-black text-white">
-                      ${tier.price.toFixed(2)}
-                    </span>
-                    <span className="text-xs text-zinc-400">
-                      (${tier.pricePerMeal.toFixed(2)}/meal)
-                    </span>
-                  </div>
-
-                  <p className="text-xs text-zinc-300 min-h-[40px]">
-                    {tier.description}
-                  </p>
-
-                  <div className="pt-4 border-t border-zinc-800 space-y-2">
-                    <span className="text-xs font-bold text-zinc-200 block uppercase tracking-wider">
-                      Featured Smoked Proteins:
-                    </span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {tier.proteinHighlights.map((prot, idx) => (
-                        <span
-                          key={idx}
-                          className="text-[11px] bg-zinc-900 border border-zinc-700 px-2.5 py-1 rounded text-zinc-300"
-                        >
-                          {prot}
+            {MEAL_PREP_TIERS.map((tier) => {
+              const isPopularPrep = tier.id === "prep-10";
+              return (
+                <SpotlightCard key={tier.id} isHighlighted={isPopularPrep}>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className={`text-xs font-bold uppercase tracking-wider ${isPopularPrep ? "text-[#FF8C38]" : "text-[#C8A97E]"}`}>
+                        {tier.mealCount} Vacuum-Sealed Meals
+                      </span>
+                      {isPopularPrep && (
+                        <span className="inline-flex items-center gap-1 text-[11px] bg-gradient-to-r from-[#EA580C] to-[#9A3412] border border-[#FF7A00]/80 text-white font-display font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-[0_0_12px_rgba(234,88,12,0.4)]">
+                          ★ MOST POPULAR ★
                         </span>
-                      ))}
+                      )}
+                    </div>
+
+                    <h3 className="font-display text-3xl sm:text-4xl text-white tracking-wide leading-none">
+                      {tier.name}
+                    </h3>
+
+                    <div className="flex items-baseline gap-2">
+                      <span className={`text-4xl sm:text-5xl font-black ${isPopularPrep ? "text-[#FF8C38]" : "text-[#C8A97E]"}`}>
+                        ${tier.price.toFixed(2)}
+                      </span>
+                      <span className="text-xs text-zinc-400">
+                        (${tier.pricePerMeal.toFixed(2)}/meal)
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-zinc-300 min-h-[40px]">
+                      {tier.description}
+                    </p>
+
+                    <div className="pt-4 border-t border-zinc-800 space-y-2">
+                      <span className="text-xs font-bold text-zinc-200 block uppercase tracking-wider">
+                        Featured Smoked Proteins:
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {tier.proteinHighlights.map((prot, idx) => (
+                          <span
+                            key={idx}
+                            className="text-[11px] bg-zinc-900 border border-zinc-700 px-2.5 py-1 rounded text-zinc-300"
+                          >
+                            {prot}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="pt-6 mt-6 border-t border-zinc-800">
-                  <a
-                    href={`#quote?prep=${tier.id}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (typeof window !== "undefined") {
-                        window.dispatchEvent(
-                          new CustomEvent("open-quote-modal", { detail: { packageId: "southside-smoke" } })
-                        );
-                      }
-                    }}
-                    className={`w-full min-h-[48px] px-6 py-3.5 items-center justify-center rounded-[14px] font-display text-lg sm:text-xl font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex text-center ${
-                      tier.id === "prep-10"
-                        ? "bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] text-white [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)]"
-                        : "bg-black/60 border border-[#C8A97E] backdrop-blur-md shadow-[0_0_12px_rgba(200,169,126,0.15)] text-[#C8A97E] hover:border-[#FF7A00] hover:text-white hover:bg-black/80 hover:shadow-[0_0_18px_rgba(255,122,0,0.4)] [text-shadow:_0_1px_2px_rgba(0,0,0,0.95)]"
-                    }`}
-                  >
-                    Order {tier.name}
-                  </a>
-                </div>
-              </SpotlightCard>
-            ))}
+                  <div className="pt-6 mt-6 border-t border-zinc-800">
+                    <a
+                      href={`#quote?prep=${tier.id}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (typeof window !== "undefined") {
+                          window.dispatchEvent(
+                            new CustomEvent("open-quote-modal", { detail: { packageId: "southside-smoke" } })
+                          );
+                        }
+                      }}
+                      className={`w-full min-h-[48px] px-6 py-3.5 items-center justify-center rounded-[14px] font-display text-lg sm:text-xl font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex text-center ${
+                        isPopularPrep
+                          ? "bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] text-white [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)]"
+                          : "bg-black/60 border border-[#C8A97E] backdrop-blur-md shadow-[0_0_12px_rgba(200,169,126,0.15)] text-[#C8A97E] hover:border-[#FF7A00] hover:text-white hover:bg-black/80 hover:shadow-[0_0_18px_rgba(255,122,0,0.4)] [text-shadow:_0_1px_2px_rgba(0,0,0,0.95)]"
+                      }`}
+                    >
+                      Order {tier.name}
+                    </a>
+                  </div>
+                </SpotlightCard>
+              );
+            })}
           </div>
         )}
       </div>
