@@ -224,7 +224,7 @@ export async function POST(req: Request) {
     `;
 
     // 6. Dispatch Dual Emails via Brevo REST API
-    const brevoApiKey = process.env.BREVO_API_KEY;
+    const brevoApiKey = process.env.BREVO_API_KEY || process.env.BREVO_KEY || process.env.BREVO_TOKEN || process.env.SENDINBLUE_API_KEY;
     if (brevoApiKey) {
       try {
         // Dispatch A: Admin Kitchen Slip to boldenmarion83@gmail.com + fallback bbqcateringking83@gmail.com
@@ -238,8 +238,9 @@ export async function POST(req: Request) {
           body: JSON.stringify({
             sender: {
               name: "ATS Smokehouse Dispatch",
-              email: process.env.BREVO_SENDER_EMAIL || "dispatch@allthesmokecatering.com",
+              email: process.env.BREVO_SENDER_EMAIL || "info@allthesmokecatering.com",
             },
+            replyTo: { email: data.email, name: data.name },
             to: [{ email: SITE_CONFIG.primaryAdminEmail, name: "Marion Bolden" }],
             cc: [{ email: SITE_CONFIG.secondaryAdminEmail, name: "ATS Kitchen Admin" }],
             subject: `🔥 NEW CATERING QUOTE #${ticketId}: ${data.name} (${data.guestCount} Guests) - ${data.eventDate}`,
@@ -260,6 +261,7 @@ export async function POST(req: Request) {
               name: "Marion Bolden | All The Smoke",
               email: process.env.BREVO_SENDER_EMAIL || "marion@allthesmokecatering.com",
             },
+            replyTo: { email: "marion@allthesmokecatering.com", name: "Marion Bolden" },
             to: [{ email: data.email, name: data.name }],
             subject: `Smokehouse Inquiry Received #${ticketId} | All The Smoke BBQ & Catering`,
             htmlContent: clientAutoResponderHtml,

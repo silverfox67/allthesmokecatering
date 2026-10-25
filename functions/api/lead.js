@@ -73,7 +73,7 @@ export async function onRequestPost(context) {
     const ticketId = 'ATS-QUOTE-' + Math.floor(1000 + Math.random() * 9000);
 
     // 3. Dispatch Emails via Brevo REST API if configured
-    const brevoApiKey = env.BREVO_API_KEY;
+    const brevoApiKey = env.BREVO_API_KEY || env.BREVO_KEY || env.BREVO_TOKEN || env.SENDINBLUE_API_KEY;
     if (brevoApiKey) {
       try {
         const adminHtml = `
@@ -82,7 +82,7 @@ export async function onRequestPost(context) {
               <h1 style="color: #F59E0B; margin: 0;">ALL THE SMOKE BBQ &amp; CATERING</h1>
               <p style="color: #888;">COMMISSARY KITCHEN DISPATCH SLIP • TICKET #${ticketId}</p>
               <hr style="border-color: #333;" />
-              <p><strong>Client:</strong> ${name} | <a href="tel:${phone}" style="color:#F59E0B;">${phone}</a> | ${email}</p>
+              <p><strong>Client:</strong> ${name} | <a href="tel:${phone}" style="color:#F59E0B;">${phone}</a> | <a href="mailto:${email}" style="color:#FAFAFA;">${email}</a></p>
               <p><strong>Date:</strong> ${eventDate} | <strong>Guests:</strong> ${guestCount}</p>
               <p><strong>Package:</strong> ${packageName} (${packageId})</p>
               <p><strong>Service:</strong> ${serviceStyle}</p>
@@ -106,6 +106,7 @@ export async function onRequestPost(context) {
           </div>
         `;
 
+        // Dispatch A: Admin Kitchen Notification (Sender: info@allthesmokecatering.com)
         await fetch('https://api.brevo.com/v3/smtp/email', {
           method: 'POST',
           headers: {
@@ -114,7 +115,11 @@ export async function onRequestPost(context) {
             Accept: 'application/json',
           },
           body: JSON.stringify({
-            sender: { name: 'ATS Smokehouse Dispatch', email: env.BREVO_SENDER_EMAIL || 'dispatch@allthesmokecatering.com' },
+            sender: {
+              name: 'ATS Smokehouse Dispatch',
+              email: env.BREVO_SENDER_EMAIL || 'info@allthesmokecatering.com',
+            },
+            replyTo: { email: email, name: name },
             to: [{ email: 'boldenmarion83@gmail.com', name: 'Marion Bolden' }],
             cc: [{ email: 'bbqcateringking83@gmail.com', name: 'ATS Kitchen' }],
             subject: `🔥 NEW CATERING QUOTE #${ticketId}: ${name} (${guestCount} Guests) - ${eventDate}`,
@@ -122,6 +127,7 @@ export async function onRequestPost(context) {
           }),
         });
 
+        // Dispatch B: Client Auto-Responder (Sender: marion@allthesmokecatering.com)
         await fetch('https://api.brevo.com/v3/smtp/email', {
           method: 'POST',
           headers: {
@@ -130,7 +136,11 @@ export async function onRequestPost(context) {
             Accept: 'application/json',
           },
           body: JSON.stringify({
-            sender: { name: 'Marion Bolden | All The Smoke', email: env.BREVO_SENDER_EMAIL || 'marion@allthesmokecatering.com' },
+            sender: {
+              name: 'Marion Bolden | All The Smoke',
+              email: env.BREVO_SENDER_EMAIL || 'marion@allthesmokecatering.com',
+            },
+            replyTo: { email: 'marion@allthesmokecatering.com', name: 'Marion Bolden' },
             to: [{ email: email, name: name }],
             subject: `Smokehouse Inquiry Received #${ticketId} | All The Smoke BBQ & Catering`,
             htmlContent: clientHtml,

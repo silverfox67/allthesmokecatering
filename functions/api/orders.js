@@ -54,7 +54,7 @@ export async function onRequestPost(context) {
       stripeUrl: stripePaymentUrl,
     };
 
-    const brevoApiKey = env.BREVO_API_KEY;
+    const brevoApiKey = env.BREVO_API_KEY || env.BREVO_KEY || env.BREVO_TOKEN || env.SENDINBLUE_API_KEY;
     if (brevoApiKey) {
       try {
         await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -65,14 +65,18 @@ export async function onRequestPost(context) {
             Accept: 'application/json',
           },
           body: JSON.stringify({
-            sender: { name: 'ATS Order Dispatch', email: env.BREVO_SENDER_EMAIL || 'orders@allthesmokecatering.com' },
+            sender: {
+              name: 'ATS Order Dispatch',
+              email: env.BREVO_SENDER_EMAIL || 'info@allthesmokecatering.com',
+            },
+            replyTo: email ? { email: email, name: customerName } : undefined,
             to: [{ email: 'boldenmarion83@gmail.com', name: 'Marion Bolden' }],
             cc: [{ email: 'bbqcateringking83@gmail.com', name: 'ATS Kitchen' }],
             subject: `🥩 NEW TURNKEY ORDER ${orderNumber} - ${customerName} ($${total.toFixed(2)})`,
             htmlContent: `
               <h2>NEW PRE-ORDER TICKET: ${orderNumber}</h2>
               <p><strong>Customer:</strong> ${customerName} (${phone})</p>
-              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Email:</strong> ${email || 'N/A'}</p>
               <p><strong>Fulfillment:</strong> ${fulfillmentType.toUpperCase()} on ${targetDate} (${timeSlot})</p>
               <p><strong>Total:</strong> $${total.toFixed(2)}</p>
             `,
