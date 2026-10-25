@@ -35,48 +35,56 @@ export interface PitmasterNote {
 
 const CATEGORY_META: Record<
   NoteCategory,
-  { label: string; badgeClass: string }
+  { label: string; badgeClassDark: string; badgeClassButcher: string }
 > = {
   "smoker-rig": {
     label: "Smoker Rig & Access",
-    badgeClass: "bg-amber-950/70 text-[#FF8C38] border-amber-800/80",
+    badgeClassDark: "bg-amber-950/70 text-[#FF8C38] border-amber-800/80",
+    badgeClassButcher: "bg-[#FAF0E6] text-[#9A3412] border-[#E2CEB9] font-bold",
   },
   "meats-menu": {
     label: "Meats & Custom Menu",
-    badgeClass: "bg-red-950/70 text-red-300 border-red-800/80",
+    badgeClassDark: "bg-red-950/70 text-red-300 border-red-800/80",
+    badgeClassButcher: "bg-[#FEF2F2] text-[#991B1B] border-[#FCA5A5] font-bold",
   },
   "event-prep": {
     label: "Event Day Logistics",
-    badgeClass: "bg-orange-950/70 text-[#FF7A00] border-orange-800/80",
+    badgeClassDark: "bg-orange-950/70 text-[#FF7A00] border-orange-800/80",
+    badgeClassButcher: "bg-[#FFF7ED] text-[#C2410C] border-[#FED7AA] font-bold",
   },
   "customer-request": {
     label: "Customer Request",
-    badgeClass: "bg-blue-950/70 text-blue-300 border-blue-800/80",
+    badgeClassDark: "bg-blue-950/70 text-blue-300 border-blue-800/80",
+    badgeClassButcher: "bg-[#EFF6FF] text-[#1D4ED8] border-[#BFDBFE] font-bold",
   },
   general: {
     label: "General Smokehouse",
-    badgeClass: "bg-zinc-800 text-zinc-300 border-zinc-700",
+    badgeClassDark: "bg-zinc-800 text-zinc-300 border-zinc-700",
+    badgeClassButcher: "bg-[#F5F0E8] text-[#44403C] border-[#D8CEC1] font-bold",
   },
 };
 
 const PRIORITY_META: Record<
   NotePriority,
-  { label: string; dotClass: string; badgeClass: string }
+  { label: string; dotClass: string; badgeClassDark: string; badgeClassButcher: string }
 > = {
   normal: {
     label: "Normal",
-    dotClass: "bg-emerald-400",
-    badgeClass: "bg-emerald-950/50 text-emerald-300 border-emerald-800/70",
+    dotClass: "bg-emerald-500",
+    badgeClassDark: "bg-emerald-950/50 text-emerald-300 border-emerald-800/70",
+    badgeClassButcher: "bg-emerald-50 text-emerald-800 border-emerald-300 font-bold",
   },
   high: {
     label: "High Priority",
-    dotClass: "bg-amber-400",
-    badgeClass: "bg-amber-950/50 text-amber-300 border-amber-800/70",
+    dotClass: "bg-amber-500",
+    badgeClassDark: "bg-amber-950/50 text-amber-300 border-amber-800/70",
+    badgeClassButcher: "bg-amber-50 text-amber-900 border-amber-300 font-bold",
   },
   urgent: {
     label: "Urgent / Event Day",
-    dotClass: "bg-red-500 animate-pulse",
-    badgeClass: "bg-red-950/70 text-red-200 border-red-600 font-bold",
+    dotClass: "bg-red-600 animate-pulse",
+    badgeClassDark: "bg-red-950/70 text-red-200 border-red-600 font-bold",
+    badgeClassButcher: "bg-red-100 text-red-950 border-red-300 font-black",
   },
 };
 
@@ -150,7 +158,13 @@ function compressImage(file: File, maxDim = 1200, quality = 0.75): Promise<strin
   });
 }
 
-export function AdminNotes() {
+interface AdminNotesProps {
+  theme?: "dark" | "butcher-paper";
+}
+
+export function AdminNotes({ theme = "dark" }: AdminNotesProps) {
+  const isButcher = theme === "butcher-paper";
+
   const [notes, setNotes] = useState<PitmasterNote[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -345,7 +359,11 @@ export function AdminNotes() {
 
   if (!isLoaded) {
     return (
-      <div className="py-20 text-center text-zinc-400">
+      <div
+        className={`py-20 text-center text-sm font-semibold ${
+          isButcher ? "text-stone-600" : "text-zinc-400"
+        }`}
+      >
         Loading Smokehouse Notes...
       </div>
     );
@@ -355,38 +373,100 @@ export function AdminNotes() {
     <div className="space-y-6">
       {/* 1. TOP STATS BAR */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-[#141417] p-4 sm:p-5 rounded-2xl border border-zinc-800">
-          <div className="text-[11px] uppercase font-extrabold tracking-wider text-zinc-400">
+        {/* Total Notes */}
+        <div
+          className={`p-4 sm:p-5 rounded-2xl border transition-colors ${
+            isButcher
+              ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm text-stone-900"
+              : "bg-[#141417] border-zinc-800 text-white"
+          }`}
+        >
+          <div
+            className={`text-[11px] uppercase font-extrabold tracking-wider ${
+              isButcher ? "text-stone-600" : "text-zinc-400"
+            }`}
+          >
             Total Notes
           </div>
-          <div className="text-2xl sm:text-3xl font-black font-display text-white mt-1">
+          <div
+            className={`text-2xl sm:text-3xl font-black font-display mt-1 ${
+              isButcher ? "text-[#1C1917]" : "text-white"
+            }`}
+          >
             {notes.length}
           </div>
         </div>
 
-        <div className="bg-[#141417] p-4 sm:p-5 rounded-2xl border border-zinc-800">
-          <div className="text-[11px] uppercase font-extrabold tracking-wider text-zinc-400">
+        {/* Active Items */}
+        <div
+          className={`p-4 sm:p-5 rounded-2xl border transition-colors ${
+            isButcher
+              ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm"
+              : "bg-[#141417] border-zinc-800"
+          }`}
+        >
+          <div
+            className={`text-[11px] uppercase font-extrabold tracking-wider ${
+              isButcher ? "text-stone-600" : "text-zinc-400"
+            }`}
+          >
             Active Items
           </div>
-          <div className="text-2xl sm:text-3xl font-black font-display text-[#FF8C38] mt-1">
+          <div className="text-2xl sm:text-3xl font-black font-display text-[#EA580C] mt-1">
             {totalActive}
           </div>
         </div>
 
-        <div className="bg-[#141417] p-4 sm:p-5 rounded-2xl border border-zinc-800">
-          <div className="text-[11px] uppercase font-extrabold tracking-wider text-zinc-400">
+        {/* Photos & Docs */}
+        <div
+          className={`p-4 sm:p-5 rounded-2xl border transition-colors ${
+            isButcher
+              ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm"
+              : "bg-[#141417] border-zinc-800"
+          }`}
+        >
+          <div
+            className={`text-[11px] uppercase font-extrabold tracking-wider ${
+              isButcher ? "text-stone-600" : "text-zinc-400"
+            }`}
+          >
             Photos &amp; Docs
           </div>
-          <div className="text-2xl sm:text-3xl font-black font-display text-[#C8A97E] mt-1">
+          <div
+            className={`text-2xl sm:text-3xl font-black font-display mt-1 ${
+              isButcher ? "text-[#8C6D3B]" : "text-[#C8A97E]"
+            }`}
+          >
             {totalPhotos}
           </div>
         </div>
 
-        <div className="bg-[#141417] p-4 sm:p-5 rounded-2xl border border-zinc-800">
-          <div className="text-[11px] uppercase font-extrabold tracking-wider text-zinc-400">
+        {/* Urgent Tasks */}
+        <div
+          className={`p-4 sm:p-5 rounded-2xl border transition-colors ${
+            isButcher
+              ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm"
+              : "bg-[#141417] border-zinc-800"
+          }`}
+        >
+          <div
+            className={`text-[11px] uppercase font-extrabold tracking-wider ${
+              isButcher ? "text-stone-600" : "text-zinc-400"
+            }`}
+          >
             Urgent Tasks
           </div>
-          <div className={`text-2xl sm:text-3xl font-black font-display mt-1 ${totalUrgent > 0 ? "text-red-400" : "text-zinc-500"}`}>
+          <div
+            className={`text-2xl sm:text-3xl font-black font-display mt-1 ${
+              totalUrgent > 0
+                ? isButcher
+                  ? "text-red-700 font-black"
+                  : "text-red-400"
+                : isButcher
+                ? "text-stone-400"
+                : "text-zinc-500"
+            }`}
+          >
             {totalUrgent}
           </div>
         </div>
@@ -394,12 +474,18 @@ export function AdminNotes() {
 
       {/* FEEDBACK BANNER */}
       {submitFeedback && (
-        <div className="p-4 rounded-xl bg-emerald-950/80 border border-emerald-700 text-emerald-200 text-sm font-semibold flex items-center justify-between">
+        <div
+          className={`p-4 rounded-xl text-sm font-semibold flex items-center justify-between border ${
+            isButcher
+              ? "bg-emerald-50 border-emerald-300 text-emerald-900"
+              : "bg-emerald-950/80 border-emerald-700 text-emerald-200"
+          }`}
+        >
           <span>✓ {submitFeedback}</span>
           <button
             type="button"
             onClick={() => setSubmitFeedback(null)}
-            className="text-emerald-400 hover:text-white"
+            className={isButcher ? "text-emerald-700 hover:text-black" : "text-emerald-400 hover:text-white"}
           >
             ✕
           </button>
@@ -407,13 +493,23 @@ export function AdminNotes() {
       )}
 
       {/* 2. ACTIONS & FILTERS HEADER */}
-      <div className="bg-[#141417] p-4 sm:p-5 rounded-2xl border border-zinc-800 space-y-4">
+      <div
+        className={`p-4 sm:p-5 rounded-2xl border space-y-4 transition-colors ${
+          isButcher
+            ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm text-stone-900"
+            : "bg-[#141417] border-zinc-800 text-white"
+        }`}
+      >
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <div>
-            <h2 className="font-display text-xl sm:text-2xl font-bold text-white tracking-wide">
+            <h2
+              className={`font-display text-xl sm:text-2xl font-bold tracking-wide ${
+                isButcher ? "text-[#1C1917]" : "text-white"
+              }`}
+            >
               Smokehouse Notes &amp; Media Files
             </h2>
-            <p className="text-xs text-zinc-400">
+            <p className={`text-xs ${isButcher ? "text-stone-600 font-medium" : "text-zinc-400"}`}>
               Save instructions, driveway photos, custom recipes, and smoker logistics.
             </p>
           </div>
@@ -431,21 +527,37 @@ export function AdminNotes() {
         {showAddForm && (
           <form
             onSubmit={handleSubmitNote}
-            className="pt-4 border-t border-zinc-800/80 space-y-4 animate-in fade-in duration-200"
+            className={`pt-4 border-t space-y-4 animate-in fade-in duration-200 ${
+              isButcher ? "border-[#E2DACF]" : "border-zinc-800/80"
+            }`}
           >
-            <div className="bg-[#18181C] p-5 sm:p-6 rounded-2xl border-2 border-[#EA580C]/60 space-y-4 shadow-xl">
+            <div
+              className={`p-5 sm:p-6 rounded-2xl border-2 space-y-4 shadow-lg transition-colors ${
+                isButcher
+                  ? "bg-[#FAF7F2] border-[#EA580C]"
+                  : "bg-[#18181C] border-[#EA580C]/60"
+              }`}
+            >
               <div className="flex items-center justify-between">
-                <span className="text-xs uppercase font-extrabold tracking-widest text-[#FF8C38]">
-                  ★ New Pitmaster Note &amp; Attachment
+                <span
+                  className={`text-xs uppercase font-extrabold tracking-widest ${
+                    isButcher ? "text-[#C84A0A]" : "text-[#FF8C38]"
+                  }`}
+                >
+                  New Pitmaster Note &amp; Attachment
                 </span>
-                <span className="text-xs text-zinc-400">
-                  Recipient: <strong className="text-white">boldenmarion83@gmail.com</strong>
+                <span className={`text-xs ${isButcher ? "text-stone-600 font-medium" : "text-zinc-400"}`}>
+                  Recipient: <strong className={isButcher ? "text-stone-900" : "text-white"}>boldenmarion83@gmail.com</strong>
                 </span>
               </div>
 
               {/* Title */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-1">
+                <label
+                  className={`block text-xs font-bold uppercase tracking-wider mb-1 ${
+                    isButcher ? "text-stone-800" : "text-zinc-300"
+                  }`}
+                >
                   Note Title *
                 </label>
                 <input
@@ -454,20 +566,32 @@ export function AdminNotes() {
                   placeholder="e.g. Fullerton Ave Wedding: Rig Placement & Tree Clearance"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full h-11 px-4 rounded-xl bg-zinc-900 border border-zinc-700 focus:border-[#EA580C] text-white text-sm focus:outline-none"
+                  className={`w-full h-11 px-4 rounded-xl border focus:border-[#EA580C] text-sm focus:outline-none transition-colors ${
+                    isButcher
+                      ? "bg-white border-[#D8CEC1] text-stone-900 placeholder:text-stone-400"
+                      : "bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500"
+                  }`}
                 />
               </div>
 
               {/* Category & Priority Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-1">
+                  <label
+                    className={`block text-xs font-bold uppercase tracking-wider mb-1 ${
+                      isButcher ? "text-stone-800" : "text-zinc-300"
+                    }`}
+                  >
                     Category Tag
                   </label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value as NoteCategory)}
-                    className="w-full h-11 px-3 rounded-xl bg-zinc-900 border border-zinc-700 text-white text-xs font-semibold focus:border-[#EA580C] focus:outline-none"
+                    className={`w-full h-11 px-3 rounded-xl border text-xs font-semibold focus:border-[#EA580C] focus:outline-none transition-colors ${
+                      isButcher
+                        ? "bg-white border-[#D8CEC1] text-stone-900"
+                        : "bg-zinc-900 border-zinc-700 text-white"
+                    }`}
                   >
                     <option value="smoker-rig">Smoker Rig &amp; Access</option>
                     <option value="meats-menu">Meats &amp; Custom Menu</option>
@@ -478,13 +602,21 @@ export function AdminNotes() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-1">
+                  <label
+                    className={`block text-xs font-bold uppercase tracking-wider mb-1 ${
+                      isButcher ? "text-stone-800" : "text-zinc-300"
+                    }`}
+                  >
                     Priority Level
                   </label>
                   <select
                     value={priority}
                     onChange={(e) => setPriority(e.target.value as NotePriority)}
-                    className="w-full h-11 px-3 rounded-xl bg-zinc-900 border border-zinc-700 text-white text-xs font-semibold focus:border-[#EA580C] focus:outline-none"
+                    className={`w-full h-11 px-3 rounded-xl border text-xs font-semibold focus:border-[#EA580C] focus:outline-none transition-colors ${
+                      isButcher
+                        ? "bg-white border-[#D8CEC1] text-stone-900"
+                        : "bg-zinc-900 border-zinc-700 text-white"
+                    }`}
                   >
                     <option value="normal">Normal Priority</option>
                     <option value="high">High Priority</option>
@@ -495,7 +627,11 @@ export function AdminNotes() {
 
               {/* What I'm Sending & Why (Body text) */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-1">
+                <label
+                  className={`block text-xs font-bold uppercase tracking-wider mb-1 ${
+                    isButcher ? "text-stone-800" : "text-zinc-300"
+                  }`}
+                >
                   What I&apos;m Sending &amp; Why *
                 </label>
                 <textarea
@@ -504,13 +640,21 @@ export function AdminNotes() {
                   placeholder="Explain what this is and why it's important (e.g. Driveway photos attached. Alley is tight, smoker rig must be unhitched from the side. Bring extra extension cords...)"
                   value={whatAndWhy}
                   onChange={(e) => setWhatAndWhy(e.target.value)}
-                  className="w-full p-4 rounded-xl bg-zinc-900 border border-zinc-700 focus:border-[#EA580C] text-white text-sm focus:outline-none resize-none"
+                  className={`w-full p-4 rounded-xl border focus:border-[#EA580C] text-sm focus:outline-none resize-none transition-colors ${
+                    isButcher
+                      ? "bg-white border-[#D8CEC1] text-stone-900 placeholder:text-stone-400"
+                      : "bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500"
+                  }`}
                 />
               </div>
 
               {/* Photo & Attachment Uploader */}
               <div className="space-y-3">
-                <label className="block text-xs font-bold uppercase tracking-wider text-zinc-300">
+                <label
+                  className={`block text-xs font-bold uppercase tracking-wider ${
+                    isButcher ? "text-stone-800" : "text-zinc-300"
+                  }`}
+                >
                   Attach Photos &amp; Documents (Smoker layout, venue pics, cut sheets)
                 </label>
 
@@ -526,12 +670,16 @@ export function AdminNotes() {
                   />
                   <label
                     htmlFor="note-file-input"
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-[#EA580C] text-xs font-bold uppercase tracking-wider text-zinc-200 hover:text-white cursor-pointer transition-all"
+                    className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-bold uppercase tracking-wider cursor-pointer transition-all ${
+                      isButcher
+                        ? "bg-white hover:bg-[#F2ECE3] border-[#D8CEC1] hover:border-[#EA580C] text-stone-800 shadow-sm"
+                        : "bg-zinc-900 hover:bg-zinc-800 border-zinc-700 hover:border-[#EA580C] text-zinc-200 hover:text-white"
+                    }`}
                   >
                     <span>Upload Photos / Files</span>
                   </label>
 
-                  <span className="text-xs text-zinc-500">
+                  <span className={`text-xs ${isButcher ? "text-stone-500 font-medium" : "text-zinc-500"}`}>
                     Auto-compressed for instant mobile view. Max 10 photos per note.
                   </span>
                 </div>
@@ -542,7 +690,11 @@ export function AdminNotes() {
                     {attachments.map((att) => (
                       <div
                         key={att.id}
-                        className="relative group rounded-xl overflow-hidden border border-zinc-700 bg-zinc-900 aspect-square"
+                        className={`relative group rounded-xl overflow-hidden border aspect-square ${
+                          isButcher
+                            ? "border-[#D8CEC1] bg-stone-100"
+                            : "border-zinc-700 bg-zinc-900"
+                        }`}
                       >
                         <Image
                           src={att.dataUrl}
@@ -584,10 +736,15 @@ export function AdminNotes() {
                 />
                 <label
                   htmlFor="brevo-notify-check"
-                  className="text-xs text-zinc-300 font-medium cursor-pointer"
+                  className={`text-xs cursor-pointer select-none ${
+                    isButcher ? "text-stone-700 font-semibold" : "text-zinc-300 font-medium"
+                  }`}
                 >
                   Forward alert copy to{" "}
-                  <strong className="text-amber-400">boldenmarion83@gmail.com</strong> via Brevo
+                  <strong className={isButcher ? "text-[#C84A0A]" : "text-amber-400"}>
+                    boldenmarion83@gmail.com
+                  </strong>{" "}
+                  via Brevo
                 </label>
               </div>
 
@@ -596,7 +753,11 @@ export function AdminNotes() {
                 <button
                   type="button"
                   onClick={() => setShowAddForm(false)}
-                  className="px-4 py-2.5 rounded-xl border border-zinc-700 text-xs font-bold text-zinc-400 hover:text-white"
+                  className={`px-4 py-2.5 rounded-xl border text-xs font-bold transition-colors ${
+                    isButcher
+                      ? "border-[#D8CEC1] bg-white text-stone-700 hover:text-stone-900 hover:bg-stone-50"
+                      : "border-zinc-700 text-zinc-400 hover:text-white"
+                  }`}
                 >
                   Cancel
                 </button>
@@ -622,19 +783,31 @@ export function AdminNotes() {
               placeholder="Search notes by keyword or venue..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-10 px-4 rounded-xl bg-zinc-900 border border-zinc-800 text-xs text-white placeholder:text-zinc-500 focus:border-[#EA580C] focus:outline-none"
+              className={`w-full h-10 px-4 rounded-xl border text-xs focus:border-[#EA580C] focus:outline-none transition-colors ${
+                isButcher
+                  ? "bg-[#FAF7F2] border-[#D8CEC1] text-stone-900 placeholder:text-stone-500"
+                  : "bg-zinc-900 border-zinc-800 text-white placeholder:text-zinc-500"
+              }`}
             />
           </div>
 
           {/* Status & Category Selector */}
           <div className="flex flex-wrap items-center gap-2">
-            <div className="inline-flex p-1 rounded-xl bg-zinc-900 border border-zinc-800 text-xs">
+            <div
+              className={`inline-flex p-1 rounded-xl border text-xs transition-colors ${
+                isButcher
+                  ? "bg-[#FAF7F2] border-[#D8CEC1]"
+                  : "bg-zinc-900 border-zinc-800"
+              }`}
+            >
               <button
                 type="button"
                 onClick={() => setStatusFilter("active")}
                 className={`px-3 py-1 rounded-lg font-bold transition-all ${
                   statusFilter === "active"
                     ? "bg-[#EA580C] text-white shadow"
+                    : isButcher
+                    ? "text-stone-600 hover:text-stone-900"
                     : "text-zinc-400 hover:text-white"
                 }`}
               >
@@ -645,7 +818,11 @@ export function AdminNotes() {
                 onClick={() => setStatusFilter("completed")}
                 className={`px-3 py-1 rounded-lg font-bold transition-all ${
                   statusFilter === "completed"
-                    ? "bg-zinc-800 text-white shadow"
+                    ? isButcher
+                      ? "bg-[#E5DDD1] text-stone-900 shadow font-black"
+                      : "bg-zinc-800 text-white shadow"
+                    : isButcher
+                    ? "text-stone-600 hover:text-stone-900"
                     : "text-zinc-400 hover:text-white"
                 }`}
               >
@@ -656,7 +833,11 @@ export function AdminNotes() {
                 onClick={() => setStatusFilter("all")}
                 className={`px-3 py-1 rounded-lg font-bold transition-all ${
                   statusFilter === "all"
-                    ? "bg-zinc-800 text-white shadow"
+                    ? isButcher
+                      ? "bg-[#E5DDD1] text-stone-900 shadow font-black"
+                      : "bg-zinc-800 text-white shadow"
+                    : isButcher
+                    ? "text-stone-600 hover:text-stone-900"
                     : "text-zinc-400 hover:text-white"
                 }`}
               >
@@ -667,7 +848,11 @@ export function AdminNotes() {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="h-9 px-3 rounded-xl bg-zinc-900 border border-zinc-800 text-xs text-zinc-300 font-semibold focus:border-[#EA580C] focus:outline-none"
+              className={`h-9 px-3 rounded-xl border text-xs font-semibold focus:border-[#EA580C] focus:outline-none transition-colors ${
+                isButcher
+                  ? "bg-[#FAF7F2] border-[#D8CEC1] text-stone-800"
+                  : "bg-zinc-900 border-zinc-800 text-zinc-300"
+              }`}
             >
               <option value="all">All Categories</option>
               <option value="smoker-rig">Smoker Rig &amp; Access</option>
@@ -683,11 +868,21 @@ export function AdminNotes() {
       {/* 5. NOTES FEED */}
       <div className="space-y-4">
         {filteredNotes.length === 0 ? (
-          <div className="bg-[#141417] p-12 rounded-2xl border border-zinc-800 text-center space-y-3">
-            <h3 className="font-display text-lg font-bold text-white">
+          <div
+            className={`p-12 rounded-2xl border text-center space-y-3 transition-colors ${
+              isButcher
+                ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm text-stone-900"
+                : "bg-[#141417] border-zinc-800 text-white"
+            }`}
+          >
+            <h3
+              className={`font-display text-lg font-bold ${
+                isButcher ? "text-[#1C1917]" : "text-white"
+              }`}
+            >
               No matching smokehouse notes found
             </h3>
-            <p className="text-xs text-zinc-400 max-w-sm mx-auto">
+            <p className={`text-xs max-w-sm mx-auto ${isButcher ? "text-stone-600 font-medium" : "text-zinc-400"}`}>
               Create a note above to record smoker parking details, custom meat portions, or customer event notes.
             </p>
           </div>
@@ -703,14 +898,23 @@ export function AdminNotes() {
               minute: "2-digit",
             });
 
+            const badgeCategoryClass = isButcher ? cat.badgeClassButcher : cat.badgeClassDark;
+            const badgePriorityClass = isButcher ? prio.badgeClassButcher : prio.badgeClassDark;
+
             return (
               <div
                 key={note.id}
                 className={`p-5 sm:p-6 rounded-2xl border transition-all ${
                   note.isCompleted
-                    ? "bg-zinc-950/60 border-zinc-800 opacity-60"
+                    ? isButcher
+                      ? "bg-[#EAE4DC]/60 border-[#D8CEC1] opacity-60 text-stone-600"
+                      : "bg-zinc-950/60 border-zinc-800 opacity-60"
                     : note.priority === "urgent"
-                    ? "bg-[#181210] border-red-800/80 shadow-[0_0_20px_rgba(220,38,38,0.15)]"
+                    ? isButcher
+                      ? "bg-[#FFF5F5] border-red-300 shadow-sm"
+                      : "bg-[#181210] border-red-800/80 shadow-[0_0_20px_rgba(220,38,38,0.15)]"
+                    : isButcher
+                    ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm hover:border-[#D0C4B5]"
                     : "bg-[#141417] border-zinc-800 hover:border-zinc-700"
                 }`}
               >
@@ -720,14 +924,14 @@ export function AdminNotes() {
                     <div className="flex flex-wrap items-center gap-2">
                       {/* Category Pill */}
                       <span
-                        className={`text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border inline-flex items-center ${cat.badgeClass}`}
+                        className={`text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border inline-flex items-center ${badgeCategoryClass}`}
                       >
                         {cat.label}
                       </span>
 
                       {/* Priority Badge */}
                       <span
-                        className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border inline-flex items-center gap-1.5 ${prio.badgeClass}`}
+                        className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border inline-flex items-center gap-1.5 ${badgePriorityClass}`}
                       >
                         <span className={`w-1.5 h-1.5 rounded-full ${prio.dotClass}`} />
                         <span>{prio.label}</span>
@@ -735,12 +939,20 @@ export function AdminNotes() {
 
                       {/* Email Alert Badge */}
                       {note.emailNotified && (
-                        <span className="text-[10px] text-zinc-400 font-mono inline-flex items-center gap-1">
+                        <span
+                          className={`text-[10px] font-mono inline-flex items-center gap-1 ${
+                            isButcher ? "text-stone-600 font-semibold" : "text-zinc-400"
+                          }`}
+                        >
                           <span>Forwarded to boldenmarion83@gmail.com</span>
                         </span>
                       )}
 
-                      <span className="text-[11px] text-zinc-500 ml-auto sm:ml-0">
+                      <span
+                        className={`text-[11px] ml-auto sm:ml-0 ${
+                          isButcher ? "text-stone-500 font-medium" : "text-zinc-500"
+                        }`}
+                      >
                         {dateFormatted}
                       </span>
                     </div>
@@ -748,28 +960,48 @@ export function AdminNotes() {
                     {/* Title */}
                     <h3
                       className={`font-display text-xl sm:text-2xl font-bold tracking-wide ${
-                        note.isCompleted ? "text-zinc-400 line-through" : "text-white"
+                        note.isCompleted
+                          ? isButcher
+                            ? "text-stone-400 line-through"
+                            : "text-zinc-400 line-through"
+                          : isButcher
+                          ? "text-[#1C1917]"
+                          : "text-white"
                       }`}
                     >
                       {note.title}
                     </h3>
 
                     {/* What & Why Body Text */}
-                    <div className="bg-[#19191D]/80 p-4 rounded-xl border border-zinc-800/80 text-xs sm:text-sm text-zinc-300 leading-relaxed whitespace-pre-wrap">
+                    <div
+                      className={`p-4 rounded-xl border text-xs sm:text-sm leading-relaxed whitespace-pre-wrap transition-colors ${
+                        isButcher
+                          ? "bg-[#FAF8F5] border-[#E8E0D5] text-stone-800 font-medium"
+                          : "bg-[#19191D]/80 border-zinc-800/80 text-zinc-300"
+                      }`}
+                    >
                       {note.whatAndWhy}
                     </div>
 
                     {/* Attached Photos / Documents */}
                     {note.attachments && note.attachments.length > 0 && (
                       <div className="pt-2 space-y-1.5">
-                        <span className="text-[11px] uppercase font-bold text-zinc-400 tracking-wider">
+                        <span
+                          className={`text-[11px] uppercase font-bold tracking-wider ${
+                            isButcher ? "text-stone-700" : "text-zinc-400"
+                          }`}
+                        >
                           Attached Photos ({note.attachments.length}):
                         </span>
                         <div className="flex flex-wrap gap-2.5">
                           {note.attachments.map((att) => (
                             <div
                               key={att.id}
-                              className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-zinc-700 bg-black cursor-pointer hover:scale-105 transition-transform"
+                              className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border cursor-pointer hover:scale-105 transition-transform ${
+                                isButcher
+                                  ? "border-[#D8CEC1] bg-stone-100"
+                                  : "border-zinc-700 bg-black"
+                              }`}
                               onClick={() => setPreviewImage(att.dataUrl)}
                               title={`${att.name} (${att.sizeKb} KB) - Click to view`}
                             >
@@ -787,13 +1019,21 @@ export function AdminNotes() {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex sm:flex-col items-center gap-2 pt-2 sm:pt-0 sm:pl-4 border-t sm:border-t-0 sm:border-l border-zinc-800">
+                  <div
+                    className={`flex sm:flex-col items-center gap-2 pt-2 sm:pt-0 sm:pl-4 border-t sm:border-t-0 sm:border-l ${
+                      isButcher ? "border-[#E2DACF]" : "border-zinc-800"
+                    }`}
+                  >
                     <button
                       type="button"
                       onClick={() => toggleComplete(note.id)}
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                         note.isCompleted
-                          ? "bg-zinc-800 text-zinc-300 hover:text-white"
+                          ? isButcher
+                            ? "bg-[#EAE4DC] text-stone-700 hover:bg-[#DDD5C9] border border-[#D0C4B5]"
+                            : "bg-zinc-800 text-zinc-300 hover:text-white"
+                          : isButcher
+                          ? "bg-emerald-100 hover:bg-emerald-200 border border-emerald-300 text-emerald-950 font-black"
                           : "bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-700 text-emerald-300"
                       }`}
                     >
@@ -803,7 +1043,11 @@ export function AdminNotes() {
                     <button
                       type="button"
                       onClick={() => handleDeleteNote(note.id)}
-                      className="px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-500 hover:text-red-400 hover:bg-red-950/30 transition-all cursor-pointer"
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        isButcher
+                          ? "text-stone-500 hover:text-red-700 hover:bg-red-50"
+                          : "text-zinc-500 hover:text-red-400 hover:bg-red-950/30"
+                      }`}
                     >
                       Delete
                     </button>
