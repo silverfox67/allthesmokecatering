@@ -58,26 +58,31 @@ export const metadata: Metadata = {
     ],
     shortcut: "/favicon.ico",
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     title: SITE_CONFIG.meta.title,
     description: SITE_CONFIG.meta.description,
-    url: siteUrl,
+    url: "https://allthesmokecatering.com/",
     siteName: SITE_CONFIG.brandName,
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "/allthesmoke-og-card.jpg",
+        url: "https://allthesmokecatering.com/images/og-image.jpg",
+        secureUrl: "https://allthesmokecatering.com/images/og-image.jpg",
         width: 1200,
         height: 630,
         type: "image/jpeg",
-        alt: `${SITE_CONFIG.brandName} - Premium Live-Fire Smokehouse Catering`,
-      },
-      {
-        url: "/allthesmoke-og-card.png",
-        width: 1200,
-        height: 630,
-        type: "image/png",
         alt: `${SITE_CONFIG.brandName} - Premium Live-Fire Smokehouse Catering`,
       },
     ],
@@ -86,10 +91,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_CONFIG.meta.title,
     description: SITE_CONFIG.meta.description,
-    images: ["/allthesmoke-og-card.jpg"],
+    images: ["https://allthesmokecatering.com/images/og-image.jpg"],
   },
   alternates: {
-    canonical: siteUrl,
+    canonical: "https://allthesmokecatering.com/",
   },
 };
 
