@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, MouseEvent } from "react";
+import Link from "next/link";
 import {
   PER_PERSON_PACKAGES,
   TURNKEY_BUNDLES,
@@ -23,6 +24,7 @@ interface CategoryMeta {
   priceAnchor: string;
   tagline: string;
   icon: string;
+  href: string;
 }
 
 const CATEGORIES: CategoryMeta[] = [
@@ -33,6 +35,7 @@ const CATEGORIES: CategoryMeta[] = [
     priceAnchor: "Starting at $24.95 / person",
     tagline: "Full buffet spreads for 20+ guests with hardwood meats & scratch sides.",
     icon: "🍖",
+    href: "/catering/per-person",
   },
   {
     key: "turnkey",
@@ -41,6 +44,7 @@ const CATEGORIES: CategoryMeta[] = [
     priceAnchor: "Bundles from $285 flat",
     tagline: "Drop-off smokehouse pans hot & ready for game days & tailgates (12–35 guests).",
     icon: "🔥",
+    href: "/catering/party-pans",
   },
   {
     key: "meal-prep",
@@ -49,6 +53,7 @@ const CATEGORIES: CategoryMeta[] = [
     priceAnchor: "From $15.62 / meal",
     tagline: "Vacuum-sealed high-protein smoked meats & wholesome clean sides.",
     icon: "🥗",
+    href: "/catering/meal-prep",
   },
 ];
 
@@ -514,115 +519,55 @@ export function PackageGrid() {
         </div>
 
         {/* ======================================================== */}
-        {/* MOBILE ACCORDION (block on mobile, hidden on md: and up) */}
+        {/* MOBILE GATEWAY CARDS (block on mobile, hidden on md: and up) */}
         {/* ======================================================== */}
         <div className="block md:hidden space-y-4">
-          <p className="text-center text-xs text-amber-400/90 font-semibold tracking-wider uppercase mb-2">
-            ▼ Tap a category below to explore its packages
+          <p className="text-center text-xs text-amber-400 font-bold tracking-wider uppercase mb-1">
+            ▼ Tap a category to view its packages:
           </p>
 
-          {CATEGORIES.map((cat) => {
-            const isExpanded = activeTab === cat.key;
-            return (
-              <div
+          <div className="space-y-4">
+            {CATEGORIES.map((cat) => (
+              <Link
                 key={cat.key}
-                className="space-y-3 rounded-2xl overflow-hidden transition-all duration-300"
+                href={cat.href}
+                className="block p-5 rounded-2xl text-left relative overflow-hidden bg-[#161619] border-2 border-zinc-800 hover:border-[#EA580C] shadow-xl transition-all duration-200 group active:scale-[0.99]"
               >
-                {/* Category Accordion Header Card */}
-                <button
-                  type="button"
-                  id={`tab-mobile-${cat.key}`}
-                  aria-expanded={isExpanded}
-                  aria-controls={`panel-mobile-${cat.key}`}
-                  onClick={() => {
-                    // Toggle or select
-                    setActiveTab(cat.key);
-                  }}
-                  className={`w-full p-4 sm:p-5 rounded-2xl text-left transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer ${
-                    isExpanded
-                      ? "bg-[#1A1816] border-2 border-[#EA580C] shadow-[0_0_24px_rgba(234,88,12,0.35)] ring-1 ring-[#EA580C]/50"
-                      : "bg-[#151518]/95 border border-zinc-800 hover:border-zinc-700"
-                  }`}
-                >
-                  {isExpanded && (
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#EA580C] via-[#FF8C38] to-[#C8A97E]" />
-                  )}
+                {/* Glowing ember bar at top */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#EA580C] via-[#FF8C38] to-[#C8A97E] opacity-75 group-hover:opacity-100 transition-opacity" />
 
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xl" aria-hidden="true">{cat.icon}</span>
-                        <h3 className="font-display text-xl font-bold tracking-wide text-white">
-                          {cat.title}
-                        </h3>
-                      </div>
-
-                      <span
-                        className={`text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full border ${
-                          isExpanded
-                            ? "bg-[#EA580C]/20 border-[#EA580C]/60 text-[#FF8C38]"
-                            : "bg-zinc-900 border-zinc-800 text-zinc-400"
-                        }`}
-                      >
-                        {cat.countBadge}
-                      </span>
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-2xl" aria-hidden="true">{cat.icon}</span>
+                      <h3 className="font-display text-xl font-bold tracking-wide text-white group-hover:text-[#FF8C38] transition-colors">
+                        {cat.title}
+                      </h3>
                     </div>
 
-                    <p className="text-xs text-zinc-400 leading-relaxed">
-                      {cat.tagline}
-                    </p>
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border bg-zinc-900 border-zinc-700 text-[#FF8C38]">
+                      {cat.countBadge}
+                    </span>
                   </div>
 
-                  <div className="pt-3 mt-3 border-t border-zinc-800/80 flex items-center justify-between">
-                    <span
-                      className={`text-xs font-black tracking-wide ${
-                        isExpanded ? "text-[#FF8C38]" : "text-[#C8A97E]"
-                      }`}
-                    >
+                  <p className="text-xs text-zinc-300 leading-relaxed">
+                    {cat.tagline}
+                  </p>
+
+                  <div className="pt-3 border-t border-zinc-800/90 flex items-center justify-between">
+                    <span className="text-xs font-black tracking-wide text-[#C8A97E]">
                       {cat.priceAnchor}
                     </span>
 
-                    <span
-                      className={`text-xs font-bold inline-flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all ${
-                        isExpanded
-                          ? "bg-[#EA580C] text-white shadow-md font-black"
-                          : "bg-zinc-900 text-stone-300 border border-zinc-700"
-                      }`}
-                    >
-                      {isExpanded ? (
-                        <>
-                          <span>Viewing Tiers</span>
-                          <span className="text-[10px]">▲</span>
-                        </>
-                      ) : (
-                        <>
-                          <span>View Tiers</span>
-                          <span className="text-[10px]">▼</span>
-                        </>
-                      )}
+                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border border-[#FF7A00] text-white text-xs font-bold uppercase tracking-wider shadow-md group-hover:scale-105 transition-transform">
+                      <span>View 3 Packages</span>
+                      <span>→</span>
                     </span>
                   </div>
-                </button>
-
-                {/* Unfolded Packages (Inline directly underneath the category card!) */}
-                {isExpanded && (
-                  <div
-                    id={`panel-mobile-${cat.key}`}
-                    role="region"
-                    aria-labelledby={`tab-mobile-${cat.key}`}
-                    className="space-y-4 pt-1 pb-3 px-1 animate-in fade-in slide-in-from-top-2 duration-300"
-                  >
-                    <div className="flex items-center gap-2 pl-2 text-xs text-zinc-400 font-bold uppercase tracking-wider">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#EA580C] animate-pulse" />
-                      <span>{cat.title} — Choose From 3 Packages:</span>
-                    </div>
-
-                    {renderCards(cat.key)}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
 
