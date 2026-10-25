@@ -67,6 +67,13 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
+        url: "/allthesmoke-og-card.jpg",
+        width: 1200,
+        height: 630,
+        type: "image/jpeg",
+        alt: `${SITE_CONFIG.brandName} - Premium Live-Fire Smokehouse Catering`,
+      },
+      {
         url: "/allthesmoke-og-card.png",
         width: 1200,
         height: 630,
@@ -79,7 +86,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_CONFIG.meta.title,
     description: SITE_CONFIG.meta.description,
-    images: ["/allthesmoke-og-card.png"],
+    images: ["/allthesmoke-og-card.jpg"],
   },
   alternates: {
     canonical: siteUrl,
