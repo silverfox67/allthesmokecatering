@@ -2,7 +2,38 @@
 
 import React, { useState, useEffect } from "react";
 import { SITE_CONFIG } from "@/config/site-config";
-import { PER_PERSON_PACKAGES } from "@/data/catering-packages";
+import {
+  PER_PERSON_PACKAGES,
+  TURNKEY_BUNDLES,
+  MEAL_PREP_TIERS,
+} from "@/data/catering-packages";
+
+const ALL_PACKAGES = [
+  ...PER_PERSON_PACKAGES.map((p) => ({
+    id: p.id,
+    name: p.name,
+    category: "Per-Person Buffet",
+    categoryKey: "per-person" as const,
+    priceLabel: `$${p.pricePerPerson.toFixed(2)}/pp`,
+    sub: `Min ${p.minimumGuests} guests`,
+  })),
+  ...TURNKEY_BUNDLES.map((b) => ({
+    id: b.id,
+    name: b.name,
+    category: "Turnkey Party Pans",
+    categoryKey: "turnkey" as const,
+    priceLabel: `$${b.price.toFixed(2)} flat`,
+    sub: b.serves,
+  })),
+  ...MEAL_PREP_TIERS.map((m) => ({
+    id: m.id,
+    name: m.name,
+    category: "Weekly Meal Prep",
+    categoryKey: "meal-prep" as const,
+    priceLabel: `$${m.price.toFixed(2)} total`,
+    sub: `${m.mealCount} meals ($${m.pricePerMeal.toFixed(2)}/ea)`,
+  })),
+];
 
 interface QuoteModalProps {
   isOpen?: boolean;
@@ -27,6 +58,7 @@ export function QuoteModal({
   const [guestCount, setGuestCount] = useState(35);
   const [eventDate, setEventDate] = useState("");
   const [packageId, setPackageId] = useState(defaultPackageId);
+  const [modalPkgCategory, setModalPkgCategory] = useState<"per-person" | "turnkey" | "meal-prep">("per-person");
   const [selectedProteins, setSelectedProteins] = useState<string[]>([
     "St. Louis Cut Spare Rib Slabs",
     "Tender Smoked Turkey Chops",
@@ -48,7 +80,12 @@ export function QuoteModal({
     const handleGlobalOpen = (e: Event) => {
       const customEvent = e as CustomEvent<{ packageId?: string }>;
       if (customEvent.detail?.packageId) {
-        setPackageId(customEvent.detail.packageId);
+        const pid = customEvent.detail.packageId;
+        setPackageId(pid);
+        const match = ALL_PACKAGES.find((p) => p.id === pid);
+        if (match) {
+          setModalPkgCategory(match.categoryKey);
+        }
       }
       setIsOpen(true);
       setStep(1);
@@ -108,7 +145,7 @@ export function QuoteModal({
     setErrorMessage("");
 
     try {
-      const selectedPkg = PER_PERSON_PACKAGES.find((p) => p.id === packageId);
+      const selectedPkg = ALL_PACKAGES.find((p) => p.id === packageId);
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -341,11 +378,49 @@ export function QuoteModal({
               {step === 2 && (
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div className="space-y-3">
-                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
-                      Select Base Smokehouse Package:
-                    </label>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
+                        Select Base Smokehouse Package:
+                      </label>
+                      <div className="flex rounded-lg bg-zinc-950 p-1 border border-zinc-800 gap-1 text-xs">
+                        <button
+                          type="button"
+                          onClick={() => setModalPkgCategory("per-person")}
+                          className={`px-2.5 py-1 rounded font-bold transition-all ${
+                            modalPkgCategory === "per-person"
+                              ? "bg-amber-500 text-black shadow-sm"
+                              : "text-zinc-400 hover:text-white"
+                          }`}
+                        >
+                          Per-Person
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setModalPkgCategory("turnkey")}
+                          className={`px-2.5 py-1 rounded font-bold transition-all ${
+                            modalPkgCategory === "turnkey"
+                              ? "bg-amber-500 text-black shadow-sm"
+                              : "text-zinc-400 hover:text-white"
+                          }`}
+                        >
+                          Party Pans
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setModalPkgCategory("meal-prep")}
+                          className={`px-2.5 py-1 rounded font-bold transition-all ${
+                            modalPkgCategory === "meal-prep"
+                              ? "bg-amber-500 text-black shadow-sm"
+                              : "text-zinc-400 hover:text-white"
+                          }`}
+                        >
+                          Meal Prep
+                        </button>
+                      </div>
+                    </div>
+
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      {PER_PERSON_PACKAGES.map((pkg) => (
+                      {ALL_PACKAGES.filter((p) => p.categoryKey === modalPkgCategory).map((pkg) => (
                         <div
                           key={pkg.id}
                           onClick={() => setPackageId(pkg.id)}
@@ -359,10 +434,10 @@ export function QuoteModal({
                             {pkg.name}
                           </span>
                           <span className="text-amber-400 font-extrabold text-sm block">
-                            ${pkg.pricePerPerson.toFixed(2)}/pp
+                            {pkg.priceLabel}
                           </span>
                           <span className="text-[10px] text-zinc-400 block mt-1">
-                            Min {pkg.minimumGuests} guests
+                            {pkg.sub}
                           </span>
                         </div>
                       ))}
