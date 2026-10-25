@@ -135,7 +135,7 @@ export function Hero() {
               Home
             </a>
             <a
-              href="#experience"
+              href="#packages"
               className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
             >
               The Experience
@@ -206,6 +206,13 @@ export function Hero() {
             className="block text-[#FF7A00]"
           >
             Home
+          </a>
+          <a
+            href="#packages"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-[#C8A97E] hover:text-[#FF7A00]"
+          >
+            The Experience
           </a>
           <a
             href="#packages"
