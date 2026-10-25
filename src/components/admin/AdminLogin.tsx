@@ -127,9 +127,8 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
                 </span>
               </label>
 
-              <span className="text-emerald-400 text-[11px] font-bold inline-flex items-center gap-1">
-                <span>🔒</span>
-                <span>Encrypted</span>
+              <span className="text-emerald-400 text-[11px] font-bold">
+                Encrypted Session
               </span>
             </div>
 

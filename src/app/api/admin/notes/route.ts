@@ -57,7 +57,7 @@ export async function POST(req: Request) {
               ${
                 attachmentCount > 0
                   ? `<div style="background: #27272A; padding: 12px 16px; border-radius: 6px; font-size: 13px; color: #F4EFEA; margin-bottom: 20px;">
-                      📸 <strong>${attachmentCount} photo(s) / document(s)</strong> attached to this note. View full resolution in your Pitmaster Portal.
+                      <strong>${attachmentCount} photo(s) / document(s)</strong> attached to this note. View full resolution in your Pitmaster Portal.
                     </div>`
                   : ""
               }
@@ -86,7 +86,7 @@ export async function POST(req: Request) {
           },
           to: [{ email: "boldenmarion83@gmail.com", name: "Marion Bolden" }],
           cc: [{ email: "bbqcateringking83@gmail.com", name: "ATS Operations" }],
-          subject: `🔥 [ATS Note - ${priority}] ${title}`,
+          subject: `[ATS Note - ${priority}] ${title}`,
           htmlContent: noteHtml,
         }),
       });

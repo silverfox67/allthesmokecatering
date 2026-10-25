@@ -35,31 +35,26 @@ export interface PitmasterNote {
 
 const CATEGORY_META: Record<
   NoteCategory,
-  { label: string; icon: string; badgeClass: string }
+  { label: string; badgeClass: string }
 > = {
   "smoker-rig": {
     label: "Smoker Rig & Access",
-    icon: "🚚",
     badgeClass: "bg-amber-950/70 text-[#FF8C38] border-amber-800/80",
   },
   "meats-menu": {
     label: "Meats & Custom Menu",
-    icon: "🍖",
     badgeClass: "bg-red-950/70 text-red-300 border-red-800/80",
   },
   "event-prep": {
     label: "Event Day Logistics",
-    icon: "⚡",
     badgeClass: "bg-orange-950/70 text-[#FF7A00] border-orange-800/80",
   },
   "customer-request": {
     label: "Customer Request",
-    icon: "💬",
     badgeClass: "bg-blue-950/70 text-blue-300 border-blue-800/80",
   },
   general: {
     label: "General Smokehouse",
-    icon: "📝",
     badgeClass: "bg-zinc-800 text-zinc-300 border-zinc-700",
   },
 };
@@ -360,51 +355,39 @@ export function AdminNotes() {
     <div className="space-y-6">
       {/* 1. TOP STATS BAR */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-[#141417] p-4 rounded-2xl border border-zinc-800 flex items-center gap-3">
-          <span className="text-2xl sm:text-3xl">📝</span>
-          <div>
-            <div className="text-xl sm:text-2xl font-bold font-display text-white">
-              {notes.length}
-            </div>
-            <div className="text-[11px] uppercase font-bold text-zinc-400">
-              Total Notes
-            </div>
+        <div className="bg-[#141417] p-4 sm:p-5 rounded-2xl border border-zinc-800">
+          <div className="text-[11px] uppercase font-extrabold tracking-wider text-zinc-400">
+            Total Notes
+          </div>
+          <div className="text-2xl sm:text-3xl font-black font-display text-white mt-1">
+            {notes.length}
           </div>
         </div>
 
-        <div className="bg-[#141417] p-4 rounded-2xl border border-zinc-800 flex items-center gap-3">
-          <span className="text-2xl sm:text-3xl">⚡</span>
-          <div>
-            <div className="text-xl sm:text-2xl font-bold font-display text-[#FF8C38]">
-              {totalActive}
-            </div>
-            <div className="text-[11px] uppercase font-bold text-zinc-400">
-              Active Items
-            </div>
+        <div className="bg-[#141417] p-4 sm:p-5 rounded-2xl border border-zinc-800">
+          <div className="text-[11px] uppercase font-extrabold tracking-wider text-zinc-400">
+            Active Items
+          </div>
+          <div className="text-2xl sm:text-3xl font-black font-display text-[#FF8C38] mt-1">
+            {totalActive}
           </div>
         </div>
 
-        <div className="bg-[#141417] p-4 rounded-2xl border border-zinc-800 flex items-center gap-3">
-          <span className="text-2xl sm:text-3xl">📸</span>
-          <div>
-            <div className="text-xl sm:text-2xl font-bold font-display text-[#C8A97E]">
-              {totalPhotos}
-            </div>
-            <div className="text-[11px] uppercase font-bold text-zinc-400">
-              Photos &amp; Docs
-            </div>
+        <div className="bg-[#141417] p-4 sm:p-5 rounded-2xl border border-zinc-800">
+          <div className="text-[11px] uppercase font-extrabold tracking-wider text-zinc-400">
+            Photos &amp; Docs
+          </div>
+          <div className="text-2xl sm:text-3xl font-black font-display text-[#C8A97E] mt-1">
+            {totalPhotos}
           </div>
         </div>
 
-        <div className="bg-[#141417] p-4 rounded-2xl border border-zinc-800 flex items-center gap-3">
-          <span className="text-2xl sm:text-3xl">🚨</span>
-          <div>
-            <div className="text-xl sm:text-2xl font-bold font-display text-red-400">
-              {totalUrgent}
-            </div>
-            <div className="text-[11px] uppercase font-bold text-zinc-400">
-              Urgent Tasks
-            </div>
+        <div className="bg-[#141417] p-4 sm:p-5 rounded-2xl border border-zinc-800">
+          <div className="text-[11px] uppercase font-extrabold tracking-wider text-zinc-400">
+            Urgent Tasks
+          </div>
+          <div className={`text-2xl sm:text-3xl font-black font-display mt-1 ${totalUrgent > 0 ? "text-red-400" : "text-zinc-500"}`}>
+            {totalUrgent}
           </div>
         </div>
       </div>
@@ -486,11 +469,11 @@ export function AdminNotes() {
                     onChange={(e) => setCategory(e.target.value as NoteCategory)}
                     className="w-full h-11 px-3 rounded-xl bg-zinc-900 border border-zinc-700 text-white text-xs font-semibold focus:border-[#EA580C] focus:outline-none"
                   >
-                    <option value="smoker-rig">🚚 Smoker Rig &amp; Access</option>
-                    <option value="meats-menu">🍖 Meats &amp; Custom Menu</option>
-                    <option value="event-prep">⚡ Event Day Logistics</option>
-                    <option value="customer-request">💬 Customer Request</option>
-                    <option value="general">📝 General Smokehouse Note</option>
+                    <option value="smoker-rig">Smoker Rig &amp; Access</option>
+                    <option value="meats-menu">Meats &amp; Custom Menu</option>
+                    <option value="event-prep">Event Day Logistics</option>
+                    <option value="customer-request">Customer Request</option>
+                    <option value="general">General Smokehouse Note</option>
                   </select>
                 </div>
 
@@ -503,9 +486,9 @@ export function AdminNotes() {
                     onChange={(e) => setPriority(e.target.value as NotePriority)}
                     className="w-full h-11 px-3 rounded-xl bg-zinc-900 border border-zinc-700 text-white text-xs font-semibold focus:border-[#EA580C] focus:outline-none"
                   >
-                    <option value="normal">🟢 Normal Priority</option>
-                    <option value="high">🟡 High Priority</option>
-                    <option value="urgent">🔴 Urgent / Event Day</option>
+                    <option value="normal">Normal Priority</option>
+                    <option value="high">High Priority</option>
+                    <option value="urgent">Urgent / Event Day</option>
                   </select>
                 </div>
               </div>
@@ -545,7 +528,7 @@ export function AdminNotes() {
                     htmlFor="note-file-input"
                     className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-[#EA580C] text-xs font-bold uppercase tracking-wider text-zinc-200 hover:text-white cursor-pointer transition-all"
                   >
-                    <span>📷 Upload Photos / Files</span>
+                    <span>Upload Photos / Files</span>
                   </label>
 
                   <span className="text-xs text-zinc-500">
@@ -639,11 +622,8 @@ export function AdminNotes() {
               placeholder="Search notes by keyword or venue..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-10 pl-9 pr-4 rounded-xl bg-zinc-900 border border-zinc-800 text-xs text-white placeholder:text-zinc-500 focus:border-[#EA580C] focus:outline-none"
+              className="w-full h-10 px-4 rounded-xl bg-zinc-900 border border-zinc-800 text-xs text-white placeholder:text-zinc-500 focus:border-[#EA580C] focus:outline-none"
             />
-            <span className="absolute left-3 top-2.5 text-zinc-500 text-sm">
-              🔍
-            </span>
           </div>
 
           {/* Status & Category Selector */}
@@ -690,11 +670,11 @@ export function AdminNotes() {
               className="h-9 px-3 rounded-xl bg-zinc-900 border border-zinc-800 text-xs text-zinc-300 font-semibold focus:border-[#EA580C] focus:outline-none"
             >
               <option value="all">All Categories</option>
-              <option value="smoker-rig">🚚 Smoker Rig &amp; Access</option>
-              <option value="meats-menu">🍖 Meats &amp; Custom Menu</option>
-              <option value="event-prep">⚡ Event Day Logistics</option>
-              <option value="customer-request">💬 Customer Request</option>
-              <option value="general">📝 General Smokehouse</option>
+              <option value="smoker-rig">Smoker Rig &amp; Access</option>
+              <option value="meats-menu">Meats &amp; Custom Menu</option>
+              <option value="event-prep">Event Day Logistics</option>
+              <option value="customer-request">Customer Request</option>
+              <option value="general">General Smokehouse</option>
             </select>
           </div>
         </div>
@@ -704,7 +684,6 @@ export function AdminNotes() {
       <div className="space-y-4">
         {filteredNotes.length === 0 ? (
           <div className="bg-[#141417] p-12 rounded-2xl border border-zinc-800 text-center space-y-3">
-            <span className="text-4xl">📋</span>
             <h3 className="font-display text-lg font-bold text-white">
               No matching smokehouse notes found
             </h3>
@@ -741,10 +720,9 @@ export function AdminNotes() {
                     <div className="flex flex-wrap items-center gap-2">
                       {/* Category Pill */}
                       <span
-                        className={`text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border inline-flex items-center gap-1 ${cat.badgeClass}`}
+                        className={`text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border inline-flex items-center ${cat.badgeClass}`}
                       >
-                        <span>{cat.icon}</span>
-                        <span>{cat.label}</span>
+                        {cat.label}
                       </span>
 
                       {/* Priority Badge */}
@@ -758,7 +736,6 @@ export function AdminNotes() {
                       {/* Email Alert Badge */}
                       {note.emailNotified && (
                         <span className="text-[10px] text-zinc-400 font-mono inline-flex items-center gap-1">
-                          <span>✉️</span>
                           <span>Forwarded to boldenmarion83@gmail.com</span>
                         </span>
                       )}
@@ -820,7 +797,7 @@ export function AdminNotes() {
                           : "bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-700 text-emerald-300"
                       }`}
                     >
-                      {note.isCompleted ? "↩ Re-open" : "✓ Mark Done"}
+                      {note.isCompleted ? "Re-open" : "Mark Done"}
                     </button>
 
                     <button
@@ -828,7 +805,7 @@ export function AdminNotes() {
                       onClick={() => handleDeleteNote(note.id)}
                       className="px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-500 hover:text-red-400 hover:bg-red-950/30 transition-all cursor-pointer"
                     >
-                      🗑️ Delete
+                      Delete
                     </button>
                   </div>
                 </div>

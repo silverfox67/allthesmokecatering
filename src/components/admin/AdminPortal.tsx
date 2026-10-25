@@ -93,16 +93,14 @@ export function AdminPortal() {
               className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-zinc-700 hover:border-[#EA580C] text-xs font-semibold text-zinc-300 hover:text-white transition-colors"
             >
               <span>View Public Site</span>
-              <span className="text-[10px]">↗</span>
             </Link>
 
             <button
               type="button"
               onClick={handleLogout}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-red-500/80 text-xs font-semibold text-zinc-300 hover:text-red-400 transition-all cursor-pointer"
+              className="inline-flex items-center px-3.5 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-red-500/80 text-xs font-semibold text-zinc-300 hover:text-red-400 transition-all cursor-pointer"
             >
-              <span>🚪</span>
-              <span>Sign Out</span>
+              Sign Out
             </button>
           </div>
         </div>
@@ -120,7 +118,6 @@ export function AdminPortal() {
                   : "bg-zinc-900/90 text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800"
               }`}
             >
-              <span>📝</span>
               <span>Notes &amp; Media</span>
               <span className="text-[10px] bg-black/40 px-1.5 py-0.5 rounded-full font-sans font-bold">
                 Live
@@ -137,7 +134,6 @@ export function AdminPortal() {
                   : "bg-zinc-900/90 text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800"
               }`}
             >
-              <span>📋</span>
               <span>Leads Pipeline</span>
               <span className="text-[10px] text-amber-400/80 font-sans font-semibold">
                 (Phase 2)
@@ -154,7 +150,6 @@ export function AdminPortal() {
                   : "bg-zinc-900/90 text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800"
               }`}
             >
-              <span>✉️</span>
               <span>Brevo Email Hub</span>
               <span className="text-[10px] text-emerald-400 font-sans font-semibold">
                 ● Connected
@@ -171,7 +166,6 @@ export function AdminPortal() {
                   : "bg-zinc-900/90 text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800"
               }`}
             >
-              <span>📅</span>
               <span>Catering Calendar</span>
               <span className="text-[10px] text-amber-400/80 font-sans font-semibold">
                 (Phase 2)
@@ -189,10 +183,10 @@ export function AdminPortal() {
         {/* TAB 2: LEADS PIPELINE PLACEHOLDER */}
         {activeTab === "leads" && (
           <div className="bg-[#141417] p-8 sm:p-12 rounded-3xl border border-zinc-800 space-y-6 text-center max-w-2xl mx-auto">
-            <div className="w-16 h-16 rounded-2xl bg-amber-950/50 border border-amber-800/80 flex items-center justify-center mx-auto text-3xl">
-              📋
-            </div>
             <div className="space-y-2">
+              <span className="text-[11px] uppercase font-extrabold tracking-widest text-[#FF8C38]">
+                Leads Pipeline
+              </span>
               <h2 className="font-display text-2xl font-bold text-white">
                 Catering Leads &amp; Inquiry Pipeline
               </h2>
@@ -205,7 +199,7 @@ export function AdminPortal() {
             <div className="p-4 rounded-xl bg-zinc-900 border border-zinc-800 text-left space-y-2 text-xs">
               <div className="flex items-center justify-between text-zinc-300 font-bold uppercase tracking-wider">
                 <span>Active Notification Route:</span>
-                <span className="text-emerald-400">✓ Active</span>
+                <span className="text-emerald-400">Active</span>
               </div>
               <p className="text-zinc-400">
                 1. Customer submits quote form on website →<br />
@@ -226,9 +220,9 @@ export function AdminPortal() {
         {activeTab === "email" && (
           <div className="bg-[#141417] p-8 sm:p-12 rounded-3xl border border-zinc-800 space-y-6 max-w-3xl mx-auto">
             <div className="text-center space-y-2">
-              <div className="w-16 h-16 rounded-2xl bg-emerald-950/50 border border-emerald-800/80 flex items-center justify-center mx-auto text-3xl mb-4">
-                ✉️
-              </div>
+              <span className="text-[11px] uppercase font-extrabold tracking-widest text-emerald-400">
+                Brevo Integration
+              </span>
               <h2 className="font-display text-2xl font-bold text-white">
                 Brevo Email &amp; Forwarding Hub
               </h2>
@@ -288,7 +282,6 @@ export function AdminPortal() {
             </div>
 
             <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/60 text-xs text-emerald-200 flex items-center gap-2">
-              <span>✓</span>
               <span>
                 <strong>Zoho Integration:</strong> Can wait until you are ready! Brevo handles all outbound delivery and Gmail forwarding seamlessly today.
               </span>
@@ -299,10 +292,10 @@ export function AdminPortal() {
         {/* TAB 4: CATERING CALENDAR PLACEHOLDER */}
         {activeTab === "calendar" && (
           <div className="bg-[#141417] p-8 sm:p-12 rounded-3xl border border-zinc-800 space-y-6 text-center max-w-2xl mx-auto">
-            <div className="w-16 h-16 rounded-2xl bg-orange-950/50 border border-orange-800/80 flex items-center justify-center mx-auto text-3xl">
-              📅
-            </div>
             <div className="space-y-2">
+              <span className="text-[11px] uppercase font-extrabold tracking-widest text-[#FF7A00]">
+                Calendar Schedule
+              </span>
               <h2 className="font-display text-2xl font-bold text-white">
                 Live-Fire Smoker Rig &amp; Event Calendar
               </h2>
