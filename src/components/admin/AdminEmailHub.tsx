@@ -307,7 +307,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
               onChange={(e) => setSearchQuery(e.target.value)}
               className={`w-full pl-9 pr-3 py-2 rounded-xl text-xs focus:outline-none border transition-colors ${
                 isDay
-                  ? "bg-white border-stone-300 text-black font-medium placeholder:text-stone-400 focus:border-[#FF7A00]"
+                  ? "bg-white border-stone-400 text-black font-bold placeholder:text-stone-600 focus:border-[#FF7A00]"
                   : "bg-[#141210] border-zinc-800 text-white placeholder:text-zinc-500 focus:border-[#FF7A00]"
               }`}
             />
@@ -318,11 +318,11 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
             <button
               type="button"
               onClick={() => setFilterTab("all")}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
                 filterTab === "all"
                   ? "bg-[#EA580C] text-white shadow-xs"
                   : isDay
-                  ? "bg-stone-100 text-stone-800 hover:bg-stone-200"
+                  ? "bg-stone-200 text-black hover:bg-stone-300"
                   : "bg-zinc-850 text-stone-400 hover:text-white hover:bg-zinc-800"
               }`}
             >
@@ -331,11 +331,11 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
             <button
               type="button"
               onClick={() => setFilterTab("needs-reply")}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
                 filterTab === "needs-reply"
                   ? "bg-[#EA580C] text-white shadow-xs"
                   : isDay
-                  ? "bg-stone-100 text-stone-800 hover:bg-stone-200"
+                  ? "bg-stone-200 text-black hover:bg-stone-300"
                   : "bg-zinc-850 text-stone-400 hover:text-white hover:bg-zinc-800"
               }`}
             >
@@ -344,11 +344,11 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
             <button
               type="button"
               onClick={() => setFilterTab("replied")}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
                 filterTab === "replied"
                   ? "bg-[#EA580C] text-white shadow-xs"
                   : isDay
-                  ? "bg-stone-100 text-stone-800 hover:bg-stone-200"
+                  ? "bg-stone-200 text-black hover:bg-stone-300"
                   : "bg-zinc-850 text-stone-400 hover:text-white hover:bg-zinc-800"
               }`}
             >
@@ -361,7 +361,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
             {filteredLeads.length === 0 ? (
               <div
                 className={`p-8 text-center rounded-2xl border ${
-                  isDay ? "bg-white border-stone-200 text-stone-600" : "bg-[#141210] border-zinc-800 text-stone-400"
+                  isDay ? "bg-white border-stone-300 text-black font-bold" : "bg-[#141210] border-zinc-800 text-stone-400"
                 } text-xs`}
               >
                 No client inquiries found.
@@ -381,7 +381,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                           ? "bg-[#FAF7F2] border-[#FF7A00] ring-2 ring-[#FF7A00]/25 shadow-md"
                           : "bg-[#1A1613] border-[#FF7A00] ring-2 ring-[#FF7A00]/30 shadow-md"
                         : isDay
-                        ? "bg-white border-stone-200 hover:border-amber-400 shadow-2xs"
+                        ? "bg-white border-stone-300 hover:border-amber-400 shadow-2xs"
                         : "bg-[#141210] border-zinc-800/90 hover:border-zinc-700"
                     }`}
                   >
@@ -397,25 +397,25 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                       </span>
                     </div>
 
-                    {/* Contact subline */}
-                    <div className="flex items-center justify-between text-[11px] text-stone-600 dark:text-stone-400">
+                    {/* Contact subline (crisp black in day mode) */}
+                    <div className="flex items-center justify-between text-[11px] text-black dark:text-stone-300 font-bold">
                       <span className="truncate">{lead.email}</span>
-                      <span className="font-medium shrink-0 ml-1">{lead.phone}</span>
+                      <span className="shrink-0 ml-1 font-extrabold">{lead.phone}</span>
                     </div>
 
                     {/* Event & Guests */}
-                    <div className="flex items-center justify-between text-[11px] font-semibold pt-1 border-t border-stone-200/60 dark:border-zinc-800/80">
+                    <div className="flex items-center justify-between text-[11px] font-extrabold pt-1 border-t border-stone-200 dark:border-zinc-800/80">
                       <span className="text-[#EA580C] dark:text-[#FF7A00]">
                         {lead.eventType || "Catering"} • {lead.guestCount} guests
                       </span>
-                      <span className="text-black dark:text-stone-300 font-bold">
+                      <span className="text-black dark:text-stone-300 font-extrabold">
                         {lead.eventDate || "Date Pending"}
                       </span>
                     </div>
 
                     {/* Notes snippet */}
                     {lead.notes && (
-                      <p className="text-[11px] text-stone-700 dark:text-stone-400 line-clamp-2 leading-relaxed">
+                      <p className="text-[11px] text-black dark:text-stone-300 font-semibold line-clamp-2 leading-relaxed">
                         {lead.notes}
                       </p>
                     )}
@@ -431,34 +431,34 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
           {!currentLead ? (
             <div
               className={`p-12 text-center rounded-2xl border ${
-                isDay ? "bg-white border-stone-200" : "bg-[#141210] border-zinc-800"
+                isDay ? "bg-white border-stone-300" : "bg-[#141210] border-zinc-800"
               }`}
             >
               <div className="w-12 h-12 rounded-full bg-[#FF7A00]/15 text-[#FF7A00] flex items-center justify-center mx-auto mb-3 text-xl">
                 ✉️
               </div>
-              <h3 className={`text-base font-bold ${isDay ? "text-black" : "text-white"}`}>
+              <h3 className={`text-base font-extrabold ${isDay ? "text-black" : "text-white"}`}>
                 No Inquiry Selected
               </h3>
-              <p className="text-xs text-stone-500 mt-1">
+              <p className={`text-xs mt-1 font-bold ${isDay ? "text-black" : "text-stone-400"}`}>
                 Select an inquiry from the left column to view the thread and write a personalized reply.
               </p>
             </div>
           ) : (
             <div
               className={`rounded-2xl border shadow-sm overflow-hidden ${
-                isDay ? "bg-white border-stone-200" : "bg-[#141210] border-zinc-800"
+                isDay ? "bg-white border-stone-300" : "bg-[#141210] border-zinc-800"
               }`}
             >
               {/* Header: Conversation with [Client] + View Full Lead */}
               <div
                 className={`p-4 sm:p-5 border-b flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 ${
-                  isDay ? "bg-stone-50/80 border-stone-200" : "bg-[#181512] border-zinc-800"
+                  isDay ? "bg-stone-50 border-stone-200" : "bg-[#181512] border-zinc-800"
                 }`}
               >
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className={`text-base font-extrabold ${isDay ? "text-black" : "text-white"}`}>
+                    <h3 className={`text-base font-black ${isDay ? "text-black" : "text-white"}`}>
                       Conversation with {currentLead.name}
                     </h3>
                     <span
@@ -470,16 +470,16 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3 text-xs mt-1 text-black dark:text-stone-300 font-semibold flex-wrap">
+                  <div className="flex items-center gap-3 text-xs mt-1 text-black dark:text-stone-300 font-extrabold flex-wrap">
                     <span>✉️ {currentLead.email}</span>
                     <a
                       href={`tel:${currentLead.phone}`}
-                      className="text-[#EA580C] hover:underline font-bold flex items-center gap-1"
+                      className="text-[#EA580C] hover:underline font-black flex items-center gap-1"
                     >
                       📞 {currentLead.phone}
                     </a>
                     {currentLead.eventDate && (
-                      <span className="text-black dark:text-stone-300">
+                      <span className="text-black dark:text-stone-300 font-extrabold">
                         📅 {currentLead.eventDate}
                       </span>
                     )}
@@ -490,9 +490,9 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                   <button
                     type="button"
                     onClick={() => setFullLeadModalOpen(true)}
-                    className={`h-7 px-2.5 rounded-lg border text-xs font-bold flex items-center gap-1 transition-all cursor-pointer ${
+                    className={`h-7 px-2.5 rounded-lg border text-xs font-black flex items-center gap-1 transition-all cursor-pointer ${
                       isDay
-                        ? "bg-white border-stone-300 text-black hover:bg-stone-100"
+                        ? "bg-white border-stone-400 text-black hover:bg-stone-100"
                         : "bg-zinc-800 border-zinc-700 text-stone-200 hover:bg-zinc-700"
                     }`}
                   >
@@ -510,27 +510,27 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                 {/* Scrollable Conversation Thread Container */}
                 <div
                   className={`p-4 rounded-xl border space-y-3.5 max-h-[300px] overflow-y-auto ${
-                    isDay ? "bg-stone-50/70 border-stone-200" : "bg-zinc-900/60 border-zinc-800"
+                    isDay ? "bg-stone-50 border-stone-200" : "bg-zinc-900/60 border-zinc-800"
                   }`}
                 >
                   {/* 1. Client Inbound Inquiry Bubble */}
                   <div
                     className={`p-3.5 rounded-xl border text-xs space-y-2 shadow-2xs ${
                       isDay
-                        ? "bg-white border-stone-200 text-stone-900"
+                        ? "bg-white border-stone-300 text-black font-medium"
                         : "bg-[#181512] border-zinc-750 text-stone-200"
                     }`}
                   >
                     <div className="flex items-center justify-between border-b pb-2 border-stone-200 dark:border-zinc-800">
-                      <span className="font-bold flex items-center gap-1.5 text-[#EA580C] dark:text-[#FF7A00]">
+                      <span className="font-black flex items-center gap-1.5 text-[#EA580C] dark:text-[#FF7A00]">
                         📥 Customer Inquiry ({currentLead.name})
                       </span>
-                      <span className="text-[10px] text-stone-500 font-medium">
+                      <span className={`text-[10px] font-extrabold ${isDay ? "text-black" : "text-stone-400"}`}>
                         {currentLead.createdAt ? new Date(currentLead.createdAt).toLocaleDateString() : "New Lead"}
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px] py-1 text-black dark:text-stone-200 font-semibold">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px] py-1 text-black dark:text-stone-200 font-extrabold">
                       <div>
                         <strong>Event:</strong> {currentLead.eventType || "Private Catering"}
                       </div>
@@ -543,12 +543,12 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                     </div>
 
                     {currentLead.packageName && (
-                      <div className="text-[11px] font-bold text-[#EA580C]">
+                      <div className="text-[11px] font-black text-[#EA580C]">
                         Package: {currentLead.packageName}
                       </div>
                     )}
 
-                    <div className="whitespace-pre-wrap leading-relaxed text-[11px] pt-1 text-black dark:text-stone-300">
+                    <div className="whitespace-pre-wrap leading-relaxed text-[11px] pt-1 text-black dark:text-stone-300 font-semibold">
                       {currentLead.notes || "No message body included in intake."}
                     </div>
                   </div>
@@ -559,38 +559,38 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                       key={msg.id}
                       className={`p-3.5 rounded-xl border text-xs space-y-2 ml-4 sm:ml-8 ${
                         isDay
-                          ? "bg-amber-50/70 border-amber-200 text-black shadow-2xs"
+                          ? "bg-amber-50/70 border-amber-300 text-black shadow-2xs"
                           : "bg-[#251C15] border-[#FF7A00]/40 text-stone-200"
                       }`}
                     >
-                      <div className="flex items-center justify-between border-b pb-2 border-amber-200/60 dark:border-zinc-800">
-                        <span className="font-bold flex items-center gap-1.5 text-[#EA580C] dark:text-[#FF7A00]">
+                      <div className="flex items-center justify-between border-b pb-2 border-amber-200 dark:border-zinc-800">
+                        <span className="font-black flex items-center gap-1.5 text-[#EA580C] dark:text-[#FF7A00]">
                           📤 Marion Bolden (info@allthesmokecatering.com)
                         </span>
-                        <span className="text-[10px] text-stone-600 dark:text-stone-400">
+                        <span className={`text-[10px] font-extrabold ${isDay ? "text-black" : "text-stone-400"}`}>
                           {new Date(msg.createdAt).toLocaleString()}
                         </span>
                       </div>
 
                       {msg.subject && (
-                        <p className="font-bold text-[11px] text-[#EA580C] dark:text-[#FF7A00]">
+                        <p className="font-extrabold text-[11px] text-[#EA580C] dark:text-[#FF7A00]">
                           Subject: {msg.subject}
                         </p>
                       )}
 
-                      <div className="whitespace-pre-wrap leading-relaxed text-[11px] text-black dark:text-stone-200">
+                      <div className="whitespace-pre-wrap leading-relaxed text-[11px] text-black dark:text-stone-200 font-semibold">
                         {msg.body}
                       </div>
 
-                      <div className="pt-1 flex items-center justify-between text-[10px] text-stone-600 dark:text-stone-400 border-t border-amber-200/50 dark:border-zinc-800">
-                        <span className="font-semibold">Status: ✓ Dispatched via Brevo domain mail</span>
-                        <span className="italic">Client replies arrive in inbox</span>
+                      <div className="pt-1 flex items-center justify-between text-[10px] text-black dark:text-stone-300 font-bold border-t border-amber-200 dark:border-zinc-800">
+                        <span className="font-black">Status: ✓ Dispatched via Brevo domain mail</span>
+                        <span className="italic font-bold">Client replies arrive in inbox</span>
                       </div>
                     </div>
                   ))}
 
                   {currentLeadMessages.length === 0 && (
-                    <p className="text-[11px] text-center text-stone-600 dark:text-stone-400 py-1.5 italic font-medium">
+                    <p className={`text-[11px] text-center py-1.5 italic font-bold ${isDay ? "text-black" : "text-stone-300"}`}>
                       No replies sent yet to this client. Choose a 1-tap template below or compose your personalized reply.
                     </p>
                   )}
@@ -598,7 +598,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
 
                 {/* 1-Tap Catering Reply Templates */}
                 <div className="space-y-1.5">
-                  <label className={`text-[11px] font-extrabold block ${isDay ? "text-black" : "text-stone-200"}`}>
+                  <label className={`text-[11px] font-black block ${isDay ? "text-black" : "text-stone-200"}`}>
                     ⚡ 1-Tap Catering Reply Templates:
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
@@ -607,15 +607,15 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                         key={tmpl.id}
                         type="button"
                         onClick={() => setReplyBody(tmpl.generate(currentLead))}
-                        className={`h-auto py-2 px-2 rounded-xl border text-[11px] flex flex-col items-center justify-center text-center font-semibold leading-tight transition-all cursor-pointer ${
+                        className={`h-auto py-2 px-2 rounded-xl border text-[11px] flex flex-col items-center justify-center text-center font-bold leading-tight transition-all cursor-pointer ${
                           isDay
-                            ? "bg-stone-50 border-stone-300 text-black hover:border-[#FF7A00] hover:bg-amber-50/50"
+                            ? "bg-stone-50 border-stone-300 text-black hover:border-[#FF7A00] hover:bg-amber-50"
                             : "bg-zinc-850 border-zinc-700 text-stone-200 hover:border-[#FF7A00] hover:bg-zinc-800"
                         }`}
                         title={`Insert "${tmpl.name}" template`}
                       >
-                        <span className="text-[#EA580C] dark:text-[#FF7A00] font-extrabold">{tmpl.badge}</span>
-                        <span className="text-[10px] text-stone-600 dark:text-stone-400">{tmpl.name}</span>
+                        <span className="text-[#EA580C] dark:text-[#FF7A00] font-black">{tmpl.badge}</span>
+                        <span className={`text-[10px] font-extrabold ${isDay ? "text-black" : "text-stone-300"}`}>{tmpl.name}</span>
                       </button>
                     ))}
                   </div>
@@ -625,7 +625,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                 <div className="space-y-2.5">
                   {/* Subject Line Input */}
                   <div>
-                    <label className={`text-[11px] font-extrabold block mb-1 ${isDay ? "text-black" : "text-stone-200"}`}>
+                    <label className={`text-[11px] font-black block mb-1 ${isDay ? "text-black" : "text-stone-200"}`}>
                       Subject Line:
                     </label>
                     <input
@@ -633,17 +633,17 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                       value={replySubject}
                       onChange={(e) => setReplySubject(e.target.value)}
                       placeholder={`Re: Catering Inquiry for ${currentLead.name}`}
-                      className={`w-full text-xs h-8 px-3 rounded-lg border font-semibold focus:outline-none transition-colors ${
+                      className={`w-full text-xs h-8 px-3 rounded-lg border font-bold focus:outline-none transition-colors ${
                         isDay
-                          ? "bg-white border-stone-300 text-black focus:border-[#FF7A00]"
-                          : "bg-zinc-900 border-zinc-700 text-white focus:border-[#FF7A00]"
+                          ? "bg-white border-stone-400 text-black placeholder:text-stone-600 focus:border-[#FF7A00]"
+                          : "bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-[#FF7A00]"
                       }`}
                     />
                   </div>
 
                   {/* Message Body Textarea (Starts EMPTY so Marion can write freely!) */}
                   <div>
-                    <label className={`text-[11px] font-extrabold block mb-1 ${isDay ? "text-black" : "text-stone-200"}`}>
+                    <label className={`text-[11px] font-black block mb-1 ${isDay ? "text-black" : "text-stone-200"}`}>
                       Message Body:
                     </label>
                     <textarea
@@ -651,9 +651,9 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                       value={replyBody}
                       onChange={(e) => setReplyBody(e.target.value)}
                       placeholder={`Type your personalized reply to ${currentLead.name} here...`}
-                      className={`w-full p-3 rounded-xl border text-xs sm:text-sm font-sans leading-relaxed focus:outline-none transition-colors ${
+                      className={`w-full p-3 rounded-xl border text-xs sm:text-sm font-sans font-semibold leading-relaxed focus:outline-none transition-colors ${
                         isDay
-                          ? "bg-white border-stone-300 text-black placeholder:text-stone-500 focus:border-[#FF7A00]"
+                          ? "bg-white border-stone-400 text-black placeholder:text-stone-600 focus:border-[#FF7A00]"
                           : "bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-[#FF7A00]"
                       }`}
                     />
@@ -661,7 +661,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
 
                   {/* Dispatch Banner & Action Bar */}
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 pt-1">
-                    <div className="flex items-center gap-1.5 text-[11px] text-black dark:text-stone-300 font-medium">
+                    <div className="flex items-center gap-1.5 text-[11px] text-black dark:text-stone-300 font-bold">
                       <svg className="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                       </svg>
@@ -675,7 +675,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                         <button
                           type="button"
                           onClick={() => setReplyBody("")}
-                          className="h-8 px-3 rounded-lg text-xs font-bold text-stone-600 hover:text-black dark:text-stone-400 dark:hover:text-white transition-colors cursor-pointer"
+                          className="h-8 px-3 rounded-lg text-xs font-black text-black hover:text-stone-700 dark:text-stone-200 transition-colors cursor-pointer"
                         >
                           Clear
                         </button>
@@ -690,7 +690,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                         {isSending ? (
                           <>
                             <svg className="animate-spin h-3.5 w-3.5 text-white" viewBox="0 0 24 24" fill="none">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth={4} />
                               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                             </svg>
                             <span>Sending Reply...</span>
@@ -728,7 +728,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
             {/* Header */}
             <div className="flex items-start justify-between gap-3 border-b pb-4 border-stone-200 dark:border-zinc-800">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-widest text-[#FF7A00]">
+                <span className="text-[10px] uppercase font-black tracking-widest text-[#FF7A00]">
                   Ticket #{currentLead.ticketId} • Lead Specifications
                 </span>
                 <h3 className="text-xl sm:text-2xl font-black text-black dark:text-white mt-0.5">
@@ -746,26 +746,26 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
 
             {/* Quick Metadata Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-200" : "bg-zinc-900 border-zinc-800"}`}>
-                <span className="text-[10px] uppercase font-bold text-stone-500 block">Status</span>
+              <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
+                <span className={`text-[10px] uppercase font-black block ${isDay ? "text-black" : "text-stone-400"}`}>Status</span>
                 <span className="text-xs font-black capitalize text-black dark:text-white mt-0.5 block">
                   {currentLead.status}
                 </span>
               </div>
-              <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-200" : "bg-zinc-900 border-zinc-800"}`}>
-                <span className="text-[10px] uppercase font-bold text-stone-500 block">Guests</span>
+              <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
+                <span className={`text-[10px] uppercase font-black block ${isDay ? "text-black" : "text-stone-400"}`}>Guests</span>
                 <span className="text-xs font-black text-black dark:text-white mt-0.5 block">
                   {currentLead.guestCount} Guests
                 </span>
               </div>
-              <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-200" : "bg-zinc-900 border-zinc-800"}`}>
-                <span className="text-[10px] uppercase font-bold text-stone-500 block">Event Date</span>
+              <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
+                <span className={`text-[10px] uppercase font-black block ${isDay ? "text-black" : "text-stone-400"}`}>Event Date</span>
                 <span className="text-xs font-black text-black dark:text-white mt-0.5 block">
                   {currentLead.eventDate || "TBD"}
                 </span>
               </div>
-              <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-200" : "bg-zinc-900 border-zinc-800"}`}>
-                <span className="text-[10px] uppercase font-bold text-stone-500 block">Event Type</span>
+              <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
+                <span className={`text-[10px] uppercase font-black block ${isDay ? "text-black" : "text-stone-400"}`}>Event Type</span>
                 <span className="text-xs font-black capitalize text-black dark:text-white mt-0.5 block">
                   {currentLead.eventType || "Private"}
                 </span>
@@ -773,24 +773,24 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
             </div>
 
             {/* Contact Information */}
-            <div className={`p-4 rounded-xl border space-y-1.5 ${isDay ? "bg-stone-50 border-stone-200" : "bg-zinc-900 border-zinc-800"}`}>
-              <div className="text-xs font-bold text-black dark:text-white flex items-center justify-between">
+            <div className={`p-4 rounded-xl border space-y-1.5 ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
+              <div className="text-xs font-black text-black dark:text-white flex items-center justify-between">
                 <span>Contact Details</span>
-                <span className="text-[#EA580C] text-[11px] font-mono">ID: {currentLead.id}</span>
+                <span className="text-[#EA580C] text-[11px] font-mono font-bold">ID: {currentLead.id}</span>
               </div>
-              <div className="text-xs text-black dark:text-stone-300">
+              <div className="text-xs text-black dark:text-stone-200 font-bold">
                 <strong>Email:</strong> {currentLead.email}
               </div>
-              <div className="text-xs text-black dark:text-stone-300">
+              <div className="text-xs text-black dark:text-stone-200 font-bold">
                 <strong>Phone:</strong> {currentLead.phone}
               </div>
               {currentLead.deliveryAddress && (
-                <div className="text-xs text-black dark:text-stone-300">
+                <div className="text-xs text-black dark:text-stone-200 font-bold">
                   <strong>Venue / Location:</strong> {currentLead.deliveryAddress}
                 </div>
               )}
               {currentLead.packageName && (
-                <div className="text-xs text-black dark:text-stone-300">
+                <div className="text-xs text-black dark:text-stone-200 font-bold">
                   <strong>Smoker Package:</strong> {currentLead.packageName}
                 </div>
               )}
@@ -802,7 +802,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                 Quote &amp; Event Intake Specifications:
               </span>
               <div
-                className={`p-4 rounded-xl border max-h-[200px] overflow-y-auto leading-relaxed text-xs whitespace-pre-wrap font-sans ${
+                className={`p-4 rounded-xl border max-h-[200px] overflow-y-auto leading-relaxed text-xs whitespace-pre-wrap font-sans font-semibold ${
                   isDay ? "bg-white border-stone-300 text-black" : "bg-zinc-900 border-zinc-800 text-stone-200"
                 }`}
               >
@@ -815,8 +815,8 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
               <button
                 type="button"
                 onClick={() => handleCopyLeadSpecs(currentLead)}
-                className={`h-8 px-3 rounded-lg border text-xs font-bold transition-all cursor-pointer ${
-                  isDay ? "bg-stone-100 hover:bg-stone-200 border-stone-300 text-black" : "bg-zinc-800 hover:bg-zinc-700 border-zinc-700 text-white"
+                className={`h-8 px-3 rounded-lg border text-xs font-black transition-all cursor-pointer ${
+                  isDay ? "bg-stone-100 hover:bg-stone-200 border-stone-400 text-black" : "bg-zinc-800 hover:bg-zinc-700 border-zinc-700 text-white"
                 }`}
               >
                 {copiedLink ? "✓ Copied Details!" : "📋 Copy Details"}
@@ -825,7 +825,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
               <button
                 type="button"
                 onClick={() => setFullLeadModalOpen(false)}
-                className="h-8 px-4 rounded-lg bg-[#EA580C] hover:bg-[#C84A0A] text-white text-xs font-bold cursor-pointer"
+                className="h-8 px-4 rounded-lg bg-[#EA580C] hover:bg-[#C84A0A] text-white text-xs font-black cursor-pointer"
               >
                 Close Full Slip
               </button>

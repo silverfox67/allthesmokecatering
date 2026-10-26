@@ -278,7 +278,7 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
           >
             Event Calendar &amp; Smoke Schedule
           </h2>
-          <p className={`text-xs sm:text-sm mt-0.5 ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
+          <p className={`text-xs sm:text-sm mt-0.5 font-bold ${isDay ? "text-black" : "text-zinc-400"}`}>
             Unified schedule combining customer catering inquiries, booked gigs, wood deliveries, and internal meat prep.
           </p>
         </div>
@@ -305,13 +305,13 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
             isDay ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm" : "bg-[#141417] border-zinc-800"
           }`}
         >
-          <div className="text-[11px] font-bold uppercase tracking-wider text-[#EA580C] flex items-center gap-1.5">
+          <div className="text-[11px] font-black uppercase tracking-wider text-[#EA580C] flex items-center gap-1.5">
             <span>🔥</span> Total Schedule
           </div>
-          <div className={`text-2xl sm:text-3xl font-display font-black mt-1 ${isDay ? "text-stone-900" : "text-white"}`}>
+          <div className={`text-2xl sm:text-3xl font-display font-black mt-1 ${isDay ? "text-black" : "text-white"}`}>
             {events.length}
           </div>
-          <div className="text-[11px] text-stone-400 mt-0.5 font-medium">Active events &amp; prep sessions</div>
+          <div className={`text-[11px] mt-0.5 font-bold ${isDay ? "text-black" : "text-stone-400"}`}>Active events &amp; prep sessions</div>
         </div>
 
         <div
@@ -319,13 +319,13 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
             isDay ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm" : "bg-[#141417] border-zinc-800"
           }`}
         >
-          <div className="text-[11px] font-bold uppercase tracking-wider text-amber-500 flex items-center gap-1.5">
+          <div className="text-[11px] font-black uppercase tracking-wider text-amber-600 flex items-center gap-1.5">
             <span>📅</span> {currentDate.toLocaleDateString("en-US", { month: "short" })} Schedule
           </div>
-          <div className={`text-2xl sm:text-3xl font-display font-black mt-1 ${isDay ? "text-amber-700" : "text-amber-400"}`}>
+          <div className={`text-2xl sm:text-3xl font-display font-black mt-1 ${isDay ? "text-black" : "text-amber-400"}`}>
             {monthGigs}
           </div>
-          <div className="text-[11px] text-stone-400 mt-0.5 font-medium">Gigs scheduled this month</div>
+          <div className={`text-[11px] mt-0.5 font-bold ${isDay ? "text-black" : "text-stone-400"}`}>Gigs scheduled this month</div>
         </div>
 
         <div
@@ -333,13 +333,13 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
             isDay ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm" : "bg-[#141417] border-zinc-800"
           }`}
         >
-          <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-500 flex items-center gap-1.5">
+          <div className="text-[11px] font-black uppercase tracking-wider text-emerald-600 flex items-center gap-1.5">
             <span>✓</span> Confirmed Booked
           </div>
-          <div className={`text-2xl sm:text-3xl font-display font-black mt-1 ${isDay ? "text-emerald-700" : "text-emerald-400"}`}>
+          <div className={`text-2xl sm:text-3xl font-display font-black mt-1 ${isDay ? "text-black" : "text-emerald-400"}`}>
             {bookedCount}
           </div>
-          <div className="text-[11px] text-stone-400 mt-0.5 font-medium">Deposits confirmed</div>
+          <div className={`text-[11px] mt-0.5 font-bold ${isDay ? "text-black" : "text-stone-400"}`}>Deposits confirmed</div>
         </div>
 
         <div
@@ -347,13 +347,13 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
             isDay ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm" : "bg-[#141417] border-zinc-800"
           }`}
         >
-          <div className="text-[11px] font-bold uppercase tracking-wider text-blue-500 flex items-center gap-1.5">
+          <div className="text-[11px] font-black uppercase tracking-wider text-blue-600 flex items-center gap-1.5">
             <span>🔔</span> Calendar Alerts
           </div>
-          <div className={`text-sm font-bold mt-1.5 truncate ${isDay ? "text-stone-900" : "text-white"}`}>
+          <div className={`text-sm font-black mt-1.5 truncate ${isDay ? "text-black" : "text-white"}`}>
             Marion &amp; Todd
           </div>
-          <div className="text-[11px] text-stone-400 mt-0.5 font-medium">boldenmarion83 &amp; todddavis923</div>
+          <div className={`text-[11px] mt-0.5 font-bold ${isDay ? "text-black" : "text-stone-400"}`}>boldenmarion83 &amp; todddavis923</div>
         </div>
       </div>
 
@@ -366,15 +366,15 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
         {/* Month Navigation Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-stone-200 dark:border-zinc-800">
           <div className="flex items-center gap-3">
-            <h3 className={`font-display text-2xl font-bold tracking-wide ${isDay ? "text-stone-900" : "text-white"}`}>
+            <h3 className={`font-display text-2xl font-black tracking-wide ${isDay ? "text-black" : "text-white"}`}>
               {currentDate.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
             </h3>
             <button
               type="button"
               onClick={jumpToday}
-              className={`px-3 py-1 rounded-lg text-xs font-bold border transition-colors cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs font-black border transition-colors cursor-pointer ${
                 isDay
-                  ? "bg-[#FAF8F5] border-[#D8CEC1] text-stone-700 hover:bg-[#EAE3D9]"
+                  ? "bg-white border-stone-400 text-black hover:bg-stone-100"
                   : "bg-zinc-800 border-zinc-700 text-stone-300 hover:bg-zinc-700"
               }`}
             >
@@ -387,9 +387,9 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
               type="button"
               onClick={prevMonth}
               aria-label="Previous Month"
-              className={`p-2 rounded-xl border text-xs font-bold transition-colors cursor-pointer ${
+              className={`p-2 rounded-xl border text-xs font-black transition-colors cursor-pointer ${
                 isDay
-                  ? "bg-[#FAF8F5] border-[#D8CEC1] text-stone-700 hover:bg-[#EAE3D9]"
+                  ? "bg-white border-stone-400 text-black hover:bg-stone-100"
                   : "bg-zinc-800 border-zinc-700 text-stone-300 hover:bg-zinc-700"
               }`}
             >
@@ -399,9 +399,9 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
               type="button"
               onClick={nextMonth}
               aria-label="Next Month"
-              className={`p-2 rounded-xl border text-xs font-bold transition-colors cursor-pointer ${
+              className={`p-2 rounded-xl border text-xs font-black transition-colors cursor-pointer ${
                 isDay
-                  ? "bg-[#FAF8F5] border-[#D8CEC1] text-stone-700 hover:bg-[#EAE3D9]"
+                  ? "bg-white border-stone-400 text-black hover:bg-stone-100"
                   : "bg-zinc-800 border-zinc-700 text-stone-300 hover:bg-zinc-700"
               }`}
             >
@@ -411,7 +411,7 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
         </div>
 
         {/* Day of Week Headers */}
-        <div className="grid grid-cols-7 gap-1 sm:gap-2 text-center text-xs font-bold uppercase tracking-wider text-stone-400">
+        <div className={`grid grid-cols-7 gap-1 sm:gap-2 text-center text-xs font-black uppercase tracking-wider ${isDay ? "text-black" : "text-stone-400"}`}>
           <div>Sun</div>
           <div>Mon</div>
           <div>Tue</div>
@@ -448,18 +448,18 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
               >
                 <div className="flex items-center justify-between">
                   <span
-                    className={`text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full ${
+                    className={`text-xs font-black w-6 h-6 flex items-center justify-center rounded-full ${
                       isToday
                         ? "bg-[#EA580C] text-white"
                         : isDay
-                        ? "text-stone-800"
+                        ? "text-black"
                         : "text-stone-200"
                     }`}
                   >
                     {calDay.dayNum}
                   </span>
                   {dayEvents.length > 0 && (
-                    <span className="text-[10px] font-bold text-amber-500">
+                    <span className="text-[10px] font-black text-amber-500">
                       {dayEvents.length}
                     </span>
                   )}
@@ -472,7 +472,7 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
                     return (
                       <div
                         key={ev.id}
-                        className={`text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded truncate ${
+                        className={`text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded truncate font-bold ${
                           isDay ? meta.chipDay : meta.chipDark
                         }`}
                         title={ev.title}
@@ -482,7 +482,7 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
                     );
                   })}
                   {dayEvents.length > 2 && (
-                    <div className="text-[9px] text-stone-400 font-bold pl-1">
+                    <div className={`text-[9px] font-black pl-1 ${isDay ? "text-black" : "text-stone-400"}`}>
                       +{dayEvents.length - 2} more
                     </div>
                   )}
@@ -496,15 +496,15 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
       {/* 4. SELECTED DAY DETAILED SCHEDULE ROSTER */}
       <div
         className={`rounded-3xl border p-5 sm:p-7 space-y-4 shadow-xl ${
-          isDay ? "bg-[#FFFFFF] border-[#E2DACF]" : "bg-[#141417] border-zinc-800"
+          isDay ? "bg-[#FFFFFF] border-[#E2DACF]" : "bg-[#141210] border-zinc-800"
         }`}
       >
         <div className="flex items-center justify-between border-b border-stone-200 dark:border-zinc-800 pb-3">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#FF7A00] block">
+            <span className="text-[11px] font-black uppercase tracking-wider text-[#FF7A00] block">
               Day Schedule Breakdown
             </span>
-            <h3 className={`font-display text-xl font-bold ${isDay ? "text-stone-900" : "text-white"}`}>
+            <h3 className={`font-display text-xl font-black ${isDay ? "text-black" : "text-white"}`}>
               {new Date(selectedDateStr + "T12:00:00").toLocaleDateString("en-US", {
                 weekday: "long",
                 month: "long",
@@ -520,14 +520,14 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
               setNewEvent((prev) => ({ ...prev, eventDate: selectedDateStr }));
               setShowAddModal(true);
             }}
-            className="text-xs font-bold text-[#EA580C] hover:underline"
+            className="text-xs font-black text-[#EA580C] hover:underline"
           >
             + Add to this date
           </button>
         </div>
 
         {selectedDayEvents.length === 0 ? (
-          <div className="py-8 text-center text-xs text-stone-400">
+          <div className={`py-8 text-center text-xs font-bold ${isDay ? "text-black" : "text-stone-400"}`}>
             No events or catering gigs scheduled for this date.
           </div>
         ) : (
@@ -539,7 +539,7 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
                 <div
                   key={ev.id}
                   className={`p-4 rounded-2xl border transition-all text-xs space-y-2 ${
-                    isDay ? "bg-[#FAF8F5] border-[#E2DACF]" : "bg-zinc-900/80 border-zinc-800"
+                    isDay ? "bg-[#FAF8F5] border-[#D8CEC1]" : "bg-zinc-900/80 border-zinc-800"
                   }`}
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
@@ -547,13 +547,13 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
                       <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${isDay ? meta.chipDay : meta.chipDark}`}>
                         {meta.icon} {meta.label}
                       </span>
-                      <span className="font-bold text-sm text-stone-900 dark:text-white">
+                      <span className={`font-black text-sm ${isDay ? "text-black" : "text-white"}`}>
                         {ev.title}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-stone-400 text-[11px]">
+                      <span className={`font-mono text-[11px] font-black ${isDay ? "text-black" : "text-stone-400"}`}>
                         🕒 {ev.timeSlot}
                       </span>
                       <button
@@ -562,6 +562,8 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
                         className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border transition-colors cursor-pointer ${
                           ev.isCompleted
                             ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/40"
+                            : isDay
+                            ? "bg-stone-200 text-black border-stone-400"
                             : "bg-stone-800 text-stone-400 border-stone-700"
                         }`}
                       >
@@ -570,22 +572,22 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
                       <button
                         type="button"
                         onClick={() => handleDeleteEvent(ev.id)}
-                        className="text-stone-400 hover:text-red-500 p-1"
+                        className={`${isDay ? "text-black hover:text-red-600" : "text-stone-400 hover:text-red-500"} p-1 font-bold`}
                       >
                         ✕
                       </button>
                     </div>
                   </div>
 
-                  {/* Details Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] text-stone-500 pt-1">
+                  {/* Details Grid (solid black in day mode) */}
+                  <div className={`grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] pt-1 font-bold ${isDay ? "text-black" : "text-stone-400"}`}>
                     {ev.guestCount && <div>👥 <strong>Guests:</strong> {ev.guestCount}</div>}
                     {ev.location && <div>📍 <strong>Location:</strong> {ev.location}</div>}
                     {ev.clientName && <div>👤 <strong>Client:</strong> {ev.clientName} ({ev.clientPhone})</div>}
                   </div>
 
                   {ev.notes && (
-                    <div className="p-2 rounded-lg bg-black/20 text-stone-400 text-[11px] italic">
+                    <div className={`p-2 rounded-lg text-[11px] font-semibold leading-relaxed ${isDay ? "bg-stone-100 text-black border border-stone-300" : "bg-black/20 text-stone-400 italic"}`}>
                       {ev.notes}
                     </div>
                   )}

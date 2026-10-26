@@ -412,15 +412,15 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
           }`}
         >
           <div
-            className={`text-[11px] uppercase font-extrabold tracking-wider ${
-              isButcher ? "text-stone-600" : "text-zinc-400"
+            className={`text-[11px] uppercase font-black tracking-wider ${
+              isButcher ? "text-black" : "text-zinc-400"
             }`}
           >
             Total Notes
           </div>
           <div
             className={`text-2xl sm:text-3xl font-black font-display mt-1 ${
-              isButcher ? "text-[#1C1917]" : "text-white"
+              isButcher ? "text-black" : "text-white"
             }`}
           >
             {notes.length}
@@ -436,8 +436,8 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
           }`}
         >
           <div
-            className={`text-[11px] uppercase font-extrabold tracking-wider ${
-              isButcher ? "text-stone-600" : "text-zinc-400"
+            className={`text-[11px] uppercase font-black tracking-wider ${
+              isButcher ? "text-black" : "text-zinc-400"
             }`}
           >
             Active Items
@@ -456,15 +456,15 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
           }`}
         >
           <div
-            className={`text-[11px] uppercase font-extrabold tracking-wider ${
-              isButcher ? "text-stone-600" : "text-zinc-400"
+            className={`text-[11px] uppercase font-black tracking-wider ${
+              isButcher ? "text-black" : "text-zinc-400"
             }`}
           >
             Photos &amp; Docs
           </div>
           <div
             className={`text-2xl sm:text-3xl font-black font-display mt-1 ${
-              isButcher ? "text-[#8C6D3B]" : "text-[#C8A97E]"
+              isButcher ? "text-black" : "text-[#C8A97E]"
             }`}
           >
             {totalPhotos}
@@ -480,8 +480,8 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
           }`}
         >
           <div
-            className={`text-[11px] uppercase font-extrabold tracking-wider ${
-              isButcher ? "text-stone-600" : "text-zinc-400"
+            className={`text-[11px] uppercase font-black tracking-wider ${
+              isButcher ? "text-black" : "text-zinc-400"
             }`}
           >
             Urgent Tasks
@@ -539,7 +539,7 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
             >
               Smokehouse Notes &amp; Media Files
             </h2>
-            <p className={`text-xs ${isButcher ? "text-stone-600 font-medium" : "text-zinc-400"}`}>
+            <p className={`text-xs ${isButcher ? "text-black font-bold" : "text-zinc-400"}`}>
               Shared operational scratchpad between Todd and Marion with automatic email notifications.
             </p>
           </div>

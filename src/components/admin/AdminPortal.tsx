@@ -302,7 +302,7 @@ export function AdminPortal() {
               </div>
               <p
                 className={`text-[11px] ${
-                  isDay ? "text-stone-600 font-medium" : "text-zinc-400"
+                  isDay ? "text-black font-extrabold" : "text-zinc-400"
                 }`}
               >
                 Marion Bolden • Chicago Live-Fire Catering
@@ -338,7 +338,7 @@ export function AdminPortal() {
                 className={`px-2.5 sm:px-3 py-1 rounded-lg transition-all font-bold cursor-pointer ${
                   !isDay
                     ? "bg-[#EA580C] text-white shadow-sm font-black"
-                    : "text-stone-600 hover:text-stone-900"
+                    : "text-black font-black hover:text-stone-700"
                 }`}
               >
                 Night
@@ -349,9 +349,9 @@ export function AdminPortal() {
             <Link
               href="/"
               target="_blank"
-              className={`hidden sm:inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
+              className={`hidden sm:inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl border text-xs font-bold transition-all ${
                 isDay
-                  ? "border-[#D8CEC1] hover:border-[#EA580C] text-stone-700 hover:text-stone-900 bg-[#FAF8F5]"
+                  ? "border-stone-400 hover:border-[#EA580C] text-black bg-white hover:bg-stone-100"
                   : "border-zinc-700 hover:border-[#EA580C] text-zinc-300 hover:text-white"
               }`}
             >
@@ -361,9 +361,9 @@ export function AdminPortal() {
             <button
               type="button"
               onClick={handleLogout}
-              className={`inline-flex items-center px-3 sm:px-3.5 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+              className={`inline-flex items-center px-3 sm:px-3.5 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
                 isDay
-                  ? "bg-[#FAF8F5] border-[#D8CEC1] text-stone-700 hover:text-red-700 hover:border-red-400"
+                  ? "bg-white border-stone-400 text-black hover:text-red-700 hover:border-red-400"
                   : "bg-zinc-900 hover:bg-zinc-800 border-zinc-700 hover:border-red-500/80 text-zinc-300 hover:text-red-400"
               }`}
             >
@@ -394,7 +394,7 @@ export function AdminPortal() {
                 )}
 
                 {sidebarOpen && (
-                  <div className={`px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${isDay ? "text-stone-500" : "text-zinc-500"}`}>
+                  <div className={`px-2 py-1 text-[10px] font-black uppercase tracking-wider ${isDay ? "text-black" : "text-zinc-500"}`}>
                     {group.groupTitle}
                   </div>
                 )}
@@ -412,7 +412,7 @@ export function AdminPortal() {
                         isActive
                           ? "bg-[#EA580C] text-white shadow-md font-bold"
                           : isDay
-                          ? "text-stone-800 hover:bg-[#F0EAE1] hover:text-black font-semibold"
+                          ? "text-black hover:bg-[#F0EAE1] font-black"
                           : "text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-medium"
                       }`}
                       title={item.label}
@@ -428,14 +428,14 @@ export function AdminPortal() {
                                 ? "bg-black/30 text-white"
                                 : item.badgeColor === "emerald"
                                 ? isDay
-                                  ? "bg-emerald-100 text-emerald-800"
+                                  ? "bg-emerald-100 text-emerald-950 font-black"
                                   : "bg-emerald-500/20 text-emerald-400"
                                 : item.badgeColor === "amber"
                                 ? isDay
-                                  ? "bg-amber-100 text-amber-800"
+                                  ? "bg-amber-100 text-amber-950 font-black"
                                   : "bg-amber-500/20 text-amber-400"
                                 : isDay
-                                ? "bg-stone-200/80 text-stone-600 font-normal"
+                                ? "bg-stone-200 text-black font-extrabold"
                                 : "bg-zinc-800 text-zinc-500 font-normal"
                             }`}
                           >
@@ -527,7 +527,7 @@ export function AdminPortal() {
               <nav className="py-3 space-y-3 flex-1 overflow-y-auto">
                 {navGroups.map((group) => (
                   <div key={group.groupTitle} className="space-y-1">
-                    <div className="px-2 text-[10px] font-bold uppercase tracking-wider text-stone-400">
+                    <div className={`px-2 text-[10px] font-black uppercase tracking-wider ${isDay ? "text-black" : "text-stone-400"}`}>
                       {group.groupTitle}
                     </div>
 
@@ -545,7 +545,7 @@ export function AdminPortal() {
                             isActive
                               ? "bg-[#EA580C] text-white shadow-md font-black"
                               : isDay
-                              ? "bg-white text-stone-900 hover:bg-[#F0EAE1]"
+                              ? "bg-white text-black font-black hover:bg-[#F0EAE1]"
                               : "bg-zinc-900 text-zinc-300 hover:bg-zinc-800"
                           }`}
                         >
@@ -783,7 +783,7 @@ function ComingSoonModule({
                 Coming Soon
               </span>
             </div>
-            <p className={`text-xs sm:text-sm mt-0.5 ${isDay ? "text-stone-600" : "text-stone-400"}`}>
+            <p className={`text-xs sm:text-sm mt-0.5 ${isDay ? "text-black font-bold" : "text-stone-400"}`}>
               {subtitle}
             </p>
           </div>
@@ -792,7 +792,7 @@ function ComingSoonModule({
         <button
           type="button"
           onClick={onAction}
-          className="self-start sm:self-auto px-4 py-2 rounded-xl bg-[#EA580C] hover:bg-[#C84A0A] text-white text-xs font-bold transition-all shadow-md cursor-pointer"
+          className="self-start sm:self-auto px-4 py-2 rounded-xl bg-[#EA580C] hover:bg-[#C84A0A] text-white text-xs font-black transition-all shadow-md cursor-pointer"
         >
           {actionLabel}
         </button>
@@ -800,7 +800,7 @@ function ComingSoonModule({
 
       {/* Feature Milestones */}
       <div className="space-y-3">
-        <h3 className={`text-xs font-bold uppercase tracking-wider ${isDay ? "text-stone-500" : "text-stone-400"}`}>
+        <h3 className={`text-xs font-black uppercase tracking-wider ${isDay ? "text-black" : "text-stone-400"}`}>
           What We Are Wiring Up for All The Smoke:
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -809,12 +809,12 @@ function ComingSoonModule({
               key={idx}
               className={`p-4 rounded-2xl border flex items-start gap-3 transition-colors ${
                 isDay
-                  ? "bg-[#FAF7F2] border-[#E8DFC9] text-stone-800"
+                  ? "bg-[#FAF7F2] border-[#D8CEC1] text-black font-extrabold"
                   : "bg-[#1B1815] border-zinc-800 text-stone-300"
               }`}
             >
-              <span className="text-[#FF7A00] font-bold text-sm shrink-0">✓</span>
-              <span className="text-xs font-medium leading-relaxed">{feat}</span>
+              <span className="text-[#FF7A00] font-black text-sm shrink-0">✓</span>
+              <span className="text-xs font-bold leading-relaxed">{feat}</span>
             </div>
           ))}
         </div>
