@@ -7,6 +7,7 @@ import { DeliveryChecker } from "@/components/delivery/DeliveryChecker";
 import { TikTokReels } from "@/components/social/TikTokReels";
 import { Footer } from "@/components/layout/Footer";
 import { QuoteModal } from "@/components/forms/QuoteModal";
+import { HomepageLeadForm } from "@/components/forms/HomepageLeadForm";
 
 export default function HomePage() {
   return (
@@ -55,98 +56,7 @@ export default function HomePage() {
               className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-amber-500/10 blur-[80px]"
             />
 
-            <form action="/api/lead" method="POST" className="space-y-6 relative z-10">
-              <input type="hidden" name="formLoadedAt" value={Date.now().toString()} />
-              {/* Honeypot anti-spam */}
-              <input
-                type="text"
-                name="honey"
-                className="hidden"
-                tabIndex={-1}
-                autoComplete="off"
-                aria-hidden="true"
-              />
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label htmlFor="lead-name" className="text-xs font-bold text-stone-300 uppercase tracking-wider block">
-                    Your Full Name *
-                  </label>
-                  <input
-                    id="lead-name"
-                    type="text"
-                    name="name"
-                    required
-                    placeholder="e.g. Marcus Vance"
-                    className="w-full h-12 px-4 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="lead-phone" className="text-xs font-bold text-stone-300 uppercase tracking-wider block">
-                    Contact Phone Number *
-                  </label>
-                  <input
-                    id="lead-phone"
-                    type="tel"
-                    name="phone"
-                    required
-                    placeholder="(773) 555-0199"
-                    className="w-full h-12 px-4 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label htmlFor="lead-email" className="text-xs font-bold text-stone-300 uppercase tracking-wider block">
-                    Email Address *
-                  </label>
-                  <input
-                    id="lead-email"
-                    type="email"
-                    name="email"
-                    required
-                    placeholder="marcus@example.com"
-                    className="w-full h-12 px-4 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="lead-guestCount" className="text-xs font-bold text-stone-300 uppercase tracking-wider block">
-                    Estimated Guest Count *
-                  </label>
-                  <input
-                    id="lead-guestCount"
-                    type="number"
-                    name="guestCount"
-                    min="10"
-                    defaultValue="35"
-                    className="w-full h-12 px-4 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="lead-message" className="text-xs font-bold text-stone-300 uppercase tracking-wider block">
-                  Event Type, Desired Menu, or Preferred Date
-                </label>
-                <textarea
-                  id="lead-message"
-                  name="message"
-                  rows={4}
-                  placeholder="Details on event venue, requested packages (The Pitmaster Feast, Brisket, Turkey Chops), serving style..."
-                  className="w-full bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] resize-none min-h-[110px] p-4 rounded-xl transition-all"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full h-14 mt-4 inline-flex items-center justify-center rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-xl font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-transform hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
-              >
-                SUBMIT CATERING INQUIRY
-              </button>
-            </form>
+            <HomepageLeadForm />
           </div>
         </div>
       </section>
