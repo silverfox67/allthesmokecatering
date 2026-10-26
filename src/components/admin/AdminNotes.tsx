@@ -159,11 +159,11 @@ function compressImage(file: File, maxDim = 1200, quality = 0.75): Promise<strin
 }
 
 interface AdminNotesProps {
-  theme?: "dark" | "butcher-paper";
+  theme?: "dark" | "butcher-paper" | "day" | "night";
 }
 
-export function AdminNotes({ theme = "dark" }: AdminNotesProps) {
-  const isButcher = theme === "butcher-paper";
+export function AdminNotes({ theme = "night" }: AdminNotesProps) {
+  const isButcher = theme === "day" || theme === "butcher-paper";
 
   const [notes, setNotes] = useState<PitmasterNote[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
