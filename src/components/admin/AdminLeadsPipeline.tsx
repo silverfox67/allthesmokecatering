@@ -122,9 +122,9 @@ const STATUS_CONFIG: Record<
   },
   quoted: {
     label: "Quoted",
-    badgeDark: "bg-purple-950/80 text-purple-300 border-purple-700/80",
-    badgeDay: "bg-purple-50 text-purple-800 border-purple-300 font-bold",
-    dotClass: "bg-purple-500",
+    badgeDark: "bg-[#251A0D] text-[#E5B869] border-[#C8A97E]/60",
+    badgeDay: "bg-amber-50 text-amber-900 border-amber-300 font-bold",
+    dotClass: "bg-[#FF7A00]",
   },
   booked: {
     label: "Booked",
@@ -630,7 +630,9 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                     <button
                       type="button"
                       onClick={() => setExpandedLeadId(isExpanded ? null : lead.id)}
-                      className="text-stone-400 hover:text-[#EA580C] transition-colors p-0.5 cursor-pointer shrink-0"
+                      className={`p-0.5 cursor-pointer shrink-0 transition-colors ${
+                        isDay ? "text-black hover:text-[#EA580C]" : "text-stone-300 hover:text-[#FF7A00]"
+                      }`}
                       title={isExpanded ? "Collapse inline view" : "Expand inline view"}
                     >
                       <svg
@@ -638,7 +640,7 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
-                        strokeWidth={2.5}
+                        strokeWidth={2.8}
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                       </svg>
@@ -649,14 +651,16 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                       <button
                         type="button"
                         onClick={() => setBlowUpLead(lead)}
-                        className={`font-bold hover:text-[#EA580C] text-left truncate block cursor-pointer transition-colors ${
-                          isDay ? "text-stone-900" : "text-white"
+                        className={`font-black hover:text-[#EA580C] text-left truncate block cursor-pointer transition-colors text-xs ${
+                          isDay ? "text-black" : "text-white"
                         }`}
                         title="Click to blow up into readable page"
                       >
                         {lead.name}
                       </button>
-                      <span className="text-[10px] text-stone-400 block font-normal">
+                      <span className={`text-[10px] block font-semibold ${
+                        isDay ? "text-stone-700" : "text-stone-400"
+                      }`}>
                         Rec: {new Date(lead.createdAt).toLocaleDateString()}
                       </span>
                     </div>
@@ -672,40 +676,48 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                     </span>
 
                     {/* Event Date (Calendar Icon) */}
-                    <div className="hidden sm:flex items-center gap-1 text-stone-600 dark:text-stone-300 shrink-0 text-[11px] font-semibold">
-                      <span className="text-stone-400">📅</span>
-                      <span>{lead.eventDate || "Date Pending"}</span>
+                    <div className="hidden sm:flex items-center gap-1 shrink-0 text-[11px] font-bold">
+                      <span className={isDay ? "text-stone-700" : "text-stone-400"}>📅</span>
+                      <span className={isDay ? "text-black font-extrabold" : "text-stone-100 font-bold"}>
+                        {lead.eventDate || "Date Pending"}
+                      </span>
                     </div>
 
                     {/* Guests & Event Type (People Icon) */}
-                    <div className="hidden md:flex items-center gap-1 text-stone-500 dark:text-stone-400 shrink-0 text-[11px]">
-                      <span>👥</span>
-                      <span>{lead.eventType || "private"} • {lead.guestCount} guests</span>
+                    <div className="hidden md:flex items-center gap-1 shrink-0 text-[11px]">
+                      <span className={isDay ? "text-stone-700" : "text-stone-400"}>👥</span>
+                      <span className={isDay ? "text-black font-bold" : "text-stone-200 font-semibold"}>
+                        {lead.eventType || "private"} • {lead.guestCount} guests
+                      </span>
                     </div>
 
-                    {/* Package Dash / Short Name */}
-                    <div className="hidden xl:block text-stone-400 text-[11px] truncate max-w-[140px] shrink-0">
+                    {/* Package Dash / Short Name (High-Contrast Black in Day mode) */}
+                    <div className={`hidden xl:block text-[11px] truncate max-w-[150px] shrink-0 font-bold ${
+                      isDay ? "text-black" : "text-stone-200"
+                    }`}>
                       {lead.packageName ? lead.packageName.split("(")[0].trim() : "—"}
                     </div>
 
                     {/* Phone Number */}
                     <div className="hidden lg:flex items-center gap-1 shrink-0 text-[11px]">
-                      <span className="text-stone-400">📞</span>
+                      <span className={isDay ? "text-stone-700" : "text-stone-400"}>📞</span>
                       <a
                         href={`tel:${lead.phone.replace(/[^0-9]/g, "")}`}
-                        className="font-bold text-[#FF7A00] hover:underline"
+                        className="font-extrabold text-[#EA580C] hover:underline"
                         title="Click to dial"
                       >
                         {lead.phone}
                       </a>
                     </div>
 
-                    {/* Email */}
-                    <div className="hidden 2xl:flex items-center gap-1 shrink-0 text-[11px] truncate max-w-[150px]">
-                      <span className="text-stone-400">✉️</span>
+                    {/* Email (High-Contrast Black in Day mode) */}
+                    <div className="hidden 2xl:flex items-center gap-1 shrink-0 text-[11px] truncate max-w-[160px]">
+                      <span className={isDay ? "text-stone-700" : "text-stone-400"}>✉️</span>
                       <a
                         href={`mailto:${lead.email}`}
-                        className="text-stone-500 dark:text-stone-400 hover:underline truncate"
+                        className={`hover:underline truncate font-bold ${
+                          isDay ? "text-black hover:text-[#EA580C]" : "text-stone-200 hover:text-[#FF7A00]"
+                        }`}
                         title={lead.email}
                       >
                         {lead.email}
@@ -716,56 +728,70 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                     <button
                       type="button"
                       onClick={() => handleAskReview(lead)}
-                      className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-500 hover:bg-amber-500/25 text-[10px] font-bold shrink-0 transition-all cursor-pointer"
+                      className={`hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold shrink-0 transition-all cursor-pointer border ${
+                        isDay
+                          ? "bg-amber-100/80 border-amber-400 text-amber-950 hover:bg-amber-200"
+                          : "bg-amber-500/15 border-amber-500/30 text-amber-400 hover:bg-amber-500/25"
+                      }`}
                       title="Request Google review from client"
                     >
                       <span>⭐</span>
                       <span>Ask Review</span>
                     </button>
 
-                    {/* Location */}
-                    <div className="hidden lg:block text-stone-400 text-[11px] truncate max-w-[110px] shrink-0">
+                    {/* Location (High-Contrast Black in Day mode) */}
+                    <div className={`hidden lg:block text-[11px] truncate max-w-[120px] shrink-0 font-bold ${
+                      isDay ? "text-black" : "text-stone-300"
+                    }`}>
                       {lead.deliveryAddress ? lead.deliveryAddress.split(",")[0] : "Chicago, IL"}
                     </div>
                   </div>
 
-                  {/* Right Cluster: THE 4 ACTION ICONS (MATCHING USER SCREENSHOT EXACTLY) */}
+                  {/* Right Cluster: THE 4 ACTION ICONS (MATCHING USER SCREENSHOT EXACTLY - CRISP BLACK ICONS) */}
                   <div className="flex items-center gap-1 shrink-0 pl-1">
-                    {/* 1. Quick Note / Message Icon (Coral/Rose outline) */}
+                    {/* 1. Quick Note / Message Icon (All The Smoke Ember Outline) */}
                     <button
                       type="button"
                       onClick={() => {
                         setQuickNoteLead(lead);
                         setNewNoteText("");
                       }}
-                      className="p-1.5 rounded-lg text-rose-500 hover:text-rose-400 hover:bg-rose-500/10 transition-all cursor-pointer"
+                      className="p-1.5 rounded-lg text-[#EA580C] hover:text-[#C84A0A] hover:bg-orange-500/10 transition-all cursor-pointer"
                       title="Add Quick Note"
                     >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                       </svg>
                     </button>
 
-                    {/* 2. Edit Booking Icon (Pencil outline) */}
+                    {/* 2. Edit Booking Icon (Pencil outline - Crisp Black) */}
                     <button
                       type="button"
                       onClick={() => setEditingLead(lead)}
-                      className="p-1.5 rounded-lg text-stone-600 dark:text-stone-300 hover:text-[#EA580C] hover:bg-orange-500/10 transition-all cursor-pointer"
+                      className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+                        isDay
+                          ? "text-black hover:text-[#EA580C] hover:bg-black/5"
+                          : "text-white hover:text-[#FF7A00] hover:bg-white/10"
+                      }`}
                       title="Edit Booking Details"
                     >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.4}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                       </svg>
                     </button>
 
-                    {/* 3. Blow Up Pop-Up Icon (Opposite Diagonal Arrows) */}
+                    {/* 3. Blow Up Pop-Up Icon (Opposite Diagonal Arrows - Crisp Black) */}
                     <button
                       type="button"
                       onClick={() => setBlowUpLead(lead)}
-                      className="p-1.5 rounded-lg text-stone-600 dark:text-stone-300 hover:text-[#FF7A00] hover:bg-amber-500/10 transition-all cursor-pointer"
+                      className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+                        isDay
+                          ? "text-black hover:text-[#FF7A00] hover:bg-black/5"
+                          : "text-white hover:text-[#FF7A00] hover:bg-white/10"
+                      }`}
                       title="Blow up to popup page so Marion can read it better"
                     >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.4}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M14 10l6-6m0 0h-5m5 0v5M10 14l-6 6m0 0h5m-5 0v-5" />
                       </svg>
                     </button>
@@ -774,10 +800,10 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                     <button
                       type="button"
                       onClick={() => handleDeleteLead(lead.id)}
-                      className="p-1.5 rounded-lg text-red-500 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer"
+                      className="p-1.5 rounded-lg text-red-600 hover:text-red-700 hover:bg-red-500/10 transition-all cursor-pointer"
                       title="Delete Booking"
                     >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
                     </button>
@@ -795,7 +821,7 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                   >
                     {/* Header Row: Client Message Title + Received Timestamp */}
                     <div className="flex items-center justify-between pb-2 border-b border-stone-200/60 dark:border-zinc-800 text-[11px]">
-                      <div className="flex items-center gap-1.5 font-bold text-rose-500 dark:text-rose-400">
+                      <div className="flex items-center gap-1.5 font-bold text-[#EA580C] dark:text-[#FF8C38]">
                         <span>📝</span>
                         <span>Client Message &amp; Special Requests</span>
                       </div>
@@ -854,10 +880,10 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                           onClick={() => handleUpdateStatus(lead.id, "quoted")}
                           className={`px-2.5 py-1 rounded-full text-xs font-bold border transition-all cursor-pointer ${
                             lead.status === "quoted"
-                              ? "bg-purple-600 text-white border-purple-600 shadow-xs"
+                              ? "bg-[#C8A97E] text-stone-950 border-[#C8A97E] shadow-xs font-black"
                               : isDay
-                              ? "bg-white border-stone-300 text-stone-700 hover:border-purple-400"
-                              : "bg-zinc-800 border-zinc-700 text-zinc-300 hover:border-purple-400"
+                              ? "bg-white border-stone-300 text-stone-700 hover:border-[#C8A97E]"
+                              : "bg-zinc-800 border-zinc-700 text-zinc-300 hover:border-[#C8A97E]"
                           }`}
                         >
                           Quoted
@@ -919,7 +945,7 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                               window.location.href = `mailto:${lead.email}?subject=All%20The%20Smoke%20Catering%20Inquiry%20%23${lead.ticketId}`;
                             }
                           }}
-                          className="h-8 px-3 rounded-xl bg-rose-600/90 hover:bg-rose-600 text-white text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
+                          className="h-8 px-3 rounded-xl bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border border-[#FF7A00] hover:scale-102 text-white text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
                         >
                           <span>💬</span>
                           <span>Reply in Email Console</span>
@@ -966,10 +992,10 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
             <div className="flex items-start justify-between gap-4 pb-2 border-b border-stone-200 dark:border-zinc-800">
               <div className="space-y-1.5">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-rose-600/90 text-white">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#EA580C] text-white border border-[#FF7A00]/50 shadow-xs">
                     Customer Booking Inquiry
                   </span>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-purple-500/15 border border-purple-500/30 text-purple-600 dark:text-purple-400">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#C8A97E]/15 border border-[#C8A97E]/40 text-[#C8A97E] dark:text-[#E5B869] font-bold">
                     Status: {blowUpLead.status.charAt(0).toUpperCase() + blowUpLead.status.slice(1)}
                   </span>
                 </div>
@@ -1052,7 +1078,7 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                     }
                     setBlowUpLead(null);
                   }}
-                  className="px-4 py-2 rounded-xl bg-rose-600/90 hover:bg-rose-600 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  className="px-4 py-2 rounded-xl bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border border-[#FF7A00] hover:scale-102 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-xs transition-all"
                 >
                   <span>✉️</span>
                   <span>Direct Reply In-App</span>
@@ -1082,11 +1108,15 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                 </button>
               </div>
 
-              {/* Close Window Button (Solid rounded on right) */}
+              {/* Close Window Button (Hickory Dark on right) */}
               <button
                 type="button"
                 onClick={() => setBlowUpLead(null)}
-                className="w-full sm:w-auto px-5 py-2 rounded-xl bg-rose-500/80 hover:bg-rose-500 text-white text-xs font-bold cursor-pointer transition-all shadow-xs"
+                className={`w-full sm:w-auto px-5 py-2 rounded-xl text-xs font-bold cursor-pointer transition-all border ${
+                  isDay
+                    ? "bg-stone-800 hover:bg-stone-900 text-white border-stone-800"
+                    : "bg-zinc-800 hover:bg-zinc-700 text-stone-200 border-zinc-700"
+                }`}
               >
                 Close Window
               </button>
