@@ -6,6 +6,8 @@ import Link from "next/link";
 import { AdminLogin } from "./AdminLogin";
 import { AdminNotes } from "./AdminNotes";
 import { AdminLeadsPipeline } from "./AdminLeadsPipeline";
+import { AdminEmailHub } from "./AdminEmailHub";
+import { AdminCalendar } from "./AdminCalendar";
 import { SITE_CONFIG } from "@/config/site-config";
 
 export type AdminTheme = "day" | "night";
@@ -290,15 +292,13 @@ export function AdminPortal() {
                     Leads Pipeline
                   </span>
                   <span
-                    className={`text-[9px] uppercase px-1.5 py-0.5 rounded-full font-semibold shrink-0 ${
+                    className={`text-[9px] uppercase px-1.5 py-0.5 rounded-full font-bold shrink-0 ${
                       activeTab === "leads"
                         ? "bg-black/30 text-white"
-                        : isDay
-                        ? "text-stone-500"
-                        : "text-zinc-500"
+                        : "bg-emerald-500/20 text-emerald-600"
                     }`}
                   >
-                    Phase 2
+                    Live
                   </span>
                 </div>
               )}
@@ -317,24 +317,24 @@ export function AdminPortal() {
                   ? "text-stone-700 hover:bg-[#F0EAE1] hover:text-stone-900 font-bold"
                   : "text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold"
               }`}
-              title="Brevo Email Hub"
+              title="Client Email Inbox"
             >
               <span className="font-mono text-xs uppercase tracking-wider shrink-0 font-bold">
-                [BH]
+                [EM]
               </span>
               {sidebarOpen && (
                 <div className="flex items-center justify-between flex-1 min-w-0">
                   <span className="font-display text-xs uppercase tracking-wider truncate">
-                    Brevo Email Hub
+                    Email Inbox
                   </span>
                   <span
                     className={`text-[9px] uppercase px-1.5 py-0.5 rounded-full font-bold shrink-0 ${
                       activeTab === "email"
                         ? "bg-black/30 text-white"
-                        : "text-emerald-600"
+                        : "bg-emerald-500/20 text-emerald-600"
                     }`}
                   >
-                    Active
+                    Live
                   </span>
                 </div>
               )}
@@ -353,7 +353,7 @@ export function AdminPortal() {
                   ? "text-stone-700 hover:bg-[#F0EAE1] hover:text-stone-900 font-bold"
                   : "text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold"
               }`}
-              title="Catering Calendar"
+              title="Smoke Schedule Calendar"
             >
               <span className="font-mono text-xs uppercase tracking-wider shrink-0 font-bold">
                 [CC]
@@ -361,18 +361,16 @@ export function AdminPortal() {
               {sidebarOpen && (
                 <div className="flex items-center justify-between flex-1 min-w-0">
                   <span className="font-display text-xs uppercase tracking-wider truncate">
-                    Catering Calendar
+                    Smoke Calendar
                   </span>
                   <span
-                    className={`text-[9px] uppercase px-1.5 py-0.5 rounded-full font-semibold shrink-0 ${
+                    className={`text-[9px] uppercase px-1.5 py-0.5 rounded-full font-bold shrink-0 ${
                       activeTab === "calendar"
                         ? "bg-black/30 text-white"
-                        : isDay
-                        ? "text-stone-500"
-                        : "text-zinc-500"
+                        : "bg-emerald-500/20 text-emerald-600"
                     }`}
                   >
-                    Phase 2
+                    Live
                   </span>
                 </div>
               )}
@@ -526,7 +524,7 @@ export function AdminPortal() {
                   }`}
                 >
                   <span>Leads Pipeline</span>
-                  <span className="text-[9px] text-zinc-400 font-sans">Phase 2</span>
+                  <span className="text-[9px] bg-black/30 px-2 py-0.5 rounded-full text-white">Live</span>
                 </button>
 
                 <button
@@ -543,8 +541,8 @@ export function AdminPortal() {
                       : "bg-zinc-900 text-zinc-300"
                   }`}
                 >
-                  <span>Brevo Email Hub</span>
-                  <span className="text-[9px] text-emerald-500 font-sans">Active</span>
+                  <span>Email Inbox</span>
+                  <span className="text-[9px] bg-black/30 px-2 py-0.5 rounded-full text-white">Live</span>
                 </button>
 
                 <button
@@ -561,8 +559,8 @@ export function AdminPortal() {
                       : "bg-zinc-900 text-zinc-300"
                   }`}
                 >
-                  <span>Catering Calendar</span>
-                  <span className="text-[9px] text-zinc-400 font-sans">Phase 2</span>
+                  <span>Smoke Calendar</span>
+                  <span className="text-[9px] bg-black/30 px-2 py-0.5 rounded-full text-white">Live</span>
                 </button>
               </nav>
 
@@ -597,199 +595,11 @@ export function AdminPortal() {
             {/* TAB 2: LEADS PIPELINE */}
             {activeTab === "leads" && <AdminLeadsPipeline theme={theme} />}
 
-            {/* TAB 3: BREVO EMAIL HUB PLACEHOLDER */}
-            {activeTab === "email" && (
-              <div
-                className={`p-8 sm:p-12 rounded-3xl border space-y-6 max-w-3xl mx-auto transition-colors duration-200 ${
-                  isDay
-                    ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm text-stone-900"
-                    : "bg-[#141417] border-zinc-800"
-                }`}
-              >
-                <div className="text-center space-y-2">
-                  <span className="text-[11px] uppercase font-extrabold tracking-widest text-emerald-600 font-black">
-                    Brevo Integration
-                  </span>
-                  <h2
-                    className={`font-display text-2xl font-bold ${
-                      isDay ? "text-[#1C1917]" : "text-white"
-                    }`}
-                  >
-                    Brevo Email &amp; Forwarding Hub
-                  </h2>
-                  <p className={`text-xs sm:text-sm ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
-                    All catering notifications are active and delivering directly to your personal email.
-                  </p>
-                </div>
+            {/* TAB 3: BREVO EMAIL HUB */}
+            {activeTab === "email" && <AdminEmailHub theme={theme} />}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                  <div
-                    className={`p-4 rounded-xl border space-y-1.5 ${
-                      isDay
-                        ? "bg-[#FAF8F5] border-[#D8CEC1]"
-                        : "bg-zinc-900 border-zinc-800"
-                    }`}
-                  >
-                    <span
-                      className={`text-[10px] uppercase font-bold ${
-                        isDay ? "text-stone-500" : "text-zinc-500"
-                      }`}
-                    >
-                      Primary Delivery Inbox
-                    </span>
-                    <div
-                      className={`font-mono text-sm font-bold ${
-                        isDay ? "text-[#C84A0A]" : "text-amber-400"
-                      }`}
-                    >
-                      boldenmarion83@gmail.com
-                    </div>
-                    <p className={`text-[11px] ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
-                      Marion&apos;s personal Gmail receiving all quote alerts &amp; notes.
-                    </p>
-                  </div>
-
-                  <div
-                    className={`p-4 rounded-xl border space-y-1.5 ${
-                      isDay
-                        ? "bg-[#FAF8F5] border-[#D8CEC1]"
-                        : "bg-zinc-900 border-zinc-800"
-                    }`}
-                  >
-                    <span
-                      className={`text-[10px] uppercase font-bold ${
-                        isDay ? "text-stone-500" : "text-zinc-500"
-                      }`}
-                    >
-                      Kitchen Backup Copy
-                    </span>
-                    <div
-                      className={`font-mono text-sm font-bold ${
-                        isDay ? "text-stone-800" : "text-zinc-300"
-                      }`}
-                    >
-                      bbqcateringking83@gmail.com
-                    </div>
-                    <p className={`text-[11px] ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
-                      Kitchen operations copy.
-                    </p>
-                  </div>
-
-                  <div
-                    className={`p-4 rounded-xl border space-y-1.5 ${
-                      isDay
-                        ? "bg-[#FAF8F5] border-[#D8CEC1]"
-                        : "bg-zinc-900 border-zinc-800"
-                    }`}
-                  >
-                    <span
-                      className={`text-[10px] uppercase font-bold ${
-                        isDay ? "text-stone-500" : "text-zinc-500"
-                      }`}
-                    >
-                      Verified Outbound Sender A
-                    </span>
-                    <div className="font-mono text-sm text-emerald-600 font-bold">
-                      marion@allthesmokecatering.com
-                    </div>
-                    <p className={`text-[11px] ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
-                      Direct Pitmaster sender for client quotes &amp; proposals.
-                    </p>
-                  </div>
-
-                  <div
-                    className={`p-4 rounded-xl border space-y-1.5 ${
-                      isDay
-                        ? "bg-[#FAF8F5] border-[#D8CEC1]"
-                        : "bg-zinc-900 border-zinc-800"
-                    }`}
-                  >
-                    <span
-                      className={`text-[10px] uppercase font-bold ${
-                        isDay ? "text-stone-500" : "text-zinc-500"
-                      }`}
-                    >
-                      Verified Outbound Sender B
-                    </span>
-                    <div className="font-mono text-sm text-emerald-600 font-bold">
-                      info@allthesmokecatering.com
-                    </div>
-                    <p className={`text-[11px] ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
-                      Official website contact &amp; kitchen commissary slips.
-                    </p>
-                  </div>
-
-                  <div
-                    className={`p-4 rounded-xl border space-y-1.5 sm:col-span-2 ${
-                      isDay
-                        ? "bg-[#FAF8F5] border-[#D8CEC1]"
-                        : "bg-zinc-900 border-zinc-800"
-                    }`}
-                  >
-                    <span
-                      className={`text-[10px] uppercase font-bold ${
-                        isDay ? "text-stone-500" : "text-zinc-500"
-                      }`}
-                    >
-                      Verified Outbound Sender C
-                    </span>
-                    <div className="font-mono text-sm text-emerald-600 font-bold">
-                      support@allthesmokecatering.com
-                    </div>
-                    <p className={`text-[11px] ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
-                      Event modifications, invoicing receipts, &amp; post-event customer care.
-                    </p>
-                  </div>
-                </div>
-
-                <div
-                  className={`p-4 rounded-xl border text-xs flex items-center gap-2 ${
-                    isDay
-                      ? "bg-emerald-50 border-emerald-300 text-emerald-900 font-medium"
-                      : "bg-emerald-950/40 border-emerald-800/60 text-emerald-200"
-                  }`}
-                >
-                  <span>
-                    <strong>Zoho Integration:</strong> Can wait until you are ready! Brevo handles all outbound delivery and Gmail forwarding seamlessly today.
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* TAB 4: CATERING CALENDAR PLACEHOLDER */}
-            {activeTab === "calendar" && (
-              <div
-                className={`p-8 sm:p-12 rounded-3xl border space-y-6 text-center max-w-2xl mx-auto transition-colors duration-200 ${
-                  isDay
-                    ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm text-stone-900"
-                    : "bg-[#141417] border-zinc-800"
-                }`}
-              >
-                <div className="space-y-2">
-                  <span className="text-[11px] uppercase font-extrabold tracking-widest text-[#FF7A00]">
-                    Calendar Schedule
-                  </span>
-                  <h2
-                    className={`font-display text-2xl font-bold ${
-                      isDay ? "text-[#1C1917]" : "text-white"
-                    }`}
-                  >
-                    Live-Fire Smoker Rig &amp; Event Calendar
-                  </h2>
-                  <p
-                    className={`text-xs sm:text-sm leading-relaxed ${
-                      isDay ? "text-stone-600 font-medium" : "text-zinc-400"
-                    }`}
-                  >
-                    Schedule weekend smoke sessions, lock in mobile rig bookings, and track deposit deadlines.
-                  </p>
-                </div>
-
-                <p className={`text-xs ${isDay ? "text-stone-500" : "text-zinc-500"}`}>
-                  Phase 2: We will connect interactive calendar bookings synced with quote inquiries.
-                </p>
-              </div>
-            )}
+            {/* TAB 4: CATERING EVENT CALENDAR */}
+            {activeTab === "calendar" && <AdminCalendar theme={theme} />}
           </div>
         </main>
       </div>
