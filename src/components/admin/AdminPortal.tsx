@@ -71,8 +71,24 @@ export function AdminPortal() {
     setTheme(newTheme);
     if (typeof window !== "undefined") {
       localStorage.setItem("ats_admin_theme", newTheme);
+      if (newTheme === "day") {
+        document.documentElement.classList.remove("dark");
+      } else {
+        document.documentElement.classList.add("dark");
+      }
     }
   };
+
+  // Sync dark class on mount and theme changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (theme === "day") {
+        document.documentElement.classList.remove("dark");
+      } else {
+        document.documentElement.classList.add("dark");
+      }
+    }
+  }, [theme]);
 
   // Loading screen before checking localStorage
   if (isAuthenticated === null) {

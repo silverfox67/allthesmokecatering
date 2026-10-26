@@ -995,12 +995,16 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                   <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#EA580C] text-white border border-[#FF7A00]/50 shadow-xs">
                     Customer Booking Inquiry
                   </span>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#C8A97E]/15 border border-[#C8A97E]/40 text-[#C8A97E] dark:text-[#E5B869] font-bold">
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold border font-bold ${
+                    isDay
+                      ? "bg-stone-200 border-stone-400 text-black font-black"
+                      : "bg-[#C8A97E]/15 border-[#C8A97E]/40 text-[#E5B869]"
+                  }`}>
                     Status: {blowUpLead.status.charAt(0).toUpperCase() + blowUpLead.status.slice(1)}
                   </span>
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-display font-extrabold tracking-tight text-stone-900 dark:text-white">
-                  {blowUpLead.name} <span className="font-normal text-stone-400">— {blowUpLead.eventType || "private"}</span>
+                <h2 className={`text-2xl sm:text-3xl font-display font-black tracking-tight ${isDay ? "text-black" : "text-white"}`}>
+                  {blowUpLead.name} <span className={`font-bold ${isDay ? "text-black" : "text-stone-400"}`}>— {blowUpLead.eventType || "private"}</span>
                 </h2>
               </div>
 
@@ -1008,7 +1012,9 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
               <button
                 type="button"
                 onClick={() => setBlowUpLead(null)}
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-stone-400 hover:text-stone-700 dark:hover:text-white cursor-pointer"
+                className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold cursor-pointer transition-colors ${
+                  isDay ? "bg-stone-200 hover:bg-stone-300 text-black" : "text-stone-400 hover:text-white"
+                }`}
                 title="Close Window (Esc)"
               >
                 ✕
@@ -1020,13 +1026,13 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
               {/* Date Box */}
               <div
                 className={`p-4 rounded-2xl border ${
-                  isDay ? "bg-stone-50/80 border-stone-200" : "bg-[#1B1815] border-zinc-800"
+                  isDay ? "bg-stone-50 border-stone-300" : "bg-[#1B1815] border-zinc-800"
                 }`}
               >
-                <span className="text-[10px] uppercase font-bold tracking-wider text-stone-400 block mb-1">
+                <span className={`text-[10px] uppercase font-black tracking-wider block mb-1 ${isDay ? "text-black" : "text-stone-400"}`}>
                   DATE
                 </span>
-                <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-stone-900 dark:text-stone-100">
+                <div className={`flex items-center gap-2 text-sm sm:text-base font-black ${isDay ? "text-black" : "text-stone-100"}`}>
                   <span>📅</span>
                   <span>{blowUpLead.eventDate || "Date Pending"}</span>
                 </div>
@@ -1035,13 +1041,13 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
               {/* Guest Count Box */}
               <div
                 className={`p-4 rounded-2xl border ${
-                  isDay ? "bg-stone-50/80 border-stone-200" : "bg-[#1B1815] border-zinc-800"
+                  isDay ? "bg-stone-50 border-stone-300" : "bg-[#1B1815] border-zinc-800"
                 }`}
               >
-                <span className="text-[10px] uppercase font-bold tracking-wider text-stone-400 block mb-1">
+                <span className={`text-[10px] uppercase font-black tracking-wider block mb-1 ${isDay ? "text-black" : "text-stone-400"}`}>
                   GUEST COUNT
                 </span>
-                <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-stone-900 dark:text-stone-100">
+                <div className={`flex items-center gap-2 text-sm sm:text-base font-black ${isDay ? "text-black" : "text-stone-100"}`}>
                   <span>👥</span>
                   <span>{blowUpLead.guestCount} Guests</span>
                 </div>
@@ -1050,13 +1056,13 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
 
             {/* QUOTE & EVENT SPECIFICATIONS CARD (Screenshot 3) */}
             <div className="space-y-2">
-              <span className="text-[11px] uppercase font-bold tracking-wider text-stone-400 block">
+              <span className={`text-[11px] uppercase font-black tracking-wider block ${isDay ? "text-black" : "text-stone-400"}`}>
                 QUOTE &amp; EVENT SPECIFICATIONS
               </span>
               <div
-                className={`p-5 rounded-2xl border max-h-[360px] overflow-y-auto leading-relaxed text-sm sm:text-base font-sans whitespace-pre-wrap ${
+                className={`p-5 rounded-2xl border max-h-[360px] overflow-y-auto leading-relaxed text-sm sm:text-base font-sans font-bold whitespace-pre-wrap ${
                   isDay
-                    ? "bg-white border-stone-200 text-stone-800 shadow-inner"
+                    ? "bg-white border-stone-300 text-black shadow-inner"
                     : "bg-[#11100E] border-zinc-800 text-stone-200"
                 }`}
               >
@@ -1091,7 +1097,11 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                     setEditingLead(blowUpLead);
                     setBlowUpLead(null);
                   }}
-                  className="px-4 py-2 rounded-xl border border-stone-300 dark:border-zinc-700 text-xs font-bold flex items-center gap-1.5 hover:bg-stone-100 dark:hover:bg-zinc-800 cursor-pointer"
+                  className={`px-4 py-2 rounded-xl border text-xs font-black flex items-center gap-1.5 cursor-pointer transition-colors ${
+                    isDay
+                      ? "border-stone-400 bg-white hover:bg-stone-100 text-black"
+                      : "border-zinc-700 bg-zinc-900 hover:bg-zinc-800 text-stone-200"
+                  }`}
                 >
                   <span>✏️</span>
                   <span>Edit Booking Details</span>

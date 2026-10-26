@@ -52,31 +52,52 @@ const QUICK_REPLY_TEMPLATES = [
 ];
 
 // Lead status styling in All The Smoke live-fire palette
-const STATUS_STYLES: Record<LeadStatus, { label: string; badgeClass: string }> = {
-  new: {
-    label: "new",
-    badgeClass: "bg-blue-600/15 text-blue-900 dark:text-blue-300 border-blue-500/30",
-  },
-  contacted: {
-    label: "contacted",
-    badgeClass: "bg-amber-600/15 text-amber-950 dark:text-amber-300 border-amber-500/30",
-  },
-  quoted: {
-    label: "quoted",
-    badgeClass: "bg-[#FF7A00]/15 text-[#C84A0A] dark:text-[#FF7A00] border-[#FF7A00]/40 font-bold",
-  },
-  booked: {
-    label: "booked",
-    badgeClass: "bg-emerald-600/15 text-emerald-950 dark:text-emerald-300 border-emerald-500/30 font-bold",
-  },
-  completed: {
-    label: "completed",
-    badgeClass: "bg-purple-600/15 text-purple-900 dark:text-purple-300 border-purple-500/30",
-  },
-  ghosted: {
-    label: "ghosted",
-    badgeClass: "bg-zinc-600/15 text-zinc-900 dark:text-zinc-400 border-zinc-500/30",
-  },
+const getStatusBadge = (status: LeadStatus, isDay: boolean) => {
+  switch (status) {
+    case "new":
+      return {
+        label: "new",
+        badgeClass: isDay
+          ? "bg-blue-100 border-blue-300 text-blue-950 font-black"
+          : "bg-blue-950/60 border-blue-500/30 text-blue-300 font-bold",
+      };
+    case "contacted":
+      return {
+        label: "contacted",
+        badgeClass: isDay
+          ? "bg-amber-100 border-amber-300 text-amber-950 font-black"
+          : "bg-amber-950/60 border-amber-500/30 text-amber-300 font-bold",
+      };
+    case "quoted":
+      return {
+        label: "quoted",
+        badgeClass: isDay
+          ? "bg-orange-100 border-orange-300 text-[#C84A0A] font-black"
+          : "bg-[#FF7A00]/20 border-[#FF7A00]/40 text-[#FF7A00] font-bold",
+      };
+    case "booked":
+      return {
+        label: "booked",
+        badgeClass: isDay
+          ? "bg-emerald-100 border-emerald-300 text-emerald-950 font-black"
+          : "bg-emerald-950/60 border-emerald-500/30 text-emerald-300 font-bold",
+      };
+    case "completed":
+      return {
+        label: "completed",
+        badgeClass: isDay
+          ? "bg-purple-100 border-purple-300 text-purple-950 font-black"
+          : "bg-purple-950/60 border-purple-500/30 text-purple-300 font-bold",
+      };
+    case "ghosted":
+    default:
+      return {
+        label: "ghosted",
+        badgeClass: isDay
+          ? "bg-stone-200 border-stone-400 text-black font-black"
+          : "bg-zinc-800 border-zinc-700 text-zinc-300 font-bold",
+      };
+  }
 };
 
 export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubProps) {
@@ -369,7 +390,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
             ) : (
               filteredLeads.map((lead) => {
                 const isSelected = lead.id === currentLead?.id;
-                const statusStyle = STATUS_STYLES[lead.status] || STATUS_STYLES.new;
+                const statusStyle = getStatusBadge(lead.status, isDay);
 
                 return (
                   <div
@@ -387,7 +408,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                   >
                     {/* Top row: Client name + status badge */}
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-extrabold text-sm text-black dark:text-white truncate">
+                      <span className={`font-black text-sm truncate ${isDay ? "text-black" : "text-white"}`}>
                         {lead.name}
                       </span>
                       <span
@@ -398,24 +419,24 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                     </div>
 
                     {/* Contact subline (crisp black in day mode) */}
-                    <div className="flex items-center justify-between text-[11px] text-black dark:text-stone-300 font-bold">
+                    <div className={`flex items-center justify-between text-[11px] font-extrabold ${isDay ? "text-black" : "text-stone-300"}`}>
                       <span className="truncate">{lead.email}</span>
-                      <span className="shrink-0 ml-1 font-extrabold">{lead.phone}</span>
+                      <span className="shrink-0 ml-1 font-black">{lead.phone}</span>
                     </div>
 
                     {/* Event & Guests */}
-                    <div className="flex items-center justify-between text-[11px] font-extrabold pt-1 border-t border-stone-200 dark:border-zinc-800/80">
-                      <span className="text-[#EA580C] dark:text-[#FF7A00]">
+                    <div className={`flex items-center justify-between text-[11px] font-black pt-1 border-t ${isDay ? "border-stone-200" : "border-zinc-800/80"}`}>
+                      <span className="text-[#EA580C]">
                         {lead.eventType || "Catering"} • {lead.guestCount} guests
                       </span>
-                      <span className="text-black dark:text-stone-300 font-extrabold">
+                      <span className={`font-black ${isDay ? "text-black" : "text-stone-300"}`}>
                         {lead.eventDate || "Date Pending"}
                       </span>
                     </div>
 
                     {/* Notes snippet */}
                     {lead.notes && (
-                      <p className="text-[11px] text-black dark:text-stone-300 font-semibold line-clamp-2 leading-relaxed">
+                      <p className={`text-[11px] font-bold line-clamp-2 leading-relaxed ${isDay ? "text-black" : "text-stone-300"}`}>
                         {lead.notes}
                       </p>
                     )}
@@ -463,14 +484,14 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                     </h3>
                     <span
                       className={`px-2 py-0.5 rounded-md text-[10px] font-bold border uppercase tracking-wider ${
-                        (STATUS_STYLES[currentLead.status] || STATUS_STYLES.new).badgeClass
+                        getStatusBadge(currentLead.status, isDay).badgeClass
                       }`}
                     >
-                      {(STATUS_STYLES[currentLead.status] || STATUS_STYLES.new).label}
+                      {getStatusBadge(currentLead.status, isDay).label}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3 text-xs mt-1 text-black dark:text-stone-300 font-extrabold flex-wrap">
+                  <div className={`flex items-center gap-3 text-xs mt-1 font-black flex-wrap ${isDay ? "text-black" : "text-stone-300"}`}>
                     <span>✉️ {currentLead.email}</span>
                     <a
                       href={`tel:${currentLead.phone}`}
@@ -479,7 +500,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                       📞 {currentLead.phone}
                     </a>
                     {currentLead.eventDate && (
-                      <span className="text-black dark:text-stone-300 font-extrabold">
+                      <span className={`font-black ${isDay ? "text-black" : "text-stone-300"}`}>
                         📅 {currentLead.eventDate}
                       </span>
                     )}
@@ -521,16 +542,16 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                         : "bg-[#181512] border-zinc-750 text-stone-200"
                     }`}
                   >
-                    <div className="flex items-center justify-between border-b pb-2 border-stone-200 dark:border-zinc-800">
-                      <span className="font-black flex items-center gap-1.5 text-[#EA580C] dark:text-[#FF7A00]">
+                    <div className={`flex items-center justify-between border-b pb-2 ${isDay ? "border-stone-200" : "border-zinc-800"}`}>
+                      <span className={`font-black flex items-center gap-1.5 ${isDay ? "text-[#C84A0A]" : "text-[#FF7A00]"}`}>
                         📥 Customer Inquiry ({currentLead.name})
                       </span>
-                      <span className={`text-[10px] font-extrabold ${isDay ? "text-black" : "text-stone-400"}`}>
+                      <span className={`text-[10px] font-black ${isDay ? "text-black" : "text-stone-400"}`}>
                         {currentLead.createdAt ? new Date(currentLead.createdAt).toLocaleDateString() : "New Lead"}
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px] py-1 text-black dark:text-stone-200 font-extrabold">
+                    <div className={`grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px] py-1 font-black ${isDay ? "text-black" : "text-stone-200"}`}>
                       <div>
                         <strong>Event:</strong> {currentLead.eventType || "Private Catering"}
                       </div>
@@ -543,12 +564,12 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                     </div>
 
                     {currentLead.packageName && (
-                      <div className="text-[11px] font-black text-[#EA580C]">
+                      <div className={`text-[11px] font-black ${isDay ? "text-[#C84A0A]" : "text-[#FF7A00]"}`}>
                         Package: {currentLead.packageName}
                       </div>
                     )}
 
-                    <div className="whitespace-pre-wrap leading-relaxed text-[11px] pt-1 text-black dark:text-stone-300 font-semibold">
+                    <div className={`whitespace-pre-wrap leading-relaxed text-[11px] pt-1 font-bold ${isDay ? "text-black" : "text-stone-300"}`}>
                       {currentLead.notes || "No message body included in intake."}
                     </div>
                   </div>
@@ -559,30 +580,30 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                       key={msg.id}
                       className={`p-3.5 rounded-xl border text-xs space-y-2 ml-4 sm:ml-8 ${
                         isDay
-                          ? "bg-amber-50/70 border-amber-300 text-black shadow-2xs"
+                          ? "bg-amber-50/90 border-amber-300 text-black shadow-2xs"
                           : "bg-[#251C15] border-[#FF7A00]/40 text-stone-200"
                       }`}
                     >
-                      <div className="flex items-center justify-between border-b pb-2 border-amber-200 dark:border-zinc-800">
-                        <span className="font-black flex items-center gap-1.5 text-[#EA580C] dark:text-[#FF7A00]">
+                      <div className={`flex items-center justify-between border-b pb-2 ${isDay ? "border-amber-200" : "border-zinc-800"}`}>
+                        <span className={`font-black flex items-center gap-1.5 ${isDay ? "text-[#C84A0A]" : "text-[#FF7A00]"}`}>
                           📤 Marion Bolden (info@allthesmokecatering.com)
                         </span>
-                        <span className={`text-[10px] font-extrabold ${isDay ? "text-black" : "text-stone-400"}`}>
+                        <span className={`text-[10px] font-black ${isDay ? "text-black" : "text-stone-400"}`}>
                           {new Date(msg.createdAt).toLocaleString()}
                         </span>
                       </div>
 
                       {msg.subject && (
-                        <p className="font-extrabold text-[11px] text-[#EA580C] dark:text-[#FF7A00]">
+                        <p className={`font-black text-[11px] ${isDay ? "text-[#C84A0A]" : "text-[#FF7A00]"}`}>
                           Subject: {msg.subject}
                         </p>
                       )}
 
-                      <div className="whitespace-pre-wrap leading-relaxed text-[11px] text-black dark:text-stone-200 font-semibold">
+                      <div className={`whitespace-pre-wrap leading-relaxed text-[11px] font-bold ${isDay ? "text-black" : "text-stone-200"}`}>
                         {msg.body}
                       </div>
 
-                      <div className="pt-1 flex items-center justify-between text-[10px] text-black dark:text-stone-300 font-bold border-t border-amber-200 dark:border-zinc-800">
+                      <div className={`pt-1 flex items-center justify-between text-[10px] font-black border-t ${isDay ? "text-black border-amber-200" : "text-stone-300 border-zinc-800"}`}>
                         <span className="font-black">Status: ✓ Dispatched via Brevo domain mail</span>
                         <span className="italic font-bold">Client replies arrive in inbox</span>
                       </div>
@@ -614,8 +635,8 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                         }`}
                         title={`Insert "${tmpl.name}" template`}
                       >
-                        <span className="text-[#EA580C] dark:text-[#FF7A00] font-black">{tmpl.badge}</span>
-                        <span className={`text-[10px] font-extrabold ${isDay ? "text-black" : "text-stone-300"}`}>{tmpl.name}</span>
+                        <span className={`font-black ${isDay ? "text-[#C84A0A]" : "text-[#FF7A00]"}`}>{tmpl.badge}</span>
+                        <span className={`text-[10px] font-black ${isDay ? "text-black" : "text-stone-300"}`}>{tmpl.name}</span>
                       </button>
                     ))}
                   </div>
@@ -661,7 +682,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
 
                   {/* Dispatch Banner & Action Bar */}
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 pt-1">
-                    <div className="flex items-center gap-1.5 text-[11px] text-black dark:text-stone-300 font-bold">
+                    <div className={`flex items-center gap-1.5 text-[11px] font-bold ${isDay ? "text-black" : "text-stone-300"}`}>
                       <svg className="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                       </svg>
@@ -675,7 +696,9 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                         <button
                           type="button"
                           onClick={() => setReplyBody("")}
-                          className="h-8 px-3 rounded-lg text-xs font-black text-black hover:text-stone-700 dark:text-stone-200 transition-colors cursor-pointer"
+                          className={`h-8 px-3 rounded-lg text-xs font-black transition-colors cursor-pointer ${
+                            isDay ? "text-black hover:text-stone-700" : "text-stone-200 hover:text-white"
+                          }`}
                         >
                           Clear
                         </button>
@@ -726,19 +749,21 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
             }`}
           >
             {/* Header */}
-            <div className="flex items-start justify-between gap-3 border-b pb-4 border-stone-200 dark:border-zinc-800">
+            <div className={`flex items-start justify-between gap-3 border-b pb-4 ${isDay ? "border-stone-200" : "border-zinc-800"}`}>
               <div>
                 <span className="text-[10px] uppercase font-black tracking-widest text-[#FF7A00]">
                   Ticket #{currentLead.ticketId} • Lead Specifications
                 </span>
-                <h3 className="text-xl sm:text-2xl font-black text-black dark:text-white mt-0.5">
+                <h3 className={`text-xl sm:text-2xl font-black mt-0.5 ${isDay ? "text-black" : "text-white"}`}>
                   {currentLead.name}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setFullLeadModalOpen(false)}
-                className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-black dark:text-white font-bold flex items-center justify-center text-sm cursor-pointer"
+                className={`w-8 h-8 rounded-full font-bold flex items-center justify-center text-sm cursor-pointer transition-colors ${
+                  isDay ? "bg-stone-200 hover:bg-stone-300 text-black" : "bg-zinc-800 hover:bg-zinc-700 text-white"
+                }`}
               >
                 ✕
               </button>
@@ -748,25 +773,25 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
                 <span className={`text-[10px] uppercase font-black block ${isDay ? "text-black" : "text-stone-400"}`}>Status</span>
-                <span className="text-xs font-black capitalize text-black dark:text-white mt-0.5 block">
+                <span className={`text-xs font-black capitalize mt-0.5 block ${isDay ? "text-black" : "text-white"}`}>
                   {currentLead.status}
                 </span>
               </div>
               <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
                 <span className={`text-[10px] uppercase font-black block ${isDay ? "text-black" : "text-stone-400"}`}>Guests</span>
-                <span className="text-xs font-black text-black dark:text-white mt-0.5 block">
+                <span className={`text-xs font-black mt-0.5 block ${isDay ? "text-black" : "text-white"}`}>
                   {currentLead.guestCount} Guests
                 </span>
               </div>
               <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
                 <span className={`text-[10px] uppercase font-black block ${isDay ? "text-black" : "text-stone-400"}`}>Event Date</span>
-                <span className="text-xs font-black text-black dark:text-white mt-0.5 block">
+                <span className={`text-xs font-black mt-0.5 block ${isDay ? "text-black" : "text-white"}`}>
                   {currentLead.eventDate || "TBD"}
                 </span>
               </div>
               <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
                 <span className={`text-[10px] uppercase font-black block ${isDay ? "text-black" : "text-stone-400"}`}>Event Type</span>
-                <span className="text-xs font-black capitalize text-black dark:text-white mt-0.5 block">
+                <span className={`text-xs font-black capitalize mt-0.5 block ${isDay ? "text-black" : "text-white"}`}>
                   {currentLead.eventType || "Private"}
                 </span>
               </div>
@@ -774,36 +799,36 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
 
             {/* Contact Information */}
             <div className={`p-4 rounded-xl border space-y-1.5 ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
-              <div className="text-xs font-black text-black dark:text-white flex items-center justify-between">
+              <div className={`text-xs font-black flex items-center justify-between ${isDay ? "text-black" : "text-white"}`}>
                 <span>Contact Details</span>
                 <span className="text-[#EA580C] text-[11px] font-mono font-bold">ID: {currentLead.id}</span>
               </div>
-              <div className="text-xs text-black dark:text-stone-200 font-bold">
-                <strong>Email:</strong> {currentLead.email}
+              <div className={`text-xs font-bold ${isDay ? "text-black" : "text-stone-200"}`}>
+                <strong className={isDay ? "text-black font-black" : "text-white font-bold"}>Email:</strong> {currentLead.email}
               </div>
-              <div className="text-xs text-black dark:text-stone-200 font-bold">
-                <strong>Phone:</strong> {currentLead.phone}
+              <div className={`text-xs font-bold ${isDay ? "text-black" : "text-stone-200"}`}>
+                <strong className={isDay ? "text-black font-black" : "text-white font-bold"}>Phone:</strong> {currentLead.phone}
               </div>
               {currentLead.deliveryAddress && (
-                <div className="text-xs text-black dark:text-stone-200 font-bold">
-                  <strong>Venue / Location:</strong> {currentLead.deliveryAddress}
+                <div className={`text-xs font-bold ${isDay ? "text-black" : "text-stone-200"}`}>
+                  <strong className={isDay ? "text-black font-black" : "text-white font-bold"}>Venue / Location:</strong> {currentLead.deliveryAddress}
                 </div>
               )}
               {currentLead.packageName && (
-                <div className="text-xs text-black dark:text-stone-200 font-bold">
-                  <strong>Smoker Package:</strong> {currentLead.packageName}
+                <div className={`text-xs font-bold ${isDay ? "text-black" : "text-stone-200"}`}>
+                  <strong className={isDay ? "text-black font-black" : "text-white font-bold"}>Smoker Package:</strong> {currentLead.packageName}
                 </div>
               )}
             </div>
 
             {/* Event Vision / Notes */}
             <div className="space-y-1.5">
-              <span className="text-[11px] font-black uppercase tracking-wider text-black dark:text-stone-300 block">
+              <span className={`text-[11px] font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
                 Quote &amp; Event Intake Specifications:
               </span>
               <div
-                className={`p-4 rounded-xl border max-h-[200px] overflow-y-auto leading-relaxed text-xs whitespace-pre-wrap font-sans font-semibold ${
-                  isDay ? "bg-white border-stone-300 text-black" : "bg-zinc-900 border-zinc-800 text-stone-200"
+                className={`p-4 rounded-xl border max-h-[200px] overflow-y-auto leading-relaxed text-xs whitespace-pre-wrap font-sans font-bold ${
+                  isDay ? "bg-white border-stone-400 text-black" : "bg-zinc-900 border-zinc-800 text-stone-200"
                 }`}
               >
                 {currentLead.notes || "No special notes recorded."}
@@ -811,7 +836,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
             </div>
 
             {/* Modal Bottom Buttons */}
-            <div className="flex items-center justify-between gap-3 pt-3 border-t border-stone-200 dark:border-zinc-800">
+            <div className={`flex items-center justify-between gap-3 pt-3 border-t ${isDay ? "border-stone-200" : "border-zinc-800"}`}>
               <button
                 type="button"
                 onClick={() => handleCopyLeadSpecs(currentLead)}
@@ -825,7 +850,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
               <button
                 type="button"
                 onClick={() => setFullLeadModalOpen(false)}
-                className="h-8 px-4 rounded-lg bg-[#EA580C] hover:bg-[#C84A0A] text-white text-xs font-black cursor-pointer"
+                className="h-8 px-4 rounded-lg bg-[#EA580C] hover:bg-[#C84A0A] text-white text-xs font-black cursor-pointer shadow-xs"
               >
                 Close Full Slip
               </button>
