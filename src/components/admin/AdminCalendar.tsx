@@ -633,12 +633,11 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
                       <button
                         type="button"
                         onClick={() => handleDeleteEvent(ev.id)}
-                        className={`h-7 w-7 rounded-lg flex items-center justify-center font-black transition-colors cursor-pointer ${
-                          isDay ? "text-stone-500 hover:text-red-600 hover:bg-red-50" : "text-stone-400 hover:text-red-400 hover:bg-red-950/30"
-                        }`}
-                        title="Delete event"
+                        className="h-7 px-2.5 rounded-lg text-xs font-black border border-red-300 dark:border-red-800/60 bg-red-50 hover:bg-red-100 dark:bg-red-950/40 dark:hover:bg-red-950/70 text-red-700 dark:text-red-300 flex items-center gap-1 transition-all cursor-pointer"
+                        title="Delete this event from calendar"
                       >
-                        ✕
+                        <span>🗑️</span>
+                        <span>Delete</span>
                       </button>
                     </div>
                   </div>
@@ -1037,6 +1036,16 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
                   }`}
                 >
                   {blowUpEvent.isCompleted ? "✓ Completed (Click to Re-open)" : "Mark Done"}
+                </button>
+
+                {/* Delete Event Button */}
+                <button
+                  type="button"
+                  onClick={() => handleDeleteEvent(blowUpEvent.id)}
+                  className="h-8 px-3 rounded-lg border border-red-300 dark:border-red-800/60 bg-red-50 hover:bg-red-100 dark:bg-red-950/40 dark:hover:bg-red-950/70 text-red-700 dark:text-red-300 text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer"
+                >
+                  <span>🗑️</span>
+                  <span>Delete Event</span>
                 </button>
               </div>
 
