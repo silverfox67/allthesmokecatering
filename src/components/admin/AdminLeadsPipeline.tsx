@@ -30,14 +30,14 @@ const SEED_LEADS: PitmasterLead[] = [
     email: "todddavis923@gmail.com",
     phone: "(678) 207-6008",
     guestCount: 35,
-    eventDate: "Date Pending",
-    packageName: "The Pitmaster Feast",
+    eventDate: "2026-11-20",
+    packageName: "The Pitmaster Feast ($30/pp)",
     serviceStyle: "Heated Drop-Off Delivery",
-    deliveryAddress: "Chicago Area (Pending Confirmation)",
-    notes: "Submitted via Website Homepage Reservation Form",
+    deliveryAddress: "Chicago Area (Pending Venue)",
+    notes: "Submitted via Website Homepage Contact Form. Needs prime brisket and mac & cheese.",
     status: "new",
     createdAt: new Date().toISOString(),
-    source: "Homepage Reservation Form",
+    source: "Website Contact Form",
     estimatedTotal: 1050,
   },
   {
@@ -47,14 +47,14 @@ const SEED_LEADS: PitmasterLead[] = [
     email: "marcus.vance@chicagoevents.org",
     phone: "(773) 555-0199",
     guestCount: 65,
-    eventDate: "November 14, 2026",
-    packageName: "The Pitmaster Feast",
+    eventDate: "2026-11-14",
+    packageName: "The Pitmaster Feast ($30/pp)",
     serviceStyle: "On-Site Smoker Trailer Rig",
     deliveryAddress: "Lincoln Park Conservatory Alleyway, Chicago, IL",
-    notes: "Requires rig parking setup. Whole turkey chops requested in addition to prime brisket.",
+    notes: "Requires trailer rig parking setup. 35 hardwood smoked turkey chops requested alongside brisket.",
     status: "contacted",
     createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
-    source: "Interactive Quote Modal",
+    source: "Website Quote Form",
     estimatedTotal: 2275,
   },
   {
@@ -64,15 +64,15 @@ const SEED_LEADS: PitmasterLead[] = [
     email: "elena@fultonmarketsummit.com",
     phone: "(312) 555-8842",
     guestCount: 120,
-    eventDate: "December 5, 2026",
-    packageName: "Full Live-Fire Smokehouse",
+    eventDate: "2026-12-05",
+    packageName: "Full Live-Fire Smokehouse ($45/pp)",
     serviceStyle: "Full Live-Fire Buffet",
     deliveryAddress: "Fulton Market District Loft, Chicago, IL",
-    notes: "Corporate annual holiday banquet. Mac & cheese, collards, and hot links required.",
+    notes: "Corporate annual holiday banquet. Collard greens, pitmaster beans, and hot links required.",
     status: "booked",
     createdAt: new Date(Date.now() - 3600000 * 48).toISOString(),
-    source: "Phone Intake (Marion)",
-    estimatedTotal: 4200,
+    source: "Phone Intake",
+    estimatedTotal: 5400,
   },
 ];
 
@@ -92,31 +92,31 @@ const STATUS_CONFIG: Record<
     dotClass: "bg-red-500 animate-pulse",
   },
   contacted: {
-    label: "Contacted / In Discussion",
+    label: "Contacted",
     badgeDark: "bg-amber-950/80 text-amber-300 border-amber-700/80",
     badgeDay: "bg-amber-50 text-amber-900 border-amber-300 font-bold",
     dotClass: "bg-amber-500",
   },
   quoted: {
-    label: "Proposal / Quote Sent",
+    label: "Quoted",
     badgeDark: "bg-blue-950/80 text-blue-300 border-blue-700/80",
     badgeDay: "bg-blue-50 text-blue-800 border-blue-300 font-bold",
     dotClass: "bg-blue-500",
   },
   booked: {
-    label: "Deposit Confirmed / Booked",
+    label: "Booked",
     badgeDark: "bg-emerald-950/80 text-emerald-300 border-emerald-700/80",
     badgeDay: "bg-emerald-50 text-emerald-800 border-emerald-300 font-bold",
     dotClass: "bg-emerald-500",
   },
   completed: {
-    label: "Cook Completed",
+    label: "Completed",
     badgeDark: "bg-zinc-800 text-zinc-300 border-zinc-700",
     badgeDay: "bg-stone-100 text-stone-700 border-stone-300 font-bold",
     dotClass: "bg-zinc-400",
   },
   archived: {
-    label: "Archived / Inactive",
+    label: "Archived",
     badgeDark: "bg-zinc-900/60 text-zinc-500 border-zinc-800",
     badgeDay: "bg-stone-50 text-stone-400 border-stone-200",
     dotClass: "bg-stone-400",
@@ -125,17 +125,24 @@ const STATUS_CONFIG: Record<
 
 interface AdminLeadsPipelineProps {
   theme?: "dark" | "butcher-paper" | "day" | "night";
+  onSelectLeadForEmail?: (lead: PitmasterLead) => void;
 }
 
-export function AdminLeadsPipeline({ theme = "night" }: AdminLeadsPipelineProps) {
+export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: AdminLeadsPipelineProps) {
   const isDay = theme === "day" || theme === "butcher-paper";
 
   const [leads, setLeads] = useState<PitmasterLead[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("active");
+  const [selectedLeadIds, setSelectedLeadIds] = useState<Set<string>>(new Set());
+  const [expandedLeadId, setExpandedLeadId] = useState<string | null>(null);
+
+  // Modals
   const [showIntakeModal, setShowIntakeModal] = useState(false);
-  const [selectedLead, setSelectedLead] = useState<PitmasterLead | null>(null);
+  const [showPromoModal, setShowPromoModal] = useState(false);
+  const [promoMessage, setPromoMessage] = useState("");
+  const [promoSubject, setPromoSubject] = useState("Special Seasonal Smokehouse Offer | All The Smoke BBQ");
+  const [promoFeedback, setPromoFeedback] = useState<string | null>(null);
 
   // Quick manual intake state
   const [newLeadForm, setNewLeadForm] = useState({
@@ -144,7 +151,7 @@ export function AdminLeadsPipeline({ theme = "night" }: AdminLeadsPipelineProps)
     email: "",
     guestCount: 35,
     eventDate: "",
-    packageName: "The Pitmaster Feast",
+    packageName: "The Pitmaster Feast ($30/pp)",
     serviceStyle: "Heated Drop-Off Delivery",
     deliveryAddress: "",
     notes: "",
@@ -157,8 +164,7 @@ export function AdminLeadsPipeline({ theme = "night" }: AdminLeadsPipelineProps)
         const saved = localStorage.getItem("ats_pitmaster_leads");
         if (saved) {
           const parsed: PitmasterLead[] = JSON.parse(saved);
-          // Ensure Todd's test lead is present if not already added
-          const has7585 = parsed.some((l) => l.ticketId === "ATS-QUOTE-7585" || l.phone.includes("6782076008") || l.phone.includes("678-207-6008"));
+          const has7585 = parsed.some((l) => l.ticketId === "ATS-QUOTE-7585" || l.phone.includes("6782076008"));
           if (!has7585) {
             const combined = [SEED_LEADS[0], ...parsed];
             setLeads(combined);
@@ -174,11 +180,10 @@ export function AdminLeadsPipeline({ theme = "night" }: AdminLeadsPipelineProps)
         console.error("Failed to parse ats_pitmaster_leads:", err);
         setLeads(SEED_LEADS);
       }
-      setIsLoaded(true);
     }
   }, []);
 
-  // Listen for storage events (if lead submitted in another tab)
+  // Listen for storage events
   useEffect(() => {
     const handleStorage = (e: StorageEvent) => {
       if (e.key === "ats_pitmaster_leads" && e.newValue) {
@@ -206,12 +211,40 @@ export function AdminLeadsPipeline({ theme = "night" }: AdminLeadsPipelineProps)
   };
 
   const handleDeleteLead = (id: string) => {
-    if (confirm("Are you sure you want to delete this lead from the pipeline?")) {
+    if (confirm("Delete this lead from the pipeline?")) {
       const updated = leads.filter((l) => l.id !== id);
       saveLeads(updated);
-      if (selectedLead?.id === id) {
-        setSelectedLead(null);
-      }
+      setSelectedLeadIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+      if (expandedLeadId === id) setExpandedLeadId(null);
+    }
+  };
+
+  const toggleSelectLead = (id: string, checked: boolean) => {
+    setSelectedLeadIds((prev) => {
+      const next = new Set(prev);
+      if (checked) next.add(id);
+      else next.delete(id);
+      return next;
+    });
+  };
+
+  const handleBatchStatus = (newStatus: LeadStatus) => {
+    if (selectedLeadIds.size === 0) return;
+    const updated = leads.map((l) => (selectedLeadIds.has(l.id) ? { ...l, status: newStatus } : l));
+    saveLeads(updated);
+    setSelectedLeadIds(new Set());
+  };
+
+  const handleBatchDelete = () => {
+    if (selectedLeadIds.size === 0) return;
+    if (confirm(`Are you sure you want to delete ${selectedLeadIds.size} selected leads?`)) {
+      const updated = leads.filter((l) => !selectedLeadIds.has(l.id));
+      saveLeads(updated);
+      setSelectedLeadIds(new Set());
     }
   };
 
@@ -234,7 +267,7 @@ export function AdminLeadsPipeline({ theme = "night" }: AdminLeadsPipelineProps)
       notes: newLeadForm.notes.trim() || "Manual phone intake recorded by Pitmaster.",
       status: "new",
       createdAt: new Date().toISOString(),
-      source: "Manual Pitmaster Intake",
+      source: "Manual Phone Intake",
       estimatedTotal: (Number(newLeadForm.guestCount) || 35) * 32,
     };
 
@@ -247,7 +280,7 @@ export function AdminLeadsPipeline({ theme = "night" }: AdminLeadsPipelineProps)
       email: "",
       guestCount: 35,
       eventDate: "",
-      packageName: "The Pitmaster Feast",
+      packageName: "The Pitmaster Feast ($30/pp)",
       serviceStyle: "Heated Drop-Off Delivery",
       deliveryAddress: "",
       notes: "",
@@ -267,20 +300,16 @@ Address: ${lead.deliveryAddress || "Pending"}
 Notes: ${lead.notes || "None"}`;
 
     navigator.clipboard.writeText(text);
-    alert("Lead summary copied to clipboard! You can paste this directly into a text or pitmaster note.");
+    alert("Lead summary copied to clipboard! You can paste this directly into a text or note.");
   };
-
-  // Metrics
-  const totalCount = leads.length;
-  const newCount = leads.filter((l) => l.status === "new").length;
-  const contactedCount = leads.filter((l) => l.status === "contacted" || l.status === "quoted").length;
-  const bookedCount = leads.filter((l) => l.status === "booked").length;
-  const totalGuests = leads.reduce((sum, l) => sum + (l.guestCount || 0), 0);
 
   // Filtered Leads
   const filteredLeads = leads.filter((l) => {
-    const matchesStatus = statusFilter === "all" ? true : l.status === statusFilter;
-    if (!matchesStatus) return false;
+    if (statusFilter === "active") {
+      if (l.status === "completed" || l.status === "archived") return false;
+    } else if (statusFilter !== "all") {
+      if (l.status !== statusFilter) return false;
+    }
 
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase();
@@ -289,379 +318,524 @@ Notes: ${lead.notes || "None"}`;
       l.email.toLowerCase().includes(q) ||
       l.phone.toLowerCase().includes(q) ||
       l.ticketId.toLowerCase().includes(q) ||
-      l.packageName.toLowerCase().includes(q) ||
-      (l.notes && l.notes.toLowerCase().includes(q))
+      l.packageName.toLowerCase().includes(q)
     );
   });
 
+  const activeCount = leads.filter((l) => l.status !== "completed" && l.status !== "archived").length;
+  const bookedCount = leads.filter((l) => l.status === "booked").length;
+  const completedCount = leads.filter((l) => l.status === "completed").length;
+
   return (
-    <div className="space-y-6">
-      {/* 1. PIPELINE HEADER & ACTIONS */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div className="space-y-4">
+      {/* 1. TOP TOOLBAR: TITLE, SEARCH, INTAKE & PROMO LAUNCHERS */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-[11px] uppercase font-extrabold tracking-widest text-[#FF8C38]">
-              Live Inbound Pipeline
-            </span>
+            <h2 className={`font-display text-xl font-bold ${isDay ? "text-[#1C1917]" : "text-white"}`}>
+              Quote Requests &amp; Client Bookings
+            </h2>
             <span
-              className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                newCount > 0
-                  ? "bg-red-500/20 text-red-400 border border-red-500/40 animate-pulse"
-                  : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+              className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-md border ${
+                isDay
+                  ? "bg-[#FAF8F5] border-[#D8CEC1] text-stone-700"
+                  : "bg-zinc-800 border-zinc-700 text-stone-300"
               }`}
             >
-              {newCount} New Inquiries
+              {filteredLeads.length} of {leads.length} leads
             </span>
           </div>
-          <h2
-            className={`font-display text-2xl sm:text-3xl font-bold tracking-tight ${
-              isDay ? "text-[#1C1917]" : "text-white"
-            }`}
-          >
-            Catering Leads &amp; Inquiry Pipeline
-          </h2>
-          <p className={`text-xs sm:text-sm mt-0.5 ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
-            Track incoming quote tickets from the website, manage follow-ups, and lock in smoke dates.
+          <p className={`text-xs mt-0.5 ${isDay ? "text-stone-600 font-medium" : "text-zinc-400"}`}>
+            Compact 1-line roster • Click any row or chevron for details • 1-tap call, email, &amp; status
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setShowIntakeModal(true)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border border-[#FF7A00]/80 shadow-[0_0_12px_rgba(255,122,0,0.35)] text-white text-xs font-bold uppercase tracking-wider transition-all hover:scale-105 active:scale-95 cursor-pointer whitespace-nowrap"
-        >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-          </svg>
-          <span>Log Phone Intake</span>
-        </button>
-      </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Live Search */}
+          <div className="relative w-full sm:w-64">
+            <svg
+              className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search name, phone, ticket..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={`w-full pl-8 pr-6 py-1.5 rounded-xl text-xs focus:outline-none border transition-colors ${
+                isDay
+                  ? "bg-[#FAF8F5] border-[#D8CEC1] text-stone-900 placeholder:text-stone-400 focus:border-[#EA580C]"
+                  : "bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-[#EA580C]"
+              }`}
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-stone-400 hover:text-stone-200"
+              >
+                ✕
+              </button>
+            )}
+          </div>
 
-      {/* 2. STATS OVERVIEW CARDS */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <div
-          className={`p-4 rounded-2xl border transition-all ${
-            isDay ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm" : "bg-[#141417] border-zinc-800"
-          }`}
-        >
-          <div className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Total Leads</div>
-          <div className={`text-2xl sm:text-3xl font-display font-black mt-1 ${isDay ? "text-stone-900" : "text-white"}`}>
-            {totalCount}
-          </div>
-          <div className="text-[11px] text-stone-400 mt-0.5 font-medium">{totalGuests} estimated guests</div>
-        </div>
+          {/* + Phone Lead Button */}
+          <button
+            type="button"
+            onClick={() => setShowIntakeModal(true)}
+            className="h-8 px-3 rounded-xl bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border border-[#FF7A00] text-white text-xs font-bold uppercase tracking-wider transition-all hover:scale-105 active:scale-95 cursor-pointer whitespace-nowrap"
+          >
+            + Phone Lead
+          </button>
 
-        <div
-          className={`p-4 rounded-2xl border transition-all ${
-            isDay ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm" : "bg-[#141417] border-zinc-800"
-          }`}
-        >
-          <div className="text-[11px] font-bold uppercase tracking-wider text-red-500 flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-            Needs Contact
-          </div>
-          <div className={`text-2xl sm:text-3xl font-display font-black mt-1 ${isDay ? "text-red-700" : "text-red-400"}`}>
-            {newCount}
-          </div>
-          <div className="text-[11px] text-stone-400 mt-0.5 font-medium">Under 12h SLA response</div>
-        </div>
-
-        <div
-          className={`p-4 rounded-2xl border transition-all ${
-            isDay ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm" : "bg-[#141417] border-zinc-800"
-          }`}
-        >
-          <div className="text-[11px] font-bold uppercase tracking-wider text-amber-500">In Discussion</div>
-          <div className={`text-2xl sm:text-3xl font-display font-black mt-1 ${isDay ? "text-amber-700" : "text-amber-400"}`}>
-            {contactedCount}
-          </div>
-          <div className="text-[11px] text-stone-400 mt-0.5 font-medium">Quotes &amp; custom menus sent</div>
-        </div>
-
-        <div
-          className={`p-4 rounded-2xl border transition-all ${
-            isDay ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm" : "bg-[#141417] border-zinc-800"
-          }`}
-        >
-          <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-500">Booked &amp; Confirmed</div>
-          <div className={`text-2xl sm:text-3xl font-display font-black mt-1 ${isDay ? "text-emerald-700" : "text-emerald-400"}`}>
-            {bookedCount}
-          </div>
-          <div className="text-[11px] text-stone-400 mt-0.5 font-medium">Deposit locked on schedule</div>
+          {/* Promo Special Blast Button */}
+          <button
+            type="button"
+            onClick={() => setShowPromoModal(true)}
+            className={`h-8 px-3 rounded-xl border text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer ${
+              isDay
+                ? "bg-white border-[#D8CEC1] text-[#EA580C] hover:bg-[#FAF8F5]"
+                : "bg-zinc-800 border-zinc-700 text-[#FF7A00] hover:bg-zinc-700 hover:text-white"
+            }`}
+          >
+            <span>📢</span>
+            <span>Send Promo</span>
+          </button>
         </div>
       </div>
 
-      {/* 3. FILTER PILLS & SEARCH BAR */}
-      <div
-        className={`p-4 rounded-2xl border flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 ${
-          isDay ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm" : "bg-[#141417] border-zinc-800"
-        }`}
-      >
-        {/* Status Filters */}
-        <div className="flex flex-wrap items-center gap-1.5">
-          {[
-            { key: "all", label: `All (${totalCount})` },
-            { key: "new", label: `New (${newCount})` },
-            { key: "contacted", label: "Contacted" },
-            { key: "quoted", label: "Quoted" },
-            { key: "booked", label: `Booked (${bookedCount})` },
-            { key: "completed", label: "Completed" },
-          ].map((pill) => (
-            <button
-              key={pill.key}
-              type="button"
-              onClick={() => setStatusFilter(pill.key)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                statusFilter === pill.key
-                  ? "bg-[#EA580C] text-white shadow-sm"
+      {/* 2. PIPELINE STAGE TABS */}
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
+        {[
+          { key: "active", label: "Active Pipeline", count: activeCount },
+          { key: "booked", label: "Booked & Confirmed", count: bookedCount },
+          { key: "completed", label: "Completed", count: completedCount },
+          { key: "new", label: "New Only", count: leads.filter((l) => l.status === "new").length },
+          { key: "all", label: "All Leads", count: leads.length },
+        ].map((tab) => (
+          <button
+            key={tab.key}
+            type="button"
+            onClick={() => setStatusFilter(tab.key)}
+            className={`h-7.5 px-3 rounded-lg text-xs font-bold flex items-center gap-1.5 shrink-0 transition-all cursor-pointer ${
+              statusFilter === tab.key
+                ? "bg-[#EA580C] text-white shadow-xs"
+                : isDay
+                ? "bg-white border border-[#D8CEC1] text-stone-700 hover:bg-[#FAF8F5]"
+                : "bg-zinc-800/80 border border-zinc-700 text-zinc-300 hover:bg-zinc-700 hover:text-white"
+            }`}
+          >
+            <span>{tab.label}</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
+                statusFilter === tab.key
+                  ? "bg-black/30 text-white"
                   : isDay
-                  ? "bg-[#F4EFEA] text-stone-700 hover:bg-[#EBE4DC]"
-                  : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white"
+                  ? "bg-[#EAE3D9] text-stone-800"
+                  : "bg-zinc-900 text-zinc-400"
               }`}
             >
-              {pill.label}
+              {tab.count}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* 3. BULK BATCH ACTION BAR (Appears when 1 or more leads are checked) */}
+      {selectedLeadIds.size > 0 && (
+        <div
+          className={`p-3 rounded-2xl border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-md animate-fade-in ${
+            isDay
+              ? "bg-[#FAF5EF] border-[#EA580C]/40 text-stone-900"
+              : "bg-[#1C1815] border-[#FF7A00]/50 text-white"
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <span className="font-bold text-xs text-[#EA580C]">
+              ✓ {selectedLeadIds.size} client{selectedLeadIds.size === 1 ? "" : "s"} selected
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                if (selectedLeadIds.size === filteredLeads.length) {
+                  setSelectedLeadIds(new Set());
+                } else {
+                  setSelectedLeadIds(new Set(filteredLeads.map((l) => l.id)));
+                }
+              }}
+              className="text-[11px] text-stone-500 hover:text-[#EA580C] underline font-semibold"
+            >
+              {selectedLeadIds.size === filteredLeads.length ? "Deselect All" : "Select All Visible"}
             </button>
-          ))}
-        </div>
-
-        {/* Search Input */}
-        <div className="relative min-w-[240px]">
-          <svg
-            className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search name, phone, ticket..."
-            className={`w-full pl-9 pr-3 py-1.5 rounded-xl text-xs focus:outline-none border transition-colors ${
-              isDay
-                ? "bg-[#FAF8F5] border-[#D8CEC1] text-stone-900 placeholder:text-stone-400 focus:border-[#EA580C]"
-                : "bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-[#EA580C]"
-            }`}
-          />
-        </div>
-      </div>
-
-      {/* 4. LEADS LIST FEED */}
-      <div className="space-y-3">
-        {filteredLeads.length === 0 ? (
-          <div
-            className={`p-12 text-center rounded-2xl border space-y-3 ${
-              isDay ? "bg-[#FFFFFF] border-[#E2DACF]" : "bg-[#141417] border-zinc-800"
-            }`}
-          >
-            <p className={`text-sm ${isDay ? "text-stone-500" : "text-zinc-400"}`}>
-              No leads match the current search or status filter.
-            </p>
           </div>
-        ) : (
-          filteredLeads.map((lead) => {
-            const statusMeta = STATUS_CONFIG[lead.status] || STATUS_CONFIG.new;
-            const isToddLead = lead.ticketId === "ATS-QUOTE-7585" || lead.phone.includes("6782076008");
 
-            return (
-              <div
-                key={lead.id}
-                className={`p-5 rounded-2xl border transition-all duration-200 relative overflow-hidden ${
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <button
+              type="button"
+              onClick={() => handleBatchStatus("contacted")}
+              className={`h-7 px-2.5 rounded-lg text-xs font-semibold border transition-colors ${
+                isDay ? "bg-white border-stone-300 hover:bg-stone-50" : "bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-200"
+              }`}
+            >
+              Mark Contacted
+            </button>
+            <button
+              type="button"
+              onClick={() => handleBatchStatus("booked")}
+              className={`h-7 px-2.5 rounded-lg text-xs font-semibold border transition-colors ${
+                isDay ? "bg-white border-stone-300 hover:bg-stone-50" : "bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-200"
+              }`}
+            >
+              Mark Booked
+            </button>
+            <button
+              type="button"
+              onClick={() => handleBatchStatus("completed")}
+              className={`h-7 px-2.5 rounded-lg text-xs font-semibold border transition-colors ${
+                isDay ? "bg-white border-stone-300 hover:bg-stone-50" : "bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-200"
+              }`}
+            >
+              Mark Completed
+            </button>
+            <button
+              type="button"
+              onClick={handleBatchDelete}
+              className="h-7 px-2.5 rounded-lg text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-red-950/40 border border-red-800/60 transition-colors"
+            >
+              Delete ({selectedLeadIds.size})
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 4. HIGH-DENSITY 1-LINE TABLE ROSTER (Blind Cook Pattern) */}
+      {filteredLeads.length === 0 ? (
+        <div
+          className={`p-10 text-center rounded-2xl border ${
+            isDay ? "bg-white border-[#E2DACF] text-stone-500" : "bg-[#141417] border-zinc-800 text-zinc-400"
+          } text-xs space-y-2`}
+        >
+          <p className="font-semibold text-sm">No catering inquiries match the current filter</p>
+          <p className="text-xs text-stone-400">Try switching pipeline tabs above or clearing your search query.</p>
+          <button
+            type="button"
+            onClick={() => {
+              setStatusFilter("all");
+              setSearchQuery("");
+            }}
+            className="mt-2 px-3 py-1 text-xs font-bold text-[#EA580C] hover:underline"
+          >
+            Reset Roster Filters
+          </button>
+        </div>
+      ) : (
+        <div
+          className={`rounded-2xl border shadow-sm overflow-hidden ${
+            isDay ? "bg-white border-[#E2DACF]" : "bg-[#141417] border-zinc-800"
+          }`}
+        >
+          <div className="overflow-x-auto min-w-full">
+            <table className="w-full text-left text-xs whitespace-nowrap min-w-[980px] border-collapse">
+              {/* Sticky Table Header */}
+              <thead
+                className={`border-b font-bold uppercase text-[10px] tracking-wider select-none ${
                   isDay
-                    ? "bg-[#FFFFFF] border-[#E2DACF] hover:border-amber-400 shadow-sm"
-                    : "bg-[#141417] border-zinc-800/80 hover:border-zinc-700"
-                } ${isToddLead ? "ring-2 ring-amber-500/40" : ""}`}
+                    ? "bg-[#FAF8F5] border-[#E2DACF] text-stone-700"
+                    : "bg-[#0E0D0C] border-zinc-800 text-stone-300"
+                }`}
               >
-                {/* Active Lead Pill Bar */}
-                <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-mono text-xs font-black px-2.5 py-1 rounded-md bg-stone-900 text-amber-400 border border-amber-500/30">
-                      #{lead.ticketId}
-                    </span>
+                <tr>
+                  <th className="py-2.5 px-3 w-8 text-center">
+                    <input
+                      type="checkbox"
+                      checked={filteredLeads.length > 0 && selectedLeadIds.size === filteredLeads.length}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedLeadIds(new Set(filteredLeads.map((l) => l.id)));
+                        } else {
+                          setSelectedLeadIds(new Set());
+                        }
+                      }}
+                      className="rounded cursor-pointer"
+                      title="Select all visible"
+                    />
+                  </th>
+                  <th className="py-2.5 px-1.5 w-6 text-center"></th>
+                  <th className="py-2.5 px-3 min-w-[170px]">Client Name &amp; Ticket</th>
+                  <th className="py-2.5 px-3 min-w-[100px]">Status</th>
+                  <th className="py-2.5 px-3 min-w-[120px]">Event Date</th>
+                  <th className="py-2.5 px-3 min-w-[140px]">Guests &amp; Package</th>
+                  <th className="py-2.5 px-3 min-w-[120px]">Phone</th>
+                  <th className="py-2.5 px-3 min-w-[160px]">Email</th>
+                  <th className="py-2.5 px-3 min-w-[120px]">Location</th>
+                  <th className="py-2.5 px-3 text-right pr-4 min-w-[100px]">Actions</th>
+                </tr>
+              </thead>
 
-                    <span
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${
-                        isDay ? statusMeta.badgeDay : statusMeta.badgeDark
-                      }`}
-                    >
-                      <span className={`w-1.5 h-1.5 rounded-full ${statusMeta.dotClass}`} />
-                      {statusMeta.label}
-                    </span>
+              {/* Table Body: 1-Line Density Rows + Accordion Dropdown */}
+              <tbody className={`divide-y font-medium ${isDay ? "divide-stone-100" : "divide-zinc-800/80"}`}>
+                {filteredLeads.map((lead) => {
+                  const isExpanded = expandedLeadId === lead.id;
+                  const isSelected = selectedLeadIds.has(lead.id);
+                  const statusMeta = STATUS_CONFIG[lead.status] || STATUS_CONFIG.new;
 
-                    <span className={`text-[11px] font-medium ${isDay ? "text-stone-500" : "text-zinc-500"}`}>
-                      {lead.source} • {new Date(lead.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
-                    </span>
-                  </div>
-
-                  {/* Status Dropdown Switcher */}
-                  <div className="flex items-center gap-2">
-                    <label className={`text-[11px] font-bold uppercase tracking-wider ${isDay ? "text-stone-500" : "text-zinc-400"}`}>
-                      Status:
-                    </label>
-                    <select
-                      value={lead.status}
-                      onChange={(e) => handleUpdateStatus(lead.id, e.target.value as LeadStatus)}
-                      aria-label={`Update status for ${lead.name}`}
-                      className={`text-xs font-bold rounded-lg px-2.5 py-1 border focus:outline-none transition-colors cursor-pointer ${
-                        isDay
-                          ? "bg-[#FAF8F5] border-[#D8CEC1] text-stone-900 focus:border-[#EA580C]"
-                          : "bg-zinc-900 border-zinc-700 text-zinc-200 focus:border-[#EA580C]"
-                      }`}
-                    >
-                      <option value="new">🔴 New Lead</option>
-                      <option value="contacted">🟡 Contacted</option>
-                      <option value="quoted">🔵 Quoted</option>
-                      <option value="booked">🟢 Deposit Paid / Booked</option>
-                      <option value="completed">⚪ Completed</option>
-                      <option value="archived">📁 Archived</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Lead Core Info Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-2 border-t border-b my-3 border-stone-200/50 dark:border-zinc-800/60">
-                  {/* Column 1: Client & Contact */}
-                  <div className="space-y-1">
-                    <div className={`text-base font-bold ${isDay ? "text-stone-900" : "text-white"}`}>
-                      {lead.name}
-                    </div>
-                    <div className="flex items-center gap-2 text-xs">
-                      <a
-                        href={`tel:${lead.phone.replace(/[^0-9]/g, "")}`}
-                        className="text-[#FF7A00] hover:underline font-semibold"
+                  return (
+                    <React.Fragment key={lead.id}>
+                      {/* 1-Line Compact Row */}
+                      <tr
+                        className={`transition-colors ${
+                          isExpanded
+                            ? isDay
+                              ? "bg-[#FAF5EF]"
+                              : "bg-[#1E1916]"
+                            : isSelected
+                            ? isDay
+                              ? "bg-amber-50/60"
+                              : "bg-amber-950/20"
+                            : isDay
+                            ? "hover:bg-[#FAF8F5]"
+                            : "hover:bg-zinc-800/40"
+                        }`}
                       >
-                        {lead.phone}
-                      </a>
-                      <span className="text-stone-400">•</span>
-                      <a
-                        href={`mailto:${lead.email}`}
-                        className={`hover:underline truncate max-w-[180px] ${isDay ? "text-stone-600" : "text-zinc-400"}`}
-                      >
-                        {lead.email}
-                      </a>
-                    </div>
-                  </div>
+                        {/* Checkbox */}
+                        <td className="py-2.5 px-3 text-center">
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={(e) => toggleSelectLead(lead.id, e.target.checked)}
+                            className="rounded cursor-pointer"
+                          />
+                        </td>
 
-                  {/* Column 2: Event Logistics */}
-                  <div className="space-y-1 text-xs">
-                    <div className="flex items-center gap-2">
-                      <span className={`font-semibold ${isDay ? "text-stone-800" : "text-zinc-300"}`}>
-                        Event Date:
-                      </span>
-                      <span className={`font-bold ${isDay ? "text-[#C84A0A]" : "text-amber-400"}`}>
-                        {lead.eventDate}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className={`font-semibold ${isDay ? "text-stone-800" : "text-zinc-300"}`}>
-                        Guest Count:
-                      </span>
-                      <span className={`font-bold ${isDay ? "text-stone-900" : "text-white"}`}>
-                        {lead.guestCount} guests
-                      </span>
-                    </div>
-                  </div>
+                        {/* Accordion Expand Chevron */}
+                        <td className="py-2.5 px-1.5 text-center">
+                          <button
+                            type="button"
+                            onClick={() => setExpandedLeadId(isExpanded ? null : lead.id)}
+                            className="text-stone-400 hover:text-[#EA580C] transition-colors p-0.5 cursor-pointer"
+                            title={isExpanded ? "Collapse row" : "Expand details"}
+                          >
+                            <svg
+                              className={`w-3.5 h-3.5 transition-transform ${isExpanded ? "rotate-180 text-[#EA580C]" : ""}`}
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2.5}
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                        </td>
 
-                  {/* Column 3: Package & Style */}
-                  <div className="space-y-1 text-xs">
-                    <div className={`font-bold ${isDay ? "text-stone-900" : "text-stone-200"}`}>
-                      {lead.packageName}
-                    </div>
-                    <div className={`text-[11px] ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
-                      Style: {lead.serviceStyle}
-                    </div>
-                  </div>
-                </div>
+                        {/* Client Name & Ticket */}
+                        <td className="py-2.5 px-3">
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => setExpandedLeadId(isExpanded ? null : lead.id)}
+                              className={`font-bold hover:text-[#EA580C] text-left truncate max-w-[150px] cursor-pointer ${
+                                isDay ? "text-stone-900" : "text-white"
+                              }`}
+                            >
+                              {lead.name}
+                            </button>
+                            <span className="font-mono text-[10px] text-amber-500 font-bold">
+                              #{lead.ticketId}
+                            </span>
+                          </div>
+                          <div className="text-[10px] text-stone-400">
+                            Rec: {new Date(lead.createdAt).toLocaleDateString()} • {lead.source}
+                          </div>
+                        </td>
 
-                {/* Notes & Location */}
-                {(lead.notes || lead.deliveryAddress) && (
-                  <div
-                    className={`p-3 rounded-xl text-xs mb-3 space-y-1 ${
-                      isDay ? "bg-[#FAF8F5] text-stone-700 border border-[#EAE3D9]" : "bg-zinc-900/80 text-zinc-300 border border-zinc-800"
-                    }`}
-                  >
-                    {lead.deliveryAddress && (
-                      <div className="flex items-start gap-1.5">
-                        <span className="font-bold shrink-0 text-[#EA580C]">Venue/Address:</span>
-                        <span>{lead.deliveryAddress}</span>
-                      </div>
-                    )}
-                    {lead.notes && (
-                      <div className="flex items-start gap-1.5">
-                        <span className="font-bold shrink-0 text-stone-400">Notes:</span>
-                        <span>{lead.notes}</span>
-                      </div>
-                    )}
-                  </div>
-                )}
+                        {/* Status Badge */}
+                        <td className="py-2.5 px-3">
+                          <span
+                            className={`inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full font-bold border ${
+                              isDay ? statusMeta.badgeDay : statusMeta.badgeDark
+                            }`}
+                          >
+                            <span className={`w-1.5 h-1.5 rounded-full ${statusMeta.dotClass}`} />
+                            {statusMeta.label}
+                          </span>
+                        </td>
 
-                {/* Action Buttons Toolbar */}
-                <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <a
-                      href={`tel:${lead.phone.replace(/[^0-9]/g, "")}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition-colors"
-                    >
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                      Call Client
-                    </a>
+                        {/* Event Date */}
+                        <td className="py-2.5 px-3">
+                          <span className={`font-semibold ${isDay ? "text-stone-900" : "text-stone-200"}`}>
+                            {lead.eventDate || "Date Pending"}
+                          </span>
+                        </td>
 
-                    <a
-                      href={`mailto:${lead.email}?subject=All%20The%20Smoke%20Catering%20Inquiry%20%23${lead.ticketId}`}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
-                        isDay
-                          ? "bg-white border-[#D8CEC1] text-stone-800 hover:bg-stone-50"
-                          : "bg-zinc-800 border-zinc-700 text-zinc-200 hover:bg-zinc-700"
-                      }`}
-                    >
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                      Email Client
-                    </a>
+                        {/* Guests & Package */}
+                        <td className="py-2.5 px-3">
+                          <div className="truncate max-w-[160px]">
+                            <strong className={isDay ? "text-stone-900" : "text-white"}>{lead.guestCount}</strong> guests
+                            <span className="text-stone-400 text-[11px] block truncate">{lead.packageName}</span>
+                          </div>
+                        </td>
 
-                    <button
-                      type="button"
-                      onClick={() => copyLeadSummary(lead)}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors cursor-pointer ${
-                        isDay
-                          ? "bg-white border-[#D8CEC1] text-stone-700 hover:bg-stone-50"
-                          : "bg-zinc-800/80 border-zinc-700/80 text-zinc-300 hover:bg-zinc-700"
-                      }`}
-                    >
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                      </svg>
-                      Copy Slip
-                    </button>
-                  </div>
+                        {/* Phone */}
+                        <td className="py-2.5 px-3">
+                          <a
+                            href={`tel:${lead.phone.replace(/[^0-9]/g, "")}`}
+                            className="font-semibold text-[#FF7A00] hover:underline"
+                            title="Click to dial"
+                          >
+                            {lead.phone}
+                          </a>
+                        </td>
 
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteLead(lead.id)}
-                    aria-label={`Delete inquiry #${lead.ticketId}`}
-                    className="text-stone-400 hover:text-red-500 text-xs p-1 rounded transition-colors cursor-pointer"
-                  >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            );
-          })
-        )}
-      </div>
+                        {/* Email */}
+                        <td className="py-2.5 px-3">
+                          <a
+                            href={`mailto:${lead.email}`}
+                            className={`hover:underline truncate max-w-[150px] block ${
+                              isDay ? "text-stone-700" : "text-stone-300"
+                            }`}
+                          >
+                            {lead.email}
+                          </a>
+                        </td>
 
-      {/* 5. MANUAL PHONE INTAKE MODAL */}
+                        {/* Venue / Location */}
+                        <td className="py-2.5 px-3">
+                          <span
+                            className={`truncate max-w-[120px] block ${isDay ? "text-stone-600" : "text-stone-400"}`}
+                            title={lead.deliveryAddress || "Chicago Area"}
+                          >
+                            {lead.deliveryAddress || "Chicago Area"}
+                          </span>
+                        </td>
+
+                        {/* Actions */}
+                        <td className="py-2.5 px-3 text-right pr-4">
+                          <div className="flex items-center justify-end gap-1.5">
+                            <a
+                              href={`tel:${lead.phone.replace(/[^0-9]/g, "")}`}
+                              className="p-1 rounded text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/10"
+                              title="Call Client"
+                            >
+                              📞
+                            </a>
+                            <a
+                              href={`mailto:${lead.email}?subject=All%20The%20Smoke%20Catering%20Inquiry%20%23${lead.ticketId}`}
+                              className="p-1 rounded text-stone-400 hover:text-[#EA580C] hover:bg-orange-500/10"
+                              title="Email Client"
+                            >
+                              ✉️
+                            </a>
+                            <button
+                              type="button"
+                              onClick={() => copyLeadSummary(lead)}
+                              className="p-1 rounded text-stone-400 hover:text-stone-200 hover:bg-stone-500/10 cursor-pointer"
+                              title="Copy Summary"
+                            >
+                              📋
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteLead(lead.id)}
+                              className="p-1 rounded text-stone-400 hover:text-red-500 hover:bg-red-500/10 cursor-pointer"
+                              title="Delete"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      {/* Accordion Expanded Detail View (Below the 1-Line Row) */}
+                      {isExpanded && (
+                        <tr className={isDay ? "bg-[#FAF5EF]/90" : "bg-[#1E1916]/90"}>
+                          <td colSpan={10} className="p-4 sm:p-5 border-t border-b border-stone-200/60 dark:border-zinc-800">
+                            <div className="space-y-3 max-w-4xl">
+                              <div className="flex flex-wrap items-center justify-between gap-3">
+                                <div className="space-y-0.5">
+                                  <div className="text-xs font-bold text-[#EA580C] uppercase tracking-wider">
+                                    Inquiry Detail: #{lead.ticketId} • {lead.name}
+                                  </div>
+                                  <div className="text-xs text-stone-500">
+                                    Service Style: <strong>{lead.serviceStyle}</strong> • Estimated Total: <strong>${lead.estimatedTotal || 0}</strong>
+                                  </div>
+                                </div>
+
+                                {/* Status Changer in Accordion */}
+                                <div className="flex items-center gap-2">
+                                  <label className="text-xs font-bold text-stone-400">Change Status:</label>
+                                  <select
+                                    value={lead.status}
+                                    onChange={(e) => handleUpdateStatus(lead.id, e.target.value as LeadStatus)}
+                                    className={`text-xs font-bold rounded-lg px-2.5 py-1 border focus:outline-none transition-colors cursor-pointer ${
+                                      isDay
+                                        ? "bg-white border-stone-300 text-stone-900"
+                                        : "bg-zinc-900 border-zinc-700 text-white"
+                                    }`}
+                                  >
+                                    <option value="new">🔴 New Lead</option>
+                                    <option value="contacted">🟡 Contacted</option>
+                                    <option value="quoted">🔵 Quoted</option>
+                                    <option value="booked">🟢 Booked / Deposit Paid</option>
+                                    <option value="completed">⚪ Completed</option>
+                                    <option value="archived">📁 Archived</option>
+                                  </select>
+                                </div>
+                              </div>
+
+                              {/* Customer Notes / Event Vision */}
+                              <div
+                                className={`p-3 rounded-xl border text-xs space-y-1 ${
+                                  isDay
+                                    ? "bg-white border-stone-200 text-stone-800"
+                                    : "bg-zinc-900/90 border-zinc-800 text-stone-300"
+                                }`}
+                              >
+                                <span className="font-bold text-stone-400 block text-[11px] uppercase tracking-wider">
+                                  Event Vision &amp; Special Requests:
+                                </span>
+                                <p className="leading-relaxed">
+                                  {lead.notes || "No additional notes submitted."}
+                                </p>
+                              </div>
+
+                              {/* Direct action shortcuts */}
+                              <div className="flex items-center gap-2 pt-1">
+                                <button
+                                  type="button"
+                                  onClick={() => copyLeadSummary(lead)}
+                                  className="px-3 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold cursor-pointer"
+                                >
+                                  Copy Full Client Slip
+                                </button>
+                                <a
+                                  href={`tel:${lead.phone.replace(/[^0-9]/g, "")}`}
+                                  className="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold"
+                                >
+                                  Call {lead.name}
+                                </a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* 5. PHONE LEAD INTAKE MODAL */}
       {showIntakeModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
           <div
-            className={`w-full max-w-lg rounded-3xl p-6 sm:p-8 border shadow-2xl space-y-6 ${
+            className={`w-full max-w-lg rounded-3xl p-6 sm:p-8 border shadow-2xl space-y-5 ${
               isDay ? "bg-[#FFFFFF] border-[#E2DACF] text-stone-900" : "bg-[#141417] border-zinc-800 text-white"
             }`}
           >
@@ -739,7 +913,7 @@ Notes: ${lead.notes || "None"}`;
                     type="text"
                     value={newLeadForm.eventDate}
                     onChange={(e) => setNewLeadForm({ ...newLeadForm, eventDate: e.target.value })}
-                    placeholder="e.g. Nov 14, 2026"
+                    placeholder="e.g. Nov 20, 2026"
                     className="w-full h-10 px-3 rounded-xl border bg-stone-900/50 border-stone-700 text-white focus:outline-none focus:border-[#EA580C]"
                   />
                 </div>
@@ -750,10 +924,10 @@ Notes: ${lead.notes || "None"}`;
                     onChange={(e) => setNewLeadForm({ ...newLeadForm, packageName: e.target.value })}
                     className="w-full h-10 px-3 rounded-xl border bg-stone-900 border-stone-700 text-white focus:outline-none focus:border-[#EA580C]"
                   >
-                    <option value="The Pitmaster Feast">The Pitmaster Feast</option>
-                    <option value="Prime Brisket Experience">Prime Brisket Experience</option>
-                    <option value="Whole Smoked Turkey Chops">Whole Smoked Turkey Chops</option>
-                    <option value="Full Live-Fire Smokehouse">Full Live-Fire Smokehouse</option>
+                    <option value="The Pitmaster Feast ($30/pp)">The Pitmaster Feast ($30/pp)</option>
+                    <option value="Prime Brisket Experience ($35/pp)">Prime Brisket Experience ($35/pp)</option>
+                    <option value="Whole Smoked Turkey Chops ($28/pp)">Whole Smoked Turkey Chops ($28/pp)</option>
+                    <option value="Full Live-Fire Smokehouse ($45/pp)">Full Live-Fire Smokehouse ($45/pp)</option>
                   </select>
                 </div>
               </div>
@@ -775,7 +949,7 @@ Notes: ${lead.notes || "None"}`;
                   rows={3}
                   value={newLeadForm.notes}
                   onChange={(e) => setNewLeadForm({ ...newLeadForm, notes: e.target.value })}
-                  placeholder="Notes from call: serving style, dietary needs, smoker rig parking clearance..."
+                  placeholder="Notes from call: serving style, dietary needs, trailer parking clearance..."
                   className="w-full p-3 rounded-xl border bg-stone-900/50 border-stone-700 text-white focus:outline-none focus:border-[#EA580C] resize-none"
                 />
               </div>
@@ -796,6 +970,88 @@ Notes: ${lead.notes || "None"}`;
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* 6. PROMO CAMPAIGN MODAL (Blind Cook Feature) */}
+      {showPromoModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div
+            className={`w-full max-w-lg rounded-3xl p-6 sm:p-8 border shadow-2xl space-y-5 ${
+              isDay ? "bg-[#FFFFFF] border-[#E2DACF] text-stone-900" : "bg-[#141417] border-zinc-800 text-white"
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-[11px] font-bold uppercase tracking-widest text-[#FF7A00]">
+                  Promotional Broadcast
+                </span>
+                <h3 className="font-display text-xl sm:text-2xl font-bold">
+                  Send Smokehouse Promo Special
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowPromoModal(false)}
+                className="p-1 rounded-lg text-stone-400 hover:text-stone-200"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-xs text-stone-400">
+              Dispatches a promotional catering discount or seasonal menu offer to <strong>{filteredLeads.length}</strong> active leads currently visible in your roster.
+            </p>
+
+            <div className="space-y-3 text-xs">
+              <div className="space-y-1">
+                <label className="font-bold uppercase tracking-wider text-stone-400">Email Subject</label>
+                <input
+                  type="text"
+                  value={promoSubject}
+                  onChange={(e) => setPromoSubject(e.target.value)}
+                  className="w-full h-10 px-3 rounded-xl border bg-stone-900/50 border-stone-700 text-white focus:outline-none focus:border-[#EA580C]"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="font-bold uppercase tracking-wider text-stone-400">Promo Announcement</label>
+                <textarea
+                  rows={5}
+                  value={promoMessage}
+                  onChange={(e) => setPromoMessage(e.target.value)}
+                  placeholder="e.g. Book your smokehouse holiday catering date by Friday and receive 10% off whole prime brisket and specialty hardwood turkey chops!"
+                  className="w-full p-3 rounded-xl border bg-stone-900/50 border-stone-700 text-white focus:outline-none focus:border-[#EA580C] resize-none"
+                />
+              </div>
+
+              {promoFeedback && (
+                <div className="p-3 rounded-xl bg-emerald-950/80 border border-emerald-600 text-emerald-200 text-xs">
+                  {promoFeedback}
+                </div>
+              )}
+
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowPromoModal(false)}
+                  className="px-4 py-2 rounded-xl border border-stone-700 text-stone-300 hover:text-white"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPromoFeedback(`Promotional announcement queued for ${filteredLeads.length} leads!`);
+                    setTimeout(() => setShowPromoModal(false), 1500);
+                  }}
+                  className="px-5 py-2 rounded-xl bg-[#EA580C] hover:bg-[#C84A0A] text-white font-bold tracking-wide cursor-pointer"
+                >
+                  Launch Promo Blast
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
