@@ -55,6 +55,35 @@ export function HomepageLeadForm() {
       }
 
       setSuccessData(data);
+
+      if (typeof window !== "undefined") {
+        try {
+          const generatedId = data.ticketId || `ATS-QUOTE-${Math.floor(1000 + Math.random() * 9000)}`;
+          const existingRaw = localStorage.getItem("ats_pitmaster_leads");
+          const existing = existingRaw ? JSON.parse(existingRaw) : [];
+          const newLead = {
+            id: generatedId,
+            ticketId: generatedId,
+            name: formData.name,
+            phone: formData.phone,
+            email: formData.email,
+            guestCount: Number(formData.guestCount) || 35,
+            eventDate: "Date Pending",
+            packageName: "The Pitmaster Feast",
+            serviceStyle: "Heated Drop-Off Delivery",
+            deliveryAddress: "Chicago Area",
+            notes: formData.message || "Submitted via Homepage Reservation Form",
+            status: "new",
+            createdAt: new Date().toISOString(),
+            source: "Homepage Reservation Form",
+            estimatedTotal: (Number(formData.guestCount) || 35) * 32,
+          };
+          localStorage.setItem("ats_pitmaster_leads", JSON.stringify([newLead, ...existing]));
+          window.dispatchEvent(new Event("storage"));
+        } catch (e) {
+          console.warn("Could not save to local leads cache:", e);
+        }
+      }
     } catch (err: any) {
       setErrorMessage(
         err.message || "An unexpected error occurred. Please call Pitmaster Marion directly at (773) 707-9988."

@@ -171,8 +171,37 @@ export function QuoteModal({
         throw new Error(data.error || "Failed to submit catering inquiry");
       }
 
-      setTicketId(data.ticketId || `ATS-${Date.now().toString().slice(-4)}`);
+      const assignedTicket = data.ticketId || `ATS-${Date.now().toString().slice(-4)}`;
+      setTicketId(assignedTicket);
       setSubmitSuccess(true);
+
+      if (typeof window !== "undefined") {
+        try {
+          const existingRaw = localStorage.getItem("ats_pitmaster_leads");
+          const existing = existingRaw ? JSON.parse(existingRaw) : [];
+          const newLead = {
+            id: assignedTicket,
+            ticketId: assignedTicket,
+            name: clientName,
+            phone: clientPhone,
+            email: clientEmail,
+            guestCount: Number(guestCount) || 25,
+            eventDate: eventDate || "Date Pending",
+            packageName: selectedPkg?.name || "Custom Pitmaster Spread",
+            serviceStyle: serviceStyle,
+            deliveryAddress: `${venueAddress}${venueZip ? ` (${venueZip})` : ""}` || "Chicago Area",
+            notes: notes || "Submitted via Interactive Quote Modal",
+            status: "new",
+            createdAt: new Date().toISOString(),
+            source: "Interactive Quote Modal",
+            estimatedTotal: (Number(guestCount) || 25) * 35,
+          };
+          localStorage.setItem("ats_pitmaster_leads", JSON.stringify([newLead, ...existing]));
+          window.dispatchEvent(new Event("storage"));
+        } catch (e) {
+          console.warn("Could not save to local leads cache:", e);
+        }
+      }
     } catch (err: any) {
       setErrorMessage(err.message || "An error occurred while submitting. Please call (773) 707-9988 directly.");
     } finally {

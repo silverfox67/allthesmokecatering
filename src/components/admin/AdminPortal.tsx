@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AdminLogin } from "./AdminLogin";
 import { AdminNotes } from "./AdminNotes";
+import { AdminLeadsPipeline } from "./AdminLeadsPipeline";
 import { SITE_CONFIG } from "@/config/site-config";
 
 export type AdminTheme = "day" | "night";
@@ -593,71 +594,8 @@ export function AdminPortal() {
             {/* TAB 1: NOTES & MEDIA (FULLY OPERATIONAL) */}
             {activeTab === "notes" && <AdminNotes theme={theme} />}
 
-            {/* TAB 2: LEADS PIPELINE PLACEHOLDER */}
-            {activeTab === "leads" && (
-              <div
-                className={`p-8 sm:p-12 rounded-3xl border space-y-6 text-center max-w-2xl mx-auto transition-colors duration-200 ${
-                  isDay
-                    ? "bg-[#FFFFFF] border-[#E2DACF] shadow-sm text-stone-900"
-                    : "bg-[#141417] border-zinc-800"
-                }`}
-              >
-                <div className="space-y-2">
-                  <span className="text-[11px] uppercase font-extrabold tracking-widest text-[#FF8C38]">
-                    Leads Pipeline
-                  </span>
-                  <h2
-                    className={`font-display text-2xl font-bold ${
-                      isDay ? "text-[#1C1917]" : "text-white"
-                    }`}
-                  >
-                    Catering Leads &amp; Inquiry Pipeline
-                  </h2>
-                  <p
-                    className={`text-xs sm:text-sm leading-relaxed ${
-                      isDay ? "text-stone-600 font-medium" : "text-zinc-400"
-                    }`}
-                  >
-                    Every quote inquiry submitted on the website is currently forwarded in real time to{" "}
-                    <strong className={isDay ? "text-[#C84A0A]" : "text-amber-400"}>
-                      boldenmarion83@gmail.com
-                    </strong>.
-                  </p>
-                </div>
-
-                <div
-                  className={`p-4 rounded-xl border text-left space-y-2 text-xs ${
-                    isDay
-                      ? "bg-[#FAF8F5] border-[#D8CEC1]"
-                      : "bg-zinc-900 border-zinc-800"
-                  }`}
-                >
-                  <div
-                    className={`flex items-center justify-between font-bold uppercase tracking-wider ${
-                      isDay ? "text-stone-700" : "text-zinc-300"
-                    }`}
-                  >
-                    <span>Active Notification Route:</span>
-                    <span className="text-emerald-600 font-black">Active</span>
-                  </div>
-                  <p className={isDay ? "text-stone-700 leading-relaxed" : "text-zinc-400"}>
-                    1. Customer submits quote form on website →<br />
-                    2. Brevo sends instant Commissary Dispatch Slip to{" "}
-                    <span className={`font-mono font-bold ${isDay ? "text-stone-900" : "text-white"}`}>
-                      boldenmarion83@gmail.com
-                    </span><br />
-                    3. Customer receives branded confirmation from{" "}
-                    <span className={`font-mono font-bold ${isDay ? "text-stone-900" : "text-white"}`}>
-                      marion@allthesmokecatering.com
-                    </span>
-                  </p>
-                </div>
-
-                <p className={`text-xs ${isDay ? "text-stone-500 font-medium" : "text-zinc-500"}`}>
-                  Phase 2: We will add full in-dashboard lead status stages (New, Contacted, Quoted, Booked, Completed).
-                </p>
-              </div>
-            )}
+            {/* TAB 2: LEADS PIPELINE */}
+            {activeTab === "leads" && <AdminLeadsPipeline theme={theme} />}
 
             {/* TAB 3: BREVO EMAIL HUB PLACEHOLDER */}
             {activeTab === "email" && (
