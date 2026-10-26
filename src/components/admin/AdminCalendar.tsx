@@ -118,6 +118,8 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [leads, setLeads] = useState<PitmasterLead[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [blowUpEvent, setBlowUpEvent] = useState<CalendarEvent | null>(null);
+  const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null);
 
   // New Event Form
   const [newEvent, setNewEvent] = useState({
@@ -197,11 +199,34 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
   const handleDeleteEvent = (id: string) => {
     if (confirm("Delete this event from the calendar schedule?")) {
       saveEvents(events.filter((e) => e.id !== id));
+      if (blowUpEvent?.id === id) {
+        setBlowUpEvent(null);
+      }
+      if (editingEvent?.id === id) {
+        setEditingEvent(null);
+      }
     }
+  };
+
+  const handleUpdateEvent = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingEvent || !editingEvent.title || !editingEvent.eventDate) return;
+
+    const updated = events.map((ev) =>
+      ev.id === editingEvent.id ? { ...editingEvent } : ev
+    );
+    saveEvents(updated);
+    if (blowUpEvent?.id === editingEvent.id) {
+      setBlowUpEvent({ ...editingEvent });
+    }
+    setEditingEvent(null);
   };
 
   const handleToggleComplete = (id: string) => {
     saveEvents(events.map((e) => (e.id === id ? { ...e, isCompleted: !e.isCompleted } : e)));
+    if (blowUpEvent?.id === id) {
+      setBlowUpEvent((prev) => (prev ? { ...prev, isCompleted: !prev.isCompleted } : null));
+    }
   };
 
   // Month navigation
@@ -543,7 +568,7 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
                   }`}
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${isDay ? meta.chipDay : meta.chipDark}`}>
                         {meta.icon} {meta.label}
                       </span>
@@ -552,27 +577,66 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <span className={`font-mono text-[11px] font-black ${isDay ? "text-black" : "text-stone-400"}`}>
+                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                      <span className={`font-mono text-[11px] font-black mr-1 ${isDay ? "text-black" : "text-stone-400"}`}>
                         🕒 {ev.timeSlot}
                       </span>
+
+                      {/* Blowup Button */}
+                      <button
+                        type="button"
+                        onClick={() => setBlowUpEvent(ev)}
+                        className={`h-7 px-2.5 rounded-lg border text-xs font-black flex items-center gap-1 transition-all cursor-pointer ${
+                          isDay
+                            ? "bg-white border-stone-400 text-black hover:bg-stone-100"
+                            : "bg-zinc-800 border-zinc-700 text-stone-200 hover:bg-zinc-700"
+                        }`}
+                        title="Blow up full event slip"
+                      >
+                        <svg className="w-3.5 h-3.5 text-[#FF7A00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                        </svg>
+                        <span>Blowup</span>
+                      </button>
+
+                      {/* Edit Button */}
+                      <button
+                        type="button"
+                        onClick={() => setEditingEvent({ ...ev })}
+                        className={`h-7 px-2.5 rounded-lg border text-xs font-black flex items-center gap-1 transition-all cursor-pointer ${
+                          isDay
+                            ? "bg-white border-stone-400 text-black hover:bg-stone-100"
+                            : "bg-zinc-800 border-zinc-700 text-stone-200 hover:bg-zinc-700"
+                        }`}
+                        title="Edit event details"
+                      >
+                        <span className="text-[#EA580C]">✏️</span>
+                        <span>Edit</span>
+                      </button>
+
+                      {/* Mark Done Button */}
                       <button
                         type="button"
                         onClick={() => handleToggleComplete(ev.id)}
-                        className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border transition-colors cursor-pointer ${
+                        className={`h-7 px-2.5 rounded-lg text-xs font-black border transition-colors cursor-pointer ${
                           ev.isCompleted
-                            ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/40"
+                            ? "bg-emerald-500/20 text-emerald-800 border-emerald-400"
                             : isDay
-                            ? "bg-stone-200 text-black border-stone-400"
-                            : "bg-stone-800 text-stone-400 border-stone-700"
+                            ? "bg-stone-100 text-black border-stone-400 hover:bg-stone-200"
+                            : "bg-stone-800 text-stone-300 border-stone-700 hover:bg-stone-700"
                         }`}
                       >
-                        {ev.isCompleted ? "✓ Completed" : "Mark Done"}
+                        {ev.isCompleted ? "✓ Done" : "Mark Done"}
                       </button>
+
+                      {/* Delete Button */}
                       <button
                         type="button"
                         onClick={() => handleDeleteEvent(ev.id)}
-                        className={`${isDay ? "text-black hover:text-red-600" : "text-stone-400 hover:text-red-500"} p-1 font-bold`}
+                        className={`h-7 w-7 rounded-lg flex items-center justify-center font-black transition-colors cursor-pointer ${
+                          isDay ? "text-stone-500 hover:text-red-600 hover:bg-red-50" : "text-stone-400 hover:text-red-400 hover:bg-red-950/30"
+                        }`}
+                        title="Delete event"
                       >
                         ✕
                       </button>
@@ -580,15 +644,25 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
                   </div>
 
                   {/* Details Grid (solid black in day mode) */}
-                  <div className={`grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] pt-1 font-bold ${isDay ? "text-black" : "text-stone-400"}`}>
+                  <div className={`grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs pt-1 font-bold ${isDay ? "text-black" : "text-stone-300"}`}>
                     {ev.guestCount && <div>👥 <strong>Guests:</strong> {ev.guestCount}</div>}
                     {ev.location && <div>📍 <strong>Location:</strong> {ev.location}</div>}
-                    {ev.clientName && <div>👤 <strong>Client:</strong> {ev.clientName} ({ev.clientPhone})</div>}
+                    {ev.clientName && <div>👤 <strong>Client:</strong> {ev.clientName} ({ev.clientPhone || "No phone"})</div>}
                   </div>
 
+                  {/* Large High-Contrast Bottom Box */}
                   {ev.notes && (
-                    <div className={`p-2 rounded-lg text-[11px] font-semibold leading-relaxed ${isDay ? "bg-stone-100 text-black border border-stone-300" : "bg-black/20 text-stone-400 italic"}`}>
-                      {ev.notes}
+                    <div
+                      className={`p-3 sm:p-3.5 rounded-xl border text-xs sm:text-sm font-bold leading-relaxed space-y-1 ${
+                        isDay
+                          ? "bg-white border-stone-300 text-black shadow-2xs"
+                          : "bg-black/30 border-zinc-800 text-stone-200"
+                      }`}
+                    >
+                      <span className="text-[10px] uppercase font-black tracking-wider text-[#EA580C] block">
+                        📝 Notes &amp; Prep Instructions:
+                      </span>
+                      <p className="whitespace-pre-wrap">{ev.notes}</p>
                     </div>
                   )}
                 </div>
@@ -600,50 +674,64 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
 
       {/* 5. ADD EVENT MODAL */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
           <div
-            className={`w-full max-w-lg rounded-3xl p-6 sm:p-8 border shadow-2xl space-y-5 ${
-              isDay ? "bg-[#FFFFFF] border-[#E2DACF] text-stone-900" : "bg-[#141417] border-zinc-800 text-white"
+            className={`w-full max-w-lg rounded-3xl p-6 sm:p-8 border shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto ${
+              isDay ? "bg-white border-stone-300 text-black" : "bg-[#141417] border-zinc-800 text-white"
             }`}
           >
-            <div className="flex items-center justify-between">
+            <div className={`flex items-center justify-between border-b pb-3 ${isDay ? "border-stone-200" : "border-zinc-800"}`}>
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-widest text-[#FF7A00]">
+                <span className="text-[11px] font-black uppercase tracking-widest text-[#FF7A00]">
                   Schedule New Event
                 </span>
-                <h3 className="font-display text-xl sm:text-2xl font-bold">
+                <h3 className={`font-display text-xl sm:text-2xl font-black ${isDay ? "text-black" : "text-white"}`}>
                   Add to Pitmaster Schedule
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setShowAddModal(false)}
-                className="p-1 rounded-lg text-stone-400 hover:text-stone-200"
+                className={`w-8 h-8 rounded-full font-bold flex items-center justify-center text-sm cursor-pointer transition-colors ${
+                  isDay ? "bg-stone-200 hover:bg-stone-300 text-black" : "bg-zinc-800 hover:bg-zinc-700 text-white"
+                }`}
               >
                 ✕
               </button>
             </div>
 
-            <form onSubmit={handleCreateEvent} className="space-y-4 text-xs">
+            <form onSubmit={handleCreateEvent} className="space-y-4 text-xs font-bold">
               <div className="space-y-1">
-                <label className="font-bold uppercase tracking-wider text-stone-400">Event Title *</label>
+                <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                  Event Title *
+                </label>
                 <input
                   type="text"
                   required
                   value={newEvent.title}
                   onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
                   placeholder="e.g. Wedding Catering: 65 Guests"
-                  className="w-full h-10 px-3 rounded-xl border bg-stone-900/50 border-stone-700 text-white focus:outline-none focus:border-[#EA580C]"
+                  className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                    isDay
+                      ? "bg-white border-stone-400 text-black"
+                      : "bg-zinc-900 border-zinc-700 text-white"
+                  }`}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="font-bold uppercase tracking-wider text-stone-400">Event Type</label>
+                  <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                    Event Type
+                  </label>
                   <select
                     value={newEvent.eventType}
                     onChange={(e) => setNewEvent({ ...newEvent, eventType: e.target.value as CalendarEventType })}
-                    className="w-full h-10 px-3 rounded-xl border bg-stone-900 border-stone-700 text-white focus:outline-none focus:border-[#EA580C]"
+                    className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                      isDay
+                        ? "bg-white border-stone-400 text-black"
+                        : "bg-zinc-900 border-zinc-700 text-white"
+                    }`}
                   >
                     <option value="gig">🔥 Catering Gig</option>
                     <option value="prep">🥩 Smoke Prep &amp; Brine</option>
@@ -654,75 +742,526 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-bold uppercase tracking-wider text-stone-400">Date *</label>
+                  <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                    Date *
+                  </label>
                   <input
                     type="date"
                     required
                     value={newEvent.eventDate}
                     onChange={(e) => setNewEvent({ ...newEvent, eventDate: e.target.value })}
-                    className="w-full h-10 px-3 rounded-xl border bg-stone-900/50 border-stone-700 text-white focus:outline-none focus:border-[#EA580C]"
+                    className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                      isDay
+                        ? "bg-white border-stone-400 text-black"
+                        : "bg-zinc-900 border-zinc-700 text-white"
+                    }`}
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="font-bold uppercase tracking-wider text-stone-400">Time Slot</label>
+                  <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                    Time Slot
+                  </label>
                   <input
                     type="text"
                     value={newEvent.timeSlot}
                     onChange={(e) => setNewEvent({ ...newEvent, timeSlot: e.target.value })}
                     placeholder="e.g. 1:00 PM - 5:00 PM"
-                    className="w-full h-10 px-3 rounded-xl border bg-stone-900/50 border-stone-700 text-white focus:outline-none focus:border-[#EA580C]"
+                    className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                      isDay
+                        ? "bg-white border-stone-400 text-black"
+                        : "bg-zinc-900 border-zinc-700 text-white"
+                    }`}
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-bold uppercase tracking-wider text-stone-400">Guest Count</label>
+                  <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                    Guest Count
+                  </label>
                   <input
                     type="number"
-                    value={newEvent.guestCount}
+                    value={newEvent.guestCount || ""}
                     onChange={(e) => setNewEvent({ ...newEvent, guestCount: Number(e.target.value) })}
-                    className="w-full h-10 px-3 rounded-xl border bg-stone-900/50 border-stone-700 text-white focus:outline-none focus:border-[#EA580C]"
+                    placeholder="e.g. 50"
+                    className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                      isDay
+                        ? "bg-white border-stone-400 text-black"
+                        : "bg-zinc-900 border-zinc-700 text-white"
+                    }`}
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="font-bold uppercase tracking-wider text-stone-400">Location / Venue</label>
+                <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                  Location / Venue
+                </label>
                 <input
                   type="text"
                   value={newEvent.location}
                   onChange={(e) => setNewEvent({ ...newEvent, location: e.target.value })}
-                  placeholder="Venue address or Commercial Kitchen Hub"
-                  className="w-full h-10 px-3 rounded-xl border bg-stone-900/50 border-stone-700 text-white focus:outline-none focus:border-[#EA580C]"
+                  placeholder="Venue address or Commissary Hub"
+                  className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                    isDay
+                      ? "bg-white border-stone-400 text-black"
+                      : "bg-zinc-900 border-zinc-700 text-white"
+                  }`}
                 />
               </div>
 
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                    Client Name
+                  </label>
+                  <input
+                    type="text"
+                    value={newEvent.clientName}
+                    onChange={(e) => setNewEvent({ ...newEvent, clientName: e.target.value })}
+                    placeholder="e.g. Marcus Vance"
+                    className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                      isDay
+                        ? "bg-white border-stone-400 text-black"
+                        : "bg-zinc-900 border-zinc-700 text-white"
+                    }`}
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                    Client Phone
+                  </label>
+                  <input
+                    type="text"
+                    value={newEvent.clientPhone}
+                    onChange={(e) => setNewEvent({ ...newEvent, clientPhone: e.target.value })}
+                    placeholder="e.g. (773) 555-0199"
+                    className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                      isDay
+                        ? "bg-white border-stone-400 text-black"
+                        : "bg-zinc-900 border-zinc-700 text-white"
+                    }`}
+                  />
+                </div>
+              </div>
+
               <div className="space-y-1">
-                <label className="font-bold uppercase tracking-wider text-stone-400">Notes &amp; Details</label>
+                <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                  Notes &amp; Details
+                </label>
                 <textarea
                   rows={3}
                   value={newEvent.notes}
                   onChange={(e) => setNewEvent({ ...newEvent, notes: e.target.value })}
                   placeholder="Meats, setup times, trailer parking logistics..."
-                  className="w-full p-3 rounded-xl border bg-stone-900/50 border-stone-700 text-white focus:outline-none focus:border-[#EA580C] resize-none"
+                  className={`w-full p-3 rounded-xl border focus:outline-none focus:border-[#EA580C] resize-none font-bold ${
+                    isDay
+                      ? "bg-white border-stone-400 text-black"
+                      : "bg-zinc-900 border-zinc-700 text-white"
+                  }`}
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-2">
+              <div className={`flex items-center justify-end gap-3 pt-2 border-t ${isDay ? "border-stone-200" : "border-zinc-800"}`}>
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded-xl border border-stone-700 text-stone-300 hover:text-white"
+                  className={`px-4 py-2 rounded-xl border font-black transition-colors ${
+                    isDay
+                      ? "border-stone-300 text-black hover:bg-stone-100"
+                      : "border-zinc-700 text-stone-300 hover:text-white"
+                  }`}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-[#EA580C] hover:bg-[#C84A0A] text-white font-bold tracking-wide cursor-pointer"
+                  className="px-5 py-2 rounded-xl bg-[#EA580C] hover:bg-[#C84A0A] text-white font-black tracking-wide cursor-pointer shadow-xs"
                 >
                   Add to Calendar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* 6. BLOW-UP EVENT DETAILS POPUP MODAL */}
+      {blowUpEvent && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div
+            className={`w-full max-w-2xl rounded-3xl border shadow-2xl p-6 sm:p-7 space-y-5 max-h-[90vh] overflow-y-auto ${
+              isDay ? "bg-white border-stone-300 text-black" : "bg-[#141210] border-zinc-800 text-white"
+            }`}
+          >
+            {/* Header */}
+            <div className={`flex items-start justify-between gap-3 border-b pb-4 ${isDay ? "border-stone-200" : "border-zinc-800"}`}>
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span
+                    className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                      isDay
+                        ? (EVENT_TYPE_META[blowUpEvent.eventType] || EVENT_TYPE_META.other).chipDay
+                        : (EVENT_TYPE_META[blowUpEvent.eventType] || EVENT_TYPE_META.other).chipDark
+                    }`}
+                  >
+                    {(EVENT_TYPE_META[blowUpEvent.eventType] || EVENT_TYPE_META.other).icon}{" "}
+                    {(EVENT_TYPE_META[blowUpEvent.eventType] || EVENT_TYPE_META.other).label}
+                  </span>
+                  <span
+                    className={`px-2.5 py-0.5 rounded-md text-[10px] font-black border uppercase tracking-wider ${
+                      blowUpEvent.isCompleted
+                        ? "bg-emerald-100 border-emerald-300 text-emerald-950 font-black"
+                        : isDay
+                        ? "bg-amber-100 border-amber-300 text-amber-950 font-black"
+                        : "bg-amber-950/60 border-amber-500/30 text-amber-300 font-bold"
+                    }`}
+                  >
+                    {blowUpEvent.isCompleted ? "✓ Completed" : "⏳ Scheduled"}
+                  </span>
+                </div>
+                <h3 className={`text-xl sm:text-2xl font-black mt-0.5 ${isDay ? "text-black" : "text-white"}`}>
+                  {blowUpEvent.title}
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setBlowUpEvent(null)}
+                className={`w-8 h-8 rounded-full font-bold flex items-center justify-center text-sm cursor-pointer transition-colors ${
+                  isDay ? "bg-stone-200 hover:bg-stone-300 text-black" : "bg-zinc-800 hover:bg-zinc-700 text-white"
+                }`}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Quick Metadata Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
+                <span className={`text-[10px] uppercase font-black block ${isDay ? "text-black" : "text-stone-400"}`}>Event Date</span>
+                <span className={`text-xs font-black mt-0.5 block ${isDay ? "text-black" : "text-white"}`}>
+                  {blowUpEvent.eventDate}
+                </span>
+              </div>
+              <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
+                <span className={`text-[10px] uppercase font-black block ${isDay ? "text-black" : "text-stone-400"}`}>Time Slot</span>
+                <span className={`text-xs font-black mt-0.5 block ${isDay ? "text-black" : "text-white"}`}>
+                  {blowUpEvent.timeSlot || "All Day"}
+                </span>
+              </div>
+              <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
+                <span className={`text-[10px] uppercase font-black block ${isDay ? "text-black" : "text-stone-400"}`}>Guest Count</span>
+                <span className={`text-xs font-black mt-0.5 block ${isDay ? "text-black" : "text-white"}`}>
+                  {blowUpEvent.guestCount ? `${blowUpEvent.guestCount} Guests` : "N/A"}
+                </span>
+              </div>
+              <div className={`p-3 rounded-xl border ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
+                <span className={`text-[10px] uppercase font-black block ${isDay ? "text-black" : "text-stone-400"}`}>Category</span>
+                <span className={`text-xs font-black capitalize mt-0.5 block ${isDay ? "text-black" : "text-white"}`}>
+                  {blowUpEvent.eventType}
+                </span>
+              </div>
+            </div>
+
+            {/* Logistics & Client Details */}
+            <div className={`p-4 rounded-xl border space-y-1.5 ${isDay ? "bg-stone-50 border-stone-300" : "bg-zinc-900 border-zinc-800"}`}>
+              <div className={`text-xs font-black flex items-center justify-between ${isDay ? "text-black" : "text-white"}`}>
+                <span>Event Logistics &amp; Contacts</span>
+                <span className="text-[#EA580C] text-[11px] font-mono font-bold">ID: {blowUpEvent.id}</span>
+              </div>
+              <div className={`text-xs font-bold ${isDay ? "text-black" : "text-stone-200"}`}>
+                <strong className={isDay ? "text-black font-black" : "text-white font-bold"}>Location / Venue:</strong>{" "}
+                {blowUpEvent.location || "Commercial Smokehouse Commissary Hub"}
+              </div>
+              {blowUpEvent.clientName && (
+                <div className={`text-xs font-bold ${isDay ? "text-black" : "text-stone-200"}`}>
+                  <strong className={isDay ? "text-black font-black" : "text-white font-bold"}>Client Name:</strong>{" "}
+                  {blowUpEvent.clientName}
+                </div>
+              )}
+              {blowUpEvent.clientPhone && (
+                <div className={`text-xs font-bold ${isDay ? "text-black" : "text-stone-200"}`}>
+                  <strong className={isDay ? "text-black font-black" : "text-white font-bold"}>Client Phone:</strong>{" "}
+                  {blowUpEvent.clientPhone}
+                </div>
+              )}
+            </div>
+
+            {/* Notes & Prep Specifications */}
+            <div className="space-y-1.5">
+              <span className={`text-[11px] font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                📝 Smoke Prep, Rig Logistics &amp; Special Instructions:
+              </span>
+              <div
+                className={`p-4 rounded-xl border max-h-[220px] overflow-y-auto leading-relaxed text-xs sm:text-sm whitespace-pre-wrap font-sans font-bold ${
+                  isDay ? "bg-white border-stone-400 text-black" : "bg-zinc-900 border-zinc-800 text-stone-200"
+                }`}
+              >
+                {blowUpEvent.notes || "No additional instructions recorded for this event."}
+              </div>
+            </div>
+
+            {/* Modal Bottom Buttons */}
+            <div className={`flex flex-wrap items-center justify-between gap-3 pt-3 border-t ${isDay ? "border-stone-200" : "border-zinc-800"}`}>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingEvent({ ...blowUpEvent });
+                    setBlowUpEvent(null);
+                  }}
+                  className={`h-8 px-3 rounded-lg border text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer ${
+                    isDay
+                      ? "bg-white border-stone-400 text-black hover:bg-stone-100"
+                      : "bg-zinc-800 border-zinc-700 text-stone-200 hover:bg-zinc-700"
+                  }`}
+                >
+                  <span className="text-[#EA580C]">✏️</span>
+                  <span>Edit Event</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleToggleComplete(blowUpEvent.id);
+                  }}
+                  className={`h-8 px-3 rounded-lg border text-xs font-black transition-all cursor-pointer ${
+                    blowUpEvent.isCompleted
+                      ? "bg-emerald-500/20 text-emerald-800 border-emerald-400 font-black"
+                      : isDay
+                      ? "bg-stone-100 hover:bg-stone-200 border-stone-400 text-black font-black"
+                      : "bg-zinc-800 hover:bg-zinc-700 border-zinc-700 text-white"
+                  }`}
+                >
+                  {blowUpEvent.isCompleted ? "✓ Completed (Click to Re-open)" : "Mark Done"}
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setBlowUpEvent(null)}
+                className="h-8 px-4 rounded-lg bg-[#EA580C] hover:bg-[#C84A0A] text-white text-xs font-black cursor-pointer shadow-xs"
+              >
+                Close Slip
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 7. EDIT EVENT DETAILS MODAL */}
+      {editingEvent && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div
+            className={`w-full max-w-lg rounded-3xl p-6 sm:p-8 border shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto ${
+              isDay ? "bg-white border-stone-300 text-black" : "bg-[#141417] border-zinc-800 text-white"
+            }`}
+          >
+            <div className={`flex items-center justify-between border-b pb-3 ${isDay ? "border-stone-200" : "border-zinc-800"}`}>
+              <div>
+                <span className="text-[11px] font-black uppercase tracking-widest text-[#FF7A00]">
+                  Edit Schedule Item
+                </span>
+                <h3 className={`font-display text-xl sm:text-2xl font-black ${isDay ? "text-black" : "text-white"}`}>
+                  Update Event Details
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEditingEvent(null)}
+                className={`w-8 h-8 rounded-full font-bold flex items-center justify-center text-sm cursor-pointer transition-colors ${
+                  isDay ? "bg-stone-200 hover:bg-stone-300 text-black" : "bg-zinc-800 hover:bg-zinc-700 text-white"
+                }`}
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleUpdateEvent} className="space-y-4 text-xs font-bold">
+              <div className="space-y-1">
+                <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                  Event Title *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editingEvent.title}
+                  onChange={(e) => setEditingEvent({ ...editingEvent, title: e.target.value })}
+                  placeholder="e.g. Wedding Catering: 65 Guests"
+                  className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                    isDay
+                      ? "bg-white border-stone-400 text-black"
+                      : "bg-zinc-900 border-zinc-700 text-white"
+                  }`}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                    Event Type
+                  </label>
+                  <select
+                    value={editingEvent.eventType}
+                    onChange={(e) => setEditingEvent({ ...editingEvent, eventType: e.target.value as CalendarEventType })}
+                    className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                      isDay
+                        ? "bg-white border-stone-400 text-black"
+                        : "bg-zinc-900 border-zinc-700 text-white"
+                    }`}
+                  >
+                    <option value="gig">🔥 Catering Gig</option>
+                    <option value="prep">🥩 Smoke Prep &amp; Brine</option>
+                    <option value="logistics">🚚 Rig &amp; Wood Restock</option>
+                    <option value="consultation">📞 Tasting / Consultation</option>
+                    <option value="other">★ General Schedule</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                    Date *
+                  </label>
+                  <input
+                    type="date"
+                    required
+                    value={editingEvent.eventDate}
+                    onChange={(e) => setEditingEvent({ ...editingEvent, eventDate: e.target.value })}
+                    className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                      isDay
+                        ? "bg-white border-stone-400 text-black"
+                        : "bg-zinc-900 border-zinc-700 text-white"
+                    }`}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                    Time Slot
+                  </label>
+                  <input
+                    type="text"
+                    value={editingEvent.timeSlot || ""}
+                    onChange={(e) => setEditingEvent({ ...editingEvent, timeSlot: e.target.value })}
+                    placeholder="e.g. 1:00 PM - 5:00 PM"
+                    className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                      isDay
+                        ? "bg-white border-stone-400 text-black"
+                        : "bg-zinc-900 border-zinc-700 text-white"
+                    }`}
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                    Guest Count
+                  </label>
+                  <input
+                    type="number"
+                    value={editingEvent.guestCount || ""}
+                    onChange={(e) => setEditingEvent({ ...editingEvent, guestCount: e.target.value ? Number(e.target.value) : undefined })}
+                    placeholder="e.g. 65"
+                    className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                      isDay
+                        ? "bg-white border-stone-400 text-black"
+                        : "bg-zinc-900 border-zinc-700 text-white"
+                    }`}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                  Location / Venue
+                </label>
+                <input
+                  type="text"
+                  value={editingEvent.location || ""}
+                  onChange={(e) => setEditingEvent({ ...editingEvent, location: e.target.value })}
+                  placeholder="Venue address or Commissary Hub"
+                  className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                    isDay
+                      ? "bg-white border-stone-400 text-black"
+                      : "bg-zinc-900 border-zinc-700 text-white"
+                  }`}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                    Client Name
+                  </label>
+                  <input
+                    type="text"
+                    value={editingEvent.clientName || ""}
+                    onChange={(e) => setEditingEvent({ ...editingEvent, clientName: e.target.value })}
+                    placeholder="e.g. Marcus Vance"
+                    className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                      isDay
+                        ? "bg-white border-stone-400 text-black"
+                        : "bg-zinc-900 border-zinc-700 text-white"
+                    }`}
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                    Client Phone
+                  </label>
+                  <input
+                    type="text"
+                    value={editingEvent.clientPhone || ""}
+                    onChange={(e) => setEditingEvent({ ...editingEvent, clientPhone: e.target.value })}
+                    placeholder="e.g. (773) 555-0199"
+                    className={`w-full h-10 px-3 rounded-xl border focus:outline-none focus:border-[#EA580C] font-bold ${
+                      isDay
+                        ? "bg-white border-stone-400 text-black"
+                        : "bg-zinc-900 border-zinc-700 text-white"
+                    }`}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className={`font-black uppercase tracking-wider block ${isDay ? "text-black" : "text-stone-300"}`}>
+                  Notes &amp; Details
+                </label>
+                <textarea
+                  rows={4}
+                  value={editingEvent.notes || ""}
+                  onChange={(e) => setEditingEvent({ ...editingEvent, notes: e.target.value })}
+                  placeholder="Meats, setup times, trailer parking logistics..."
+                  className={`w-full p-3 rounded-xl border focus:outline-none focus:border-[#EA580C] resize-none font-bold ${
+                    isDay
+                      ? "bg-white border-stone-400 text-black"
+                      : "bg-zinc-900 border-zinc-700 text-white"
+                  }`}
+                />
+              </div>
+
+              <div className={`flex items-center justify-end gap-3 pt-3 border-t ${isDay ? "border-stone-200" : "border-zinc-800"}`}>
+                <button
+                  type="button"
+                  onClick={() => setEditingEvent(null)}
+                  className={`px-4 py-2 rounded-xl border font-black transition-colors ${
+                    isDay
+                      ? "border-stone-300 text-black hover:bg-stone-100"
+                      : "border-zinc-700 text-stone-300 hover:text-white"
+                  }`}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-[#EA580C] hover:bg-[#C84A0A] text-white font-black tracking-wide cursor-pointer shadow-xs"
+                >
+                  Save Changes
                 </button>
               </div>
             </form>
