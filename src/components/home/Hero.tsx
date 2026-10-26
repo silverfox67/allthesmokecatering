@@ -159,8 +159,7 @@ export function Hero() {
               About
             </a>
             <a
-              href="#quote"
-              onClick={handleOpenQuoteModal}
+              href="#contact"
               className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
             >
               Contact
@@ -170,8 +169,7 @@ export function Hero() {
           {/* CTA: REQUEST A QUOTE (Header CTA Button) */}
           <div className="ml-auto lg:ml-0 flex items-center gap-2 sm:gap-3">
             <a
-              href="#quote"
-              onClick={handleOpenQuoteModal}
+              href="#contact"
               className="inline-flex h-9 sm:h-11 px-3 sm:px-6 items-center justify-center rounded-[12px] sm:rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-xs sm:text-base lg:text-lg font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer whitespace-nowrap"
             >
               <span className="hidden sm:inline">REQUEST A QUOTE</span>
@@ -236,11 +234,8 @@ export function Hero() {
             About
           </a>
           <a
-            href="#quote"
-            onClick={(e) => {
-              setMobileMenuOpen(false);
-              handleOpenQuoteModal(e);
-            }}
+            href="#contact"
+            onClick={() => setMobileMenuOpen(false)}
             className="block text-[#C8A97E] hover:text-[#FF7A00] font-bold"
           >
             Contact
@@ -281,8 +276,7 @@ export function Hero() {
               VIEW OUR MENUS
             </a>
             <a
-              href="#quote"
-              onClick={handleOpenQuoteModal}
+              href="#contact"
               className="w-full sm:w-auto inline-flex h-[48px] px-7 items-center justify-center rounded-[14px] bg-black/60 border border-[#C8A97E] backdrop-blur-md shadow-[0_0_12px_rgba(200,169,126,0.15)] font-display text-lg sm:text-2xl font-bold tracking-wider text-[#C8A97E] uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.95)] transition-all hover:scale-[1.02] active:scale-[0.98] hover:border-[#FF7A00] hover:text-white hover:bg-black/80 hover:shadow-[0_0_18px_rgba(255,122,0,0.4)] cursor-pointer text-center"
             >
               BOOK YOUR DATE
