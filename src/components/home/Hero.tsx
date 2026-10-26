@@ -84,7 +84,7 @@ export function Hero() {
           <a
             href={`mailto:${SITE_CONFIG.brandEmail}`}
             className="inline-flex items-center gap-2 text-[#C8A97E] hover:text-[#FF7A00] transition-colors font-medium"
-            aria-label={`Email Marion Bolden at ${SITE_CONFIG.brandEmail}`}
+            aria-label={`Email All The Smoke Catering at ${SITE_CONFIG.brandEmail}`}
           >
             <svg
               className="h-3.5 w-3.5 text-[#C8A97E] shrink-0"

@@ -109,7 +109,7 @@ export function DeliveryChecker() {
           </h2>
           <p className="text-stone-600 text-sm sm:text-base max-w-2xl mx-auto text-center mb-8">
             All orders dispatch hot directly from our commercial kitchen hub on{" "}
-            <strong className="text-stone-900 font-semibold">Chicago’s Northwest Side (Dunning / 60634)</strong>.
+            <strong className="text-stone-900 font-semibold">Chicago’s Northwest Side</strong>.
             Enter your event ZIP code below to see instant delivery fees and minimum food requirements.
           </p>
         </div>
@@ -244,7 +244,7 @@ export function DeliveryChecker() {
                     <svg className="h-4 w-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 17a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4zM3 9h12a2 2 0 012 2v6H3V9zm14 3h3.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V17h-7v-5zM6 9V5a1 1 0 011-1h6a1 1 0 011 1v4" />
                     </svg>
-                    Dispatched from Chicago’s Northwest Side (Dunning / 60634)
+                    Dispatched from Chicago’s Northwest Side
                   </span>
                   <a
                     href={`#quote?zip=${result.zip}&zone=${result.zone.zone}`}

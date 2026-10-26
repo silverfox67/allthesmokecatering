@@ -215,8 +215,8 @@ export async function POST(req: Request) {
 
           <div class="footer">
             All The Smoke BBQ &amp; Catering<br>
-            Commercial Operations Hub: 3401 N Orange Ave, Chicago, IL 60634<br>
-            Direct: ${SITE_CONFIG.brandEmail} | TikTok: @allthesmokebbq_catering
+            Commercial Operations Hub: Chicago&rsquo;s Northwest Side<br>
+            Inquiries: ${SITE_CONFIG.brandEmail} | Direct: ${SITE_CONFIG.phone}
           </div>
         </div>
       </body>

@@ -101,7 +101,7 @@ export async function onRequestPost(context) {
               <h2>We Received Your Inquiry, ${name}!</h2>
               <p>Ticket: <strong>#${ticketId}</strong> for <strong>${eventDate}</strong> (${guestCount} Guests).</p>
               <p>Marion Bolden and the crew are reviewing pitmaster capacity and will follow up with your customized proposal within 12 business hours.</p>
-              <p>Direct line: <strong>(773) 707-9988</strong> | Hub: 3401 N Orange Ave, Chicago 60634</p>
+              <p>Direct line: <strong>(773) 707-9988</strong> | Hub: Chicago&rsquo;s Northwest Side</p>
             </div>
           </div>
         `;

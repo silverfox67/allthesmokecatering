@@ -61,7 +61,7 @@ export const SITE_CONFIG: SiteConfig = {
   secondaryDomain: 'allthesmokebbqcatering.com',
   phone: '(773) 707-9988',
   phoneFormatted: '+17737079988',
-  brandEmail: 'marion@allthesmokecatering.com',
+  brandEmail: 'info@allthesmokecatering.com',
   primaryAdminEmail: 'boldenmarion83@gmail.com',
   secondaryAdminEmail: 'bbqcateringking83@gmail.com',
   hubAddress: {

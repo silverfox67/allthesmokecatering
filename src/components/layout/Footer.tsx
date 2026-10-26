@@ -34,7 +34,6 @@ export function Footer() {
           </h3>
           <div className="space-y-1">
             <p className="text-stone-300 text-sm">Chicago’s Northwest Side</p>
-            <p className="text-stone-400 text-xs">Dunning Hub / 60634</p>
             <p className="text-stone-500 text-xs mt-1">
               (By booked dispatch only; exclusive commercial kitchen commissary)
             </p>
