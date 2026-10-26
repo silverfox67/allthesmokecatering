@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { SITE_CONFIG } from "@/config/site-config";
+import { CalendarDatePicker } from "@/components/forms/CalendarDatePicker";
 
 export function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -338,13 +339,14 @@ export function ContactSection() {
                     <label htmlFor="contact-eventDate" className="font-bold text-stone-300 uppercase tracking-wider block text-xs">
                       Event Date *
                     </label>
-                    <input
+                    <CalendarDatePicker
                       id="contact-eventDate"
-                      type="date"
-                      required
+                      name="eventDate"
                       value={formData.eventDate}
-                      onChange={(e) => handleInputChange("eventDate", e.target.value)}
-                      className="w-full h-11 px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium cursor-pointer"
+                      onChange={(dateStr) => handleInputChange("eventDate", dateStr)}
+                      required
+                      placeholder="Select event date..."
+                      theme="light"
                     />
                   </div>
                   <div className="space-y-1.5">

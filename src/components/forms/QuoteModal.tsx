@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { SITE_CONFIG } from "@/config/site-config";
+import { CalendarDatePicker } from "./CalendarDatePicker";
 import {
   PER_PERSON_PACKAGES,
   TURNKEY_BUNDLES,
@@ -379,13 +380,14 @@ export function QuoteModal({
                     <label htmlFor="modal-event-date" className="text-xs font-bold text-[#E7DFD5] uppercase tracking-wider block">
                       Target Event Date *
                     </label>
-                    <input
+                    <CalendarDatePicker
                       id="modal-event-date"
-                      type="date"
+                      name="eventDate"
                       value={eventDate}
-                      onChange={(e) => setEventDate(e.target.value)}
+                      onChange={(dateStr) => setEventDate(dateStr)}
                       required
-                      className="w-full bg-[#191614] border border-[#3A312A] focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] rounded-xl px-4 py-3 text-[#F4EFEA] text-sm outline-none transition-colors"
+                      placeholder="Select target event date..."
+                      theme="dark"
                     />
                     <p className="text-[11px] text-stone-400">
                       * 48 to 72 hours advance notice required for whole meats and live-fire pit rigs.
