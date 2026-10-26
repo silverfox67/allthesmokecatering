@@ -16,6 +16,7 @@ interface SentMessage {
 
 interface AdminEmailHubProps {
   theme?: "day" | "night" | "dark" | "butcher-paper";
+  prefilledLead?: PitmasterLead;
 }
 
 const EMAIL_TEMPLATES = [
@@ -74,7 +75,7 @@ Marion Bolden & The All The Smoke Crew`,
   },
 ];
 
-export function AdminEmailHub({ theme = "night" }: AdminEmailHubProps) {
+export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubProps) {
   const isDay = theme === "day" || theme === "butcher-paper";
 
   const [leads, setLeads] = useState<PitmasterLead[]>([]);
@@ -102,11 +103,15 @@ export function AdminEmailHub({ theme = "night" }: AdminEmailHubProps) {
       try {
         const rawLeads = localStorage.getItem("ats_pitmaster_leads");
         if (rawLeads) {
-          const parsed = JSON.parse(rawLeads);
+          const parsed: PitmasterLead[] = JSON.parse(rawLeads);
           setLeads(parsed);
-          if (parsed.length > 0 && !selectedLeadId) {
+          if (prefilledLead) {
+            handleSelectLead(prefilledLead);
+          } else if (parsed.length > 0 && !selectedLeadId) {
             handleSelectLead(parsed[0]);
           }
+        } else if (prefilledLead) {
+          handleSelectLead(prefilledLead);
         }
 
         const rawMsgs = localStorage.getItem("ats_admin_sent_messages");
@@ -117,7 +122,7 @@ export function AdminEmailHub({ theme = "night" }: AdminEmailHubProps) {
         console.error("Failed to load email hub data:", err);
       }
     }
-  }, []);
+  }, [prefilledLead]);
 
   const handleSelectLead = (lead: PitmasterLead) => {
     setSelectedLeadId(lead.id);
