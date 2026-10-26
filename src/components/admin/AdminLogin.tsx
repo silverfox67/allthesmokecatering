@@ -74,7 +74,7 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
 
             <div>
               <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#F4EFEA]">
-                PITMASTER PORTAL
+                PITMASTER OPERATIONS
               </h1>
               <p className="text-xs uppercase font-extrabold tracking-widest text-[#FF8C38] mt-1">
                 Marion Bolden • Executive Dashboard

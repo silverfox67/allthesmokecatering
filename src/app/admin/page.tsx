@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { AdminPortal } from "@/components/admin/AdminPortal";
 
 export const metadata: Metadata = {
-  title: "Pitmaster Portal | All The Smoke Catering",
-  description: "Executive catering command center for Marion Bolden.",
+  title: "Pitmaster Operations | All The Smoke Catering",
+  description: "Executive catering operations hub for Marion Bolden.",
   robots: {
     index: false,
     follow: false,

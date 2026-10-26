@@ -137,7 +137,7 @@ export function AdminPortal() {
                     isDay ? "text-[#1C1917]" : "text-white"
                   }`}
                 >
-                  PITMASTER COMMAND CENTER
+                  PITMASTER OPERATIONS
                 </h1>
                 <span className="text-[10px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full bg-[#EA580C]/20 border border-[#EA580C]/50 text-[#FF8C38] hidden sm:inline-block">
                   Live
@@ -437,7 +437,7 @@ export function AdminPortal() {
                     />
                   </div>
                   <div>
-                    <h3 className="font-display text-sm font-bold">Pitmaster Portal</h3>
+                    <h3 className="font-display text-sm font-bold">Pitmaster Operations</h3>
                     <p className="text-[10px] text-zinc-400">Marion Bolden</p>
                   </div>
                 </div>
@@ -864,7 +864,7 @@ export function AdminPortal() {
             : "bg-[#0E0E10] border-zinc-800/80 text-zinc-500"
         }`}
       >
-        All The Smoke Catering • Pitmaster Portal • Marion Bolden
+        All The Smoke Catering • Pitmaster Operations • Marion Bolden
       </footer>
     </div>
   );
