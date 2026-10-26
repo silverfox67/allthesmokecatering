@@ -53,8 +53,7 @@ export async function POST(req: Request) {
                   <p style="color: #FFD2A8; margin: 6px 0 0 0; font-size: 13px; font-weight: bold; text-transform: uppercase;">★ Live-Fire Texas Smokehouse Dispatch ★</p>
                 </div>
                 <div style="padding: 30px 24px; background: #FAF8F5;">
-                  ${clientName ? `<p style="font-size: 16px; font-weight: bold; margin-top: 0; color: #1C1917;">Hello ${clientName},</p>` : ''}
-                  <div style="font-size: 15px; line-height: 1.6; color: #292524; margin: 16px 0;">
+                  <div style="font-size: 15px; line-height: 1.6; color: #292524; margin: 0 0 16px 0;">
                     ${messageContent.replace(/\n/g, "<br>")}
                   </div>
                   <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid #E2DACF; color: #57534E; font-size: 13px;">
