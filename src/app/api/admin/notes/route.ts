@@ -4,12 +4,20 @@ export async function POST(req: Request) {
   try {
     const data = await req.json();
     const title = (data.title || "Untitled Smokehouse Note").trim();
+    const author = (data.author || "Todd").trim();
     const category = data.category || "general";
     const categoryLabel = data.categoryLabel || "General Note";
     const priority = (data.priority || "normal").toUpperCase();
     const whatAndWhy = data.whatAndWhy || "";
     const attachmentCount = Number(data.attachmentCount) || 0;
     const createdAt = data.createdAt || new Date().toISOString();
+
+    // Bidirectional routing:
+    // If Todd wrote the note, notify Marion. If Marion wrote it, notify Todd!
+    const isTodd = author.toLowerCase().includes("todd");
+    const recipient = isTodd
+      ? { email: "boldenmarion83@gmail.com", name: "Marion Bolden" }
+      : { email: "todddavis923@gmail.com", name: "Todd Davis" };
 
     const brevoApiKey =
       process.env.BREVO_API_KEY ||
@@ -44,8 +52,10 @@ export async function POST(req: Request) {
                 </span>
               </div>
 
-              <h2 style="color: #FFFFFF; font-size: 18px; margin: 0 0 12px 0;">${title}</h2>
-              <p style="color: #A1A1AA; font-size: 12px; margin: 0 0 16px 0;">Logged on ${formattedDate} (CT)</p>
+              <h2 style="color: #FFFFFF; font-size: 18px; margin: 0 0 8px 0;">${title}</h2>
+              <p style="color: #D4D4D8; font-size: 13px; margin: 0 0 16px 0;">
+                Posted by <strong style="color: #FF8C38;">${author}</strong> on ${formattedDate} (CT)
+              </p>
 
               <div style="background: #1C1C21; border-left: 4px solid #EA580C; padding: 16px; border-radius: 4px; margin-bottom: 20px;">
                 <p style="color: #FF8C38; font-size: 11px; font-weight: bold; text-transform: uppercase; margin: 0 0 6px 0;">
@@ -81,12 +91,12 @@ export async function POST(req: Request) {
         },
         body: JSON.stringify({
           sender: {
-            name: "ATS Pitmaster Notes",
+            name: `ATS Note (${author})`,
             email: process.env.BREVO_SENDER_EMAIL || "info@allthesmokecatering.com",
           },
-          to: [{ email: "boldenmarion83@gmail.com", name: "Marion Bolden" }],
+          to: [recipient],
           cc: [{ email: "bbqcateringking83@gmail.com", name: "ATS Operations" }],
-          subject: `[ATS Note - ${priority}] ${title}`,
+          subject: `[ATS Note from ${author} - ${priority}] ${title}`,
           htmlContent: noteHtml,
         }),
       });

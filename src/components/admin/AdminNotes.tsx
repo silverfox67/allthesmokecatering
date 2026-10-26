@@ -94,7 +94,7 @@ const SEED_NOTES: PitmasterNote[] = [
     title: "Lincoln Park Driveway & Rig Clearance Check",
     category: "smoker-rig",
     priority: "high",
-    author: "Marion Bolden",
+    author: "Marion",
     whatAndWhy:
       "Customer sent photos of the venue alleyway entrance on Fullerton. The trailer rig must back in at a 45-degree angle to avoid the low tree branch. Bring 2 wheel chocks and 50ft heavy-duty extension cord for the rotisserie warmers.",
     attachments: [],
@@ -107,9 +107,9 @@ const SEED_NOTES: PitmasterNote[] = [
     title: "Saturday Cook: Extra Whole Turkey Chops for 65-Guest Wedding",
     category: "meats-menu",
     priority: "urgent",
-    author: "Marion Bolden",
+    author: "Todd",
     whatAndWhy:
-      "Bride requested adding 35 whole hardwood smoked turkey chops alongside the prime brisket spread. Prep brine on Thursday night; put on pecan smoke at 6:00 AM Saturday.",
+      "Bride requested adding 35 whole hardwood smoked turkey chops alongside the prime brisket spread. Deposit confirmed. Prep brine on Thursday night; put on pecan smoke at 6:00 AM Saturday.",
     attachments: [],
     isCompleted: false,
     createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
@@ -171,6 +171,7 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
   // New Note Form State
   const [showAddForm, setShowAddForm] = useState(false);
   const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState<"Todd" | "Marion">("Todd");
   const [category, setCategory] = useState<NoteCategory>("general");
   const [priority, setPriority] = useState<NotePriority>("normal");
   const [whatAndWhy, setWhatAndWhy] = useState("");
@@ -183,16 +184,22 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<"all" | "active" | "completed">("active");
+  const [authorFilter, setAuthorFilter] = useState<"all" | "Todd" | "Marion">("all");
 
   // Full Image Modal Preview
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Load notes from localStorage on mount
+  // Load notes & sticky author preference from localStorage on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
       try {
+        const savedAuthor = localStorage.getItem("ats_admin_note_author") as "Todd" | "Marion" | null;
+        if (savedAuthor === "Todd" || savedAuthor === "Marion") {
+          setAuthor(savedAuthor);
+        }
+
         const saved = localStorage.getItem("ats_admin_notes");
         if (saved) {
           setNotes(JSON.parse(saved));
@@ -207,6 +214,13 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
       setIsLoaded(true);
     }
   }, []);
+
+  const handleAuthorChange = (newAuthor: "Todd" | "Marion") => {
+    setAuthor(newAuthor);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("ats_admin_note_author", newAuthor);
+    }
+  };
 
   // Save notes to localStorage
   const saveNotes = (updated: PitmasterNote[]) => {
@@ -271,7 +285,7 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
       title: title.trim(),
       category,
       priority,
-      author: "Marion Bolden",
+      author,
       whatAndWhy: whatAndWhy.trim(),
       attachments,
       isCompleted: false,
@@ -280,6 +294,9 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
     };
 
     // If Brevo notification is checked, dispatch to backend API
+    const targetRecipientEmail =
+      author === "Todd" ? "boldenmarion83@gmail.com" : "todddavis923@gmail.com";
+
     if (sendBrevoEmail) {
       try {
         await fetch("/api/admin/notes", {
@@ -287,12 +304,13 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             title: newNote.title,
+            author: newNote.author,
             category: newNote.category,
             categoryLabel: CATEGORY_META[newNote.category].label,
             priority: newNote.priority,
             whatAndWhy: newNote.whatAndWhy,
             attachmentCount: attachments.length,
-            recipientEmail: "boldenmarion83@gmail.com",
+            recipientEmail: targetRecipientEmail,
             createdAt: newNote.createdAt,
           }),
         });
@@ -312,8 +330,12 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
     setAttachments([]);
     setIsSubmitting(false);
     setShowAddForm(false);
-    setSubmitFeedback("Note saved successfully and forwarded to Marion!");
-    setTimeout(() => setSubmitFeedback(null), 4000);
+    setSubmitFeedback(
+      `Note saved from ${author} and forwarded to ${
+        author === "Todd" ? "Marion (boldenmarion83@gmail.com)" : "Todd (todddavis923@gmail.com)"
+      }!`
+    );
+    setTimeout(() => setSubmitFeedback(null), 5000);
   };
 
   // Toggle Completion
@@ -338,6 +360,11 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
     if (statusFilter === "active" && n.isCompleted) return false;
     if (statusFilter === "completed" && !n.isCompleted) return false;
 
+    // Author
+    if (authorFilter !== "all" && !n.author?.toLowerCase().includes(authorFilter.toLowerCase())) {
+      return false;
+    }
+
     // Category
     if (selectedCategory !== "all" && n.category !== selectedCategory) return false;
 
@@ -346,8 +373,9 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
       const q = searchQuery.toLowerCase();
       const inTitle = n.title.toLowerCase().includes(q);
       const inBody = n.whatAndWhy.toLowerCase().includes(q);
+      const inAuthor = (n.author || "").toLowerCase().includes(q);
       const inCat = CATEGORY_META[n.category].label.toLowerCase().includes(q);
-      if (!inTitle && !inBody && !inCat) return false;
+      if (!inTitle && !inBody && !inAuthor && !inCat) return false;
     }
 
     return true;
@@ -356,6 +384,8 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
   const totalActive = notes.filter((n) => !n.isCompleted).length;
   const totalPhotos = notes.reduce((acc, n) => acc + (n.attachments?.length || 0), 0);
   const totalUrgent = notes.filter((n) => !n.isCompleted && n.priority === "urgent").length;
+  const totalTodd = notes.filter((n) => (n.author || "").toLowerCase().includes("todd")).length;
+  const totalMarion = notes.filter((n) => (n.author || "").toLowerCase().includes("marion")).length;
 
   if (!isLoaded) {
     return (
@@ -510,7 +540,7 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
               Smokehouse Notes &amp; Media Files
             </h2>
             <p className={`text-xs ${isButcher ? "text-stone-600 font-medium" : "text-zinc-400"}`}>
-              Save instructions, driveway photos, custom recipes, and smoker logistics.
+              Shared operational scratchpad between Todd and Marion with automatic email notifications.
             </p>
           </div>
 
@@ -538,17 +568,70 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
                   : "bg-[#18181C] border-[#EA580C]/60"
               }`}
             >
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <span
                   className={`text-xs uppercase font-extrabold tracking-widest ${
                     isButcher ? "text-[#C84A0A]" : "text-[#FF8C38]"
                   }`}
                 >
-                  New Pitmaster Note &amp; Attachment
+                  New Shared Operational Note
                 </span>
                 <span className={`text-xs ${isButcher ? "text-stone-600 font-medium" : "text-zinc-400"}`}>
-                  Recipient: <strong className={isButcher ? "text-stone-900" : "text-white"}>boldenmarion83@gmail.com</strong>
+                  Auto-Notifies:{" "}
+                  <strong className={isButcher ? "text-stone-900" : "text-white"}>
+                    {author === "Todd" ? "boldenmarion83@gmail.com (Marion)" : "todddavis923@gmail.com (Todd)"}
+                  </strong>
                 </span>
+              </div>
+
+              {/* Author Selector */}
+              <div>
+                <label
+                  className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${
+                    isButcher ? "text-stone-800" : "text-zinc-300"
+                  }`}
+                >
+                  Posted By (Author) *
+                </label>
+                <div
+                  className={`grid grid-cols-2 p-1 rounded-xl border text-xs font-bold ${
+                    isButcher ? "bg-white border-[#D8CEC1]" : "bg-zinc-900 border-zinc-700"
+                  }`}
+                >
+                  <button
+                    type="button"
+                    onClick={() => handleAuthorChange("Todd")}
+                    className={`py-2 px-3 rounded-lg text-center transition-all cursor-pointer font-bold ${
+                      author === "Todd"
+                        ? "bg-[#EA580C] text-white shadow font-black"
+                        : isButcher
+                        ? "text-stone-700 hover:text-stone-950"
+                        : "text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    <span>Todd</span>
+                    <span className="block text-[10px] font-normal opacity-85">
+                      (notifies Marion)
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleAuthorChange("Marion")}
+                    className={`py-2 px-3 rounded-lg text-center transition-all cursor-pointer font-bold ${
+                      author === "Marion"
+                        ? "bg-[#EA580C] text-white shadow font-black"
+                        : isButcher
+                        ? "text-stone-700 hover:text-stone-950"
+                        : "text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    <span>Marion</span>
+                    <span className="block text-[10px] font-normal opacity-85">
+                      (notifies Todd)
+                    </span>
+                  </button>
+                </div>
               </div>
 
               {/* Title */}
@@ -691,9 +774,7 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
                       <div
                         key={att.id}
                         className={`relative group rounded-xl overflow-hidden border aspect-square ${
-                          isButcher
-                            ? "border-[#D8CEC1] bg-stone-100"
-                            : "border-zinc-700 bg-zinc-900"
+                          isButcher ? "border-[#D8CEC1] bg-stone-100" : "border-zinc-700 bg-zinc-900"
                         }`}
                       >
                         <Image
@@ -740,9 +821,9 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
                     isButcher ? "text-stone-700 font-semibold" : "text-zinc-300 font-medium"
                   }`}
                 >
-                  Forward alert copy to{" "}
+                  Send email alert to{" "}
                   <strong className={isButcher ? "text-[#C84A0A]" : "text-amber-400"}>
-                    boldenmarion83@gmail.com
+                    {author === "Todd" ? "Marion (boldenmarion83@gmail.com)" : "Todd (todddavis923@gmail.com)"}
                   </strong>{" "}
                   via Brevo
                 </label>
@@ -774,13 +855,13 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
           </form>
         )}
 
-        {/* 4. SEARCH & FILTER TABS */}
-        <div className="pt-2 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+        {/* 4. SEARCH & FILTER TABS (Status + Author + Category) */}
+        <div className="pt-2 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
           {/* Search */}
           <div className="flex-1 max-w-md relative">
             <input
               type="text"
-              placeholder="Search notes by keyword or venue..."
+              placeholder="Search notes by keyword, author, or venue..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={`w-full h-10 px-4 rounded-xl border text-xs focus:border-[#EA580C] focus:outline-none transition-colors ${
@@ -791,19 +872,18 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
             />
           </div>
 
-          {/* Status & Category Selector */}
+          {/* Status & Author & Category Selector */}
           <div className="flex flex-wrap items-center gap-2">
+            {/* Status Filter */}
             <div
               className={`inline-flex p-1 rounded-xl border text-xs transition-colors ${
-                isButcher
-                  ? "bg-[#FAF7F2] border-[#D8CEC1]"
-                  : "bg-zinc-900 border-zinc-800"
+                isButcher ? "bg-[#FAF7F2] border-[#D8CEC1]" : "bg-zinc-900 border-zinc-800"
               }`}
             >
               <button
                 type="button"
                 onClick={() => setStatusFilter("active")}
-                className={`px-3 py-1 rounded-lg font-bold transition-all ${
+                className={`px-3 py-1 rounded-lg font-bold transition-all cursor-pointer ${
                   statusFilter === "active"
                     ? "bg-[#EA580C] text-white shadow"
                     : isButcher
@@ -816,7 +896,7 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
               <button
                 type="button"
                 onClick={() => setStatusFilter("completed")}
-                className={`px-3 py-1 rounded-lg font-bold transition-all ${
+                className={`px-3 py-1 rounded-lg font-bold transition-all cursor-pointer ${
                   statusFilter === "completed"
                     ? isButcher
                       ? "bg-[#E5DDD1] text-stone-900 shadow font-black"
@@ -831,7 +911,7 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
               <button
                 type="button"
                 onClick={() => setStatusFilter("all")}
-                className={`px-3 py-1 rounded-lg font-bold transition-all ${
+                className={`px-3 py-1 rounded-lg font-bold transition-all cursor-pointer ${
                   statusFilter === "all"
                     ? isButcher
                       ? "bg-[#E5DDD1] text-stone-900 shadow font-black"
@@ -842,6 +922,55 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
                 }`}
               >
                 All ({notes.length})
+              </button>
+            </div>
+
+            {/* Author Filter (Blind Cook Style) */}
+            <div
+              className={`inline-flex p-1 rounded-xl border text-xs transition-colors ${
+                isButcher ? "bg-[#FAF7F2] border-[#D8CEC1]" : "bg-zinc-900 border-zinc-800"
+              }`}
+            >
+              <button
+                type="button"
+                onClick={() => setAuthorFilter("all")}
+                className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
+                  authorFilter === "all"
+                    ? isButcher
+                      ? "bg-[#E5DDD1] text-stone-900 shadow font-black"
+                      : "bg-zinc-800 text-white shadow font-black"
+                    : isButcher
+                    ? "text-stone-600 hover:text-stone-900"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                All Authors
+              </button>
+              <button
+                type="button"
+                onClick={() => setAuthorFilter("Todd")}
+                className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
+                  authorFilter === "Todd"
+                    ? "bg-[#EA580C] text-white shadow font-black"
+                    : isButcher
+                    ? "text-stone-600 hover:text-stone-900"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                Todd ({totalTodd})
+              </button>
+              <button
+                type="button"
+                onClick={() => setAuthorFilter("Marion")}
+                className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
+                  authorFilter === "Marion"
+                    ? "bg-[#EA580C] text-white shadow font-black"
+                    : isButcher
+                    ? "text-stone-600 hover:text-stone-900"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                Marion ({totalMarion})
               </button>
             </div>
 
@@ -900,6 +1029,7 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
 
             const badgeCategoryClass = isButcher ? cat.badgeClassButcher : cat.badgeClassDark;
             const badgePriorityClass = isButcher ? prio.badgeClassButcher : prio.badgeClassDark;
+            const isFromTodd = (note.author || "").toLowerCase().includes("todd");
 
             return (
               <div
@@ -922,6 +1052,21 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
                   {/* Badges & Meta */}
                   <div className="space-y-2 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
+                      {/* Author Pill (Todd vs Marion) */}
+                      <span
+                        className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border inline-flex items-center gap-1 ${
+                          isFromTodd
+                            ? isButcher
+                              ? "bg-blue-50 text-blue-800 border-blue-300 font-black"
+                              : "bg-blue-950/70 text-blue-300 border-blue-800/80 font-black"
+                            : isButcher
+                            ? "bg-[#FAF0E6] text-[#9A3412] border-[#E2CEB9] font-black"
+                            : "bg-amber-950/70 text-[#FF8C38] border-amber-800/80 font-black"
+                        }`}
+                      >
+                        <span>From: {note.author || "Marion"}</span>
+                      </span>
+
                       {/* Category Pill */}
                       <span
                         className={`text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border inline-flex items-center ${badgeCategoryClass}`}
@@ -944,7 +1089,9 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
                             isButcher ? "text-stone-600 font-semibold" : "text-zinc-400"
                           }`}
                         >
-                          <span>Forwarded to boldenmarion83@gmail.com</span>
+                          <span>
+                            Forwarded to {isFromTodd ? "boldenmarion83@gmail.com" : "todddavis923@gmail.com"}
+                          </span>
                         </span>
                       )}
 
@@ -998,9 +1145,7 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
                             <div
                               key={att.id}
                               className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border cursor-pointer hover:scale-105 transition-transform ${
-                                isButcher
-                                  ? "border-[#D8CEC1] bg-stone-100"
-                                  : "border-zinc-700 bg-black"
+                                isButcher ? "border-[#D8CEC1] bg-stone-100" : "border-zinc-700 bg-black"
                               }`}
                               onClick={() => setPreviewImage(att.dataUrl)}
                               title={`${att.name} (${att.sizeKb} KB) - Click to view`}
