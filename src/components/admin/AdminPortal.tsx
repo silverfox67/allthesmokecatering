@@ -755,7 +755,7 @@ export function AdminPortal() {
                       marion@allthesmokecatering.com
                     </div>
                     <p className={`text-[11px] ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
-                      Verified domain sender for customer quotes.
+                      Direct Pitmaster sender for client quotes &amp; proposals.
                     </p>
                   </div>
 
@@ -777,7 +777,29 @@ export function AdminPortal() {
                       info@allthesmokecatering.com
                     </div>
                     <p className={`text-[11px] ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
-                      Verified domain sender for administrative dispatches.
+                      Official website contact &amp; kitchen commissary slips.
+                    </p>
+                  </div>
+
+                  <div
+                    className={`p-4 rounded-xl border space-y-1.5 sm:col-span-2 ${
+                      isDay
+                        ? "bg-[#FAF8F5] border-[#D8CEC1]"
+                        : "bg-zinc-900 border-zinc-800"
+                    }`}
+                  >
+                    <span
+                      className={`text-[10px] uppercase font-bold ${
+                        isDay ? "text-stone-500" : "text-zinc-500"
+                      }`}
+                    >
+                      Verified Outbound Sender C
+                    </span>
+                    <div className="font-mono text-sm text-emerald-600 font-bold">
+                      support@allthesmokecatering.com
+                    </div>
+                    <p className={`text-[11px] ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
+                      Event modifications, invoicing receipts, &amp; post-event customer care.
                     </p>
                   </div>
                 </div>
