@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/config/site-config";
 import { Hero } from "@/components/home/Hero";
+import { AboutSection } from "@/components/home/AboutSection";
 import { PackageGrid } from "@/components/catering/PackageGrid";
 import { DeliveryChecker } from "@/components/delivery/DeliveryChecker";
 import { TikTokReels } from "@/components/social/TikTokReels";
@@ -15,7 +16,10 @@ export default function HomePage() {
       {/* 1. Hero: Deep Obsidian (#0A0A0A) + Amber Ember Radial Glow + Borderless Brisket */}
       <Hero />
 
-      {/* 2. Spotlight Packages: Rich Charcoal (#121214) with Top/Bottom Borders & Ambient Ember Glow */}
+      {/* 2. About All The Smoke Catering: The Pitmaster's Craft & Philosophy */}
+      <AboutSection />
+
+      {/* 3. Spotlight Packages: Rich Charcoal (#121214) with Top/Bottom Borders & Ambient Ember Glow */}
       <PackageGrid />
 
       {/* 3. Delivery Calculator: Deep Obsidian (#0A0A0A) with Centered Radial Glow */}

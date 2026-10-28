@@ -53,7 +53,7 @@ export function Navbar() {
             Gallery
           </Link>
           <Link
-            href="#delivery"
+            href="#about"
             className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
           >
             About

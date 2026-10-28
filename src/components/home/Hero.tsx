@@ -153,7 +153,7 @@ export function Hero() {
               Gallery
             </a>
             <a
-              href="#delivery"
+              href="#about"
               className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
             >
               About
@@ -227,7 +227,7 @@ export function Hero() {
             Gallery
           </a>
           <a
-            href="#delivery"
+            href="#about"
             onClick={() => setMobileMenuOpen(false)}
             className="block text-[#C8A97E] hover:text-[#FF7A00]"
           >
