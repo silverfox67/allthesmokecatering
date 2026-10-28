@@ -262,11 +262,9 @@ export function Hero() {
             </div>
 
             {/* Main Headline */}
-            <h1 className="font-display font-bold text-3xl sm:text-5xl lg:text-5xl xl:text-6xl text-[#F4EFEA] tracking-tight leading-[1.1]">
+            <h1 className="font-display font-bold text-3xl sm:text-5xl lg:text-5xl xl:text-6xl text-white tracking-tight leading-[1.1]">
               <span className="block">Elevated BBQ &amp;</span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#FF7A00] via-[#FF9E40] to-[#E5A967]">
-                Smokehouse Catering
-              </span>
+              <span className="block">Smokehouse Catering</span>
               <span className="block">For Your Special Events</span>
             </h1>
 

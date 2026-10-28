@@ -174,10 +174,7 @@ export default function GalleryPage() {
           </div>
 
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-wide leading-tight">
-            All The Smoke{" "}
-            <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9E40] to-[#E5A967] bg-clip-text text-transparent">
-              Catering Gallery
-            </span>
+            All The Smoke Catering Gallery
           </h1>
 
           <p className="text-zinc-300 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">

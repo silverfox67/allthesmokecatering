@@ -79,10 +79,7 @@ export function TikTokReels() {
             id="gallery-heading"
             className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-wide leading-tight"
           >
-            All The Smoke{" "}
-            <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9E40] to-[#E5A967] bg-clip-text text-transparent">
-              Catering Gallery
-            </span>
+            All The Smoke Catering Gallery
           </h2>
 
           <p className="text-zinc-400 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">

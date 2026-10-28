@@ -41,10 +41,7 @@ export function AboutSection() {
                 id="about-heading"
                 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-wide leading-[1.15]"
               >
-                Real Hardwood. Low & Slow.{" "}
-                <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9E40] to-[#E5A967] bg-clip-text text-transparent">
-                  Quality Without Compromise.
-                </span>
+                Real Hardwood. Low &amp; Slow. Quality Without Compromise.
               </h2>
             </div>
 

@@ -272,3 +272,4 @@ export function HeroPlatterSlider() {
 }
 
 export default HeroPlatterSlider;
+
