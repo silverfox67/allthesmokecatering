@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/config/site-config";
+import { HeroPlatterSlider } from "./HeroPlatterSlider";
 
 export function Hero() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -15,7 +16,7 @@ export function Hero() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#0A0A0A] min-h-[700px] lg:min-h-[820px] flex flex-col justify-between">
+    <section className="relative w-full overflow-hidden bg-[#0A0A0A] min-h-[720px] lg:min-h-[850px] flex flex-col justify-between">
       
       {/* 1. FULL-WIDTH BACKGROUND CANVAS (Edge-to-Edge) */}
       <div className="absolute inset-0 z-0">
@@ -25,10 +26,13 @@ export function Hero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[center_70%] lg:object-[right_bottom]"
+          className="object-cover object-[center_70%] lg:object-[right_bottom] opacity-35"
         />
-        <div className="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-[#0A0A0A]/90 via-[#0A0A0A]/40 to-transparent pointer-events-none z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/90 to-[#0A0A0A]/75 pointer-events-none" />
+        <div className="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-[#0A0A0A]/95 via-[#0A0A0A]/50 to-transparent pointer-events-none z-[1]" />
+        <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-[#0A0A0A] to-transparent pointer-events-none z-[1]" />
       </div>
+
       {/* 2. TOP UTILITY BAR (Phone, Location, Direct Email) */}
       <aside
         aria-label="Service Alert and Dispatch Contacts"
@@ -243,44 +247,69 @@ export function Hero() {
         </div>
       )}
 
-      {/* 4. FOREGROUND CONTENT LAYER (Positioned over clean upper-left quadrant) */}
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 w-full flex-1 flex flex-col justify-center">
-        <div className="max-w-xl lg:max-w-2xl space-y-5 sm:space-y-6 pt-16 sm:pt-20 lg:pt-24 flex flex-col justify-center">
+      {/* 4. FOREGROUND CONTENT LAYER (2-Column Grid: Copy on Left / Interactive Platter Showcase on Right) */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-14 w-full flex-1 flex flex-col justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-center pt-12 sm:pt-16 lg:pt-18">
           
-          {/* Subheading Star Kicker Pill */}
-          <div>
-            <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
-              ★ CHICAGOLAND’S PREMIER LIVE-FIRE CATERING ★
-            </span>
+          {/* Left Column: Headline, Value Proposition & Actions */}
+          <div className="lg:col-span-6 xl:col-span-6 space-y-5 sm:space-y-6 flex flex-col justify-center">
+            
+            {/* Subheading Star Kicker Pill */}
+            <div>
+              <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
+                ★ CHICAGOLAND’S PREMIER LIVE-FIRE CATERING ★
+              </span>
+            </div>
+
+            {/* Main Headline */}
+            <h1 className="font-display font-bold text-3xl sm:text-5xl lg:text-5xl xl:text-6xl text-[#F4EFEA] tracking-tight leading-[1.1]">
+              <span className="block">Elevated BBQ &amp;</span>
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#FF7A00] via-[#FF9E40] to-[#E5A967]">
+                Smokehouse Catering
+              </span>
+              <span className="block">For Your Special Events</span>
+            </h1>
+
+            {/* Value Proposition Subhead */}
+            <p className="max-w-xl text-base sm:text-lg leading-relaxed text-[#D8D2C6]">
+              Bringing the rich, authentic artistry of slow-smoked brisket, ribs, and theatrical culinary 
+              experiences to your weddings, corporate gatherings, and private celebrations.
+            </p>
+
+            {/* Action CTAs */}
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+              <a
+                href="#packages"
+                className="w-full sm:w-auto inline-flex h-[48px] px-7 items-center justify-center rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-lg sm:text-xl font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-center"
+              >
+                VIEW OUR MENUS
+              </a>
+              <a
+                href="#contact"
+                className="w-full sm:w-auto inline-flex h-[48px] px-7 items-center justify-center rounded-[14px] bg-black/60 border border-[#C8A97E] backdrop-blur-md shadow-[0_0_12px_rgba(200,169,126,0.15)] font-display text-lg sm:text-xl font-bold tracking-wider text-[#C8A97E] uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.95)] transition-all hover:scale-[1.02] active:scale-[0.98] hover:border-[#FF7A00] hover:text-white hover:bg-black/80 hover:shadow-[0_0_18px_rgba(255,122,0,0.4)] cursor-pointer text-center"
+              >
+                BOOK YOUR DATE
+              </a>
+            </div>
+
+            {/* Quick Proof Highlights */}
+            <div className="pt-2 flex flex-wrap items-center gap-2.5 text-xs text-zinc-300 font-medium">
+              <span className="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10">
+                <span className="text-[#FF7A00]">🪵</span> 100% Hardwood Oak &amp; Cherry
+              </span>
+              <span className="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10">
+                <span className="text-[#FF7A00]">🚚</span> Mobile Single-Axle Rig On-Site
+              </span>
+              <span className="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10">
+                <span className="text-amber-400">★</span> 5-Star Greater Chicagoland
+              </span>
+            </div>
+
           </div>
 
-          {/* Main Headline */}
-          <h1 className="font-display font-bold text-3xl sm:text-5xl lg:text-6xl text-[#F4EFEA] tracking-tight leading-[1.1]">
-            <span className="block">Elevated BBQ &amp;</span>
-            <span className="block">Smokehouse Catering</span>
-            <span className="block">For Your Special Events</span>
-          </h1>
-
-          {/* Value Proposition Subhead */}
-          <p className="max-w-xl text-base sm:text-lg leading-relaxed text-[#D8D2C6]">
-            Bringing the rich, authentic artistry of slow-smoked brisket, ribs, and theatrical culinary 
-            experiences to your weddings, corporate gatherings, and private celebrations.
-          </p>
-
-          {/* Action CTAs */}
-          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
-            <a
-              href="#packages"
-              className="w-full sm:w-auto inline-flex h-[48px] px-7 items-center justify-center rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-lg sm:text-2xl font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-center"
-            >
-              VIEW OUR MENUS
-            </a>
-            <a
-              href="#contact"
-              className="w-full sm:w-auto inline-flex h-[48px] px-7 items-center justify-center rounded-[14px] bg-black/60 border border-[#C8A97E] backdrop-blur-md shadow-[0_0_12px_rgba(200,169,126,0.15)] font-display text-lg sm:text-2xl font-bold tracking-wider text-[#C8A97E] uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.95)] transition-all hover:scale-[1.02] active:scale-[0.98] hover:border-[#FF7A00] hover:text-white hover:bg-black/80 hover:shadow-[0_0_18px_rgba(255,122,0,0.4)] cursor-pointer text-center"
-            >
-              BOOK YOUR DATE
-            </a>
+          {/* Right Column: 3-Platter Auto-Play Slider Showcase */}
+          <div className="lg:col-span-6 xl:col-span-6 w-full flex justify-center lg:justify-end">
+            <HeroPlatterSlider />
           </div>
 
         </div>
