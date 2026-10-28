@@ -147,7 +147,7 @@ export function Hero() {
               Menus
             </a>
             <a
-              href="#reels"
+              href="/gallery"
               className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
             >
               Gallery
@@ -220,7 +220,7 @@ export function Hero() {
             Menus
           </a>
           <a
-            href="#reels"
+            href="/gallery"
             onClick={() => setMobileMenuOpen(false)}
             className="block text-[#C8A97E] hover:text-[#FF7A00]"
           >
@@ -247,12 +247,12 @@ export function Hero() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 w-full flex-1 flex flex-col justify-center">
         <div className="max-w-xl lg:max-w-2xl space-y-5 sm:space-y-6 pt-16 sm:pt-20 lg:pt-24 flex flex-col justify-center">
           
-          {/* Subheading Star Kicker */}
-          <p className="flex items-center gap-2 text-xs sm:text-sm font-bold tracking-[0.2em] text-[#C8A97E] uppercase">
-            <span>★</span>
-            <span>CHICAGOLAND’S PREMIER LIVE-FIRE CATERING</span>
-            <span>★</span>
-          </p>
+          {/* Subheading Star Kicker Pill */}
+          <div>
+            <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
+              ★ CHICAGOLAND’S PREMIER LIVE-FIRE CATERING ★
+            </span>
+          </div>
 
           {/* Main Headline */}
           <h1 className="font-display font-bold text-3xl sm:text-5xl lg:text-6xl text-[#F4EFEA] tracking-tight leading-[1.1]">

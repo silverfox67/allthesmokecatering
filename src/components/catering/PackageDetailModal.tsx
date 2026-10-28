@@ -307,7 +307,7 @@ export function PackageDetailModal({
 
               <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800 text-xs text-zinc-400 space-y-2">
                 <div className="flex items-center gap-2 text-zinc-200 font-bold">
-                  <span className="text-amber-400">🔥</span>
+                  <span className="text-[#C8A97E]">★</span>
                   <span>Turnkey Drop-Off Logistics:</span>
                 </div>
                 <p>

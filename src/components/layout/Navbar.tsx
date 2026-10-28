@@ -47,7 +47,7 @@ export function Navbar() {
             Menus
           </Link>
           <Link
-            href="#reels"
+            href="/gallery"
             className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
           >
             Gallery

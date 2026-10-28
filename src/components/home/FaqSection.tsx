@@ -91,9 +91,11 @@ export function FaqSection() {
         
         {/* Compact Section Header */}
         <div className="text-center max-w-2xl mx-auto">
-          <span className="text-[11px] font-bold uppercase tracking-widest text-[#B45309] block mb-1.5 text-center">
-            ★ FREQUENTLY ASKED QUESTIONS ★
-          </span>
+          <div className="mb-2">
+            <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
+              ★ FREQUENTLY ASKED QUESTIONS ★
+            </span>
+          </div>
           <h2
             id="faq-heading"
             className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#1C1917] text-center"

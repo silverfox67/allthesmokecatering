@@ -60,7 +60,7 @@ export const CATEGORY_INFO: Record<CategoryKey, CategoryData> = {
     tagline: "Drop-off smokehouse pans hot & ready for game days, tailgates, and office lunches.",
     description:
       "Skip the per-person head counting. Order ready-to-serve deep aluminum catering pans delivered steaming hot with serving tongs, sauces, and buns. Perfect for watch parties, fantasy drafts, and casual family cookouts.",
-    icon: "🔥",
+    icon: "★",
     trustPoints: [
       "Serves 12 to 35 Guests",
       "Delivered Steaming Hot & Ready to Serve",
@@ -433,7 +433,7 @@ export function CategoryPageView({ category }: { category: CategoryKey }) {
 
                       <div className="pt-3 border-t border-zinc-800/80 flex flex-wrap gap-1.5">
                         <span className="text-[11px] bg-zinc-900 border border-zinc-700/80 px-2.5 py-1 rounded text-zinc-200 font-semibold inline-flex items-center gap-1">
-                          <span className="text-amber-400">🔥</span> Ready Hot Pans
+                          <span className="text-[#C8A97E]">★</span> Ready Hot Pans
                         </span>
                         <span className="text-[11px] bg-zinc-900 border border-zinc-700/80 px-2.5 py-1 rounded text-zinc-200 font-semibold inline-flex items-center gap-1">
                           <span className="text-amber-400">👥</span> {bundle.serves}

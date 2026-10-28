@@ -98,9 +98,11 @@ export function DeliveryChecker() {
       <div className="max-w-7xl mx-auto space-y-12 relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#B45309] block mb-2 text-center">
-            ★ CHICAGOLAND DELIVERY RADIUS ★
-          </span>
+          <div className="mb-3">
+            <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
+              ★ CHICAGOLAND DELIVERY RADIUS ★
+            </span>
+          </div>
           <h2
             id="delivery-heading"
             className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#1C1917] text-center mb-3"

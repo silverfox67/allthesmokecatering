@@ -29,9 +29,10 @@ export function AboutSection() {
           <div className="lg:col-span-7 space-y-6 sm:space-y-8">
             
             {/* Pill Eyebrow Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-950/80 via-zinc-900 to-amber-950/40 border border-amber-500/30 text-amber-400 text-xs font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(234,88,12,0.15)]">
-              <span className="text-sm">🔥</span>
-              <span>About All The Smoke Catering</span>
+            <div>
+              <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
+                ★ ABOUT ALL THE SMOKE CATERING ★
+              </span>
             </div>
 
             {/* Main Headline */}
@@ -159,9 +160,8 @@ export function AboutSection() {
 
                   {/* Top Floating Badge */}
                   <div className="absolute top-4 left-4 z-10">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-[11px] font-extrabold uppercase tracking-widest text-[#FF9E40] shadow-md">
-                      <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                      Live Pit Craft
+                    <span className="text-[#C8A97E] text-[11px] uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3 py-1 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
+                      ★ LIVE PIT CRAFT ★
                     </span>
                   </div>
 
@@ -169,8 +169,8 @@ export function AboutSection() {
                   <div className="absolute bottom-4 inset-x-4 z-10">
                     <div className="p-4 rounded-xl bg-black/80 backdrop-blur-md border border-amber-500/30 shadow-[0_10px_25px_rgba(0,0,0,0.8)] space-y-1.5">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
-                          <span>🔥</span> Hand-Carved Signature Brisket
+                        <span className="text-xs font-bold text-[#C8A97E] uppercase tracking-wider flex items-center gap-1.5">
+                          <span>★</span> Hand-Carved Signature Brisket
                         </span>
                         <span className="text-[10px] text-zinc-400 uppercase font-semibold">
                           Low & Slow

@@ -131,9 +131,11 @@ export function ContactSection() {
       <div className="max-w-7xl mx-auto space-y-12 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#FF7A00] block mb-2 text-center">
-            ★ GET YOUR SMOKEHOUSE QUOTE ★
-          </span>
+          <div className="mb-3">
+            <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
+              ★ GET YOUR SMOKEHOUSE QUOTE ★
+            </span>
+          </div>
           <h2
             id="contact-heading"
             className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#F4EFEA] text-center mb-4"

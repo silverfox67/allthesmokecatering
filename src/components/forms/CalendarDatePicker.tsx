@@ -246,8 +246,8 @@ export function CalendarDatePicker({
         >
           {/* Calendar Header: Month, Year & Navigation */}
           <div className="flex items-center justify-between pb-3 mb-2 border-b border-stone-200 dark:border-zinc-800">
-            <h4 className="font-black text-sm tracking-wide flex items-center gap-1.5">
-              <span>🔥</span>
+            <h4 className="font-black text-sm tracking-wide flex items-center gap-1.5 text-[#C8A97E]">
+              <span>★</span>
               <span>
                 {viewDate.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
               </span>
