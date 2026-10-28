@@ -25,31 +25,25 @@ const HERO_SLIDES = [
   },
 ];
 
-const AUTOPLAY_INTERVAL = 6000;
+const AUTOPLAY_INTERVAL = 5000; // 5 seconds per slide
 
 export function Hero() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
 
-  // Auto-play timer for background platter slides
+  // Uninterrupted auto-play timer: always advances automatically
   useEffect(() => {
-    if (isPaused) return;
     const interval = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
     }, AUTOPLAY_INTERVAL);
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, []);
 
   return (
-    <section 
-      className="relative w-full overflow-hidden bg-[#0A0A0A] min-h-[720px] lg:min-h-[850px] flex flex-col justify-between"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-    >
+    <section className="relative w-full overflow-hidden bg-[#0A0A0A] min-h-[720px] lg:min-h-[850px] flex flex-col justify-between">
       
-      {/* 1. FULL-WIDTH BACKGROUND CAROUSEL CANVAS (Edge-to-Edge) */}
-      <div className="absolute inset-0 z-0">
+      {/* 1. DESKTOP FULL-WIDTH BACKGROUND CAROUSEL (Edge-to-Edge) */}
+      <div className="hidden lg:block absolute inset-0 z-0">
         {HERO_SLIDES.map((slide, idx) => (
           <div
             key={slide.id}
@@ -63,14 +57,14 @@ export function Hero() {
               fill
               priority={idx === 0}
               sizes="100vw"
-              className="object-cover object-[center_60%] lg:object-[70%_center]"
+              className="object-cover object-[70%_center]"
             />
           </div>
         ))}
 
-        {/* Directional Dark Scrim: Deep dark black on left ensures 100% white text contrast; opens up on the right for mouth-watering food presentation */}
+        {/* Directional Dark Scrim: Deep black on left for solid white text, open on right for food */}
         <div 
-          className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/90 sm:via-[#0A0A0A]/80 lg:to-black/35 to-[#0A0A0A]/70 pointer-events-none z-20" 
+          className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/90 via-45% to-black/35 pointer-events-none z-20" 
           aria-hidden="true"
         />
         {/* Top Header Transition Scrim */}
@@ -302,8 +296,8 @@ export function Hero() {
       {/* 4. FOREGROUND CONTENT LAYER */}
       <div className="relative z-20 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-20 w-full flex-1 flex flex-col justify-between">
         
-        {/* Main Content Block (Left Aligned over dark scrim) */}
-        <div className="max-w-xl lg:max-w-2xl space-y-5 sm:space-y-6 pt-10 sm:pt-14 lg:pt-16">
+        {/* Main Content Block (Left Aligned) */}
+        <div className="max-w-xl lg:max-w-2xl space-y-5 sm:space-y-6 pt-8 sm:pt-12 lg:pt-16">
           
           {/* Subheading Star Kicker Pill */}
           <div>
@@ -324,6 +318,52 @@ export function Hero() {
             Bringing the rich, authentic artistry of slow-smoked brisket, ribs, and theatrical culinary 
             experiences to your weddings, corporate gatherings, and private celebrations.
           </p>
+
+          {/* ======================================================== */}
+          {/* MOBILE-ONLY SHRUNK-DOWN PLATTER SHOWCASE                 */}
+          {/* Shrunk to fit 16:10 so the full platter is clear        */}
+          {/* ======================================================== */}
+          <div className="lg:hidden w-full pt-1 pb-2">
+            <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden border border-amber-500/30 shadow-2xl bg-zinc-950">
+              {HERO_SLIDES.map((slide, idx) => (
+                <div
+                  key={slide.id}
+                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                    idx === activeSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+                  }`}
+                >
+                  <Image
+                    src={slide.src}
+                    alt={slide.alt}
+                    fill
+                    priority={idx === 0}
+                    sizes="(max-width: 1024px) 100vw, 500px"
+                    className="object-cover object-center"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Mobile 3 Indicator Dashes directly beneath image */}
+            <div className="flex items-center justify-center gap-2 pt-3">
+              {HERO_SLIDES.map((slide, idx) => {
+                const isActive = idx === activeSlide;
+                return (
+                  <button
+                    key={slide.id}
+                    type="button"
+                    onClick={() => setActiveSlide(idx)}
+                    aria-label={`View ${slide.label}`}
+                    className={`h-1.5 rounded-full transition-all duration-500 ${
+                      isActive
+                        ? "w-10 bg-gradient-to-r from-[#FF7A00] to-[#E5A967] shadow-[0_0_8px_rgba(255,122,0,0.6)]"
+                        : "w-4 bg-white/25 hover:bg-white/50"
+                    }`}
+                  />
+                );
+              })}
+            </div>
+          </div>
 
           {/* Primary Action CTAs */}
           <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
@@ -354,18 +394,8 @@ export function Hero() {
             </span>
           </div>
 
-        </div>
-
-        {/* Bottom Interactive Platter Tabs (Clean, minimal, non-busy) */}
-        <div className="pt-8 sm:pt-10 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 mt-8">
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] uppercase font-bold tracking-wider text-[#C8A97E]">
-              Featured Smokehouse Platters:
-            </span>
-          </div>
-
-          {/* 3 Clickable Tabs */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* DESKTOP 3 INDICATOR DASHES (No words, pure sleek dashes) */}
+          <div className="hidden lg:flex items-center gap-2.5 pt-6 border-t border-white/10 mt-6">
             {HERO_SLIDES.map((slide, idx) => {
               const isActive = idx === activeSlide;
               return (
@@ -373,22 +403,17 @@ export function Hero() {
                   key={slide.id}
                   type="button"
                   onClick={() => setActiveSlide(idx)}
-                  className={`group relative flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full transition-all text-xs font-semibold backdrop-blur-md border ${
+                  aria-label={`View slide ${idx + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
                     isActive
-                      ? "bg-black/85 border-[#FF7A00] text-white shadow-[0_0_15px_rgba(255,122,0,0.35)]"
-                      : "bg-black/50 border-white/15 text-zinc-400 hover:text-white hover:border-white/30"
+                      ? "w-14 bg-gradient-to-r from-[#FF7A00] to-[#E5A967] shadow-[0_0_10px_rgba(255,122,0,0.6)]"
+                      : "w-5 bg-white/25 hover:bg-white/50"
                   }`}
-                >
-                  <span
-                    className={`w-2 h-2 rounded-full transition-colors ${
-                      isActive ? "bg-[#FF7A00] animate-pulse" : "bg-zinc-600 group-hover:bg-zinc-400"
-                    }`}
-                  />
-                  <span>{slide.label}</span>
-                </button>
+                />
               );
             })}
           </div>
+
         </div>
 
       </div>
