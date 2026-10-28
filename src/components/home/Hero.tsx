@@ -1,42 +1,94 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/config/site-config";
-import { HeroPlatterSlider } from "./HeroPlatterSlider";
+
+const HERO_SLIDES = [
+  {
+    id: "brisket",
+    src: "/images/hero/hero-platter-brisket-feast.jpg",
+    alt: "Hand-carved Texas prime smoked brisket catering platter with house rubs and sausages",
+    label: "Prime Brisket Feast",
+  },
+  {
+    id: "ribs",
+    src: "/images/hero/hero-platter-ribs-wings.jpg",
+    alt: "St. Louis cut glazed spare ribs and hardwood smoked wings catering spread",
+    label: "Glazed Ribs & Wings",
+  },
+  {
+    id: "banquet",
+    src: "/images/hero/hero-platter-banquet-spread.jpg",
+    alt: "Full smokehouse banquet catering spread with smoked chickens, salmon, and southern sides",
+    label: "Banquet Feast",
+  },
+];
+
+const AUTOPLAY_INTERVAL = 6000;
 
 export function Hero() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
-  const handleOpenQuoteModal = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("open-quote-modal"));
-    }
-  };
+  // Auto-play timer for background platter slides
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, AUTOPLAY_INTERVAL);
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#0A0A0A] min-h-[720px] lg:min-h-[850px] flex flex-col justify-between">
+    <section 
+      className="relative w-full overflow-hidden bg-[#0A0A0A] min-h-[720px] lg:min-h-[850px] flex flex-col justify-between"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       
-      {/* 1. FULL-WIDTH BACKGROUND CANVAS (Edge-to-Edge) */}
+      {/* 1. FULL-WIDTH BACKGROUND CAROUSEL CANVAS (Edge-to-Edge) */}
       <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/hero-brisket-carve.jpg"
-          alt="Pitmaster Marion Bolden carving slow-smoked Texas brisket with deep mahogany bark"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[center_70%] lg:object-[right_bottom] opacity-35"
+        {HERO_SLIDES.map((slide, idx) => (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              idx === activeSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+            }`}
+          >
+            <Image
+              src={slide.src}
+              alt={slide.alt}
+              fill
+              priority={idx === 0}
+              sizes="100vw"
+              className="object-cover object-[center_60%] lg:object-[70%_center]"
+            />
+          </div>
+        ))}
+
+        {/* Directional Dark Scrim: Deep dark black on left ensures 100% white text contrast; opens up on the right for mouth-watering food presentation */}
+        <div 
+          className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/90 sm:via-[#0A0A0A]/80 lg:to-black/35 to-[#0A0A0A]/70 pointer-events-none z-20" 
+          aria-hidden="true"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/90 to-[#0A0A0A]/75 pointer-events-none" />
-        <div className="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-[#0A0A0A]/95 via-[#0A0A0A]/50 to-transparent pointer-events-none z-[1]" />
-        <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-[#0A0A0A] to-transparent pointer-events-none z-[1]" />
+        {/* Top Header Transition Scrim */}
+        <div 
+          className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-[#0A0A0A]/95 via-[#0A0A0A]/60 to-transparent pointer-events-none z-20" 
+          aria-hidden="true"
+        />
+        {/* Bottom Trust Bar Transition Scrim */}
+        <div 
+          className="absolute bottom-0 inset-x-0 h-36 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/80 to-transparent pointer-events-none z-20" 
+          aria-hidden="true"
+        />
       </div>
 
       {/* 2. TOP UTILITY BAR (Phone, Location, Direct Email) */}
       <aside
         aria-label="Service Alert and Dispatch Contacts"
-        className="relative z-20 bg-black/60 border-b border-white/10 backdrop-blur-sm text-xs py-2 px-4 sm:px-8"
+        className="relative z-30 bg-black/60 border-b border-white/10 backdrop-blur-sm text-xs py-2 px-4 sm:px-8"
       >
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between sm:justify-center gap-y-2 gap-x-6 sm:gap-x-8 text-[#C8A97E]">
           {/* Phone */}
@@ -109,7 +161,7 @@ export function Hero() {
       </aside>
 
       {/* 3. MAIN HEADER / NAVIGATION (Full-Width Frosted Backdrop) */}
-      <div className="relative z-20 w-full bg-[#0A0A0A]/75 backdrop-blur-md border-b border-zinc-800/50 overflow-visible">
+      <div className="relative z-30 w-full bg-[#0A0A0A]/75 backdrop-blur-md border-b border-zinc-800/50 overflow-visible">
         <header className="px-4 sm:px-8 py-3.5 max-w-7xl mx-auto w-full flex items-center justify-between relative overflow-visible">
           {/* Official Master Crest Alone Breakout */}
           <div className="absolute top-1 sm:top-2 left-3 sm:left-8 z-50">
@@ -247,74 +299,102 @@ export function Hero() {
         </div>
       )}
 
-      {/* 4. FOREGROUND CONTENT LAYER (2-Column Grid: Copy on Left / Interactive Platter Showcase on Right) */}
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-14 w-full flex-1 flex flex-col justify-center">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-center pt-12 sm:pt-16 lg:pt-18">
+      {/* 4. FOREGROUND CONTENT LAYER */}
+      <div className="relative z-20 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-20 w-full flex-1 flex flex-col justify-between">
+        
+        {/* Main Content Block (Left Aligned over dark scrim) */}
+        <div className="max-w-xl lg:max-w-2xl space-y-5 sm:space-y-6 pt-10 sm:pt-14 lg:pt-16">
           
-          {/* Left Column: Headline, Value Proposition & Actions */}
-          <div className="lg:col-span-6 xl:col-span-6 space-y-5 sm:space-y-6 flex flex-col justify-center">
-            
-            {/* Subheading Star Kicker Pill */}
-            <div>
-              <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
-                ★ CHICAGOLAND’S PREMIER LIVE-FIRE CATERING ★
-              </span>
-            </div>
-
-            {/* Main Headline */}
-            <h1 className="font-display font-bold text-3xl sm:text-5xl lg:text-5xl xl:text-6xl text-white tracking-tight leading-[1.1]">
-              <span className="block">Elevated BBQ &amp;</span>
-              <span className="block">Smokehouse Catering</span>
-              <span className="block">For Your Special Events</span>
-            </h1>
-
-            {/* Value Proposition Subhead */}
-            <p className="max-w-xl text-base sm:text-lg leading-relaxed text-[#D8D2C6]">
-              Bringing the rich, authentic artistry of slow-smoked brisket, ribs, and theatrical culinary 
-              experiences to your weddings, corporate gatherings, and private celebrations.
-            </p>
-
-            {/* Action CTAs */}
-            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
-              <a
-                href="#packages"
-                className="w-full sm:w-auto inline-flex h-[48px] px-7 items-center justify-center rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-lg sm:text-xl font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-center"
-              >
-                VIEW OUR MENUS
-              </a>
-              <a
-                href="#contact"
-                className="w-full sm:w-auto inline-flex h-[48px] px-7 items-center justify-center rounded-[14px] bg-black/60 border border-[#C8A97E] backdrop-blur-md shadow-[0_0_12px_rgba(200,169,126,0.15)] font-display text-lg sm:text-xl font-bold tracking-wider text-[#C8A97E] uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.95)] transition-all hover:scale-[1.02] active:scale-[0.98] hover:border-[#FF7A00] hover:text-white hover:bg-black/80 hover:shadow-[0_0_18px_rgba(255,122,0,0.4)] cursor-pointer text-center"
-              >
-                BOOK YOUR DATE
-              </a>
-            </div>
-
-            {/* Quick Proof Highlights */}
-            <div className="pt-2 flex flex-wrap items-center gap-2.5 text-xs text-zinc-300 font-medium">
-              <span className="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10">
-                <span className="text-[#FF7A00]">🪵</span> 100% Hardwood Oak &amp; Cherry
-              </span>
-              <span className="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10">
-                <span className="text-[#FF7A00]">🚚</span> Mobile Single-Axle Rig On-Site
-              </span>
-              <span className="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10">
-                <span className="text-amber-400">★</span> 5-Star Greater Chicagoland
-              </span>
-            </div>
-
+          {/* Subheading Star Kicker Pill */}
+          <div>
+            <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
+              ★ CHICAGOLAND’S PREMIER LIVE-FIRE CATERING ★
+            </span>
           </div>
 
-          {/* Right Column: 3-Platter Auto-Play Slider Showcase */}
-          <div className="lg:col-span-6 xl:col-span-6 w-full flex justify-center lg:justify-end">
-            <HeroPlatterSlider />
+          {/* Main Headline (Clean solid white text) */}
+          <h1 className="font-display font-bold text-3xl sm:text-5xl lg:text-5xl xl:text-6xl text-white tracking-tight leading-[1.1] drop-shadow-md">
+            <span className="block">Elevated BBQ &amp;</span>
+            <span className="block">Smokehouse Catering</span>
+            <span className="block">For Your Special Events</span>
+          </h1>
+
+          {/* Value Proposition Subhead */}
+          <p className="max-w-xl text-base sm:text-lg leading-relaxed text-[#D8D2C6] drop-shadow-sm">
+            Bringing the rich, authentic artistry of slow-smoked brisket, ribs, and theatrical culinary 
+            experiences to your weddings, corporate gatherings, and private celebrations.
+          </p>
+
+          {/* Primary Action CTAs */}
+          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+            <a
+              href="#packages"
+              className="w-full sm:w-auto inline-flex h-[48px] px-7 items-center justify-center rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-lg sm:text-xl font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-center"
+            >
+              VIEW OUR MENUS
+            </a>
+            <a
+              href="#contact"
+              className="w-full sm:w-auto inline-flex h-[48px] px-7 items-center justify-center rounded-[14px] bg-black/60 border border-[#C8A97E] backdrop-blur-md shadow-[0_0_12px_rgba(200,169,126,0.15)] font-display text-lg sm:text-xl font-bold tracking-wider text-[#C8A97E] uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.95)] transition-all hover:scale-[1.02] active:scale-[0.98] hover:border-[#FF7A00] hover:text-white hover:bg-black/80 hover:shadow-[0_0_18px_rgba(255,122,0,0.4)] cursor-pointer text-center"
+            >
+              BOOK YOUR DATE
+            </a>
+          </div>
+
+          {/* Quick Proof Highlights */}
+          <div className="pt-2 flex flex-wrap items-center gap-2.5 text-xs text-zinc-300 font-medium">
+            <span className="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10">
+              <span className="text-[#FF7A00]">🪵</span> 100% Hardwood Oak &amp; Cherry
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10">
+              <span className="text-[#FF7A00]">🚚</span> Mobile Single-Axle Rig On-Site
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10">
+              <span className="text-amber-400">★</span> 5-Star Greater Chicagoland
+            </span>
           </div>
 
         </div>
+
+        {/* Bottom Interactive Platter Tabs (Clean, minimal, non-busy) */}
+        <div className="pt-8 sm:pt-10 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 mt-8">
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] uppercase font-bold tracking-wider text-[#C8A97E]">
+              Featured Smokehouse Platters:
+            </span>
+          </div>
+
+          {/* 3 Clickable Tabs */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {HERO_SLIDES.map((slide, idx) => {
+              const isActive = idx === activeSlide;
+              return (
+                <button
+                  key={slide.id}
+                  type="button"
+                  onClick={() => setActiveSlide(idx)}
+                  className={`group relative flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full transition-all text-xs font-semibold backdrop-blur-md border ${
+                    isActive
+                      ? "bg-black/85 border-[#FF7A00] text-white shadow-[0_0_15px_rgba(255,122,0,0.35)]"
+                      : "bg-black/50 border-white/15 text-zinc-400 hover:text-white hover:border-white/30"
+                  }`}
+                >
+                  <span
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      isActive ? "bg-[#FF7A00] animate-pulse" : "bg-zinc-600 group-hover:bg-zinc-400"
+                    }`}
+                  />
+                  <span>{slide.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
       </div>
 
       {/* 5. UNIFIED TRUST BAR (Single Tier React Component) */}
-      <div className="relative z-20 border-t border-zinc-800/80 bg-black/80 backdrop-blur-md">
+      <div className="relative z-30 border-t border-zinc-800/80 bg-black/80 backdrop-blur-md">
         <div className="w-full max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-6">
           
           {/* Feature 1: On-Site Pitmasters */}
