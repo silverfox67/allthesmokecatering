@@ -205,16 +205,16 @@ export default function GalleryPage() {
       <section id="videos" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-b border-amber-950/30 bg-[#0E0D0C] scroll-mt-24">
         <div className="max-w-7xl mx-auto space-y-10">
           
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div className="max-w-2xl space-y-2">
             <div>
-              <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm mb-2">
+              <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
                 ★ LIVE-FIRE CAPTURES ★
               </span>
-              <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-wide">
-                Live From the Pit
-              </h2>
             </div>
-            <p className="text-xs sm:text-sm text-zinc-400 max-w-md">
+            <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-wide">
+              Live From the Pit
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
               Authentic pit captures of prime brisket hand-slicing, slow-rendered au jus resting, and live smoker chamber racks.
             </p>
           </div>
@@ -267,16 +267,16 @@ export default function GalleryPage() {
       <section id="photos" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-[#0A0A0A] scroll-mt-24">
         <div className="max-w-7xl mx-auto space-y-10">
           
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div className="max-w-2xl space-y-2">
             <div>
-              <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm mb-2">
+              <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
                 ★ HIGH-RESOLUTION CRAFT ★
               </span>
-              <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-wide">
-                The Smokehouse Photo Archive
-              </h2>
             </div>
-            <p className="text-xs sm:text-sm text-zinc-400 max-w-md">
+            <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-wide">
+              The Smokehouse Photo Archive
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
               Every cut is hand-seasoned with custom rubs and cooked low-and-slow over split logs.
             </p>
           </div>
