@@ -51,10 +51,10 @@ const GALLERY_PHOTOS: GalleryPhoto[] = [
     id: "mobile-trailer-rig",
     category: "rig",
     categoryLabel: "Mobile Trailer Rig",
-    title: "Custom Dual-Axle Smoker Rig",
-    description: "Heavy-gauge offset trailer smoker rolling live smoke on-site at your venue.",
+    title: "Custom Single-Axle Smoker Rig",
+    description: "Heavy-gauge single-axle offset trailer smoker rolling live oak and hickory smoke on-site at your venue.",
     src: "/reels/reel-mobile-trailer.webp",
-    alt: "Marion's custom black dual-axle trailer smoker rolling smoke outside at night",
+    alt: "Marion's custom black single-axle trailer smoker rolling smoke outside at night",
   },
   {
     id: "pit-wings-links",
@@ -97,20 +97,23 @@ const GALLERY_PHOTOS: GalleryPhoto[] = [
 const LIVE_VIDEOS = [
   {
     id: "vid-1",
-    title: "Trailer Smoker Rolling Hardwood Smoke",
-    tagline: "Live-fire oak and hickory smoke rolling from the custom trailer chimney.",
+    badge: "Pitmaster Carve",
+    title: "Hand-Carved Texas Prime Brisket",
+    tagline: "Slicing tender, juicy brisket hot off the pit with deep mahogany bark and pink smoke ring.",
     src: "/videos/smoker-rolling-smoke.mp4",
   },
   {
     id: "vid-2",
-    title: "Smoking Chamber: Chicken & Rib Slabs",
-    tagline: "Inside look at seasoned meats rendering slowly over live pit coals.",
+    badge: "Natural Au Jus",
+    title: "Smoked Brisket Resting in Pit Jus",
+    tagline: "Whole brisket slow-rendered in natural smoked tallow and pan juices for peak tenderness.",
     src: "/videos/pit-meats-sizzle.mp4",
   },
   {
     id: "vid-3",
-    title: "Live Mobile Rig On-Site Dispatch",
-    tagline: "The mobile pit trailer ready to roll directly to Chicagoland venues.",
+    badge: "Smoker Racks",
+    title: "Pit Chickens & Cedar Plank Salmon",
+    tagline: "Live chamber racks loaded with golden hardwood chickens and cedar-plank wild salmon over oak coals.",
     src: "/videos/trailer-rig-setup.mp4",
   },
 ];
@@ -199,7 +202,7 @@ export default function GalleryPage() {
       </section>
 
       {/* SECTION 1: Real Live Pit Videos */}
-      <section id="videos" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-b border-amber-950/30 bg-[#0E0D0C]">
+      <section id="videos" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-b border-amber-950/30 bg-[#0E0D0C] scroll-mt-24">
         <div className="max-w-7xl mx-auto space-y-10">
           
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -212,7 +215,7 @@ export default function GalleryPage() {
               </h2>
             </div>
             <p className="text-xs sm:text-sm text-zinc-400 max-w-md">
-              Real clips of our mobile rig rolling hardwood smoke and pit racks loaded with meats.
+              Authentic pit captures of prime brisket hand-slicing, slow-rendered au jus resting, and live smoker chamber racks.
             </p>
           </div>
 
@@ -220,10 +223,21 @@ export default function GalleryPage() {
             {LIVE_VIDEOS.map((vid) => (
               <div
                 key={vid.id}
-                className="rounded-2xl overflow-hidden bg-zinc-950 border border-amber-500/20 shadow-xl space-y-3 p-4 flex flex-col justify-between"
+                className="rounded-2xl overflow-hidden bg-[#141210] border border-amber-500/25 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.85)] hover:border-amber-500/50 transition-all p-4 sm:p-5 flex flex-col justify-between"
               >
+                {/* Top Card Badge Header */}
+                <div className="flex items-center justify-between gap-2 pb-3 border-b border-zinc-800/80 mb-3">
+                  <span className="text-[#C8A97E] text-[11px] uppercase font-extrabold tracking-widest bg-zinc-950 px-2.5 py-1 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1 shadow-sm">
+                    ★ {vid.badge.toUpperCase()} ★
+                  </span>
+                  <span className="text-[11px] font-semibold text-zinc-400 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    Pit Video
+                  </span>
+                </div>
+
                 {/* 9:16 Video Container */}
-                <div className="relative aspect-[9/16] w-full rounded-xl overflow-hidden bg-black border border-zinc-800/80">
+                <div className="relative aspect-[9/16] w-full rounded-xl overflow-hidden bg-black border border-zinc-800/80 shadow-inner">
                   <video
                     src={vid.src}
                     controls
@@ -233,11 +247,12 @@ export default function GalleryPage() {
                   />
                 </div>
 
-                <div className="pt-1 space-y-1">
-                  <h3 className="font-display text-base font-bold text-white tracking-wide">
+                {/* Card Bottom Body */}
+                <div className="pt-3.5 space-y-1">
+                  <h3 className="font-display text-base sm:text-lg font-bold text-white tracking-wide">
                     {vid.title}
                   </h3>
-                  <p className="text-xs text-zinc-400 leading-snug">
+                  <p className="text-xs text-zinc-300 leading-snug">
                     {vid.tagline}
                   </p>
                 </div>
@@ -249,7 +264,7 @@ export default function GalleryPage() {
       </section>
 
       {/* SECTION 2: Authentic Photo Archive */}
-      <section id="photos" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-[#0A0A0A]">
+      <section id="photos" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-[#0A0A0A] scroll-mt-24">
         <div className="max-w-7xl mx-auto space-y-10">
           
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">

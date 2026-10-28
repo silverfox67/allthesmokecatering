@@ -30,9 +30,9 @@ const SPOTLIGHT_ITEMS: GallerySpotlightItem[] = [
     tag: "On-Site Live Fire",
     tagIcon: "🚚",
     title: "Custom Mobile Trailer Smoker",
-    subtitle: "Our heavy-gauge dual-axle offset rig rolling hardwood smoke live at private estates, weddings, and corporate lots.",
+    subtitle: "Our heavy-gauge single-axle offset rig rolling hardwood smoke live at private estates, weddings, and corporate lots.",
     image: "/reels/reel-mobile-trailer.webp",
-    alt: "Custom black mobile trailer smoker rolling smoke outside at night at an event",
+    alt: "Custom black single-axle mobile trailer smoker rolling smoke outside at night at an event",
   },
   {
     id: "pit-wings-links",
