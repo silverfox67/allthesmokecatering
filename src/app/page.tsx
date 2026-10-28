@@ -9,6 +9,7 @@ import { TikTokReels } from "@/components/social/TikTokReels";
 import { Footer } from "@/components/layout/Footer";
 import { QuoteModal } from "@/components/forms/QuoteModal";
 import { ContactSection } from "@/components/home/ContactSection";
+import { FaqSection } from "@/components/home/FaqSection";
 
 export default function HomePage() {
   return (
@@ -22,14 +23,17 @@ export default function HomePage() {
       {/* 3. Spotlight Packages: Rich Charcoal (#121214) with Top/Bottom Borders & Ambient Ember Glow */}
       <PackageGrid />
 
-      {/* 3. Delivery Calculator: Deep Obsidian (#0A0A0A) with Centered Radial Glow */}
+      {/* 4. Delivery Calculator: Warm Butcher Paper & Stone Linen (#F5F0EB) */}
       <DeliveryChecker />
 
-      {/* 4. TikTok Pitmaster Reels: Warm Hickory Smoke Tint (#161311) */}
+      {/* 5. TikTok Pitmaster Reels: Warm Hickory Smoke Tint (#161311) */}
       <TikTokReels />
 
-      {/* 5. Contact & Smokehouse Quote Intake: 2-Column Blind Cook Layout & Live-Fire Styling */}
+      {/* 6. Contact & Smokehouse Quote Intake: 2-Column Blind Cook Layout & Live-Fire Styling */}
       <ContactSection />
+
+      {/* 7. Smokehouse FAQ: Warm Butcher Paper & Stone Linen (#F5F0EB) + Google Schema */}
+      <FaqSection />
 
       {/* Footer with statutory notices, hub details, and official master circular crest */}
       <Footer />
