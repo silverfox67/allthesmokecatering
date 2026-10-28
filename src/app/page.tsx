@@ -17,7 +17,7 @@ export default function HomePage() {
       {/* 1. Hero: Deep Obsidian (#0A0A0A) + Amber Ember Radial Glow + Borderless Brisket */}
       <Hero />
 
-      {/* 2. About All The Smoke Catering: The Pitmaster's Craft & Philosophy */}
+      {/* 2. About All The Smoke Catering: Warm Butcher Paper & Stone Linen (#F5F0EB) */}
       <AboutSection />
 
       {/* 3. Spotlight Packages: Rich Charcoal (#121214) with Top/Bottom Borders & Ambient Ember Glow */}
