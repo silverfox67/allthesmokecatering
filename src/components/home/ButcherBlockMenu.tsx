@@ -122,14 +122,8 @@ export function ButcherBlockMenu() {
         </div>
 
         {/* 1. AUTHENTIC WEATHERED BARNWOOD CHALKBOARD (Pure Chalk Text - No Photos) */}
-        <div className="mb-16 weathered-barnwood-frame p-4 sm:p-7 md:p-9 rounded-3xl relative">
+        <div className="mb-16 weathered-barnwood-frame p-4 sm:p-6 md:p-8 rounded-2xl relative shadow-2xl">
           
-          {/* Mitered Timber Joinery Accents (Four Corner Iron Brackets) */}
-          <div className="absolute top-3 left-3 w-5 h-5 border-t-2 border-l-2 border-black/60 shadow-sm pointer-events-none" />
-          <div className="absolute top-3 right-3 w-5 h-5 border-t-2 border-r-2 border-black/60 shadow-sm pointer-events-none" />
-          <div className="absolute bottom-9 left-3 w-5 h-5 border-b-2 border-l-2 border-black/60 shadow-sm pointer-events-none" />
-          <div className="absolute bottom-9 right-3 w-5 h-5 border-b-2 border-r-2 border-black/60 shadow-sm pointer-events-none" />
-
           {/* Deep Slate Chalkboard Surface */}
           <div className="chalkboard-slate rounded-2xl p-5 sm:p-7 md:p-9 relative overflow-hidden">
             
@@ -217,20 +211,6 @@ export function ButcherBlockMenu() {
                 ))}
               </div>
 
-            </div>
-          </div>
-
-          {/* Bottom Wood Chalk-Tray Lip (Where chalk & eraser sit) */}
-          <div className="mt-2 h-6 weathered-chalk-tray rounded-b-2xl border-t border-black/60 shadow-lg flex items-center justify-end px-6 gap-3">
-            {/* White chalk stick */}
-            <div className="w-6 h-2 bg-[#F5F5F0] rounded-sm shadow-sm rotate-[-2deg]" title="White Chalk" />
-            {/* Yellow chalk stick */}
-            <div className="w-5 h-2 bg-[#FCD34D] rounded-sm shadow-sm rotate-[1deg]" title="Yellow Chalk" />
-            {/* Orange chalk stick */}
-            <div className="w-5 h-2 bg-[#FB923C] rounded-sm shadow-sm" title="Orange Chalk" />
-            {/* Felt Eraser with wood backing */}
-            <div className="w-9 h-3 bg-[#3A332C] rounded-xs border border-black/50 shadow-sm flex flex-col justify-end overflow-hidden" title="Felt Eraser">
-              <div className="w-full h-1.5 bg-[#1F1D1A]" />
             </div>
           </div>
 
