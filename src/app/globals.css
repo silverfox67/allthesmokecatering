@@ -182,7 +182,7 @@ h1, h2, h3, h4, .font-display {
   left: 0;
   width: var(--wood-frame-thickness);
   height: var(--wood-frame-thickness);
-  pointer-events-none;
+  pointer-events: none;
   z-index: 3;
   background: linear-gradient(135deg, transparent calc(50% - 0.75px), rgba(0, 0, 0, 0.7) calc(50% - 0.5px), rgba(255, 255, 255, 0.25) 50%, transparent calc(50% + 0.75px));
 }
@@ -193,7 +193,7 @@ h1, h2, h3, h4, .font-display {
   right: 0;
   width: var(--wood-frame-thickness);
   height: var(--wood-frame-thickness);
-  pointer-events-none;
+  pointer-events: none;
   z-index: 3;
   background: linear-gradient(225deg, transparent calc(50% - 0.75px), rgba(0, 0, 0, 0.7) calc(50% - 0.5px), rgba(255, 255, 255, 0.25) 50%, transparent calc(50% + 0.75px));
 }
@@ -204,7 +204,7 @@ h1, h2, h3, h4, .font-display {
   left: 0;
   width: var(--wood-frame-thickness);
   height: var(--wood-frame-thickness);
-  pointer-events-none;
+  pointer-events: none;
   z-index: 3;
   background: linear-gradient(45deg, transparent calc(50% - 0.75px), rgba(0, 0, 0, 0.7) calc(50% - 0.5px), rgba(255, 255, 255, 0.25) 50%, transparent calc(50% + 0.75px));
 }
@@ -215,7 +215,7 @@ h1, h2, h3, h4, .font-display {
   right: 0;
   width: var(--wood-frame-thickness);
   height: var(--wood-frame-thickness);
-  pointer-events-none;
+  pointer-events: none;
   z-index: 3;
   background: linear-gradient(315deg, transparent calc(50% - 0.75px), rgba(0, 0, 0, 0.7) calc(50% - 0.5px), rgba(255, 255, 255, 0.25) 50%, transparent calc(50% + 0.75px));
 }
@@ -230,7 +230,7 @@ h1, h2, h3, h4, .font-display {
     inset -6px 0 12px rgba(0, 0, 0, 0.8),
     inset 0 -5px 10px rgba(0, 0, 0, 0.8),
     0 0 0 1px rgba(0, 0, 0, 0.85);
-  pointer-events-none;
+  pointer-events: none;
   z-index: 4;
 }
 
