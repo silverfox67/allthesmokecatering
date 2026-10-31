@@ -58,6 +58,7 @@ export const WEEKLY_CHALKBOARD: WeeklyChalkboard = {
       tagline: "14-hour smoked brisket burnt ends simmered with dark stout, beans & peppers",
       price: "Half Pan $65 • Full Pan $120",
       badge: "Game Day Hit",
+      image: "/images/menu/smoked-brisket-chili.jpg",
     },
     {
       name: "Habanero Cheddar Skillet Cornbread",
@@ -336,6 +337,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     price: 'Half $65 • Full $120',
     portion: 'Half Pan (12–15) • Full Pan (25–30)',
     description: 'Thick, rich smokehouse chili loaded with 14-hour smoked brisket burnt ends, dark stout, roasted chiles, and kidney beans.',
+    image: '/images/menu/smoked-brisket-chili.jpg',
     category: 'specialties',
     popular: true,
   },

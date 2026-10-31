@@ -25,9 +25,12 @@ export function ButcherBlockMenu() {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EA580C]/10 border border-[#EA580C]/20 text-[#EA580C] text-xs font-bold uppercase tracking-widest mb-3">
-            <span>🔥</span>
-            <span>By The Pound • Party Pans • Whole Birds</span>
+          <div className="mb-3">
+            <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-950 px-4 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-2 shadow-sm">
+              <span>★</span>
+              <span>BY THE POUND • PARTY PANS • WHOLE BIRDS</span>
+              <span>★</span>
+            </span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0F172A] tracking-tight">
             Pitmaster Catering Menu
@@ -114,9 +117,9 @@ export function ButcherBlockMenu() {
                     </span>
                     <a
                       href={`#contact?item=${encodeURIComponent(special.name)}`}
-                      className="text-[11px] font-bold text-white hover:text-[#F59E0B] transition flex items-center gap-1"
+                      className="text-[11px] font-bold text-white hover:text-[#F59E0B] transition flex items-center gap-1 bg-white/10 hover:bg-[#F59E0B]/20 px-2.5 py-1 rounded-md border border-white/10"
                     >
-                      <span>Reserve</span>
+                      <span>Order Special</span>
                       <span>&rarr;</span>
                     </a>
                   </div>
@@ -248,7 +251,7 @@ export function ButcherBlockMenu() {
                     href={`#contact?menuItem=${encodeURIComponent(item.name)}&cat=${item.category}`}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0F172A] hover:bg-[#EA580C] text-white text-xs font-bold transition shadow-sm"
                   >
-                    <span>Add to Quote</span>
+                    <span>Order / Add to Tray</span>
                     <span>&rarr;</span>
                   </a>
                 </div>
