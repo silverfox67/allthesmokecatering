@@ -6,6 +6,7 @@ import {
   PITMASTER_MENU_ITEMS,
   MENU_CATEGORIES,
   WEEKLY_CHALKBOARD,
+  WeeklyChalkboardItem,
   MenuItem,
   MenuCategory,
 } from "@/data/pitmaster-menu";
@@ -32,24 +33,38 @@ function parsePrices(priceStr: string): { single?: number; half?: number; full?:
 
 export function ButcherBlockMenu() {
   const [activeTab, setActiveTab] = useState<MenuCategory["id"]>("smoked-meats");
+  const [highlightedId, setHighlightedId] = useState<string | null>(null);
   const { addItem } = useOrderTray();
 
   const currentCategory =
     MENU_CATEGORIES.find((cat) => cat.id === activeTab) || MENU_CATEGORIES[0];
   const items = PITMASTER_MENU_ITEMS.filter((item) => item.category === activeTab);
 
-  const handleAddChalkboardSpecial = (special: typeof WEEKLY_CHALKBOARD.items[0], idx: number) => {
-    const prices = parsePrices(special.price);
-    const priceVal = prices.half || prices.single || 45;
-    const optionLabel = prices.half ? "Half Pan / Portion" : "Standard Portion";
+  // Jump from chalkboard item directly to the item card in the menu below
+  const handleJumpToMenuItem = (special: WeeklyChalkboardItem) => {
+    setActiveTab(special.categoryTab);
+    setHighlightedId(special.menuTargetId);
 
+    setTimeout(() => {
+      const el = document.getElementById(special.menuTargetId);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }, 150);
+
+    // Clear highlight after 3 seconds
+    setTimeout(() => {
+      setHighlightedId(null);
+    }, 3500);
+  };
+
+  const handleAddChalkboardSpecial = (special: WeeklyChalkboardItem) => {
     addItem({
-      id: `special-${idx}-${special.name.toLowerCase().replace(/\s+/g, "-")}`,
-      baseId: `special-${idx}`,
+      id: special.id,
+      baseId: special.menuTargetId,
       name: special.name,
-      selectedOption: optionLabel,
-      price: priceVal,
-      image: special.image,
+      selectedOption: special.price,
+      price: special.parsedPrice,
       category: "Weekly Chalkboard Special",
     });
   };
@@ -106,92 +121,122 @@ export function ButcherBlockMenu() {
           </p>
         </div>
 
-        {/* 1. WEEKLY CHALKBOARD DISPLAY (Marion's Seasonal Specials) */}
-        <div className="mb-14 rounded-2xl bg-[#14161A] border-4 border-[#3A2E26] shadow-2xl p-6 sm:p-8 text-neutral-100 relative overflow-hidden">
-          <div className="absolute inset-0 border border-white/10 rounded-xl pointer-events-none" />
+        {/* 1. AUTHENTIC WEATHERED BARNWOOD CHALKBOARD (Pure Chalk Text - No Photos) */}
+        <div className="mb-16 weathered-barnwood-frame p-3.5 sm:p-5 rounded-3xl relative">
+          
+          {/* Mitered Timber Joinery Accents (Four Corner Iron Brackets) */}
+          <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-white/40 pointer-events-none" />
+          <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-white/40 pointer-events-none" />
+          <div className="absolute bottom-6 left-2 w-4 h-4 border-b-2 border-l-2 border-white/40 pointer-events-none" />
+          <div className="absolute bottom-6 right-2 w-4 h-4 border-b-2 border-r-2 border-white/40 pointer-events-none" />
 
-          {/* Chalkboard Top Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-dashed border-white/20 gap-3">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B] animate-pulse" />
-                <span className="text-xs font-mono uppercase tracking-widest text-[#F59E0B]">
-                  {WEEKLY_CHALKBOARD.badge}
-                </span>
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-black tracking-wider text-white font-mono mt-1">
-                {WEEKLY_CHALKBOARD.headline}
-              </h3>
-              <p className="text-xs sm:text-sm text-neutral-400 font-sans mt-0.5">
-                {WEEKLY_CHALKBOARD.season}
-              </p>
-            </div>
-            <div className="text-xs sm:text-sm font-mono text-neutral-400 bg-black/40 px-3.5 py-2 rounded-lg border border-white/10 max-w-xs">
-              {WEEKLY_CHALKBOARD.note}
-            </div>
-          </div>
-
-          {/* Chalkboard 4-Column Feature Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-6">
-            {WEEKLY_CHALKBOARD.items.map((special, idx) => (
-              <div
-                key={special.name}
-                className="bg-black/50 rounded-xl overflow-hidden border border-white/10 hover:border-[#F59E0B]/60 transition-all flex flex-col justify-between group"
-              >
-                {/* Special Thumbnail Photo */}
-                {special.image && (
-                  <div className="relative w-full h-32 bg-stone-900 overflow-hidden">
-                    <Image
-                      src={special.image}
-                      alt={special.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                    <span className="absolute bottom-2 left-2 text-[10px] font-mono uppercase tracking-wider text-[#F59E0B] bg-black/70 px-2 py-0.5 rounded border border-[#F59E0B]/30 backdrop-blur-sm">
-                      Special #{idx + 1}
+          {/* Deep Slate Chalkboard Surface */}
+          <div className="chalkboard-slate rounded-2xl p-5 sm:p-7 md:p-9 relative overflow-hidden">
+            
+            {/* Hand-Drawn Dashed Chalk Perimeter */}
+            <div className="border border-dashed border-white/20 rounded-xl p-4 sm:p-6 md:p-7">
+              
+              {/* Chalkboard Header */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-dashed border-white/20 gap-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-chalk chalk-yellow text-xs sm:text-sm tracking-widest font-bold">
+                      ★ {WEEKLY_CHALKBOARD.badge} ★
                     </span>
                   </div>
-                )}
+                  <h3 className="font-chalk chalk-orange text-3xl sm:text-4xl md:text-5xl font-bold tracking-wide">
+                    {WEEKLY_CHALKBOARD.headline}
+                  </h3>
+                  <p className="font-chalk chalk-white text-xs sm:text-sm opacity-85 mt-1">
+                    {WEEKLY_CHALKBOARD.season}
+                  </p>
+                </div>
 
-                <div className="p-4 flex-1 flex flex-col justify-between">
-                  <div>
-                    {!special.image && (
-                      <div className="flex items-center justify-between gap-2 mb-1.5">
-                        <span className="text-[10px] font-mono uppercase tracking-wider text-[#F59E0B] bg-[#F59E0B]/10 px-2 py-0.5 rounded border border-[#F59E0B]/30">
-                          Special #{idx + 1}
-                        </span>
+                {/* Chalk Note */}
+                <div className="max-w-xs bg-black/45 p-3 rounded-lg border border-dashed border-white/15">
+                  <p className="font-chalk chalk-white text-xs leading-relaxed opacity-90">
+                    ✎ {WEEKLY_CHALKBOARD.note}
+                  </p>
+                </div>
+              </div>
+
+              {/* Pure Chalk Handwritten Specials List (2 Columns on Desktop, 1 Column on Mobile) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 mt-7">
+                {WEEKLY_CHALKBOARD.items.map((special, idx) => (
+                  <div
+                    key={special.id}
+                    className="group border-b border-dashed border-white/15 pb-4 flex flex-col justify-between hover:bg-white/[0.02] rounded-lg p-2 transition-all"
+                  >
+                    <div>
+                      {/* Special Header: Title, Badge, Price */}
+                      <div className="flex items-baseline justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <span className="font-chalk chalk-yellow text-xs font-bold">
+                            #{idx + 1}
+                          </span>
+                          <h4 className="font-chalk chalk-white text-lg sm:text-xl font-bold group-hover:text-[#FB923C] transition-colors">
+                            {special.name}
+                          </h4>
+                        </div>
                         {special.badge && (
-                          <span className="text-[10px] font-sans text-neutral-300 bg-white/10 px-2 py-0.5 rounded-full">
+                          <span className="font-mono text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-black/50 text-[#FCD34D] border border-[#FCD34D]/30 shrink-0">
                             {special.badge}
                           </span>
                         )}
                       </div>
-                    )}
-                    <h4 className="font-bold text-base text-white group-hover:text-[#F59E0B] transition-colors leading-snug">
-                      {special.name}
-                    </h4>
-                    <p className="text-xs text-neutral-400 mt-1.5 leading-relaxed line-clamp-3">
-                      {special.tagline}
-                    </p>
+
+                      {/* Tagline / Ingredients in White Chalk */}
+                      <p className="font-chalk text-xs sm:text-sm text-neutral-300 mt-1 leading-relaxed opacity-85">
+                        {special.tagline}
+                      </p>
+                    </div>
+
+                    {/* Footer Row: Yellow Chalk Price & Interactive Action CTAs */}
+                    <div className="flex items-center justify-between gap-2 mt-3 pt-2">
+                      <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold">
+                        {special.price}
+                      </span>
+
+                      <div className="flex items-center gap-2">
+                        {/* 1. View In Menu CTA (Scrolls to photo & full details below) */}
+                        <button
+                          type="button"
+                          onClick={() => handleJumpToMenuItem(special)}
+                          className="font-chalk text-[11px] sm:text-xs text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-2.5 py-1 rounded border border-white/15 transition flex items-center gap-1"
+                        >
+                          <span>See in Menu</span>
+                          <span>↓</span>
+                        </button>
+
+                        {/* 2. Direct Add to Tray CTA */}
+                        <button
+                          type="button"
+                          onClick={() => handleAddChalkboardSpecial(special)}
+                          className="font-chalk chalk-orange bg-[#FB923C]/10 hover:bg-[#FB923C]/25 text-xs font-bold px-3 py-1 rounded border border-[#FB923C]/40 transition flex items-center gap-1 shadow-sm"
+                        >
+                          <span>+ Add to Tray</span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between gap-2">
-                    <span className="text-xs font-black font-mono text-[#F59E0B]">
-                      {special.price}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => handleAddChalkboardSpecial(special, idx)}
-                      className="text-[11px] font-bold text-white hover:text-[#F59E0B] transition flex items-center gap-1 bg-white/10 hover:bg-[#F59E0B]/20 px-2.5 py-1 rounded-md border border-white/10 shrink-0"
-                    >
-                      <span>+ Order</span>
-                    </button>
-                  </div>
-                </div>
+                ))}
               </div>
-            ))}
+
+            </div>
           </div>
+
+          {/* Bottom Wood Chalk-Tray Lip (Where chalk & eraser sit) */}
+          <div className="mt-1 h-4 bg-gradient-to-r from-[#4E5055] via-[#63656A] to-[#4E5055] rounded-b-xl border-t border-black/40 shadow-inner flex items-center justify-end px-6 gap-3">
+            {/* White chalk stick */}
+            <div className="w-5 h-1.5 bg-[#F5F5F0] rounded-sm shadow-sm" title="White Chalk" />
+            {/* Yellow chalk stick */}
+            <div className="w-4 h-1.5 bg-[#FCD34D] rounded-sm shadow-sm" title="Yellow Chalk" />
+            {/* Orange chalk stick */}
+            <div className="w-4 h-1.5 bg-[#FB923C] rounded-sm shadow-sm" title="Orange Chalk" />
+            {/* Felt Eraser */}
+            <div className="w-8 h-2 bg-[#2D2A26] rounded border border-stone-600 shadow-sm" title="Felt Eraser" />
+          </div>
+
         </div>
 
         {/* 2. STICKY CATEGORY PILL BAR */}
@@ -234,17 +279,23 @@ export function ButcherBlockMenu() {
           </span>
         </div>
 
-        {/* 3. MENU ITEMS GRID */}
+        {/* 3. MENU ITEMS GRID (With Photos, Full Details & Highlight Flash on Jump) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {items.map((item) => {
             const priceInfo = parsePrices(item.price);
+            const isHighlighted = highlightedId === item.id;
 
             return (
               <div
+                id={item.id}
                 key={item.id}
-                className="bg-[#FFFDF9] rounded-xl overflow-hidden border border-[#E2D5C5] shadow-sm hover:border-[#EA580C]/60 hover:shadow-md transition-all flex flex-col justify-between group"
+                className={`bg-[#FFFDF9] rounded-xl overflow-hidden border transition-all duration-500 flex flex-col justify-between group ${
+                  isHighlighted
+                    ? "border-[#EA580C] ring-4 ring-[#EA580C]/30 shadow-2xl scale-[1.01]"
+                    : "border-[#E2D5C5] shadow-sm hover:border-[#EA580C]/60 hover:shadow-md"
+                }`}
               >
-                {/* Optional Food Photo */}
+                {/* Food Photo */}
                 {item.image && (
                   <div className="relative w-full h-44 sm:h-48 bg-stone-900 overflow-hidden">
                     <Image

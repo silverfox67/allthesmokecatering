@@ -19,53 +19,110 @@ export interface MenuCategory {
   icon: string;
 }
 
+export interface WeeklyChalkboardItem {
+  id: string;
+  name: string;
+  tagline: string;
+  price: string;
+  parsedPrice: number;
+  badge?: string;
+  categoryTab: MenuCategory["id"];
+  menuTargetId: string;
+}
+
 export interface WeeklyChalkboard {
   headline: string;
   season: string;
   badge: string;
   note: string;
-  items: {
-    name: string;
-    tagline: string;
-    price: string;
-    badge?: string;
-    image?: string;
-  }[];
+  items: WeeklyChalkboardItem[];
 }
 
 export const WEEKLY_CHALKBOARD: WeeklyChalkboard = {
-  headline: "PITMASTER WEEKLY CHALKBOARD",
+  headline: "PITMASTER WEEKLY SPECIALS",
   season: "Chicagoland Fall & Game-Day Smoker Specials",
-  badge: "Rolling Smoke This Week",
-  note: "Small-batch hardwood cuts smoked fresh on Marion's trailer rig. Limited pan quantities available for weekend pickup & heated drop-off.",
+  badge: "Rolling Hardwood Smoke This Week",
+  note: "Small-batch specialty cuts smoked fresh on Marion's trailer rig. Limited quantities for weekend commissary pickup & heated drop-off.",
   items: [
     {
-      name: "Smoked Brisket Burnt Ends",
-      tagline: "Double-smoked prime brisket point tossed in caramelized dark pit glaze",
+      id: "spec-burnt-ends",
+      name: "Double-Smoked Brisket Burnt Ends",
+      tagline: "Cubed prime point candied in dark molasses glaze with crunchy mahogany bark",
       price: "$32 / lb • Half Pan $110",
-      badge: "Fan Favorite",
-      image: "/images/menu/smoked-burnt-ends.jpg",
+      parsedPrice: 32,
+      badge: "Crown Jewel",
+      categoryTab: "specialties",
+      menuTargetId: "burnt-ends-specialty",
     },
     {
-      name: "Cedar-Plank Smoked Salmon",
-      tagline: "Slow-smoked over fruitwood with brown sugar & cracked black pepper",
-      price: "$28 / portion • Half Pan $140",
-      badge: "Chicago Classic",
-      image: "/images/menu/smoked-salmon-cedar.jpg",
+      id: "spec-salmon",
+      name: "Cedar-Plank Smoked Salmon Fillet",
+      tagline: "Wild Pacific fillet on charred cedar with brown sugar mustard glaze & fresh dill",
+      price: "$28 / portion • Half $140",
+      parsedPrice: 28,
+      badge: "Chicago Favorite",
+      categoryTab: "specialties",
+      menuTargetId: "cedar-plank-salmon",
     },
     {
-      name: "Smoked Brisket Chili",
-      tagline: "14-hour smoked brisket burnt ends simmered with dark stout, beans & peppers",
+      id: "spec-chili",
+      name: "Slow-Simmered Brisket Burnt-End Chili",
+      tagline: "14-hour smoked brisket burnt ends, dark stout, roasted chiles & kidney beans",
       price: "Half Pan $65 • Full Pan $120",
+      parsedPrice: 65,
       badge: "Game Day Hit",
-      image: "/images/menu/smoked-brisket-chili.jpg",
+      categoryTab: "specialties",
+      menuTargetId: "smoked-brisket-chili",
     },
     {
+      id: "spec-cornbread",
       name: "Habanero Cheddar Skillet Cornbread",
-      tagline: "Fresh cast-iron cornbread with sharp cheddar & mild flame-roasted habanero",
+      tagline: "Fresh cast-iron cornbread with sharp Wisconsin cheddar & mild flame-roasted habanero",
       price: "Half Pan $35 • Full Pan $65",
+      parsedPrice: 35,
       badge: "Scratch Baked",
-      image: "/images/menu/habanero-cheddar-cornbread.jpg",
+      categoryTab: "specialties",
+      menuTargetId: "habanero-cornbread",
+    },
+    {
+      id: "spec-duck",
+      name: "Whole Fruitwood Smoked Duck",
+      tagline: "Crisp skin duck slow-rendered over cherry and apple wood with pomegranate glaze",
+      price: "$95 Flat (Feeds 4–6)",
+      parsedPrice: 95,
+      badge: "Artisan Smoke",
+      categoryTab: "specialties",
+      menuTargetId: "whole-smoked-duck",
+    },
+    {
+      id: "spec-turkey",
+      name: "Whole Hickory Smoked Pit Turkey",
+      tagline: "48-hour brined whole 14-16 lb bird slow-smoked over hickory until mahogany and juicy",
+      price: "$135 Flat (Feeds 12–15)",
+      parsedPrice: 135,
+      badge: "Holiday Feast",
+      categoryTab: "specialties",
+      menuTargetId: "whole-smoked-turkey",
+    },
+    {
+      id: "spec-turkey-drums",
+      name: "Smoked Turkey Legs & Whole Wings",
+      tagline: "10 lbs jumbo drums and wings seasoned with Marion's poultry rub and smoked tender",
+      price: "10 lbs Bulk Pan • $120",
+      parsedPrice: 120,
+      badge: "Crowd Pleaser",
+      categoryTab: "smoked-meats",
+      menuTargetId: "turkey-legs-wings",
+    },
+    {
+      id: "spec-rib-tips",
+      name: "Southside Chicago Smoked Rib Tips",
+      tagline: "Tender bite-sized pork rib tips slow-smoked, chopped to order, and drenched in sauce",
+      price: "Half Pan $75 • Full Pan $150",
+      parsedPrice: 75,
+      badge: "Chicago Tradition",
+      categoryTab: "bbq-slabs",
+      menuTargetId: "rib-tips",
     },
   ],
 };
