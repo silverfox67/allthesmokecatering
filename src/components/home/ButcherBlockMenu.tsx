@@ -121,11 +121,26 @@ export function ButcherBlockMenu() {
           </p>
         </div>
 
-        {/* 1. AUTHENTIC WEATHERED BARNWOOD CHALKBOARD (Pure Chalk Text - No Photos) */}
-        <div className="mb-16 weathered-barnwood-frame p-4 sm:p-6 md:p-8 rounded-2xl relative shadow-2xl">
+        {/* 1. AUTHENTIC HANDCRAFTED 4-PIECE MITERED TIMBER CHALKBOARD FRAME */}
+        <div className="mb-16 mitered-wood-frame-container">
           
+          {/* 4 Mitered Timber Rails with True Grain Orientation */}
+          <div className="frame-rail-top" aria-hidden="true" />
+          <div className="frame-rail-bottom" aria-hidden="true" />
+          <div className="frame-rail-left" aria-hidden="true" />
+          <div className="frame-rail-right" aria-hidden="true" />
+
+          {/* 4 Precision 45° Miter Cut Seams */}
+          <div className="frame-miter-corner-tl" aria-hidden="true" />
+          <div className="frame-miter-corner-tr" aria-hidden="true" />
+          <div className="frame-miter-corner-bl" aria-hidden="true" />
+          <div className="frame-miter-corner-br" aria-hidden="true" />
+
+          {/* Recessed Inner Rabbet Lip Framing the Slate */}
+          <div className="frame-inner-lip" aria-hidden="true" />
+
           {/* Deep Slate Chalkboard Surface */}
-          <div className="chalkboard-slate rounded-2xl p-5 sm:p-7 md:p-9 relative overflow-hidden">
+          <div className="chalkboard-slate rounded-xs p-5 sm:p-7 md:p-9 relative z-[1] overflow-hidden">
             
             {/* Hand-Drawn Dashed Chalk Perimeter */}
             <div className="border border-dashed border-white/20 rounded-xl p-4 sm:p-6 md:p-7">
