@@ -6,15 +6,80 @@ import {
   PITMASTER_MENU_ITEMS,
   MENU_CATEGORIES,
   WEEKLY_CHALKBOARD,
+  MenuItem,
   MenuCategory,
 } from "@/data/pitmaster-menu";
+import { useOrderTray } from "@/context/OrderTrayContext";
+
+function parsePrices(priceStr: string): { single?: number; half?: number; full?: number } {
+  const halfMatch = priceStr.match(/Half[^(]*?(?:\([^)]*\))?\s*\$(\d+)/i);
+  const fullMatch = priceStr.match(/Full[^(]*?(?:\([^)]*\))?\s*\$(\d+)/i);
+
+  if (halfMatch && fullMatch) {
+    return {
+      half: parseInt(halfMatch[1], 10),
+      full: parseInt(fullMatch[1], 10),
+    };
+  }
+
+  const singleMatch = priceStr.match(/\$(\d+)/);
+  if (singleMatch) {
+    return { single: parseInt(singleMatch[1], 10) };
+  }
+
+  return { single: 50 };
+}
 
 export function ButcherBlockMenu() {
   const [activeTab, setActiveTab] = useState<MenuCategory["id"]>("smoked-meats");
+  const { addItem } = useOrderTray();
 
   const currentCategory =
     MENU_CATEGORIES.find((cat) => cat.id === activeTab) || MENU_CATEGORIES[0];
   const items = PITMASTER_MENU_ITEMS.filter((item) => item.category === activeTab);
+
+  const handleAddChalkboardSpecial = (special: typeof WEEKLY_CHALKBOARD.items[0], idx: number) => {
+    const prices = parsePrices(special.price);
+    const priceVal = prices.half || prices.single || 45;
+    const optionLabel = prices.half ? "Half Pan / Portion" : "Standard Portion";
+
+    addItem({
+      id: `special-${idx}-${special.name.toLowerCase().replace(/\s+/g, "-")}`,
+      baseId: `special-${idx}`,
+      name: special.name,
+      selectedOption: optionLabel,
+      price: priceVal,
+      image: special.image,
+      category: "Weekly Chalkboard Special",
+    });
+  };
+
+  const handleAddSingle = (item: MenuItem, price: number) => {
+    addItem({
+      id: `${item.id}-std`,
+      baseId: item.id,
+      name: item.name,
+      selectedOption: item.portion || "Standard",
+      price,
+      image: item.image,
+      portion: item.portion,
+      category: item.category,
+    });
+  };
+
+  const handleAddOption = (item: MenuItem, optionName: string, price: number) => {
+    const slug = optionName.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    addItem({
+      id: `${item.id}-${slug}`,
+      baseId: item.id,
+      name: item.name,
+      selectedOption: optionName,
+      price,
+      image: item.image,
+      portion: item.portion,
+      category: item.category,
+    });
+  };
 
   return (
     <section
@@ -111,17 +176,17 @@ export function ButcherBlockMenu() {
                       {special.tagline}
                     </p>
                   </div>
-                  <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between">
+                  <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between gap-2">
                     <span className="text-xs font-black font-mono text-[#F59E0B]">
                       {special.price}
                     </span>
-                    <a
-                      href={`#contact?item=${encodeURIComponent(special.name)}`}
-                      className="text-[11px] font-bold text-white hover:text-[#F59E0B] transition flex items-center gap-1 bg-white/10 hover:bg-[#F59E0B]/20 px-2.5 py-1 rounded-md border border-white/10"
+                    <button
+                      type="button"
+                      onClick={() => handleAddChalkboardSpecial(special, idx)}
+                      className="text-[11px] font-bold text-white hover:text-[#F59E0B] transition flex items-center gap-1 bg-white/10 hover:bg-[#F59E0B]/20 px-2.5 py-1 rounded-md border border-white/10 shrink-0"
                     >
-                      <span>Order Special</span>
-                      <span>&rarr;</span>
-                    </a>
+                      <span>+ Order</span>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -169,95 +234,125 @@ export function ButcherBlockMenu() {
           </span>
         </div>
 
-        {/* 3. MENU ITEMS GRID (Compact 2-line rows with daylight contrast) */}
+        {/* 3. MENU ITEMS GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {items.map((item) => (
-            <div
-              key={item.id}
-              className="bg-[#FFFDF9] rounded-xl overflow-hidden border border-[#E2D5C5] shadow-sm hover:border-[#EA580C]/60 hover:shadow-md transition-all flex flex-col justify-between group"
-            >
-              {/* Optional Food Photo */}
-              {item.image && (
-                <div className="relative w-full h-44 sm:h-48 bg-stone-900 overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <span className="absolute bottom-2 right-2 font-black text-sm text-white bg-[#EA580C] px-2.5 py-1 rounded-md shadow-md">
-                    {item.price}
-                  </span>
-                </div>
-              )}
+          {items.map((item) => {
+            const priceInfo = parsePrices(item.price);
 
-              <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
-                <div>
-                  {/* Header Row: Badges & Price (shown if no image) */}
-                  <div className="flex justify-between items-start gap-3 mb-2">
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      {item.skull && (
-                        <span className="text-[10px] font-black uppercase tracking-wider bg-red-950 text-red-300 border border-red-700/60 px-2 py-0.5 rounded-md flex items-center gap-1">
-                          <span>☠️</span>
-                          <span>Very Hot</span>
-                        </span>
-                      )}
-                      {item.popular && (
-                        <span className="text-[10px] font-bold uppercase tracking-wider bg-[#EA580C] text-white px-2 py-0.5 rounded-md">
-                          Top Seller
-                        </span>
-                      )}
-                      {item.badge && !item.skull && !item.popular && (
-                        <span className="text-[10px] font-bold uppercase tracking-wider bg-slate-900 text-slate-200 px-2 py-0.5 rounded-md">
-                          {item.badge}
+            return (
+              <div
+                key={item.id}
+                className="bg-[#FFFDF9] rounded-xl overflow-hidden border border-[#E2D5C5] shadow-sm hover:border-[#EA580C]/60 hover:shadow-md transition-all flex flex-col justify-between group"
+              >
+                {/* Optional Food Photo */}
+                {item.image && (
+                  <div className="relative w-full h-44 sm:h-48 bg-stone-900 overflow-hidden">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <span className="absolute bottom-2 right-2 font-black text-sm text-white bg-[#EA580C] px-2.5 py-1 rounded-md shadow-md">
+                      {item.price}
+                    </span>
+                  </div>
+                )}
+
+                <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+                  <div>
+                    {/* Header Row: Badges & Price (shown if no image) */}
+                    <div className="flex justify-between items-start gap-3 mb-2">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {item.skull && (
+                          <span className="text-[10px] font-black uppercase tracking-wider bg-red-950 text-red-300 border border-red-700/60 px-2 py-0.5 rounded-md flex items-center gap-1">
+                            <span>☠️</span>
+                            <span>Very Hot</span>
+                          </span>
+                        )}
+                        {item.popular && (
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-[#EA580C] text-white px-2 py-0.5 rounded-md">
+                            Top Seller
+                          </span>
+                        )}
+                        {item.badge && !item.skull && !item.popular && (
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-slate-900 text-slate-200 px-2 py-0.5 rounded-md">
+                            {item.badge}
+                          </span>
+                        )}
+                      </div>
+                      {!item.image && (
+                        <span className="shrink-0 font-black text-base sm:text-lg text-[#EA580C] bg-[#FFF4ED] px-3 py-1 rounded-lg border border-[#FDBA74]/50">
+                          {item.price}
                         </span>
                       )}
                     </div>
-                    {!item.image && (
-                      <span className="shrink-0 font-black text-base sm:text-lg text-[#EA580C] bg-[#FFF4ED] px-3 py-1 rounded-lg border border-[#FDBA74]/50">
-                        {item.price}
-                      </span>
+
+                    {/* Title */}
+                    <h4 className="font-extrabold text-lg text-[#0F172A] group-hover:text-[#EA580C] transition-colors leading-snug">
+                      {item.name}
+                    </h4>
+
+                    {/* Portion/Yield indicator */}
+                    {item.portion && (
+                      <p className="text-xs font-mono font-bold text-slate-500 mt-0.5">
+                        {item.portion}
+                      </p>
                     )}
+
+                    {/* Description */}
+                    <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                      {item.description}
+                    </p>
                   </div>
 
-                  {/* Title */}
-                  <h4 className="font-extrabold text-lg text-[#0F172A] group-hover:text-[#EA580C] transition-colors leading-snug">
-                    {item.name}
-                  </h4>
+                  {/* Card Footer: One-Click Add To Tray Action */}
+                  <div className="mt-4 pt-3 border-t border-[#EAE0D5] flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-xs text-slate-500 flex items-center gap-1">
+                      <span>Smokehouse fresh</span>
+                      <span>•</span>
+                      <span>Chicagoland drop-off</span>
+                    </span>
 
-                  {/* Portion/Yield indicator */}
-                  {item.portion && (
-                    <p className="text-xs font-mono font-bold text-slate-500 mt-0.5">
-                      {item.portion}
-                    </p>
-                  )}
-
-                  {/* Description */}
-                  <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
-                    {item.description}
-                  </p>
-                </div>
-
-                {/* Card Footer Action */}
-                <div className="mt-4 pt-3 border-t border-[#EAE0D5] flex items-center justify-between">
-                  <span className="text-xs text-slate-500 flex items-center gap-1">
-                    <span>Smokehouse fresh</span>
-                    <span>•</span>
-                    <span>Chicagoland drop-off</span>
-                  </span>
-                  <a
-                    href={`#contact?menuItem=${encodeURIComponent(item.name)}&cat=${item.category}`}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0F172A] hover:bg-[#EA580C] text-white text-xs font-bold transition shadow-sm"
-                  >
-                    <span>Order / Add to Tray</span>
-                    <span>&rarr;</span>
-                  </a>
+                    {/* Action Buttons: Dual Half/Full Pan Buttons or Single Item Button */}
+                    <div className="flex items-center gap-2">
+                      {priceInfo.half && priceInfo.full ? (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => handleAddOption(item, "Half Pan", priceInfo.half!)}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#0F172A] hover:bg-[#EA580C] text-white text-xs font-bold transition shadow-sm"
+                          >
+                            <span>+ Half Pan</span>
+                            <span className="text-[#F59E0B]">(${priceInfo.half})</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleAddOption(item, "Full Pan", priceInfo.full!)}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white text-xs font-bold transition shadow-sm"
+                          >
+                            <span>+ Full Pan</span>
+                            <span>(${priceInfo.full})</span>
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => handleAddSingle(item, priceInfo.single || 50)}
+                          className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-[#0F172A] hover:bg-[#EA580C] text-white text-xs font-bold transition shadow-sm"
+                        >
+                          <span>+ Add to Tray</span>
+                          <span className="text-[#F59E0B]">(${priceInfo.single || 50})</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* 4. BOTTOM DIRECT LINE CALLOUT */}
