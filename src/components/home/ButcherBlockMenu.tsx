@@ -147,71 +147,54 @@ export function ButcherBlockMenu() {
             <div className="border border-dashed border-white/20 rounded-xl p-4 sm:p-6 md:p-7">
               
               {/* Chalkboard Header */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-dashed border-white/20 gap-4">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-chalk chalk-yellow text-xs sm:text-sm tracking-widest font-bold">
-                      ★ {WEEKLY_CHALKBOARD.badge} ★
-                    </span>
-                  </div>
-                  <h3 className="font-chalk chalk-orange text-3xl sm:text-4xl md:text-5xl font-bold tracking-wide">
-                    {WEEKLY_CHALKBOARD.headline}
-                  </h3>
-                  <p className="font-chalk chalk-white text-xs sm:text-sm opacity-85 mt-1">
-                    {WEEKLY_CHALKBOARD.season}
-                  </p>
+              <div className="text-center pb-5 border-b border-dashed border-white/20">
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <span className="font-chalk chalk-yellow text-xs sm:text-sm tracking-widest font-bold">
+                    ★ {WEEKLY_CHALKBOARD.badge} ★
+                  </span>
                 </div>
-
-                {/* Chalk Note */}
-                <div className="max-w-xs bg-black/45 p-3 rounded-lg border border-dashed border-white/15">
-                  <p className="font-chalk chalk-white text-xs leading-relaxed opacity-90">
-                    ✎ {WEEKLY_CHALKBOARD.note}
-                  </p>
-                </div>
+                <h3 className="font-chalk chalk-orange text-3xl sm:text-4xl md:text-5xl font-bold tracking-wide">
+                  {WEEKLY_CHALKBOARD.headline}
+                </h3>
+                <p className="font-chalk chalk-white text-xs sm:text-sm opacity-85 mt-1">
+                  {WEEKLY_CHALKBOARD.season}
+                </p>
               </div>
 
-              {/* Pure Chalk Handwritten Specials List (2 Columns on Desktop, 3 Items Previewed on Mobile) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 mt-7">
+              {/* Pure Chalk Handwritten Specials List - Compact Single-Line Dishes (No Cluttered Descriptions) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 mt-6">
                 {WEEKLY_CHALKBOARD.items.map((special, idx) => (
                   <div
                     key={special.id}
-                    className={`group border-b border-dashed border-white/15 pb-4 flex-col justify-between hover:bg-white/[0.02] rounded-lg p-2 transition-all ${
+                    className={`group border-b border-dashed border-white/15 py-2.5 flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-white/[0.03] rounded-lg px-2 transition-all ${
                       idx >= 3 ? "hidden md:flex" : "flex"
                     }`}
                   >
-                    <div>
-                      {/* Special Header: Title, Badge, Price */}
-                      <div className="flex items-baseline justify-between gap-2">
-                        <div className="flex items-center gap-2">
-                          <span className="font-chalk chalk-yellow text-xs font-bold">
-                            #{idx + 1}
-                          </span>
-                          <h4 className="font-chalk chalk-white text-lg sm:text-xl font-bold group-hover:text-[#FB923C] transition-colors">
-                            {special.name}
-                          </h4>
-                        </div>
-                      </div>
-
-                      {/* Tagline / Ingredients in White Chalk */}
-                      <p className="font-chalk text-xs sm:text-sm text-neutral-300 mt-1 leading-relaxed opacity-85">
-                        {special.tagline}
-                      </p>
+                    {/* Dish Number & Name */}
+                    <div className="flex items-baseline gap-2 min-w-0">
+                      <span className="font-chalk chalk-yellow text-xs sm:text-sm font-bold shrink-0">
+                        #{idx + 1}
+                      </span>
+                      <h4 className="font-chalk chalk-white text-base sm:text-lg font-bold group-hover:text-[#FB923C] transition-colors truncate">
+                        {special.name}
+                      </h4>
                     </div>
 
-                    {/* Footer Row: Yellow Chalk Price & Interactive Action CTAs */}
-                    <div className="flex items-center justify-between gap-2 mt-3 pt-2">
-                      <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold">
+                    {/* Price & Action CTAs */}
+                    <div className="flex items-center justify-between sm:justify-end gap-2.5 shrink-0 mt-1 sm:mt-0">
+                      <span className="font-chalk chalk-yellow text-xs sm:text-sm font-bold whitespace-nowrap">
                         {special.price}
                       </span>
 
-                      <div className="flex items-center gap-2">
-                        {/* 1. View In Menu CTA (Scrolls to photo & full details below) */}
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        {/* 1. View In Menu CTA (Scrolls to photo & full description below) */}
                         <button
                           type="button"
                           onClick={() => handleJumpToMenuItem(special)}
-                          className="font-chalk text-[11px] sm:text-xs text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-2.5 py-1 rounded border border-white/15 transition flex items-center gap-1"
+                          className="font-chalk text-[11px] sm:text-xs text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-2 py-1 rounded border border-white/15 transition flex items-center gap-1"
+                          title="View photo and description in menu below"
                         >
-                          <span>See in Menu</span>
+                          <span>Menu</span>
                           <span>↓</span>
                         </button>
 
@@ -219,9 +202,9 @@ export function ButcherBlockMenu() {
                         <button
                           type="button"
                           onClick={() => handleAddChalkboardSpecial(special)}
-                          className="font-chalk chalk-orange bg-[#FB923C]/10 hover:bg-[#FB923C]/25 text-xs font-bold px-3 py-1 rounded border border-[#FB923C]/40 transition flex items-center gap-1 shadow-sm"
+                          className="font-chalk chalk-orange bg-[#FB923C]/10 hover:bg-[#FB923C]/25 text-xs font-bold px-2.5 py-1 rounded border border-[#FB923C]/40 transition flex items-center gap-1 shadow-sm active:scale-95"
                         >
-                          <span>+ Add to Tray</span>
+                          <span>+ Add</span>
                         </button>
                       </div>
                     </div>
