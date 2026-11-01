@@ -122,14 +122,29 @@ export function ButcherBlockMenu() {
           </p>
         </div>
 
-        {/* 1. AUTHENTIC SMOKEHOUSE TIMBER CHALKBOARD FRAME */}
-        <div className="mb-16 chalkboard-timber-frame">
+        {/* 1. AUTHENTIC HANDCRAFTED 4-PIECE MITERED TIMBER CHALKBOARD FRAME */}
+        <div className="mb-16 mitered-wood-frame-container">
           
+          {/* 4 Mitered Timber Rails with True Grain Orientation */}
+          <div className="frame-rail-top" aria-hidden="true" />
+          <div className="frame-rail-bottom" aria-hidden="true" />
+          <div className="frame-rail-left" aria-hidden="true" />
+          <div className="frame-rail-right" aria-hidden="true" />
+
+          {/* 4 Precision 45° Miter Cut Seams */}
+          <div className="frame-miter-corner-tl" aria-hidden="true" />
+          <div className="frame-miter-corner-tr" aria-hidden="true" />
+          <div className="frame-miter-corner-bl" aria-hidden="true" />
+          <div className="frame-miter-corner-br" aria-hidden="true" />
+
+          {/* Recessed Inner Rabbet Lip Framing the Slate */}
+          <div className="frame-inner-lip" aria-hidden="true" />
+
           {/* Deep Slate Chalkboard Surface */}
-          <div className="chalkboard-slate rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 relative overflow-hidden">
+          <div className="chalkboard-slate rounded-xs p-5 sm:p-7 md:p-9 relative z-[1] overflow-hidden">
             
             {/* Hand-Drawn Dashed Chalk Perimeter */}
-            <div className="border border-dashed border-white/20 rounded-lg sm:rounded-xl p-3.5 sm:p-5 md:p-6">
+            <div className="border border-dashed border-white/20 rounded-xl p-4 sm:p-6 md:p-7">
               
               {/* Chalkboard Header */}
               <div className="text-center pb-5 border-b border-dashed border-white/20">
@@ -146,32 +161,31 @@ export function ButcherBlockMenu() {
                 </p>
               </div>
 
-              {/* Pure Chalk Handwritten Specials List - Resilient 2-Row Micro-Layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-3.5 mt-6">
+              {/* Pure Chalk Handwritten Specials List - Compact Single-Line Dishes (No Cluttered Descriptions) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 mt-6">
                 {WEEKLY_CHALKBOARD.items.map((special, idx) => (
                   <div
                     key={special.id}
-                    className="group border-b border-dashed border-white/15 py-2.5 px-2 rounded-lg hover:bg-white/[0.03] transition-all flex flex-col gap-1.5"
+                    className={`group border-b border-dashed border-white/15 py-2.5 flex-col gap-1.5 hover:bg-white/[0.03] rounded-lg px-2 transition-all ${
+                      idx >= 3 ? "hidden md:flex" : "flex"
+                    }`}
                   >
-                    {/* Row 1: Dish # Badge + Full Title + Dotted Leader Line + Chalk Price */}
-                    <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 w-full">
+                    {/* Dish Number & Name */}
+                    <div className="flex items-baseline gap-2">
                       <span className="font-chalk chalk-yellow text-xs sm:text-sm font-bold shrink-0">
                         #{idx + 1}
                       </span>
-                      <h4 className="font-chalk chalk-white text-base sm:text-lg font-bold group-hover:text-[#FB923C] transition-colors leading-snug flex-1 min-w-[10rem]">
+                      <h4 className="font-chalk chalk-white text-base sm:text-lg font-bold group-hover:text-[#FB923C] transition-colors leading-snug">
                         {special.name}
                       </h4>
-                      
-                      <span className="font-chalk chalk-yellow text-xs sm:text-sm font-bold whitespace-nowrap shrink-0">
-                        {special.price}
-                      </span>
                     </div>
 
-                    {/* Row 2: 1-line Tagline / Ingredients + Action CTAs */}
-                    <div className="flex flex-wrap items-center justify-between gap-2 pt-0.5">
-                      <p className="font-chalk text-[11px] sm:text-xs text-neutral-300/85 italic leading-tight basis-full sm:basis-0 sm:flex-1 min-w-0 sm:truncate">
-                        {special.tagline}
-                      </p>
+                    {/* Price & Action CTAs */}
+                    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pl-7">
+                      <span className="font-chalk chalk-yellow text-xs sm:text-sm font-bold whitespace-nowrap">
+                        {special.price}
+                      </span>
+
                       <div className="flex items-center gap-2 w-full sm:w-auto">
                         {/* 1. View In Menu CTA (Scrolls to photo & full description below) */}
                         <button
@@ -198,35 +212,25 @@ export function ButcherBlockMenu() {
                 ))}
               </div>
 
-              {/* Chalkboard Footer Note & Dedicated Specials Link */}
-              <div className="mt-7 pt-4 border-t border-dashed border-white/20 flex flex-col sm:flex-row items-center justify-between gap-3">
+              {/* Mobile Chalkboard CTA: See All Weekly Specials on Dedicated Chalkboard Page */}
+              <div className="mt-7 pt-4 border-t border-dashed border-white/20 flex flex-col sm:flex-row items-center justify-between gap-3 md:hidden">
                 <div className="text-center sm:text-left">
                   <p className="font-chalk chalk-white text-xs opacity-90">
-                    ★ All {WEEKLY_CHALKBOARD.items.length} rotating smoker specials smoked fresh on Marion&rsquo;s trailer rig
+                    ★ Showing 3 of {WEEKLY_CHALKBOARD.items.length} rotating smoker specials
                   </p>
                   <p className="font-chalk chalk-yellow text-[11px] opacity-75">
-                    Limited batch quantities for weekend commissary pickup &amp; delivery
+                    Smoked fresh on Marion&rsquo;s trailer rig
                   </p>
                 </div>
                 <Link
                   href="/specials"
-                  className="w-full sm:w-auto font-chalk text-center bg-[#FB923C] hover:bg-[#F97316] text-[#0F172A] font-black text-xs sm:text-sm px-5 py-2 rounded-lg shadow-lg hover:shadow-orange-500/25 active:scale-95 transition-all flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto font-chalk text-center bg-[#FB923C] hover:bg-[#F97316] text-[#0F172A] font-black text-sm px-6 py-2.5 rounded-lg shadow-lg hover:shadow-orange-500/25 active:scale-95 transition-all flex items-center justify-center gap-2"
                 >
-                  <span>See Full Specials Page</span>
-                  <span className="text-sm font-bold">→</span>
+                  <span>See All Weekly Specials</span>
+                  <span className="text-base font-bold">→</span>
                 </Link>
               </div>
 
-            </div>
-          </div>
-
-          {/* Rustic Chalk Tray Ledge with Chalk Sticks & Felt Eraser */}
-          <div className="chalk-tray-ledge" aria-hidden="true">
-            <div className="w-5 h-1.5 bg-[#F5F5F0] rounded-xs shadow-sm rotate-[-2deg] opacity-90" title="White Chalk" />
-            <div className="w-4 h-1.5 bg-[#FCD34D] rounded-xs shadow-sm rotate-[1deg] opacity-90" title="Yellow Chalk" />
-            <div className="w-4 h-1.5 bg-[#FB923C] rounded-xs shadow-sm opacity-90" title="Orange Chalk" />
-            <div className="w-8 h-2.5 bg-[#3A3127] rounded-xs border border-black/60 shadow-sm flex flex-col justify-end overflow-hidden" title="Felt Eraser">
-              <div className="w-full h-1 bg-[#191613]" />
             </div>
           </div>
 

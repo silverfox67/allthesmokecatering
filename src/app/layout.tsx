@@ -1,14 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Kalam } from "next/font/google";
 import "./globals.css";
 import { SITE_CONFIG } from "@/config/site-config";
-
-const kalam = Kalam({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-kalam",
-  display: "swap",
-});
 
 export const viewport: Viewport = {
   themeColor: "#0A0A0A",
@@ -137,7 +129,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Kalam:wght@400;700&family=Oswald:wght@600;700&display=swap"
           rel="stylesheet"
         />
         <script
@@ -145,7 +137,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
       </head>
-      <body className={`${kalam.variable} min-h-screen bg-obsidian text-neutral-100 font-sans antialiased selection:bg-ember selection:text-obsidian`}>
+      <body className="min-h-screen bg-obsidian text-neutral-100 font-sans antialiased selection:bg-ember selection:text-obsidian">
         {children}
       </body>
     </html>

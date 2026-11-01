@@ -30,12 +30,27 @@ function ChalkboardContent() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      {/* AUTHENTIC SMOKEHOUSE TIMBER CHALKBOARD FRAME */}
-      <div className="chalkboard-timber-frame shadow-2xl">
+      {/* 4-PIECE MITERED WEATHERED BARNWOOD TIMBER FRAME */}
+      <div className="mitered-wood-frame-container shadow-2xl">
+        {/* 4 Mitered Timber Rails with True Grain Orientation */}
+        <div className="frame-rail-top" aria-hidden="true" />
+        <div className="frame-rail-bottom" aria-hidden="true" />
+        <div className="frame-rail-left" aria-hidden="true" />
+        <div className="frame-rail-right" aria-hidden="true" />
+
+        {/* 4 Precision 45° Miter Cut Seams */}
+        <div className="frame-miter-corner-tl" aria-hidden="true" />
+        <div className="frame-miter-corner-tr" aria-hidden="true" />
+        <div className="frame-miter-corner-bl" aria-hidden="true" />
+        <div className="frame-miter-corner-br" aria-hidden="true" />
+
+        {/* Recessed Inner Rabbet Lip Framing the Slate */}
+        <div className="frame-inner-lip" aria-hidden="true" />
+
         {/* Deep Slate Chalkboard Surface */}
-        <div className="chalkboard-slate rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 relative overflow-hidden">
+        <div className="chalkboard-slate rounded-xs p-5 sm:p-8 md:p-10 relative z-[1] overflow-hidden">
           {/* Hand-Drawn Dashed Chalk Perimeter */}
-          <div className="border border-dashed border-white/20 rounded-lg sm:rounded-xl p-3.5 sm:p-6 md:p-7">
+          <div className="border border-dashed border-white/20 rounded-xl p-4 sm:p-7 md:p-8">
             
             {/* Chalkboard Header */}
             <div className="text-center pb-6 border-b border-dashed border-white/20">
@@ -52,35 +67,32 @@ function ChalkboardContent() {
               </p>
             </div>
 
-            {/* All 8 Pure Chalk Handwritten Specials - Resilient 2-Row Micro-Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-3.5 mt-7">
+            {/* All 8 Pure Chalk Handwritten Specials (Compact Single-Row Format - No Cluttered Descriptions) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3.5 mt-7">
               {WEEKLY_CHALKBOARD.items.map((special, idx) => {
                 const isJustAdded = addedId === special.id;
 
                 return (
                   <div
                     key={special.id}
-                    className="group border-b border-dashed border-white/15 py-2.5 px-2 rounded-lg hover:bg-white/[0.03] transition-all flex flex-col gap-1.5"
+                    className="group border-b border-dashed border-white/15 py-3 flex-col gap-1.5 hover:bg-white/[0.03] rounded-lg px-2.5 transition-all flex"
                   >
-                    {/* Row 1: Dish # Badge + Full Title + Dotted Leader Line + Chalk Price */}
-                    <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 w-full">
+                    {/* Dish Number & Name */}
+                    <div className="flex items-baseline gap-2">
                       <span className="font-chalk chalk-yellow text-xs sm:text-sm font-bold shrink-0">
                         #{idx + 1}
                       </span>
-                      <h2 className="font-chalk chalk-white text-base sm:text-lg font-bold group-hover:text-[#FB923C] transition-colors leading-snug flex-1 min-w-[10rem]">
+                      <h2 className="font-chalk chalk-white text-base sm:text-lg font-bold group-hover:text-[#FB923C] transition-colors leading-snug">
                         {special.name}
                       </h2>
-                      
-                      <span className="font-chalk chalk-yellow text-xs sm:text-sm font-bold whitespace-nowrap shrink-0">
-                        {special.price}
-                      </span>
                     </div>
 
-                    {/* Row 2: 1-line Tagline / Ingredients + Action CTAs */}
-                    <div className="flex flex-wrap items-center justify-between gap-2 pt-0.5">
-                      <p className="font-chalk text-[11px] sm:text-xs text-neutral-300/85 italic leading-tight basis-full sm:basis-0 sm:flex-1 min-w-0 sm:truncate">
-                        {special.tagline}
-                      </p>
+                    {/* Price & Action CTAs */}
+                    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pl-7">
+                      <span className="font-chalk chalk-yellow text-xs sm:text-sm font-bold whitespace-nowrap">
+                        {special.price}
+                      </span>
+
                       <div className="flex items-center gap-2 w-full sm:w-auto">
                         {/* 1. View in Menu Link */}
                         <Link
@@ -130,16 +142,6 @@ function ChalkboardContent() {
               </a>
             </div>
 
-          </div>
-        </div>
-
-        {/* Rustic Chalk Tray Ledge with Chalk Sticks & Felt Eraser */}
-        <div className="chalk-tray-ledge" aria-hidden="true">
-          <div className="w-5 h-1.5 bg-[#F5F5F0] rounded-xs shadow-sm rotate-[-2deg] opacity-90" title="White Chalk" />
-          <div className="w-4 h-1.5 bg-[#FCD34D] rounded-xs shadow-sm rotate-[1deg] opacity-90" title="Yellow Chalk" />
-          <div className="w-4 h-1.5 bg-[#FB923C] rounded-xs shadow-sm opacity-90" title="Orange Chalk" />
-          <div className="w-8 h-2.5 bg-[#3A3127] rounded-xs border border-black/60 shadow-sm flex flex-col justify-end overflow-hidden" title="Felt Eraser">
-            <div className="w-full h-1 bg-[#191613]" />
           </div>
         </div>
       </div>
