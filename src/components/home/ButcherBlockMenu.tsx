@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   PITMASTER_MENU_ITEMS,
   MENU_CATEGORIES,
@@ -169,12 +170,14 @@ export function ButcherBlockMenu() {
                 </div>
               </div>
 
-              {/* Pure Chalk Handwritten Specials List (2 Columns on Desktop, 1 Column on Mobile) */}
+              {/* Pure Chalk Handwritten Specials List (2 Columns on Desktop, 3 Items Previewed on Mobile) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 mt-7">
                 {WEEKLY_CHALKBOARD.items.map((special, idx) => (
                   <div
                     key={special.id}
-                    className="group border-b border-dashed border-white/15 pb-4 flex flex-col justify-between hover:bg-white/[0.02] rounded-lg p-2 transition-all"
+                    className={`group border-b border-dashed border-white/15 pb-4 flex-col justify-between hover:bg-white/[0.02] rounded-lg p-2 transition-all ${
+                      idx >= 3 ? "hidden md:flex" : "flex"
+                    }`}
                   >
                     <div>
                       {/* Special Header: Title, Badge, Price */}
@@ -224,6 +227,25 @@ export function ButcherBlockMenu() {
                     </div>
                   </div>
                 ))}
+              </div>
+
+              {/* Mobile Chalkboard CTA: See All Weekly Specials on Dedicated Chalkboard Page */}
+              <div className="mt-7 pt-4 border-t border-dashed border-white/20 flex flex-col sm:flex-row items-center justify-between gap-3 md:hidden">
+                <div className="text-center sm:text-left">
+                  <p className="font-chalk chalk-white text-xs opacity-90">
+                    ★ Showing 3 of {WEEKLY_CHALKBOARD.items.length} rotating smoker specials
+                  </p>
+                  <p className="font-chalk chalk-yellow text-[11px] opacity-75">
+                    Smoked fresh on Marion&rsquo;s trailer rig
+                  </p>
+                </div>
+                <Link
+                  href="/specials"
+                  className="w-full sm:w-auto font-chalk text-center bg-[#FB923C] hover:bg-[#F97316] text-[#0F172A] font-black text-sm px-6 py-2.5 rounded-lg shadow-lg hover:shadow-orange-500/25 active:scale-95 transition-all flex items-center justify-center gap-2"
+                >
+                  <span>See All Weekly Specials</span>
+                  <span className="text-base font-bold">→</span>
+                </Link>
               </div>
 
             </div>
