@@ -179,6 +179,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     price: '$18',
     portion: 'Includes 2 Scratch Sides',
     description: 'Crispy skin, golden hardwood-smoked half chicken basted with apple cider pit butter and served with two hot sides.',
+    image: '/images/menu/half-smoked-chicken-plate.jpg',
     category: 'smoked-meats',
   },
   {
@@ -187,6 +188,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     price: '$30',
     portion: 'Includes 2 Scratch Sides',
     description: 'Plump whole chicken slow-smoked to juicy perfection, quartered or carved with house mild pit sauce and two sides.',
+    image: '/images/menu/whole-smoked-chicken-plate.jpg',
     category: 'smoked-meats',
   },
   {
@@ -195,6 +197,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     price: '$100',
     portion: '5 lbs bulk pan (approx. 10–12 chops)',
     description: 'Tender center-cut turkey chops marinated in savory herbs and smoked until succulent and slice-tender.',
+    image: '/images/menu/smoked-turkey-chops.jpg',
     category: 'smoked-meats',
   },
   {
@@ -203,6 +206,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     price: '$120',
     portion: '10 lbs bulk pan',
     description: 'Jumbo smoked turkey drums and whole wings seasoned with Marion’s poultry rub and slow-smoked for hours.',
+    image: '/images/menu/smoked-turkey-legs-wings.jpg',
     category: 'smoked-meats',
     popular: true,
   },
@@ -212,6 +216,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     price: '$100',
     portion: '5 lbs braised pan',
     description: 'Rich beef oxtails kissed with hardwood smoke then slow-simmered in rich aromatics and brown gravy until fall-apart tender.',
+    image: '/images/menu/smoked-beef-oxtails.jpg',
     category: 'smoked-meats',
     badge: 'Chef Specialty',
   },
@@ -221,6 +226,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     price: '$130',
     portion: '4 Massive Center Bones',
     description: 'Colossal prime beef plate short ribs with deep mahogany smoke ring, unctuous marbling, and intense beef flavor.',
+    image: '/images/menu/beef-short-ribs-dino.jpg',
     category: 'smoked-meats',
     badge: 'Limited Run',
   },
@@ -230,6 +236,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     price: '$110',
     portion: '5 lbs sliced or link pan',
     description: 'Coarse ground beef sausage in natural casing, smoked with hickory wood until snappy, smoky, and juicy.',
+    image: '/images/menu/smoked-beef-sausage.jpg',
     category: 'smoked-meats',
   },
 
@@ -240,6 +247,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     price: '$60',
     portion: 'Full Heavy Slab',
     description: 'Thick-cut meaty beef ribs rubbed with cracked black pepper and smoked low and slow until richly tender.',
+    image: '/images/menu/beef-ribs-full-slab.jpg',
     category: 'bbq-slabs',
     popular: true,
   },
@@ -260,6 +268,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     price: '$35',
     portion: 'Full Tender Slab',
     description: 'Extra-lean loin back ribs smoked tender with sweet applewood smoke and Marion’s signature rub.',
+    image: '/images/menu/baby-back-ribs-slab.jpg',
     category: 'bbq-slabs',
   },
   {
@@ -268,6 +277,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     price: '$30',
     portion: 'Full Slab',
     description: 'Classic full-cut pork ribs with rich fat marbling, deep hardwood smoke, and tender chew.',
+    image: '/images/menu/traditional-spare-ribs-slab.jpg',
     category: 'bbq-slabs',
   },
   {
@@ -276,6 +286,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     price: 'Half $75 • Full $150',
     portion: 'Half Pan (12–15) • Full Pan (25–30)',
     description: 'Chicago pit tradition: tender bite-sized pork rib tips slow-smoked, chopped to order, and drenched in signature sauce.',
+    image: '/images/menu/southside-chicago-rib-tips.jpg',
     category: 'bbq-slabs',
     badge: 'Chicago Legend',
     popular: true,
@@ -286,6 +297,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     price: 'Inquire for Custom Mix',
     portion: '35 Hearty Pieces',
     description: 'Mix & match 35 pieces of smoked chicken, ribs, grilled Polish links, burgers, brats, or fried/smoked catfish fillets.',
+    image: '/images/menu/smokehouse-protein-party-pan.jpg',
     category: 'bbq-slabs',
     badge: 'Tailgate Ready',
   },
@@ -308,6 +320,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     price: 'Half (50) $70 • Full (100) $130',
     portion: '50 or 100 Jumbo Smoked Wings',
     description: 'Crisp smoked wings tossed in tangy cayenne pepper sauce and creamy pit butter. Served with buttermilk ranch.',
+    image: '/images/menu/wings-smokehouse-buffalo.jpg',
     category: 'wings',
   },
   {

@@ -4,6 +4,7 @@ import { AdminPortal } from "@/components/admin/AdminPortal";
 export const metadata: Metadata = {
   title: "Pitmaster Operations | All The Smoke Catering",
   description: "Executive catering operations hub for Marion Bolden.",
+  manifest: "/portal-manifest.json",
   robots: {
     index: false,
     follow: false,

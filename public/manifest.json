@@ -1,0 +1,25 @@
+{
+  "name": "All The Smoke BBQ & Catering",
+  "short_name": "All The Smoke",
+  "description": "Authentic Chicago Live-Fire Smokehouse & Full-Service BBQ Catering by Pitmaster Marion Bolden.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#0A0A0A",
+  "theme_color": "#0A0A0A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/brand/ats-monogram.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/brand/ats-full-badge.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
+

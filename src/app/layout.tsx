@@ -83,6 +83,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://allthesmokecatering.com/",
   },
+  manifest: "/manifest.json",
 };
 
 const localBusinessSchema = {
