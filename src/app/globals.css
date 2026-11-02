@@ -2,7 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("/fonts/inter-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  src: url("/fonts/oswald-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Kalam";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/kalam-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Kalam";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/kalam-bold.woff2") format("woff2");
+}
+
 :root {
+  --font-body: "Inter";
+  --font-display: "Oswald";
   --color-obsidian: #0A0A0A;
   --color-charcoal: #121212;
   --color-ember: #F59E0B;
