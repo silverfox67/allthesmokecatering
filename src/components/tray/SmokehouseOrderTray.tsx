@@ -34,7 +34,7 @@ export function SmokehouseOrderTray() {
     subtotal,
   } = useOrderTray();
 
-  const [fulfillment, setFulfillment] = useState<"pickup" | "delivery">("pickup");
+  const MIN_DELIVERY_SUBTOTAL = 150;
   const [deliveryZip, setDeliveryZip] = useState("");
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [deliveryZoneLabel, setDeliveryZoneLabel] = useState("");
@@ -77,7 +77,9 @@ export function SmokehouseOrderTray() {
     }
   };
 
-  const finalTotal = subtotal + (fulfillment === "delivery" ? deliveryFee : 0);
+  const finalTotal = subtotal + deliveryFee;
+  const remainingForMin = Math.max(0, MIN_DELIVERY_SUBTOTAL - subtotal);
+  const isMinMet = subtotal >= MIN_DELIVERY_SUBTOTAL;
 
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,6 +87,16 @@ export function SmokehouseOrderTray() {
 
     if (trayItems.length === 0) {
       setErrorMessage("Your tray is empty.");
+      return;
+    }
+    if (!isMinMet) {
+      setErrorMessage(
+        `Minimum food order for heated catering delivery is $${MIN_DELIVERY_SUBTOTAL}. Please add $${remainingForMin.toFixed(0)} more to your tray.`
+      );
+      return;
+    }
+    if (!deliveryZip || deliveryZip.trim().length !== 5) {
+      setErrorMessage("Please enter your 5-digit Chicagoland delivery ZIP code.");
       return;
     }
     if (!customerName || customerName.trim().length < 2) {
@@ -99,7 +111,7 @@ export function SmokehouseOrderTray() {
       setErrorMessage("Please enter a valid email address.");
       return;
     }
-    if (fulfillment === "delivery" && (!deliveryAddress || deliveryAddress.trim().length < 5)) {
+    if (!deliveryAddress || deliveryAddress.trim().length < 5) {
       setErrorMessage("Please enter your complete delivery street address.");
       return;
     }
@@ -112,10 +124,10 @@ export function SmokehouseOrderTray() {
         phone: customerPhone,
         email: customerEmail,
         eventDate: eventDate || "Date Pending",
-        guestCount: totalItemCount * 5, // rough estimate
+        guestCount: totalItemCount * 5,
         packageName: `Smokehouse Tray Order (${totalItemCount} items)`,
-        serviceStyle: fulfillment === "pickup" ? "Customer Commissary Pickup" : `Heated Drop-Off Delivery (${deliveryZoneLabel || "Zone Pending"})`,
-        deliveryAddress: fulfillment === "delivery" ? `${deliveryAddress}, ZIP ${deliveryZip}` : "Commissary Pickup: 5400 W Belmont Ave, Chicago",
+        serviceStyle: `Heated Drop-Off Delivery (${deliveryZoneLabel || "Chicagoland Dispatch"})`,
+        deliveryAddress: `${deliveryAddress}, ZIP ${deliveryZip}`,
         selectedProteins: trayItems.map(
           (item) => `${item.name} (${item.selectedOption || "Standard"}) x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`
         ),
@@ -402,69 +414,42 @@ export function SmokehouseOrderTray() {
                   );
                 })()}
 
-                {/* 2. Fulfillment Options (Pickup vs. Delivery) */}
+                {/* 2. Chicagoland ZIP Code Delivery Calculator */}
                 <div className="bg-[#171A20] p-4 rounded-xl border border-white/10 space-y-3">
-                  <span className="text-xs font-mono uppercase tracking-wider text-neutral-400 block">
-                    Fulfillment Method
-                  </span>
-                  
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setFulfillment("pickup");
-                        setDeliveryFee(0);
-                      }}
-                      className={`p-3 rounded-xl border text-left transition flex flex-col justify-between ${
-                        fulfillment === "pickup"
-                          ? "bg-[#EA580C]/15 border-[#EA580C] text-white"
-                          : "bg-black/30 border-white/10 text-neutral-400 hover:text-white"
-                      }`}
-                    >
-                      <span className="font-bold text-xs sm:text-sm">🏢 Pickup (Free)</span>
-                      <span className="text-[10px] text-neutral-400 mt-1">
-                        5400 W Belmont Ave
-                      </span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setFulfillment("delivery")}
-                      className={`p-3 rounded-xl border text-left transition flex flex-col justify-between ${
-                        fulfillment === "delivery"
-                          ? "bg-[#EA580C]/15 border-[#EA580C] text-white"
-                          : "bg-black/30 border-white/10 text-neutral-400 hover:text-white"
-                      }`}
-                    >
-                      <span className="font-bold text-xs sm:text-sm">🚚 Heated Drop-Off</span>
-                      <span className="text-[10px] text-neutral-400 mt-1">
-                        Chicagoland delivery
-                      </span>
-                    </button>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-mono uppercase tracking-wider text-[#F59E0B] font-bold flex items-center gap-1.5">
+                      <span>🚚</span>
+                      <span>Heated Chicagoland Delivery</span>
+                    </span>
+                    <span className="text-[10px] font-mono text-neutral-400">
+                      Dispatched from Chicago&rsquo;s NW Side
+                    </span>
                   </div>
 
-                  {fulfillment === "delivery" && (
-                    <div className="pt-2 space-y-2">
-                      <label className="text-xs text-neutral-300 block">
-                        Enter Delivery ZIP Code:
-                      </label>
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          maxLength={5}
-                          value={deliveryZip}
-                          onChange={(e) => handleZipChange(e.target.value)}
-                          placeholder="e.g. 60634"
-                          className="w-28 px-3 py-2 bg-black/50 border border-white/20 rounded-lg text-xs font-mono text-white focus:outline-none focus:border-[#EA580C]"
-                        />
-                        {deliveryZoneLabel && (
-                          <span className="text-xs font-mono text-emerald-400 flex items-center">
-                            ✓ {deliveryZoneLabel}
-                          </span>
-                        )}
-                      </div>
+                  <div className="space-y-2">
+                    <label className="text-xs text-neutral-300 block">
+                      Enter Event / Venue 5-Digit ZIP Code *:
+                    </label>
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <input
+                        type="text"
+                        maxLength={5}
+                        value={deliveryZip}
+                        onChange={(e) => handleZipChange(e.target.value)}
+                        placeholder="e.g. 60634"
+                        className="w-28 px-3 py-2 bg-black/50 border border-white/20 rounded-lg text-xs font-mono text-white focus:outline-none focus:border-[#EA580C]"
+                      />
+                      {deliveryZoneLabel ? (
+                        <span className="text-xs font-mono text-emerald-400 flex items-center">
+                          ✓ {deliveryZoneLabel}
+                        </span>
+                      ) : (
+                        <span className="text-[11px] text-neutral-400">
+                          Calculates instant zone fee
+                        </span>
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
 
                 {/* 3. Event Date & Time */}
@@ -531,15 +516,13 @@ export function SmokehouseOrderTray() {
                       />
                     </div>
 
-                    {fulfillment === "delivery" && (
-                      <input
-                        type="text"
-                        placeholder="Delivery Street Address *"
-                        value={deliveryAddress}
-                        onChange={(e) => setDeliveryAddress(e.target.value)}
-                        className="w-full px-3 py-2.5 bg-black/40 border border-white/15 rounded-lg text-xs text-white placeholder:text-neutral-500 focus:outline-none focus:border-[#EA580C]"
-                      />
-                    )}
+                    <input
+                      type="text"
+                      placeholder="Delivery Street Address & City *"
+                      value={deliveryAddress}
+                      onChange={(e) => setDeliveryAddress(e.target.value)}
+                      className="w-full px-3 py-2.5 bg-black/40 border border-white/15 rounded-lg text-xs text-white placeholder:text-neutral-500 focus:outline-none focus:border-[#EA580C]"
+                    />
 
                     <textarea
                       rows={2}
@@ -564,19 +547,55 @@ export function SmokehouseOrderTray() {
           {/* Drawer Footer (Summary & Action) */}
           {!submitSuccess && trayItems.length > 0 && (
             <div className="p-5 border-t border-white/10 bg-[#15181E] space-y-3">
+              {/* Smart $150 Delivery Minimum Progress Bar */}
+              <div
+                className={`p-3 rounded-xl border ${
+                  isMinMet
+                    ? "bg-emerald-950/40 border-emerald-500/40"
+                    : "bg-[#1C1612] border-[#EA580C]/40"
+                }`}
+              >
+                <div className="flex items-center justify-between text-xs font-bold mb-1.5">
+                  {isMinMet ? (
+                    <span className="text-emerald-400 flex items-center gap-1.5">
+                      <span>✓</span>
+                      <span>$150 Delivery Minimum Met!</span>
+                    </span>
+                  ) : (
+                    <span className="text-[#F59E0B] flex items-center gap-1.5">
+                      <span>🔥</span>
+                      <span>
+                        Add ${remainingForMin.toFixed(0)} more to hit $150 delivery minimum
+                      </span>
+                    </span>
+                  )}
+                  <span className="font-mono text-[11px] text-neutral-300">
+                    ${subtotal.toFixed(0)} / ${MIN_DELIVERY_SUBTOTAL}
+                  </span>
+                </div>
+                <div className="w-full h-2 rounded-full bg-black/60 overflow-hidden">
+                  <div
+                    className={`h-full transition-all duration-300 ${
+                      isMinMet ? "bg-emerald-500" : "bg-gradient-to-r from-[#EA580C] to-[#F59E0B]"
+                    }`}
+                    style={{
+                      width: `${Math.min(100, Math.round((subtotal / MIN_DELIVERY_SUBTOTAL) * 100))}%`,
+                    }}
+                  />
+                </div>
+              </div>
+
               <div className="space-y-1.5 text-xs">
                 <div className="flex justify-between text-neutral-400">
                   <span>Food Subtotal ({totalItemCount} items)</span>
                   <span className="font-mono font-bold text-white">${subtotal.toFixed(2)}</span>
                 </div>
-                {fulfillment === "delivery" && (
-                  <div className="flex justify-between text-neutral-400">
-                    <span>Heated Drop-Off Delivery</span>
-                    <span className="font-mono font-bold text-[#F59E0B]">
-                      {deliveryFee > 0 ? `+$${deliveryFee}.00` : "Enter ZIP"}
-                    </span>
-                  </div>
-                )}
+                <div className="flex justify-between text-neutral-400">
+                  <span>Heated Drop-Off Delivery</span>
+                  <span className="font-mono font-bold text-[#F59E0B]">
+                    {deliveryFee > 0 ? `+$${deliveryFee}.00` : "Enter ZIP above"}
+                  </span>
+                </div>
                 <div className="pt-2 border-t border-white/10 flex justify-between items-baseline">
                   <span className="font-bold text-sm text-white">Estimated Order Total</span>
                   <span className="text-xl font-black font-mono text-[#EA580C]">
@@ -587,14 +606,16 @@ export function SmokehouseOrderTray() {
 
               <button
                 onClick={handleSubmitOrder}
-                disabled={isSubmitting}
-                className="w-full py-3.5 rounded-xl bg-[#EA580C] hover:bg-[#C2410C] text-white font-extrabold text-sm transition shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                disabled={isSubmitting || !isMinMet}
+                className="w-full py-3.5 rounded-xl bg-[#EA580C] hover:bg-[#C2410C] text-white font-extrabold text-sm transition shadow-lg flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>
                     <span className="animate-spin text-lg">⏳</span>
                     <span>Dispatching Order to Marion...</span>
                   </>
+                ) : !isMinMet ? (
+                  <span>Add ${remainingForMin.toFixed(0)} More to Unlock Delivery ($150 Min)</span>
                 ) : (
                   <>
                     <span>Submit Smokehouse Order</span>

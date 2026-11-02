@@ -35,7 +35,10 @@ function parsePrices(priceStr: string): { single?: number; half?: number; full?:
 export function ButcherBlockMenu() {
   const [activeTab, setActiveTab] = useState<MenuCategory["id"]>("smoked-meats");
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
-  const { addItem } = useOrderTray();
+  const { addItem, subtotal, totalItemCount, openTray } = useOrderTray();
+  const MIN_DELIVERY_SUBTOTAL = 150;
+  const remainingForMin = Math.max(0, MIN_DELIVERY_SUBTOTAL - subtotal);
+  const isMinMet = subtotal >= MIN_DELIVERY_SUBTOTAL;
 
   const currentCategory =
     MENU_CATEGORIES.find((cat) => cat.id === activeTab) || MENU_CATEGORIES[0];
@@ -237,7 +240,7 @@ export function ButcherBlockMenu() {
         </div>
 
         {/* 2. STICKY CATEGORY PILL BAR (All 5 Categories Visible on Mobile & Desktop — Zero Horizontal Scroll) */}
-        <div className="sticky top-16 md:top-20 z-20 bg-[#FAF8F5]/95 backdrop-blur-md py-3 -mx-4 px-3 sm:px-4 mb-8 border-y border-[#E5E0D8] shadow-sm">
+        <div className="sticky top-16 md:top-20 z-20 bg-[#FAF8F5]/95 backdrop-blur-md py-3 -mx-4 px-3 sm:px-4 mb-8 border-y border-[#E5E0D8] shadow-sm space-y-2.5">
           <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-2 items-center">
             {MENU_CATEGORIES.map((cat, idx) => {
               const isActive = activeTab === cat.id;
@@ -260,6 +263,50 @@ export function ButcherBlockMenu() {
                 </button>
               );
             })}
+          </div>
+
+          {/* Live Smart $150 Heated Delivery Minimum Bar */}
+          <div className="max-w-3xl mx-auto rounded-xl bg-[#0F172A] text-white px-3.5 py-2 border border-slate-800 shadow-sm flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div className="flex items-center gap-2 min-w-0">
+              <span>{isMinMet ? "✅" : "🚚"}</span>
+              {totalItemCount === 0 ? (
+                <span className="text-slate-200 font-semibold">
+                  Heated Chicagoland Delivery Minimum: <strong className="text-[#F59E0B]">$150.00</strong> <span className="hidden sm:inline text-slate-400">• Mix &amp; match any pans, slabs, or plates</span>
+                </span>
+              ) : isMinMet ? (
+                <span className="text-emerald-400 font-bold">
+                  $150 Delivery Minimum Met! (${subtotal.toFixed(0)} in tray)
+                </span>
+              ) : (
+                <span className="text-amber-300 font-bold">
+                  Tray: ${subtotal.toFixed(0)} / $150 Min — Add ${remainingForMin.toFixed(0)} more for delivery
+                </span>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2.5 ml-auto">
+              {totalItemCount > 0 && (
+                <div className="hidden sm:block w-24 h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div
+                    className={`h-full transition-all duration-300 ${
+                      isMinMet ? "bg-emerald-500" : "bg-[#EA580C]"
+                    }`}
+                    style={{
+                      width: `${Math.min(100, Math.round((subtotal / MIN_DELIVERY_SUBTOTAL) * 100))}%`,
+                    }}
+                  />
+                </div>
+              )}
+              {totalItemCount > 0 && (
+                <button
+                  type="button"
+                  onClick={openTray}
+                  className="px-2.5 py-1 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white font-bold text-[11px] uppercase tracking-wider transition cursor-pointer shrink-0"
+                >
+                  View Tray ({totalItemCount}) &rarr;
+                </button>
+              )}
+            </div>
           </div>
         </div>
 

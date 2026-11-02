@@ -65,11 +65,11 @@ export const SITE_CONFIG: SiteConfig = {
   primaryAdminEmail: 'boldenmarion83@gmail.com',
   secondaryAdminEmail: 'bbqcateringking83@gmail.com',
   hubAddress: {
-    street: '3401 N Orange Ave',
+    street: 'Chicago’s Northwest Side',
     city: 'Chicago',
     state: 'IL',
     zip: '60634',
-    formatted: '3401 N Orange Ave, Chicago, IL 60634',
+    formatted: 'Chicago’s Northwest Side, Chicago, IL 60634',
     coordinates: {
       latitude: 41.9427,
       longitude: -87.8286

@@ -46,7 +46,7 @@ export async function onRequestPost(context) {
         type: fulfillmentType,
         date: targetDate,
         timeSlot,
-        location: fulfillmentType === 'pickup' ? '3401 N Orange Ave, Chicago, IL 60634' : deliveryAddress,
+        location: deliveryAddress || "Chicago’s Northwest Side Dispatch (60634)",
       },
       items,
       total: `$${total.toFixed(2)}`,

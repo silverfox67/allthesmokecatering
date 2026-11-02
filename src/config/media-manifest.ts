@@ -69,7 +69,7 @@ export const MEDIA_MANIFEST: MediaManifest = {
         verificationMethod: 'vector_brand_identity',
         sharpOptimized: true,
         pitmasterSubject: 'Option 2 ATS Monogram with Crown Flame',
-        location: '3401 N Orange Ave, Chicago, IL',
+        location: 'Chicago’s Northwest Side, Chicago, IL',
         auditDate: '2026-10-19',
         notes: 'Hand-crafted high-contrast ATS lettermark designed specifically for micro-viewport browser tab readability.'
       }
@@ -90,7 +90,7 @@ export const MEDIA_MANIFEST: MediaManifest = {
         verificationMethod: 'vector_brand_identity',
         sharpOptimized: true,
         pitmasterSubject: 'Option 1 Full Smokehouse Badge with Charcoal Grate and Fire Ribbon',
-        location: '3401 N Orange Ave, Chicago, IL',
+        location: 'Chicago’s Northwest Side, Chicago, IL',
         auditDate: '2026-10-19',
         notes: 'High-resolution official circular crest for mobile home screen bookmarks and Apple device touch targets.'
       }
@@ -153,7 +153,7 @@ export const MEDIA_MANIFEST: MediaManifest = {
         verificationMethod: 'sharp_pipeline_optimized',
         sharpOptimized: true,
         pitmasterSubject: 'Pitmaster Hand-Slicing Hickory-Smoked Texas Brisket with Ribs and Mac',
-        location: '3401 N Orange Ave Hub, Chicago, IL',
+        location: 'Chicago’s Northwest Side Hub, Chicago, IL',
         auditDate: '2026-10-19',
         notes: 'Validated real culinary presentation: authentic woodgrain cutting board, real smoke ring on brisket, crisp bone ends on St. Louis spare ribs, zero AI anatomical defects.'
       }

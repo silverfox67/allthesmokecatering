@@ -11,8 +11,11 @@ import { QuoteModal } from "@/components/forms/QuoteModal";
 import { Footer } from "@/components/layout/Footer";
 
 function ChalkboardContent() {
-  const { addItem } = useOrderTray();
+  const { addItem, subtotal, totalItemCount, openTray } = useOrderTray();
   const [addedId, setAddedId] = useState<string | null>(null);
+  const MIN_DELIVERY_SUBTOTAL = 150;
+  const remainingForMin = Math.max(0, MIN_DELIVERY_SUBTOTAL - subtotal);
+  const isMinMet = subtotal >= MIN_DELIVERY_SUBTOTAL;
 
   const handleAddSpecial = (special: WeeklyChalkboardItem) => {
     addItem({
@@ -29,7 +32,37 @@ function ChalkboardContent() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto space-y-6">
+      {/* Live Smart $150 Heated Delivery Minimum Bar */}
+      <div className="max-w-3xl mx-auto rounded-xl bg-[#141210] text-white px-4 py-2.5 border border-[#C8A97E]/30 shadow-lg flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div className="flex items-center gap-2">
+          <span>{isMinMet ? "✅" : "🚚"}</span>
+          {totalItemCount === 0 ? (
+            <span className="text-zinc-200 font-semibold">
+              Heated Chicagoland Delivery Minimum: <strong className="text-[#F59E0B]">$150.00</strong> <span className="hidden sm:inline text-zinc-400">• Mix &amp; match specials and menu pans</span>
+            </span>
+          ) : isMinMet ? (
+            <span className="text-emerald-400 font-bold">
+              $150 Delivery Minimum Met! (${subtotal.toFixed(0)} in tray)
+            </span>
+          ) : (
+            <span className="text-amber-300 font-bold">
+              Tray: ${subtotal.toFixed(0)} / $150 Min — Add ${remainingForMin.toFixed(0)} more for delivery
+            </span>
+          )}
+        </div>
+
+        {totalItemCount > 0 && (
+          <button
+            type="button"
+            onClick={openTray}
+            className="px-3 py-1 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white font-bold text-[11px] uppercase tracking-wider transition cursor-pointer shrink-0"
+          >
+            View Tray ({totalItemCount}) &rarr;
+          </button>
+        )}
+      </div>
+
       {/* 4-PIECE MITERED WEATHERED BARNWOOD TIMBER FRAME */}
       <div className="mitered-wood-frame-container shadow-2xl">
         {/* 4 Mitered Timber Rails with True Grain Orientation */}
@@ -130,15 +163,15 @@ function ChalkboardContent() {
                   ★ Smoked fresh on Marion Bolden&rsquo;s live-fire trailer rig in Chicago.
                 </p>
                 <p className="font-chalk chalk-yellow text-[11px] opacity-80 mt-0.5">
-                  Weekend commissary pickup or heated drop-off delivery across Cook, Will, DuPage &amp; Lake counties.
+                  Heated drop-off delivery across Chicago, Cook, Will, DuPage &amp; Lake counties ($150 min order).
                 </p>
               </div>
 
               <a
-                href="tel:7085154676"
+                href="tel:7737079988"
                 className="font-chalk text-xs chalk-orange hover:underline shrink-0"
               >
-                Questions? Call/Text (708) 515-4676
+                Questions? Call/Text (773) 707-9988
               </a>
             </div>
 

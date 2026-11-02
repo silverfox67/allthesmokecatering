@@ -153,7 +153,7 @@ export async function POST(req: Request) {
           ` : ""}
 
           <div class="footer">
-            Operations Hub: 3401 N Orange Ave, Chicago, IL 60634<br>
+            Operations Hub: Chicago&rsquo;s Northwest Side (60634)<br>
             Direct Dispatch Phone: (773) 707-9988
           </div>
         </div>
