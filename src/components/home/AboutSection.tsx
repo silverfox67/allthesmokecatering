@@ -56,18 +56,18 @@ export function AboutSection() {
             </blockquote>
 
             {/* Compact Single-Row Proof Strip (Replaces 3 Stacked Mobile Boxes) */}
-            <div className="pt-2 border-y border-stone-300/80 py-3.5 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm font-bold text-stone-800 uppercase tracking-wider">
-              <span className="inline-flex items-center gap-1.5">
+            <div className="border-y border-stone-300/80 py-3.5 flex flex-wrap items-center gap-x-4 sm:gap-x-5 gap-y-2 text-xs sm:text-[13px] font-bold text-stone-800 uppercase tracking-wider">
+              <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                 <span className="text-base">🪵</span>
-                <span>100% Cured Oak &amp; Hickory</span>
+                <span>100% Oak &amp; Hickory</span>
               </span>
               <span className="hidden sm:inline text-stone-300">&bull;</span>
-              <span className="inline-flex items-center gap-1.5">
+              <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                 <span className="text-base">🚚</span>
-                <span>On-Site Mobile Smoker Rig</span>
+                <span>On-Site Smoker Rig</span>
               </span>
               <span className="hidden sm:inline text-stone-300">&bull;</span>
-              <span className="inline-flex items-center gap-1.5">
+              <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                 <span className="text-base">📍</span>
                 <span>All Chicagoland</span>
               </span>
@@ -105,14 +105,14 @@ export function AboutSection() {
 
               {/* Single Feature Card: Custom Mobile Trailer Smoker Rig */}
               <div className="relative rounded-[24px] overflow-hidden border border-stone-300/90 bg-zinc-950 shadow-2xl shadow-stone-900/25 group">
-                <div className="relative aspect-[4/4.2] sm:aspect-[4/3.8] w-full overflow-hidden bg-zinc-900">
+                <div className="relative aspect-[4/4.5] sm:aspect-[4/4.6] w-full overflow-hidden bg-zinc-900">
                   <Image
                     src="/images/about/marion-mobile-smoker-rig.jpg"
                     alt="Marion Bolden's custom single-axle offset trailer smoker rolling live hardwood smoke on-site at a Chicagoland park venue"
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 480px"
                     priority={false}
-                    className="object-cover object-center scale-[1.01] group-hover:scale-105 transition-transform duration-700 ease-out"
+                    className="object-cover object-top scale-[1.01] group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   
                   {/* Subtle Cinematic Vignette */}
