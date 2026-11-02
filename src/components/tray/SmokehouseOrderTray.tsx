@@ -26,6 +26,7 @@ export function SmokehouseOrderTray() {
     trayItems,
     isOpen,
     closeTray,
+    addItem,
     updateQuantity,
     removeItem,
     clearTray,
@@ -327,6 +328,77 @@ export function SmokehouseOrderTray() {
                     </div>
                   ))}
                 </div>
+
+                {/* 1B. Complete the Feast 1-Click Upsell Strip (Jack Stack Pattern) */}
+                {(() => {
+                  const UPSELL_ADDONS = [
+                    {
+                      id: "habanero-cornbread-half-pan",
+                      baseId: "habanero-cornbread",
+                      name: "Habanero Cheddar Skillet Cornbread",
+                      shortLabel: "+ Cornbread Half Pan ($35)",
+                      selectedOption: "Half Pan (15 squares)",
+                      price: 35,
+                      image: "/images/menu/habanero-cheddar-cornbread.jpg",
+                      category: "specialties",
+                    },
+                    {
+                      id: " baked-beans-half-pan",
+                      baseId: "baked-beans",
+                      name: "Smokehouse Baked Beans w/ Burnt Ends",
+                      shortLabel: "+ Baked Beans Half Pan ($55)",
+                      selectedOption: "Half Pan (15–20)",
+                      price: 55,
+                      category: "sides",
+                    },
+                    {
+                      id: "mac-cheese-half-pan",
+                      baseId: "mac-cheese",
+                      name: "Pitmaster Baked Mac & Cheese",
+                      shortLabel: "+ 4-Cheese Mac Half Pan ($75)",
+                      selectedOption: "Half Pan (12–15)",
+                      price: 75,
+                      category: "sides",
+                    },
+                  ];
+                  const availableAddons = UPSELL_ADDONS.filter(
+                    (addon) => !trayItems.some((t) => t.baseId === addon.baseId)
+                  );
+                  if (availableAddons.length === 0) return null;
+
+                  return (
+                    <div className="bg-[#181512] p-3.5 rounded-xl border border-[#EA580C]/35 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#F59E0B] flex items-center gap-1.5">
+                          <span>🔥</span>
+                          <span>Complete Your Feast (1-Click Add)</span>
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {availableAddons.map((addon) => (
+                          <button
+                            key={addon.id}
+                            type="button"
+                            onClick={() =>
+                              addItem({
+                                id: addon.id.trim(),
+                                baseId: addon.baseId,
+                                name: addon.name,
+                                selectedOption: addon.selectedOption,
+                                price: addon.price,
+                                image: addon.image,
+                                category: addon.category,
+                              })
+                            }
+                            className="px-2.5 py-1.5 rounded-lg bg-black/50 hover:bg-[#EA580C] border border-[#C8A97E]/30 hover:border-[#EA580C] text-[11px] font-bold text-neutral-200 hover:text-white transition"
+                          >
+                            {addon.shortLabel}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 {/* 2. Fulfillment Options (Pickup vs. Delivery) */}
                 <div className="bg-[#171A20] p-4 rounded-xl border border-white/10 space-y-3">

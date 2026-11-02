@@ -11,6 +11,12 @@ interface FaqItem {
 
 const FAQ_ITEMS: FaqItem[] = [
   {
+    id: "reheating-holding-guide",
+    question: "🔥 Pitmaster Heating & Buffet Holding Guide (How to keep pans juicy & hot)",
+    answer:
+      "• Chafing Dish Holding: Fill your wire chafer water pan with 1 inch of hot water before lighting twin Sternos; keep foil lids tented to trap steam.\n• Whole Brisket & Beef Short Ribs: Reheat covered tightly in foil with 1/4 cup beef broth or pit jus at 275°F for 25–35 minutes until 155°F internal.\n• St. Louis, Baby Back & Spare Ribs: Wrap slabs in foil with a splash of apple juice or pit glaze; warm at 275°F for 20–25 minutes.\n• Smoked Party Wings: Crisp uncovered on a sheet tray at 375°F for 8–10 minutes.\n• Scratch Sides (Mac & Cheese, Beans, Casseroles): Keep covered in foil at 325°F for 20–25 minutes; stir a splash of milk into Mac & Cheese before serving.",
+  },
+  {
     id: "booking-timeline",
     question: "How far in advance do I need to book catering in Chicagoland?",
     answer:
@@ -156,7 +162,7 @@ export function FaqSection() {
                     aria-labelledby={`faq-btn-${item.id}`}
                     className="px-5 sm:px-6 pb-4 pt-0 text-xs sm:text-sm text-stone-600 leading-relaxed bg-white/60"
                   >
-                    <p className="border-t border-stone-200/60 pt-2.5">
+                    <p className="border-t border-stone-200/60 pt-2.5 whitespace-pre-line">
                       {item.answer}
                     </p>
                   </div>

@@ -199,6 +199,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     description: 'Tender center-cut turkey chops marinated in savory herbs and smoked until succulent and slice-tender.',
     image: '/images/menu/smoked-turkey-chops.jpg',
     category: 'smoked-meats',
+    badge: '100% Pork-Free',
   },
   {
     id: 'turkey-legs-wings',
@@ -209,6 +210,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     image: '/images/menu/smoked-turkey-legs-wings.jpg',
     category: 'smoked-meats',
     popular: true,
+    badge: '100% Pork-Free',
   },
   {
     id: 'smoked-oxtails',
@@ -218,7 +220,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     description: 'Rich beef oxtails kissed with hardwood smoke then slow-simmered in rich aromatics and brown gravy until fall-apart tender.',
     image: '/images/menu/smoked-beef-oxtails.jpg',
     category: 'smoked-meats',
-    badge: 'Chef Specialty',
+    badge: 'Chef Specialty • Beef',
   },
   {
     id: 'beef-short-ribs',
@@ -228,7 +230,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     description: 'Colossal prime beef plate short ribs with deep mahogany smoke ring, unctuous marbling, and intense beef flavor.',
     image: '/images/menu/beef-short-ribs-dino.jpg',
     category: 'smoked-meats',
-    badge: 'Limited Run',
+    badge: 'Prime 100% Beef',
   },
   {
     id: 'smoked-beef-sausage',
@@ -238,6 +240,7 @@ export const PITMASTER_MENU_ITEMS: MenuItem[] = [
     description: 'Coarse ground beef sausage in natural casing, smoked with hickory wood until snappy, smoky, and juicy.',
     image: '/images/menu/smoked-beef-sausage.jpg',
     category: 'smoked-meats',
+    badge: '100% All-Beef • No Pork',
   },
 
   // 2. BBQ SLABS, TIPS & PROTEIN PANS

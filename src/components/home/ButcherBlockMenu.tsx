@@ -325,8 +325,8 @@ export function ButcherBlockMenu() {
                             Top Seller
                           </span>
                         )}
-                        {item.badge && !item.skull && !item.popular && (
-                          <span className="text-[10px] font-bold uppercase tracking-wider bg-slate-900 text-slate-200 px-2 py-0.5 rounded-md">
+                        {item.badge && !item.skull && (
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-slate-900 text-[#C8A97E] border border-[#C8A97E]/30 px-2 py-0.5 rounded-md">
                             {item.badge}
                           </span>
                         )}

@@ -569,6 +569,36 @@ export function PackageGrid() {
             ))}
           </div>
         </div>
+
+        {/* ======================================================== */}
+        {/* 4. CORPORATE, OFFICE & PORK-FREE CATERING FAST-TRACK BAR */}
+        {/* ======================================================== */}
+        <div className="mt-8 p-5 sm:p-6 rounded-2xl bg-[#161619] border border-[#C8A97E]/30 shadow-xl flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
+          <div className="space-y-1.5">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[11px] font-extrabold uppercase tracking-widest bg-[#EA580C]/20 text-[#FF8C38] border border-[#EA580C]/40 px-2.5 py-0.5 rounded-full">
+                ★ CORPORATE &amp; MIXED-CROWD READY ★
+              </span>
+              <span className="text-xs font-bold text-[#C8A97E]">
+                100% Pork-Free Lineup Available
+              </span>
+            </div>
+            <h4 className="font-display text-lg sm:text-xl font-bold text-white tracking-wide">
+              Feeding an Office Lunch, Shift Crew, Wedding, or Mixed-Diet Group?
+            </h4>
+            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-3xl">
+              Every buffet and party pan bundle can be customized <strong className="text-zinc-200">100% Pork-Free</strong> (Prime Texas Brisket, Smoked Turkey Chops, Turkey Legs, All-Beef Links, Smoked Oxtails &amp; Cedar Salmon). Itemized corporate receipts and punctual heated setup included.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 shrink-0 w-full lg:w-auto">
+            <a
+              href="#contact"
+              className="w-full sm:w-auto inline-flex h-11 px-5 items-center justify-center rounded-xl bg-gradient-to-r from-[#EA580C] to-[#C2410C] hover:from-[#FF7A00] hover:to-[#EA580C] text-white font-display text-xs sm:text-sm font-bold tracking-wider uppercase shadow-md transition-all"
+            >
+              Request Custom / Corporate Quote &rarr;
+            </a>
+          </div>
+        </div>
       </div>
 
       {/* 3. The Full Manifest Detail Popup Modal (Shared) */}
