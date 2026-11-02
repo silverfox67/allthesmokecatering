@@ -379,7 +379,7 @@ export function ButcherBlockMenu() {
                     onClick={openTray}
                     className="px-2.5 py-1 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white font-bold text-[11px] uppercase tracking-wider transition cursor-pointer shrink-0"
                   >
-                    View Tray ({totalItemCount}) &rarr;
+                    Quote Tray ({totalItemCount}) &rarr;
                   </button>
                 )}
               </div>

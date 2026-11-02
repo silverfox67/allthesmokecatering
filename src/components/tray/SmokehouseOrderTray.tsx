@@ -9,7 +9,7 @@ import { CalendarDatePicker } from "@/components/forms/CalendarDatePicker";
 const TIER_1_ZIPS = new Set([
   "60634", "60630", "60631", "60641", "60656", "60706", "60707",
   "60018", "60068", "60131", "60171", "60639", "60646", "60638",
-  "60176", "6025", "60618", "60076", "60714", "60651"
+  "60176", "60625", "60618", "60076", "60714", "60651"
 ]);
 
 const TIER_2_ZIPS = new Set([
@@ -120,22 +120,22 @@ export function SmokehouseOrderTray() {
 
     try {
       const payload = {
-        name: customerName,
-        phone: customerPhone,
-        email: customerEmail,
-        eventDate: eventDate || "Date Pending",
-        guestCount: totalItemCount * 5,
-        packageName: `Smokehouse Tray Order (${totalItemCount} items)`,
-        serviceStyle: `Heated Drop-Off Delivery (${deliveryZoneLabel || "Chicagoland Dispatch"})`,
-        deliveryAddress: `${deliveryAddress}, ZIP ${deliveryZip}`,
-        selectedProteins: trayItems.map(
-          (item) => `${item.name} (${item.selectedOption || "Standard"}) x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`
-        ),
-        notes: `Ready Time: ${eventTime}. Subtotal: $${subtotal.toFixed(2)}. Delivery Fee: $${deliveryFee}. Total: $${finalTotal.toFixed(2)}. Notes: ${orderNotes}`,
-        client: "allthesmoke",
+        customerName: customerName.trim(),
+        customerPhone: customerPhone.trim(),
+        customerEmail: customerEmail.trim(),
+        fulfillmentType: "delivery",
+        deliveryAddress: `${deliveryAddress.trim()} (ZIP: ${deliveryZip.trim()})`,
+        deliveryZip: deliveryZip.trim(),
+        eventDate: eventDate || "Weekend Batch / As Soon As Available",
+        eventTime,
+        orderNotes: orderNotes.trim(),
+        items: trayItems,
+        subtotal,
+        deliveryFee,
+        finalTotal,
       };
 
-      const res = await fetch("/api/lead", {
+      const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -143,10 +143,10 @@ export function SmokehouseOrderTray() {
 
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || "Failed to submit order request.");
+        throw new Error(data.error || "Failed to submit quote request.");
       }
 
-      setTicketId(data.ticketId || "ATS-ORDER-" + Math.floor(1000 + Math.random() * 9000));
+      setTicketId(data.ticketId || "ATS-QUOTE-" + Math.floor(1000 + Math.random() * 9000));
       setSubmitSuccess(true);
       clearTray();
     } catch (err: any) {
@@ -169,20 +169,23 @@ export function SmokehouseOrderTray() {
         <div className="w-screen max-w-md sm:max-w-lg bg-[#111317] border-l border-white/10 text-neutral-100 flex flex-col shadow-2xl relative">
           
           {/* Drawer Header */}
-          <div className="px-6 py-5 border-b border-white/10 bg-[#15181E] flex items-center justify-between">
+          <div className="px-6 py-4 border-b border-white/10 bg-[#15181E] flex items-center justify-between">
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[#EA580C] text-sm">🔥</span>
                 <span className="text-[11px] font-mono uppercase tracking-widest text-[#F59E0B]">
-                  All The Smoke BBQ
+                  All The Smoke BBQ • Smoked To Order
                 </span>
               </div>
               <h3 className="text-xl font-black text-white mt-0.5 flex items-center gap-2">
-                <span>Smokehouse Order Tray</span>
+                <span>Smokehouse Quote Tray</span>
                 <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-white/10 text-neutral-300">
                   {totalItemCount} {totalItemCount === 1 ? "item" : "items"}
                 </span>
               </h3>
+              <p className="text-[11px] text-neutral-400 mt-0.5">
+                Build your custom pan &amp; meat lineup for Pitmaster Marion&rsquo;s approval
+              </p>
             </div>
             <button
               onClick={closeTray}
@@ -205,31 +208,31 @@ export function SmokehouseOrderTray() {
                 </div>
                 <div>
                   <span className="text-xs font-mono uppercase tracking-widest text-[#F59E0B]">
-                    Order Request Received
+                    Itemized Quote Request Received
                   </span>
                   <h4 className="text-2xl font-black text-white mt-1">
-                    We&rsquo;re Firing Up The Pit!
+                    Sent to Pitmaster Marion!
                   </h4>
                   <p className="text-sm font-mono font-bold text-neutral-300 mt-1">
-                    Ticket #{ticketId}
+                    Quote Ticket #{ticketId}
                   </p>
                 </div>
 
                 <div className="bg-[#181B22] p-5 rounded-2xl border border-white/10 text-left text-xs sm:text-sm space-y-2.5">
                   <p className="text-neutral-300">
-                    Marion Bolden and the pit crew have received your kitchen dispatch ticket. We review all weekend smokehouse orders within 12 hours.
+                    Pitmaster Marion Bolden has received your itemized tray request and will review his smoker schedule to confirm availability for your date within <strong>12 hours</strong>.
                   </p>
                   <div className="p-3 bg-black/40 rounded-xl border border-white/10 space-y-1">
-                    <p className="font-bold text-white">💰 50% Deposit &amp; Payment Options:</p>
+                    <p className="font-bold text-white">🔥 Next Steps &amp; Approval:</p>
                     <p className="text-neutral-400 text-xs">
-                      • <strong>Zelle:</strong> Send 50% deposit to <span className="text-[#F59E0B] font-mono font-bold">773-707-9988</span> (memo: #{ticketId}).
+                      • <strong>No Immediate Charge:</strong> Because every brisket, slab, and pan is smoked fresh over hardwood logs, Marion confirms your date and meat availability first.
                     </p>
                     <p className="text-neutral-400 text-xs">
-                      • <strong>Card / Apple Pay:</strong> Marion will text or email your official invoice link.
+                      • <strong>50% Deposit Upon Approval:</strong> Once Marion confirms your smoke schedule, you can lock it in via Zelle (<span className="text-[#F59E0B] font-mono font-bold">773-707-9988</span>) or invoice link.
                     </p>
                   </div>
                   <p className="text-neutral-400 text-xs pt-1">
-                    Direct commissary line: <strong className="text-white">(773) 707-9988</strong>
+                    Direct Pitmaster Line: <strong className="text-white">(773) 707-9988</strong>
                   </p>
                 </div>
 
@@ -249,9 +252,9 @@ export function SmokehouseOrderTray() {
                 <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 text-2xl flex items-center justify-center mx-auto text-neutral-400">
                   🍖
                 </div>
-                <h4 className="text-lg font-bold text-white">Your tray is currently empty</h4>
+                <h4 className="text-lg font-bold text-white">Your quote tray is currently empty</h4>
                 <p className="text-xs text-neutral-400 max-w-xs mx-auto">
-                  Browse the Pitmaster Menu or Weekly Chalkboard and click &ldquo;Order / Add to Tray&rdquo; to build your game-day feast!
+                  Browse the Pitmaster Menu or Weekly Chalkboard and click &ldquo;+ Half Pan&rdquo;, &ldquo;+ Full Pan&rdquo;, or &ldquo;+ Add to Tray&rdquo; to build your custom quote!
                 </p>
                 <button
                   onClick={closeTray}
@@ -266,7 +269,7 @@ export function SmokehouseOrderTray() {
                 {/* 1. Item List */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-xs text-neutral-400">
-                    <span className="font-mono uppercase tracking-wider">Items in Tray</span>
+                    <span className="font-mono uppercase tracking-wider">Items in Your Quote Tray</span>
                     <button
                       onClick={clearTray}
                       type="button"
@@ -455,7 +458,7 @@ export function SmokehouseOrderTray() {
                 {/* 3. Event Date & Time */}
                 <div className="bg-[#171A20] p-4 rounded-xl border border-white/10 space-y-3">
                   <span className="text-xs font-mono uppercase tracking-wider text-neutral-400 block">
-                    Preferred Date &amp; Time (Min 48h Notice)
+                    Requested Date &amp; Time (Subject to Smoker Schedule)
                   </span>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -487,7 +490,7 @@ export function SmokehouseOrderTray() {
                 {/* 4. Customer Contact Details */}
                 <div className="bg-[#171A20] p-4 rounded-xl border border-white/10 space-y-3">
                   <span className="text-xs font-mono uppercase tracking-wider text-neutral-400 block">
-                    Contact &amp; Delivery Information
+                    Contact &amp; Venue Information
                   </span>
 
                   <div className="space-y-2.5">
@@ -526,7 +529,7 @@ export function SmokehouseOrderTray() {
 
                     <textarea
                       rows={2}
-                      placeholder="Special instructions (e.g. extra sauce, gate code, serving tongs)..."
+                      placeholder="Special requests (e.g. dietary notes, extra pit sauce, gate code)..."
                       value={orderNotes}
                       onChange={(e) => setOrderNotes(e.target.value)}
                       className="w-full px-3 py-2 bg-black/40 border border-white/15 rounded-lg text-xs text-white placeholder:text-neutral-500 focus:outline-none focus:border-[#EA580C]"
@@ -587,7 +590,7 @@ export function SmokehouseOrderTray() {
 
               <div className="space-y-1.5 text-xs">
                 <div className="flex justify-between text-neutral-400">
-                  <span>Food Subtotal ({totalItemCount} items)</span>
+                  <span>Estimated Food Subtotal ({totalItemCount} items)</span>
                   <span className="font-mono font-bold text-white">${subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-neutral-400">
@@ -597,7 +600,7 @@ export function SmokehouseOrderTray() {
                   </span>
                 </div>
                 <div className="pt-2 border-t border-white/10 flex justify-between items-baseline">
-                  <span className="font-bold text-sm text-white">Estimated Order Total</span>
+                  <span className="font-bold text-sm text-white">Estimated Quote Total</span>
                   <span className="text-xl font-black font-mono text-[#EA580C]">
                     ${finalTotal.toFixed(2)}
                   </span>
@@ -607,25 +610,25 @@ export function SmokehouseOrderTray() {
               <button
                 onClick={handleSubmitOrder}
                 disabled={isSubmitting || !isMinMet}
-                className="w-full py-3.5 rounded-xl bg-[#EA580C] hover:bg-[#C2410C] text-white font-extrabold text-sm transition shadow-lg flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="w-full py-3.5 rounded-xl bg-[#EA580C] hover:bg-[#C2410C] text-white font-display font-bold tracking-wider uppercase text-sm transition shadow-lg flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               >
                 {isSubmitting ? (
                   <>
                     <span className="animate-spin text-lg">⏳</span>
-                    <span>Dispatching Order to Marion...</span>
+                    <span>SENDING QUOTE TRAY TO MARION...</span>
                   </>
                 ) : !isMinMet ? (
-                  <span>Add ${remainingForMin.toFixed(0)} More to Unlock Delivery ($150 Min)</span>
+                  <span>Add ${remainingForMin.toFixed(0)} More for Delivery ($150 Min)</span>
                 ) : (
                   <>
-                    <span>Submit Smokehouse Order</span>
+                    <span>GET A FREE QUOTE FOR THIS TRAY</span>
                     <span>&rarr;</span>
                   </>
                 )}
               </button>
 
-              <p className="text-[10px] text-center text-neutral-400">
-                50% deposit required upon confirmation via Zelle or Card. No immediate charge.
+              <p className="text-[11px] text-center text-neutral-400 leading-snug">
+                🔥 <strong className="text-neutral-200">Smoked to Order — Pitmaster Approval:</strong> Submitting sends your itemized tray to Marion Bolden to confirm smoker availability for your date. No payment due until approved.
               </p>
             </div>
           )}
@@ -635,4 +638,3 @@ export function SmokehouseOrderTray() {
     </div>
   );
 }
-
