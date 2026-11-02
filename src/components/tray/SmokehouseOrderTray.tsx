@@ -343,12 +343,13 @@ export function SmokehouseOrderTray() {
                       category: "specialties",
                     },
                     {
-                      id: " baked-beans-half-pan",
+                      id: "baked-beans-half-pan",
                       baseId: "baked-beans",
                       name: "Smokehouse Baked Beans w/ Burnt Ends",
                       shortLabel: "+ Baked Beans Half Pan ($55)",
                       selectedOption: "Half Pan (15–20)",
                       price: 55,
+                      image: "/images/menu/smokehouse-baked-beans.jpg",
                       category: "sides",
                     },
                     {
@@ -358,6 +359,7 @@ export function SmokehouseOrderTray() {
                       shortLabel: "+ 4-Cheese Mac Half Pan ($75)",
                       selectedOption: "Half Pan (12–15)",
                       price: 75,
+                      image: "/images/menu/pitmaster-mac-and-cheese.jpg",
                       category: "sides",
                     },
                   ];
