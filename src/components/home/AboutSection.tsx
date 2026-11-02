@@ -114,63 +114,88 @@ export function AboutSection() {
           </div>
 
           {/* ======================================================== */}
-          {/* RIGHT COLUMN: The Pitmaster Craft Hero Photo Card        */}
+          {/* RIGHT COLUMN: Dual Pitmaster Craft & Mobile Smoker Cards */}
           {/* ======================================================== */}
           <div className="lg:col-span-5 relative">
-            <div className="relative mx-auto max-w-md lg:max-w-none">
+            <div className="relative mx-auto max-w-md lg:max-w-none space-y-5">
               
-              {/* Outer Shadow Drop */}
-              <div 
-                className="absolute -inset-1 rounded-[28px] bg-stone-900/10 blur-md pointer-events-none"
-                aria-hidden="true" 
-              />
-
-              {/* Main Card */}
-              <div className="relative rounded-[24px] overflow-hidden border border-stone-300/90 bg-zinc-950 shadow-2xl shadow-stone-900/25">
-                
-                {/* Image Container with 4:5 Portrait Aspect Ratio */}
-                <div className="relative aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] w-full overflow-hidden bg-zinc-900">
+              {/* 1. Primary Feature Card: Custom Mobile Trailer Smoker Rig */}
+              <div className="relative rounded-[24px] overflow-hidden border border-stone-300/90 bg-zinc-950 shadow-2xl shadow-stone-900/25 group">
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-900">
                   <Image
-                    src="/images/about/pitmaster-brisket-carve.webp"
-                    alt="All The Smoke Catering pitmaster wearing black gloves carving a juicy smoked brisket with deep peppery bark"
+                    src="/images/about/marion-mobile-smoker-rig.jpg"
+                    alt="Marion Bolden's custom single-axle offset trailer smoker rolling live hardwood smoke on-site at a Chicagoland park venue"
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 450px"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 480px"
                     priority={false}
-                    className="object-cover object-center scale-[1.01] hover:scale-105 transition-transform duration-700 ease-out"
+                    className="object-cover object-center scale-[1.01] group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   
                   {/* Subtle Cinematic Vignette */}
                   <div 
-                    className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/30 pointer-events-none" 
+                    className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-black/25 pointer-events-none" 
                     aria-hidden="true" 
                   />
 
                   {/* Top Floating Badge */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <span className="text-[#C8A97E] text-[11px] uppercase font-extrabold tracking-widest bg-zinc-950 px-3 py-1 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
-                      ★ LIVE PIT CRAFT ★
+                  <div className="absolute top-3.5 left-3.5 z-10">
+                    <span className="text-[#C8A97E] text-[11px] uppercase font-extrabold tracking-widest bg-zinc-950/95 px-3 py-1 rounded-full border border-[#C8A97E]/40 inline-flex items-center gap-1.5 shadow-sm">
+                      <span className="w-2 h-2 rounded-full bg-[#EA580C] animate-pulse" />
+                      <span>ON-SITE MOBILE SMOKER RIG</span>
                     </span>
                   </div>
 
                   {/* Bottom Information Glass Overlay */}
-                  <div className="absolute bottom-4 inset-x-4 z-10">
-                    <div className="p-4 rounded-xl bg-black/85 backdrop-blur-md border border-amber-500/30 shadow-[0_10px_25px_rgba(0,0,0,0.8)] space-y-1.5">
+                  <div className="absolute bottom-3.5 inset-x-3.5 z-10">
+                    <div className="p-3.5 rounded-xl bg-black/85 backdrop-blur-md border border-amber-500/30 shadow-[0_10px_25px_rgba(0,0,0,0.8)] space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-[#C8A97E] uppercase tracking-wider flex items-center gap-1.5">
-                          <span>★</span> Hand-Carved Signature Brisket
+                          <span>★</span> Custom Live-Fire Trailer Smoker
                         </span>
-                        <span className="text-[10px] text-zinc-400 uppercase font-semibold">
-                          Low &amp; Slow
+                        <span className="text-[10px] text-emerald-400 uppercase font-semibold">
+                          Venue Ready
                         </span>
                       </div>
                       <p className="text-xs text-zinc-300 leading-snug">
-                        14-hour hardwood smoke, thick black pepper bark, carved live at your private or corporate event.
+                        Marion&rsquo;s heavy-gauge offset smoker rig rolls directly to your park, wedding, or corporate venue rolling live oak &amp; hickory smoke.
                       </p>
                     </div>
                   </div>
-
                 </div>
+              </div>
 
+              {/* 2. Secondary Craft Card: Hand-Carved Signature Brisket */}
+              <div className="relative rounded-[20px] overflow-hidden border border-stone-300/90 bg-zinc-950 shadow-xl shadow-stone-900/20 group">
+                <div className="relative aspect-[16/9] w-full overflow-hidden bg-zinc-900">
+                  <Image
+                    src="/images/about/pitmaster-brisket-carve.webp"
+                    alt="All The Smoke Catering pitmaster wearing black gloves carving a juicy smoked brisket with deep peppery bark"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 480px"
+                    priority={false}
+                    className="object-cover object-center scale-[1.01] group-hover:scale-105 transition-transform duration-700 ease-out"
+                  />
+                  <div 
+                    className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" 
+                    aria-hidden="true" 
+                  />
+                  <div className="absolute bottom-3 inset-x-3.5 z-10 flex items-center justify-between gap-2">
+                    <div>
+                      <span className="text-[11px] font-bold text-[#C8A97E] uppercase tracking-wider block">
+                        ★ Hand-Carved Signature Brisket
+                      </span>
+                      <p className="text-[11px] text-zinc-300">
+                        14-hour hardwood smoke &bull; Carved fresh to order
+                      </p>
+                    </div>
+                    <Link
+                      href="/gallery"
+                      className="shrink-0 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-[#EA580C] text-white text-[11px] font-bold uppercase tracking-wider border border-white/20 transition"
+                    >
+                      View Gallery &rarr;
+                    </Link>
+                  </div>
+                </div>
               </div>
 
             </div>

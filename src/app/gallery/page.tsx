@@ -53,8 +53,8 @@ const GALLERY_PHOTOS: GalleryPhoto[] = [
     categoryLabel: "Mobile Trailer Rig",
     title: "Custom Single-Axle Smoker Rig",
     description: "Heavy-gauge single-axle offset trailer smoker rolling live oak and hickory smoke on-site at your venue.",
-    src: "/reels/reel-mobile-trailer.webp",
-    alt: "Marion's custom black single-axle trailer smoker rolling smoke outside at night",
+    src: "/images/about/marion-mobile-smoker-rig.jpg",
+    alt: "Marion's custom black single-axle trailer smoker rolling live hardwood smoke at an outdoor venue",
   },
   {
     id: "pit-wings-links",
