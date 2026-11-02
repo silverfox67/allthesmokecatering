@@ -57,6 +57,15 @@ const GALLERY_PHOTOS: GalleryPhoto[] = [
     alt: "Marion's custom black single-axle trailer smoker rolling live hardwood smoke at an outdoor venue",
   },
   {
+    id: "smoker-open-chamber",
+    category: "rig",
+    categoryLabel: "Live Smoker Chamber",
+    title: "Hardwood Smoke & Sizzling Ribs",
+    description: "Looking directly inside Marion's heavy-gauge offset barrel rolling live oak smoke over seasoned ribs and cuts.",
+    src: "/reels/smoker-open-chamber.jpg",
+    alt: "Live smoke rolling over seasoned ribs and meats inside Marion's custom offset trailer smoker chamber",
+  },
+  {
     id: "pit-wings-links",
     category: "craft",
     categoryLabel: "Live Fire",
