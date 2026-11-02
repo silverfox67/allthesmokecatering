@@ -595,7 +595,7 @@ export function PackageGrid() {
               href="#contact"
               className="w-full sm:w-auto inline-flex h-11 px-5 items-center justify-center rounded-xl bg-gradient-to-r from-[#EA580C] to-[#C2410C] hover:from-[#FF7A00] hover:to-[#EA580C] text-white font-display text-xs sm:text-sm font-bold tracking-wider uppercase shadow-md transition-all"
             >
-              Request Custom / Corporate Quote &rarr;
+              Get A Free Quote &rarr;
             </a>
           </div>
         </div>

@@ -23,28 +23,28 @@ export function Navbar() {
           </Link>
         </div>
 
-        {/* Desktop Navigation Links */}
+        {/* Desktop Navigation Links (Ordered Top-to-Bottom with Page Flow) */}
         <nav
           aria-label="Main Navigation"
           className="hidden lg:flex items-center gap-7 pl-48 lg:pl-56 overflow-visible"
         >
           <Link
-            href="#hero"
-            className="text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
-          >
-            Home
-          </Link>
-          <Link
-            href="#packages"
+            href="/#about"
             className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
           >
-            The Experience
+            About
           </Link>
           <Link
-            href="#packages"
+            href="/#packages"
             className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
           >
-            Menus
+            Packages
+          </Link>
+          <Link
+            href="/#menu"
+            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
+          >
+            Menu
           </Link>
           <Link
             href="/gallery"
@@ -53,13 +53,13 @@ export function Navbar() {
             Gallery
           </Link>
           <Link
-            href="#about"
+            href="/#faq"
             className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
           >
-            About
+            FAQ
           </Link>
           <Link
-            href="#contact"
+            href="/#contact"
             className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
           >
             Contact
@@ -68,11 +68,10 @@ export function Navbar() {
 
         {/* Action CTA */}
         <a
-          href="#contact"
+          href="/#contact"
           className="ml-auto lg:ml-0 inline-flex h-9 sm:h-11 px-3.5 sm:px-6 items-center justify-center rounded-[12px] sm:rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-xs sm:text-base lg:text-lg font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer whitespace-nowrap"
         >
-          <span className="hidden sm:inline">REQUEST A QUOTE</span>
-          <span className="sm:hidden">GET QUOTE</span>
+          GET A FREE QUOTE
         </a>
       </div>
     </header>

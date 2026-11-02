@@ -40,7 +40,10 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#0A0A0A] min-h-[720px] lg:min-h-[850px] flex flex-col justify-between">
+    <section
+      id="hero"
+      className="relative w-full overflow-hidden bg-[#0A0A0A] min-h-[720px] lg:min-h-[850px] flex flex-col justify-between"
+    >
       
       {/* 1. DESKTOP FULL-WIDTH BACKGROUND CAROUSEL (Edge-to-Edge) */}
       <div className="hidden lg:block absolute inset-0 z-0">
@@ -173,28 +176,28 @@ export function Hero() {
             </a>
           </div>
 
-          {/* Desktop Navigation Links */}
+          {/* Desktop Navigation Links (Ordered Top-to-Bottom with Page Flow) */}
           <nav
             aria-label="Main Navigation"
             className="hidden lg:flex items-center gap-7 pl-48 lg:pl-56 overflow-visible"
           >
             <a
-              href="#hero"
-              className="text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
+              href="#about"
+              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
             >
-              Home
+              About
             </a>
             <a
               href="#packages"
               className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
             >
-              The Experience
+              Packages
             </a>
             <a
-              href="#packages"
+              href="#menu"
               className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
             >
-              Menus
+              Menu
             </a>
             <a
               href="/gallery"
@@ -203,10 +206,10 @@ export function Hero() {
               Gallery
             </a>
             <a
-              href="#about"
+              href="#faq"
               className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
             >
-              About
+              FAQ
             </a>
             <a
               href="#contact"
@@ -216,14 +219,13 @@ export function Hero() {
             </a>
           </nav>
 
-          {/* CTA: REQUEST A QUOTE (Header CTA Button) */}
+          {/* CTA: GET A FREE QUOTE (Header CTA Button) */}
           <div className="ml-auto lg:ml-0 flex items-center gap-2 sm:gap-3">
             <a
               href="#contact"
               className="inline-flex h-9 sm:h-11 px-3 sm:px-6 items-center justify-center rounded-[12px] sm:rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-xs sm:text-base lg:text-lg font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer whitespace-nowrap"
             >
-              <span className="hidden sm:inline">REQUEST A QUOTE</span>
-              <span className="sm:hidden">GET QUOTE</span>
+              GET A FREE QUOTE
             </a>
 
             {/* Mobile Menu Button */}
@@ -249,25 +251,25 @@ export function Hero() {
       {mobileMenuOpen && (
         <div className="relative z-30 lg:hidden bg-zinc-950 border-b border-zinc-800 px-6 py-4 space-y-3 text-sm font-semibold">
           <a
-            href="#hero"
+            href="#about"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-[#FF7A00]"
+            className="block text-[#C8A97E] hover:text-[#FF7A00]"
           >
-            Home
+            About
           </a>
           <a
             href="#packages"
             onClick={() => setMobileMenuOpen(false)}
             className="block text-[#C8A97E] hover:text-[#FF7A00]"
           >
-            The Experience
+            Packages
           </a>
           <a
-            href="#packages"
+            href="#menu"
             onClick={() => setMobileMenuOpen(false)}
             className="block text-[#C8A97E] hover:text-[#FF7A00]"
           >
-            Menus
+            Menu
           </a>
           <a
             href="/gallery"
@@ -277,16 +279,16 @@ export function Hero() {
             Gallery
           </a>
           <a
-            href="#about"
+            href="#faq"
             onClick={() => setMobileMenuOpen(false)}
             className="block text-[#C8A97E] hover:text-[#FF7A00]"
           >
-            About
+            FAQ
           </a>
           <a
             href="#contact"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-[#C8A97E] hover:text-[#FF7A00] font-bold"
+            className="block text-[#FF7A00] font-bold"
           >
             Contact
           </a>
@@ -377,7 +379,7 @@ export function Hero() {
               href="#contact"
               className="w-full sm:w-auto inline-flex h-[48px] px-7 items-center justify-center rounded-[14px] bg-black/60 border border-[#C8A97E] backdrop-blur-md shadow-[0_0_12px_rgba(200,169,126,0.15)] font-display text-lg sm:text-xl font-bold tracking-wider text-[#C8A97E] uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.95)] transition-all hover:scale-[1.02] active:scale-[0.98] hover:border-[#FF7A00] hover:text-white hover:bg-black/80 hover:shadow-[0_0_18px_rgba(255,122,0,0.4)] cursor-pointer text-center"
             >
-              BOOK YOUR DATE
+              GET A FREE QUOTE
             </a>
           </div>
 

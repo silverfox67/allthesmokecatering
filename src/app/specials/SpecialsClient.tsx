@@ -215,7 +215,7 @@ export function SpecialsClient() {
               href="/#contact"
               className="inline-flex h-9 px-4 items-center justify-center rounded-xl bg-gradient-to-r from-[#EA580C] to-[#C2410C] text-white font-display text-xs font-bold tracking-wider uppercase shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all hover:scale-105 active:scale-95"
             >
-              Get Quote
+              Get A Free Quote
             </a>
           </div>
         </header>
@@ -272,4 +272,3 @@ export function SpecialsClient() {
     </OrderTrayProvider>
   );
 }
-

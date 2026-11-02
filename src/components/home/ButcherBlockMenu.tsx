@@ -11,7 +11,37 @@ import {
   MenuItem,
   MenuCategory,
 } from "@/data/pitmaster-menu";
+import { SITE_CONFIG, DeliveryZone } from "@/config/site-config";
 import { useOrderTray } from "@/context/OrderTrayContext";
+
+// Chicagoland Zip Code Lookup Map (3-Zone Heated Delivery Engine)
+const ZONE_1_ZIPS = new Set([
+  "60634", "60630", "60631", "60641", "60656", "60706", "60707",
+  "60018", "60068", "60131", "60171", "60639", "60646", "60638",
+  "60176", "60625", "60618", "60076", "60714", "60651"
+]);
+
+const ZONE_2_ZIPS = new Set([
+  "60601", "60602", "60603", "60604", "60605", "60606", "60607",
+  "60610", "60611", "60612", "60614", "60622", "60642", "60647",
+  "60654", "60657", "60661", "60201", "60202", "60077", "60173",
+  "60193", "60148", "60301", "60302", "60304", "60016", "60053",
+  "60025", "60101", "60126", "60181", "60521", "60523", "60137",
+  "60004", "60005", "60008", "60062", "60091"
+]);
+
+const ZONE_3_ZIPS = new Set([
+  "60615", "60637", "60653", "60643", "60619", "60620", "60628",
+  "60540", "60563", "60564", "60502", "60504", "60505", "60035",
+  "60462", "60467", "60477", "60440", "60045", "60010", "60453",
+  "60458", "60439", "60187", "60188", "60089", "60015", "60446",
+  "60515", "60516", "60532", "60559", "60107", "60110", "60169"
+]);
+
+interface CheckedZipResult {
+  zone: DeliveryZone;
+  zip: string;
+}
 
 function parsePrices(priceStr: string): { single?: number; half?: number; full?: number } {
   const halfMatch = priceStr.match(/Half[^(]*?(?:\([^)]*\))?\s*\$(\d+)/i);
@@ -35,10 +65,52 @@ function parsePrices(priceStr: string): { single?: number; half?: number; full?:
 export function ButcherBlockMenu() {
   const [activeTab, setActiveTab] = useState<MenuCategory["id"]>("smoked-meats");
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
+  const [zipDrawerOpen, setZipDrawerOpen] = useState(false);
+  const [zipInput, setZipInput] = useState("");
+  const [zipResult, setZipResult] = useState<CheckedZipResult | null>(null);
+  const [zipError, setZipError] = useState("");
   const { addItem, subtotal, totalItemCount, openTray } = useOrderTray();
   const MIN_DELIVERY_SUBTOTAL = 150;
   const remainingForMin = Math.max(0, MIN_DELIVERY_SUBTOTAL - subtotal);
   const isMinMet = subtotal >= MIN_DELIVERY_SUBTOTAL;
+
+  const evaluateZip = (rawZip: string) => {
+    const clean = rawZip.trim();
+    if (!/^\d{5}$/.test(clean)) {
+      setZipError("Enter a valid 5-digit Chicagoland ZIP code.");
+      setZipResult(null);
+      return;
+    }
+    setZipError("");
+    if (ZONE_1_ZIPS.has(clean)) {
+      setZipResult({ zone: SITE_CONFIG.deliveryZones[0], zip: clean });
+    } else if (ZONE_2_ZIPS.has(clean)) {
+      setZipResult({ zone: SITE_CONFIG.deliveryZones[1], zip: clean });
+    } else if (ZONE_3_ZIPS.has(clean)) {
+      setZipResult({ zone: SITE_CONFIG.deliveryZones[2], zip: clean });
+    } else if (clean.startsWith("60")) {
+      const num = parseInt(clean, 10);
+      if (num >= 60000 && num <= 60699) {
+        setZipResult({ zone: SITE_CONFIG.deliveryZones[1], zip: clean });
+      } else {
+        setZipResult({ zone: SITE_CONFIG.deliveryZones[2], zip: clean });
+      }
+    } else {
+      setZipResult({
+        zone: {
+          zone: 3,
+          name: "Extended Midwest Route (Custom Quote)",
+          minMiles: 35.1,
+          maxMiles: 100,
+          fee: 150.0,
+          minOrder: 750.0,
+          description: "Outside standard 35-mile radius. Custom smoker trailer dispatch.",
+          coverageAreas: ["Greater Illinois", "Northwest Indiana", "Southern Wisconsin"],
+        },
+        zip: clean,
+      });
+    }
+  };
 
   const currentCategory =
     MENU_CATEGORIES.find((cat) => cat.id === activeTab) || MENU_CATEGORIES[0];
@@ -265,48 +337,135 @@ export function ButcherBlockMenu() {
             })}
           </div>
 
-          {/* Live Smart $150 Heated Delivery Minimum Bar */}
-          <div className="max-w-3xl mx-auto rounded-xl bg-[#0F172A] text-white px-3.5 py-2 border border-slate-800 shadow-sm flex flex-wrap items-center justify-between gap-2 text-xs">
-            <div className="flex items-center gap-2 min-w-0">
-              <span>{isMinMet ? "✅" : "🚚"}</span>
-              {totalItemCount === 0 ? (
-                <span className="text-slate-200 font-semibold">
-                  Heated Chicagoland Delivery Minimum: <strong className="text-[#F59E0B]">$150.00</strong> <span className="hidden sm:inline text-slate-400">• Mix &amp; match any pans, slabs, or plates</span>
-                </span>
-              ) : isMinMet ? (
-                <span className="text-emerald-400 font-bold">
-                  $150 Delivery Minimum Met! (${subtotal.toFixed(0)} in tray)
-                </span>
-              ) : (
-                <span className="text-amber-300 font-bold">
-                  Tray: ${subtotal.toFixed(0)} / $150 Min — Add ${remainingForMin.toFixed(0)} more for delivery
-                </span>
-              )}
-            </div>
+          {/* Live Smart $150 Heated Delivery Minimum Bar + Inline ZIP Calculator */}
+          <div className="max-w-3xl mx-auto rounded-xl bg-[#0F172A] text-white px-3.5 py-2.5 border border-slate-800 shadow-sm text-xs space-y-2.5">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <span>{isMinMet ? "✅" : "🚚"}</span>
+                {totalItemCount === 0 ? (
+                  <span className="text-slate-200 font-semibold">
+                    Heated Chicagoland Delivery Minimum: <strong className="text-[#F59E0B]">$150.00</strong> <span className="hidden md:inline text-slate-400">• Dispatched from Chicago’s Northwest Side</span>
+                  </span>
+                ) : isMinMet ? (
+                  <span className="text-emerald-400 font-bold">
+                    $150 Delivery Minimum Met! (${subtotal.toFixed(0)} in tray)
+                  </span>
+                ) : (
+                  <span className="text-amber-300 font-bold">
+                    Tray: ${subtotal.toFixed(0)} / $150 Min — Add ${remainingForMin.toFixed(0)} more for delivery
+                  </span>
+                )}
+              </div>
 
-            <div className="flex items-center gap-2.5 ml-auto">
-              {totalItemCount > 0 && (
-                <div className="hidden sm:block w-24 h-2 rounded-full bg-slate-800 overflow-hidden">
-                  <div
-                    className={`h-full transition-all duration-300 ${
-                      isMinMet ? "bg-emerald-500" : "bg-[#EA580C]"
-                    }`}
-                    style={{
-                      width: `${Math.min(100, Math.round((subtotal / MIN_DELIVERY_SUBTOTAL) * 100))}%`,
-                    }}
-                  />
-                </div>
-              )}
-              {totalItemCount > 0 && (
+              <div className="flex items-center gap-2 ml-auto">
+                {/* Inline ZIP Calculator Trigger */}
                 <button
                   type="button"
-                  onClick={openTray}
-                  className="px-2.5 py-1 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white font-bold text-[11px] uppercase tracking-wider transition cursor-pointer shrink-0"
+                  onClick={() => setZipDrawerOpen((prev) => !prev)}
+                  className={`px-2.5 py-1 rounded-lg border font-bold text-[11px] transition cursor-pointer shrink-0 flex items-center gap-1 ${
+                    zipDrawerOpen
+                      ? "bg-[#EA580C] border-[#FF7A00] text-white"
+                      : "bg-slate-800/90 hover:bg-slate-800 border-[#C8A97E]/40 text-[#C8A97E] hover:text-white"
+                  }`}
                 >
-                  View Tray ({totalItemCount}) &rarr;
+                  <span>📍</span>
+                  <span>{zipResult ? `ZIP ${zipResult.zip}: $${zipResult.zone.fee} Fee` : "Check Delivery ZIP"}</span>
+                  <span>{zipDrawerOpen ? "▲" : "▼"}</span>
                 </button>
-              )}
+
+                {totalItemCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={openTray}
+                    className="px-2.5 py-1 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white font-bold text-[11px] uppercase tracking-wider transition cursor-pointer shrink-0"
+                  >
+                    View Tray ({totalItemCount}) &rarr;
+                  </button>
+                )}
+              </div>
             </div>
+
+            {/* Expandable Inline Delivery ZIP & Zone Calculator Drawer */}
+            {zipDrawerOpen && (
+              <div className="pt-2.5 border-t border-slate-800/90 space-y-2.5 animate-in fade-in duration-200">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    evaluateZip(zipInput);
+                  }}
+                  className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2"
+                >
+                  <div className="flex-1 flex items-center gap-2">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]{5}"
+                      maxLength={5}
+                      value={zipInput}
+                      onChange={(e) => setZipInput(e.target.value)}
+                      placeholder="Enter 5-digit Event ZIP (e.g. 60634, 60607, 60540)"
+                      className="w-full h-9 px-3 rounded-lg bg-slate-900 border border-slate-700 text-white placeholder:text-slate-400 font-mono text-xs focus:outline-none focus:border-[#EA580C]"
+                    />
+                    <button
+                      type="submit"
+                      className="h-9 px-3.5 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white font-bold text-xs uppercase tracking-wider shrink-0 cursor-pointer transition"
+                    >
+                      Calculate Fee
+                    </button>
+                  </div>
+
+                  {/* Quick Test ZIP Chips */}
+                  <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-slate-400">
+                    <span className="font-semibold text-slate-300">Quick Check:</span>
+                    {[
+                      { zip: "60634", label: "60634 (NW Side)" },
+                      { zip: "60607", label: "60607 (Loop)" },
+                      { zip: "60201", label: "60201 (North)" },
+                      { zip: "60540", label: "60540 (Suburbs)" },
+                    ].map((chip) => (
+                      <button
+                        key={chip.zip}
+                        type="button"
+                        onClick={() => {
+                          setZipInput(chip.zip);
+                          evaluateZip(chip.zip);
+                        }}
+                        className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 cursor-pointer transition"
+                      >
+                        {chip.label}
+                      </button>
+                    ))}
+                  </div>
+                </form>
+
+                {zipError && (
+                  <p className="text-[11px] text-red-400 font-semibold">{zipError}</p>
+                )}
+
+                {zipResult && (
+                  <div className="p-2.5 rounded-lg bg-slate-900/95 border border-amber-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <span className="text-[11px] font-bold text-[#F59E0B] uppercase tracking-wider">
+                        ZIP {zipResult.zip} • {zipResult.zone.name}
+                      </span>
+                      <p className="text-[11px] text-slate-300 mt-0.5">
+                        {zipResult.zone.description}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3 shrink-0">
+                      <div className="text-right">
+                        <span className="text-[10px] text-slate-400 block uppercase">Heated Transit Fee</span>
+                        <span className="text-sm font-black text-[#C8A97E]">${zipResult.zone.fee.toFixed(0)}</span>
+                      </div>
+                      <div className="text-right border-l border-slate-800 pl-3">
+                        <span className="text-[10px] text-slate-400 block uppercase">Delivery Min</span>
+                        <span className="text-sm font-black text-white">${MIN_DELIVERY_SUBTOTAL}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -473,9 +632,9 @@ export function ButcherBlockMenu() {
             </a>
             <a
               href="#contact"
-              className="px-5 py-3 rounded-xl bg-[#EA580C] hover:bg-[#C2410C] text-white text-xs sm:text-sm font-bold transition shadow-md"
+              className="px-5 py-3 rounded-xl bg-[#EA580C] hover:bg-[#C2410C] text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition shadow-md"
             >
-              Build Custom Quote &rarr;
+              Get A Free Quote &rarr;
             </a>
           </div>
         </div>

@@ -153,7 +153,7 @@ export default function GalleryPage() {
             href="/#contact"
             className="inline-flex h-9 px-4 items-center justify-center rounded-xl bg-gradient-to-r from-[#EA580C] to-[#C2410C] text-white font-display text-xs font-bold tracking-wider uppercase shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all hover:scale-105 active:scale-95"
           >
-            Get Quote
+            Get A Free Quote
           </a>
         </div>
       </header>
@@ -343,7 +343,7 @@ export default function GalleryPage() {
               href="/#contact"
               className="inline-flex h-11 px-6 items-center justify-center rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-[#C8A97E] hover:text-white font-display text-xs sm:text-sm font-bold tracking-wider uppercase transition-colors"
             >
-              Request Event Quote
+              Get A Free Quote
             </Link>
           </div>
         </div>

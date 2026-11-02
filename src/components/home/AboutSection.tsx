@@ -85,7 +85,7 @@ export function AboutSection() {
                 href="#contact"
                 className="inline-flex h-12 px-6 items-center justify-center rounded-xl bg-zinc-950 hover:bg-black text-[#C8A97E] hover:text-white border border-stone-800 font-display font-bold text-sm tracking-wider uppercase transition-colors shadow-sm"
               >
-                Request Event Quote
+                Get A Free Quote
               </a>
             </div>
 

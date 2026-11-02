@@ -82,7 +82,7 @@ export const CATEGORY_INFO: Record<CategoryKey, CategoryData> = {
       "Vacuum-Sealed Freshness Lock",
       "3-Minute Quick Reheat",
       "High-Protein & Clean Macro Friendly",
-      "Weekly Batch Smoke Pick-Up & Delivery",
+      "Weekly Batch Smoke Heated Delivery",
     ],
   },
 };
@@ -231,7 +231,7 @@ export function CategoryPageView({ category }: { category: CategoryKey }) {
               onClick={() => handleBookPackage("pitmaster-feast")}
               className="inline-flex h-9 px-3.5 sm:px-4 items-center justify-center rounded-xl bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border border-[#FF7A00] font-display text-xs sm:text-sm font-bold tracking-wider text-white uppercase shadow-[0_0_12px_rgba(255,122,0,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer whitespace-nowrap"
             >
-              Get Quote
+              Get A Free Quote
             </button>
           </div>
         </div>
