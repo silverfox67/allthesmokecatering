@@ -236,19 +236,22 @@ export function ButcherBlockMenu() {
 
         </div>
 
-        {/* 2. STICKY CATEGORY PILL BAR */}
-        <div className="sticky top-16 md:top-20 z-20 bg-[#FAF8F5]/95 backdrop-blur-md py-3.5 -mx-4 px-4 mb-8 border-y border-[#E5E0D8] shadow-sm">
-          <div className="flex gap-2.5 overflow-x-auto no-scrollbar md:justify-center items-center">
-            {MENU_CATEGORIES.map((cat) => {
+        {/* 2. STICKY CATEGORY PILL BAR (All 5 Categories Visible on Mobile & Desktop — Zero Horizontal Scroll) */}
+        <div className="sticky top-16 md:top-20 z-20 bg-[#FAF8F5]/95 backdrop-blur-md py-3 -mx-4 px-3 sm:px-4 mb-8 border-y border-[#E5E0D8] shadow-sm">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-2 items-center">
+            {MENU_CATEGORIES.map((cat, idx) => {
               const isActive = activeTab === cat.id;
+              const isLastOdd = idx === MENU_CATEGORIES.length - 1 && MENU_CATEGORIES.length % 2 !== 0;
               return (
                 <button
                   key={cat.id}
                   onClick={() => setActiveTab(cat.id)}
                   type="button"
-                  className={`shrink-0 px-5 py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all flex items-center gap-2 ${
+                  className={`${
+                    isLastOdd ? "col-span-2 sm:col-span-1" : ""
+                  } px-3.5 lg:px-4 py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer ${
                     isActive
-                      ? "bg-[#0F172A] text-white shadow-lg ring-2 ring-[#EA580C]"
+                      ? "bg-[#0F172A] text-white shadow-md ring-2 ring-[#EA580C]"
                       : "bg-[#EDE7DE] text-slate-700 hover:bg-[#E2D8CC] hover:text-[#0F172A]"
                   }`}
                 >
