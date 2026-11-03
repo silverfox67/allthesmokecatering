@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import { SITE_CONFIG } from "@/config/site-config";
+import { Navbar } from "@/components/layout/Navbar";
+import { LivePitVideos } from "@/components/gallery/LivePitVideos";
 import { Footer } from "@/components/layout/Footer";
 import { QuoteModal } from "@/components/forms/QuoteModal";
 
@@ -130,42 +132,24 @@ const LIVE_VIDEOS = [
 export default function GalleryPage() {
   return (
     <main className="min-h-screen bg-[#0A0A0A] text-neutral-100 flex flex-col">
-      {/* Top Header Navigation Bar */}
-      <header className="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-3.5">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      {/* Full Master Navbar Breakout */}
+      <Navbar />
+
+      {/* Breadcrumb Return Bar directly to Homepage Smokehouse Gallery Section */}
+      <div className="bg-[#12100E] border-b border-amber-950/40 px-4 sm:px-8 py-2.5 relative z-30">
+        <div className="max-w-7xl mx-auto flex items-center justify-between text-xs">
           <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#C8A97E] hover:text-[#FF7A00] transition-colors"
+            href="/#gallery"
+            className="inline-flex items-center gap-2 font-bold text-[#C8A97E] hover:text-[#FF7A00] transition-colors"
           >
             <span>←</span>
-            <span>Back to Home</span>
+            <span>Back to Smokehouse Gallery on Home</span>
           </Link>
-
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 group"
-          >
-            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#C8A97E]/50">
-              <Image
-                src="/brand/allthesmoke-logo.png"
-                alt="All The Smoke Official Logo"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <span className="font-display font-bold text-sm tracking-wider text-white group-hover:text-[#FF7A00] transition-colors">
-              ALL THE SMOKE
-            </span>
-          </Link>
-
-          <a
-            href="/#contact"
-            className="inline-flex h-9 px-4 items-center justify-center rounded-xl bg-gradient-to-r from-[#EA580C] to-[#C2410C] text-white font-display text-xs font-bold tracking-wider uppercase shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all hover:scale-105 active:scale-95"
-          >
-            Get A Free Quote
-          </a>
+          <span className="text-zinc-500 hidden sm:inline font-medium">
+            Chicago’s Northwest Side • Pit-Smoked Live Fire
+          </span>
         </div>
-      </header>
+      </div>
 
       {/* Hero Header */}
       <section className="relative py-16 sm:py-24 px-4 sm:px-8 bg-gradient-to-b from-[#141210] to-[#0A0A0A] border-b border-amber-950/40 overflow-hidden">
@@ -207,65 +191,10 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      {/* SECTION 1: Real Live Pit Videos */}
+      {/* SECTION 1: Real Live Pit Videos with Chicago Blues Soundtrack */}
       <section id="videos" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-b border-amber-950/30 bg-[#0E0D0C] scroll-mt-24">
-        <div className="max-w-7xl mx-auto space-y-10">
-          
-          <div className="max-w-2xl space-y-2">
-            <div>
-              <span className="text-[#C8A97E] text-xs uppercase font-extrabold tracking-widest bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1.5 shadow-sm">
-                ★ LIVE-FIRE CAPTURES ★
-              </span>
-            </div>
-            <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-wide">
-              Live From the Pit
-            </h2>
-            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-              Authentic pit captures of prime brisket hand-slicing, slow-rendered au jus resting, and live smoker chamber racks.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            {LIVE_VIDEOS.map((vid) => (
-              <div
-                key={vid.id}
-                className="rounded-2xl overflow-hidden bg-[#141210] border border-amber-500/25 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.85)] hover:border-amber-500/50 transition-all p-4 sm:p-5 flex flex-col justify-between"
-              >
-                {/* Top Card Badge Header */}
-                <div className="flex items-center justify-between gap-2 pb-3 border-b border-zinc-800/80 mb-3">
-                  <span className="text-[#C8A97E] text-[11px] uppercase font-extrabold tracking-widest bg-zinc-950 px-2.5 py-1 rounded-full border border-[#C8A97E]/30 inline-flex items-center gap-1 shadow-sm">
-                    ★ {vid.badge.toUpperCase()} ★
-                  </span>
-                  <span className="text-[11px] font-semibold text-zinc-400 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    Pit Video
-                  </span>
-                </div>
-
-                {/* 9:16 Video Container */}
-                <div className="relative aspect-[9/16] w-full rounded-xl overflow-hidden bg-black border border-zinc-800/80 shadow-inner">
-                  <video
-                    src={vid.src}
-                    controls
-                    playsInline
-                    preload="metadata"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                {/* Card Bottom Body */}
-                <div className="pt-3.5 space-y-1">
-                  <h3 className="font-display text-base sm:text-lg font-bold text-white tracking-wide">
-                    {vid.title}
-                  </h3>
-                  <p className="text-xs text-zinc-300 leading-snug">
-                    {vid.tagline}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
+        <div className="max-w-7xl mx-auto">
+          <LivePitVideos videos={LIVE_VIDEOS} />
         </div>
       </section>
 
@@ -352,7 +281,7 @@ export default function GalleryPage() {
               href="/#contact"
               className="inline-flex h-11 px-6 items-center justify-center rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-[#C8A97E] hover:text-white font-display text-xs sm:text-sm font-bold tracking-wider uppercase transition-colors"
             >
-              Get A Free Quote
+              GET A FREE QUOTE
             </Link>
           </div>
         </div>
