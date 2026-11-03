@@ -10,6 +10,7 @@ import { AdminEmailHub } from "./AdminEmailHub";
 import { AdminCalendar } from "./AdminCalendar";
 import { AdminTodoList } from "./AdminTodoList";
 import { AdminPriceConfigurator } from "./AdminPriceConfigurator";
+import { AdminQRDisplays } from "./AdminQRDisplays";
 import { SITE_CONFIG } from "@/config/site-config";
 
 export type AdminTheme = "day" | "night";
@@ -176,11 +177,11 @@ export function AdminPortal() {
         },
         {
           key: "qr-displays" as AdminTab,
-          label: "QR Displays",
-          status: "Coming Soon",
-          badgeColor: "stone",
+          label: "QR Displays & Print",
+          status: "Live",
+          badgeColor: "emerald",
           icon: (
-            <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-4 h-4 shrink-0 text-[#FF7A00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
             </svg>
           ),
@@ -665,23 +666,8 @@ export function AdminPortal() {
               />
             )}
 
-            {activeTab === "qr-displays" && (
-              <ComingSoonModule
-                title="Tabletop QR Stand & Menu Generator"
-                subtitle="Instant printable QR display cards for Marion's on-site trailer rigs and event tables"
-                icon="📱"
-                theme={theme}
-                features={[
-                  "Printable 4x6 tabletop acrylic QR stand templates with All The Smoke crest",
-                  "Direct Google Review QR card generator for post-event guest feedback",
-                  "Live digital catering menu QR code for walk-up event attendees",
-                  "Pitmaster contact vCard QR download for corporate event organizers",
-                ]}
-                actionTab="calendar"
-                actionLabel="View Smoke Calendar & Gigs →"
-                onAction={() => setActiveTab("calendar")}
-              />
-            )}
+            {/* TAB: QR DISPLAYS & PRINT MARKETING ENGINE (LIVE) */}
+            {activeTab === "qr-displays" && <AdminQRDisplays theme={theme} />}
 
             {activeTab === "google" && (
               <ComingSoonModule
