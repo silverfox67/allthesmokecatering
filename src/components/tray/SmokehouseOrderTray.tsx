@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useOrderTray } from "@/context/OrderTrayContext";
 import { CalendarDatePicker } from "@/components/forms/CalendarDatePicker";
@@ -52,6 +52,26 @@ export function SmokehouseOrderTray() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [ticketId, setTicketId] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Prevent background scrolling and handle Escape key on mobile & desktop
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeTray();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, closeTray]);
 
   if (!isOpen) return null;
 
@@ -159,48 +179,53 @@ export function SmokehouseOrderTray() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Smokehouse Quote Tray"
+      className="fixed inset-0 z-50 flex items-center justify-center sm:justify-end overflow-hidden p-0"
+    >
       {/* Backdrop overlay */}
       <div
         onClick={closeTray}
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity cursor-pointer"
+        aria-hidden="true"
       />
 
-      {/* Slide-over Drawer Panel */}
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md sm:max-w-lg bg-[#111317] border-l border-white/10 text-neutral-100 flex flex-col shadow-2xl relative">
-          
-          {/* Drawer Header */}
-          <div className="px-6 py-4 border-b border-white/10 bg-[#15181E] flex items-center justify-between">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[#EA580C] text-sm">🔥</span>
-                <span className="text-[11px] font-mono uppercase tracking-widest text-[#F59E0B]">
-                  All The Smoke BBQ • Smoked To Order
-                </span>
-              </div>
-              <h3 className="text-xl font-black text-white mt-0.5 flex items-center gap-2">
-                <span>Smokehouse Quote Tray</span>
-                <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-white/10 text-neutral-300">
-                  {totalItemCount} {totalItemCount === 1 ? "item" : "items"}
-                </span>
-              </h3>
-              <p className="text-[11px] text-neutral-400 mt-0.5">
-                Build your custom pan &amp; meat lineup for Pitmaster Marion&rsquo;s approval
-              </p>
+      {/* Cart Container: Centered on Mobile (mx-auto, w-full), Slide-Over Drawer on Desktop (sm:max-w-lg sm:mr-0) */}
+      <div className="relative w-full h-full max-h-screen sm:max-w-lg bg-[#111317] border-x sm:border-x-0 sm:border-l border-white/10 text-neutral-100 flex flex-col shadow-2xl z-10 overflow-hidden mx-auto sm:mr-0">
+        
+        {/* Drawer Header */}
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-white/10 bg-[#15181E] flex items-center justify-between gap-3 shrink-0">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="text-[#EA580C] text-sm">🔥</span>
+              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-[#F59E0B] truncate">
+                All The Smoke BBQ • Smoked To Order
+              </span>
             </div>
-            <button
-              onClick={closeTray}
-              type="button"
-              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white transition"
-              aria-label="Close Tray"
-            >
-              ✕
-            </button>
+            <h3 className="text-lg sm:text-xl font-black text-white mt-0.5 flex items-center gap-2">
+              <span className="truncate">Smokehouse Quote Tray</span>
+              <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-white/10 text-neutral-300 shrink-0">
+                {totalItemCount} {totalItemCount === 1 ? "item" : "items"}
+              </span>
+            </h3>
+            <p className="text-[10px] sm:text-[11px] text-neutral-400 mt-0.5 line-clamp-1">
+              Build your custom pan &amp; meat lineup for Pitmaster Marion&rsquo;s approval
+            </p>
           </div>
+          <button
+            onClick={closeTray}
+            type="button"
+            className="w-11 h-11 sm:w-10 sm:h-10 rounded-xl bg-white/10 hover:bg-white/20 active:bg-[#EA580C] text-white flex items-center justify-center text-lg font-bold transition shrink-0 cursor-pointer shadow-md border border-white/15"
+            aria-label="Close Tray"
+          >
+            ✕
+          </button>
+        </div>
 
-          {/* Drawer Body (Scrollable) */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        {/* Drawer Body (Scrollable) */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 sm:space-y-6">
             
             {/* SUCCESS STATE */}
             {submitSuccess ? (
@@ -651,6 +676,16 @@ export function SmokehouseOrderTray() {
                 )}
               </button>
 
+              {/* Mobile & Desktop Secondary Close Button */}
+              <button
+                type="button"
+                onClick={closeTray}
+                className="w-full py-2.5 rounded-xl border border-white/15 hover:border-white/30 text-neutral-300 hover:text-white text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer bg-white/5 active:bg-white/10"
+              >
+                <span>&larr;</span>
+                <span>Continue Browsing Smokehouse Menu</span>
+              </button>
+
               <p className="text-[11px] text-center text-neutral-400 leading-snug">
                 🔥 <strong className="text-neutral-200">Smoked to Order — Pitmaster Approval:</strong> Submitting sends your itemized tray to Marion Bolden to confirm smoker availability for your date. No payment due until approved.
               </p>
@@ -659,6 +694,5 @@ export function SmokehouseOrderTray() {
 
         </div>
       </div>
-    </div>
   );
 }
