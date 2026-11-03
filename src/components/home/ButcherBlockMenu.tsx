@@ -13,6 +13,7 @@ import {
 } from "@/data/pitmaster-menu";
 import { SITE_CONFIG, DeliveryZone } from "@/config/site-config";
 import { useOrderTray } from "@/context/OrderTrayContext";
+import { useLiveSmokerStatus } from "@/utils/smoker-live-status";
 
 // Chicagoland Zip Code Lookup Map (3-Zone Heated Delivery Engine)
 const ZONE_1_ZIPS = new Set([
@@ -70,6 +71,7 @@ export function ButcherBlockMenu() {
   const [zipResult, setZipResult] = useState<CheckedZipResult | null>(null);
   const [zipError, setZipError] = useState("");
   const { addItem, subtotal, totalItemCount, openTray } = useOrderTray();
+  const { getItemStatus, activeSmokingItems } = useLiveSmokerStatus();
   const MIN_DELIVERY_SUBTOTAL = 150;
   const remainingForMin = Math.max(0, MIN_DELIVERY_SUBTOTAL - subtotal);
   const isMinMet = subtotal >= MIN_DELIVERY_SUBTOTAL;
@@ -469,6 +471,55 @@ export function ButcherBlockMenu() {
           </div>
         </div>
 
+        {/* LIVE SMOKE ON-THE-RIG TICKER (Triggered when Pitmaster Marion marks items Live Smoke) */}
+        {activeSmokingItems.length > 0 && (
+          <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-amber-500/5 border border-[#EA580C]/40 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3 animate-fade-in">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#EA580C]/20 border border-[#EA580C]/40 flex items-center justify-center text-xl shrink-0 animate-bounce">
+                🔥
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-display font-extrabold text-xs sm:text-sm uppercase tracking-wider text-[#EA580C]">
+                    Hardwood Smoke Rolling Today
+                  </span>
+                  <span className="inline-block w-2 h-2 rounded-full bg-[#EA580C] animate-ping" />
+                </div>
+                <p className="text-xs text-slate-700 mt-0.5">
+                  Pitmaster Marion is smoking fresh on the rig today:{" "}
+                  <strong className="text-slate-900">
+                    {activeSmokingItems
+                      .map((it) => {
+                        const target = PITMASTER_MENU_ITEMS.find((m) => m.id === it.id);
+                        return `${target ? target.name : it.id} (${it.readyTime || "Ready Today"})`;
+                      })
+                      .join(", ")}
+                  </strong>
+                  . Order now for same-day catering drop-off &amp; pickup!
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const first = activeSmokingItems[0];
+                if (first) {
+                  const target = PITMASTER_MENU_ITEMS.find((m) => m.id === first.id);
+                  if (target) {
+                    setActiveTab(target.category);
+                    setTimeout(() => {
+                      document.getElementById(target.id)?.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }, 100);
+                  }
+                }
+              }}
+              className="px-3.5 py-2 rounded-xl bg-[#EA580C] hover:bg-[#C2410C] text-white text-xs font-bold uppercase tracking-wider transition shrink-0 shadow-sm cursor-pointer text-center"
+            >
+              View Live Cuts &rarr;
+            </button>
+          </div>
+        )}
+
         {/* Active Category Header Banner */}
         <div className="mb-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-[#E5E0D8] pb-3">
           <div>
@@ -488,20 +539,28 @@ export function ButcherBlockMenu() {
         {/* 3. MENU ITEMS GRID (With Photos, Full Details & Highlight Flash on Jump) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {items.map((item) => {
-            const priceInfo = parsePrices(item.price);
+            const live = getItemStatus(item.id);
+            const isSmokingLive = live.status === "smoking-now";
+            const isSoldOut = live.status === "sold-out";
+            const effectivePrice = live.priceOverride || item.price;
+            const priceInfo = parsePrices(effectivePrice);
             const isHighlighted = highlightedId === item.id;
 
             return (
               <div
                 id={item.id}
                 key={item.id}
-                className={`bg-[#FFFDF9] rounded-xl overflow-hidden border transition-all duration-500 flex flex-col justify-between group ${
-                  isHighlighted
+                className={`bg-[#FFFDF9] rounded-xl overflow-hidden border transition-all duration-500 flex flex-col justify-between group relative ${
+                  isSmokingLive
+                    ? "border-[#EA580C] ring-2 ring-[#EA580C]/40 shadow-lg scale-[1.005]"
+                    : isHighlighted
                     ? "border-[#EA580C] ring-4 ring-[#EA580C]/30 shadow-2xl scale-[1.01]"
+                    : isSoldOut
+                    ? "border-[#E2D5C5] shadow-sm opacity-95"
                     : "border-[#E2D5C5] shadow-sm hover:border-[#EA580C]/60 hover:shadow-md"
                 }`}
               >
-                {/* Food Photo */}
+                {/* Food Photo with Live Smoking / Sold Out Overlays */}
                 {item.image && (
                   <div className="relative w-full h-44 sm:h-48 bg-stone-900 overflow-hidden">
                     <Image
@@ -512,8 +571,25 @@ export function ButcherBlockMenu() {
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+                    {/* Live Smoke Badge */}
+                    {isSmokingLive && (
+                      <div className="absolute top-2.5 left-2.5 z-10 px-2.5 py-1 rounded-lg bg-[#EA580C] text-white text-[10px] sm:text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5 shadow-lg border border-white/20 animate-pulse">
+                        <span>🔥</span>
+                        <span>Smoking Live Today • Ready {live.readyTime || "~5:00 PM"}</span>
+                      </div>
+                    )}
+
+                    {/* Sold Out Badge */}
+                    {isSoldOut && (
+                      <div className="absolute top-2.5 left-2.5 z-10 px-2.5 py-1 rounded-lg bg-stone-950/90 text-stone-300 border border-stone-700 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-lg">
+                        <span>🚫</span>
+                        <span>Sold Out Today • Pre-Order Only</span>
+                      </div>
+                    )}
+
                     <span className="absolute bottom-2 right-2 font-black text-sm text-white bg-[#EA580C] px-2.5 py-1 rounded-md shadow-md">
-                      {item.price}
+                      {effectivePrice}
                     </span>
                   </div>
                 )}
@@ -523,6 +599,18 @@ export function ButcherBlockMenu() {
                     {/* Header Row: Badges & Price (shown if no image) */}
                     <div className="flex justify-between items-start gap-3 mb-2">
                       <div className="flex flex-wrap items-center gap-1.5">
+                        {isSmokingLive && !item.image && (
+                          <span className="text-[10px] font-black uppercase tracking-wider bg-[#EA580C] text-white px-2 py-0.5 rounded-md flex items-center gap-1 animate-pulse">
+                            <span>🔥</span>
+                            <span>Smoking Live • Ready {live.readyTime || "~5:00 PM"}</span>
+                          </span>
+                        )}
+                        {isSoldOut && !item.image && (
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-stone-900 text-stone-300 border border-stone-700 px-2 py-0.5 rounded-md flex items-center gap-1">
+                            <span>🚫</span>
+                            <span>Sold Out Today</span>
+                          </span>
+                        )}
                         {item.skull && (
                           <span className="text-[10px] font-black uppercase tracking-wider bg-red-950 text-red-300 border border-red-700/60 px-2 py-0.5 rounded-md flex items-center gap-1">
                             <span>☠️</span>
@@ -542,7 +630,7 @@ export function ButcherBlockMenu() {
                       </div>
                       {!item.image && (
                         <span className="shrink-0 font-black text-base sm:text-lg text-[#EA580C] bg-[#FFF4ED] px-3 py-1 rounded-lg border border-[#FDBA74]/50">
-                          {item.price}
+                          {effectivePrice}
                         </span>
                       )}
                     </div>
@@ -568,9 +656,22 @@ export function ButcherBlockMenu() {
                   {/* Card Footer: One-Click Add To Tray Action */}
                   <div className="mt-4 pt-3 border-t border-[#EAE0D5] flex flex-wrap items-center justify-between gap-2">
                     <span className="text-xs text-slate-500 flex items-center gap-1">
-                      <span>Smokehouse fresh</span>
-                      <span>•</span>
-                      <span>Chicagoland drop-off</span>
+                      {isSmokingLive ? (
+                        <span className="text-[#EA580C] font-bold flex items-center gap-1">
+                          <span>🔥</span>
+                          <span>On hardwood rig today</span>
+                        </span>
+                      ) : isSoldOut ? (
+                        <span className="text-amber-800 font-semibold">
+                          Next cook pre-order available
+                        </span>
+                      ) : (
+                        <>
+                          <span>Smokehouse fresh</span>
+                          <span>•</span>
+                          <span>Chicagoland drop-off</span>
+                        </>
+                      )}
                     </span>
 
                     {/* Action Buttons: Dual Half/Full Pan Buttons or Single Item Button */}
@@ -580,7 +681,7 @@ export function ButcherBlockMenu() {
                           <button
                             type="button"
                             onClick={() => handleAddOption(item, "Half Pan", priceInfo.half!)}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#0F172A] hover:bg-[#EA580C] text-white text-xs font-bold transition shadow-sm"
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#0F172A] hover:bg-[#EA580C] text-white text-xs font-bold transition shadow-sm cursor-pointer"
                           >
                             <span>+ Half Pan</span>
                             <span className="text-[#F59E0B]">(${priceInfo.half})</span>
@@ -588,19 +689,33 @@ export function ButcherBlockMenu() {
                           <button
                             type="button"
                             onClick={() => handleAddOption(item, "Full Pan", priceInfo.full!)}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white text-xs font-bold transition shadow-sm"
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white text-xs font-bold transition shadow-sm cursor-pointer"
                           >
                             <span>+ Full Pan</span>
                             <span>(${priceInfo.full})</span>
                           </button>
                         </>
+                      ) : isSoldOut ? (
+                        <button
+                          type="button"
+                          onClick={() => handleAddSingle(item, priceInfo.single || 50)}
+                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-stone-800 hover:bg-[#EA580C] text-stone-200 hover:text-white text-xs font-semibold transition shadow-sm cursor-pointer"
+                          title="Pre-order this cut for Marion's next scheduled smoker cook"
+                        >
+                          <span>Pre-Order Next Smoke</span>
+                          <span className="text-[#F59E0B]">(${priceInfo.single || 50})</span>
+                        </button>
                       ) : (
                         <button
                           type="button"
                           onClick={() => handleAddSingle(item, priceInfo.single || 50)}
-                          className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-[#0F172A] hover:bg-[#EA580C] text-white text-xs font-bold transition shadow-sm"
+                          className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-white text-xs font-bold transition shadow-sm cursor-pointer ${
+                            isSmokingLive
+                              ? "bg-gradient-to-r from-[#EA580C] to-[#C2410C] hover:from-[#FF7A00] hover:to-[#EA580C] shadow-md"
+                              : "bg-[#0F172A] hover:bg-[#EA580C]"
+                          }`}
                         >
-                          <span>+ Add to Tray</span>
+                          <span>{isSmokingLive ? "🔥 Add Live Smoke Cut" : "+ Add to Tray"}</span>
                           <span className="text-[#F59E0B]">(${priceInfo.single || 50})</span>
                         </button>
                       )}

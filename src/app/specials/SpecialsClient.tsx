@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { WEEKLY_CHALKBOARD, WeeklyChalkboardItem } from "@/data/pitmaster-menu";
 import { OrderTrayProvider, useOrderTray } from "@/context/OrderTrayContext";
+import { useLiveSmokerStatus } from "@/utils/smoker-live-status";
 import { SmokehouseOrderTray } from "@/components/tray/SmokehouseOrderTray";
 import { SmokehouseTrayButton } from "@/components/tray/SmokehouseTrayButton";
 import { QuoteModal } from "@/components/forms/QuoteModal";
@@ -12,6 +13,7 @@ import { Footer } from "@/components/layout/Footer";
 
 function ChalkboardContent() {
   const { addItem, subtotal, totalItemCount, openTray } = useOrderTray();
+  const { getItemStatus } = useLiveSmokerStatus();
   const [addedId, setAddedId] = useState<string | null>(null);
   const MIN_DELIVERY_SUBTOTAL = 150;
   const remainingForMin = Math.max(0, MIN_DELIVERY_SUBTOTAL - subtotal);
@@ -104,20 +106,38 @@ function ChalkboardContent() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3.5 mt-7">
               {WEEKLY_CHALKBOARD.items.map((special, idx) => {
                 const isJustAdded = addedId === special.id;
+                const live = getItemStatus(special.menuTargetId);
+                const isSmokingLive = live.status === "smoking-now";
+                const isSoldOut = live.status === "sold-out";
 
                 return (
                   <div
                     key={special.id}
-                    className="group border-b border-dashed border-white/15 py-3 flex-col gap-1.5 hover:bg-white/[0.03] rounded-lg px-2.5 transition-all flex"
+                    className={`group border-b border-dashed border-white/15 py-3 flex-col gap-1.5 rounded-lg px-2.5 transition-all flex ${
+                      isSmokingLive
+                        ? "bg-[#EA580C]/10 border-[#EA580C]/40"
+                        : "hover:bg-white/[0.03]"
+                    }`}
                   >
-                    {/* Dish Number & Name */}
-                    <div className="flex items-baseline gap-2">
+                    {/* Dish Number, Name & Live Smoke Badges */}
+                    <div className="flex flex-wrap items-baseline gap-2">
                       <span className="font-chalk chalk-yellow text-xs sm:text-sm font-bold shrink-0">
                         #{idx + 1}
                       </span>
                       <h2 className="font-chalk chalk-white text-base sm:text-lg font-bold group-hover:text-[#FB923C] transition-colors leading-snug">
                         {special.name}
                       </h2>
+                      {isSmokingLive && (
+                        <span className="font-chalk chalk-orange text-[10px] sm:text-[11px] font-bold bg-[#FB923C]/20 border border-[#FB923C]/50 px-2 py-0.5 rounded animate-pulse flex items-center gap-1">
+                          <span>🔥</span>
+                          <span>Smoking Live Today • Ready {live.readyTime || "~5:00 PM"}</span>
+                        </span>
+                      )}
+                      {isSoldOut && (
+                        <span className="font-chalk chalk-white text-[10px] sm:text-[11px] font-bold bg-neutral-800 border border-neutral-700 px-2 py-0.5 rounded opacity-80">
+                          🚫 Sold Out Today (Pre-Order)
+                        </span>
+                      )}
                     </div>
 
                     {/* Price & Action CTAs */}

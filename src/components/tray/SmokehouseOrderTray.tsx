@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useOrderTray } from "@/context/OrderTrayContext";
 import { CalendarDatePicker } from "@/components/forms/CalendarDatePicker";
+import { useLiveSmokerStatus } from "@/utils/smoker-live-status";
 
 // Chicago delivery zones
 const TIER_1_ZIPS = new Set([
@@ -33,6 +34,7 @@ export function SmokehouseOrderTray() {
     totalItemCount,
     subtotal,
   } = useOrderTray();
+  const { getItemStatus } = useLiveSmokerStatus();
 
   const MIN_DELIVERY_SUBTOTAL = 150;
   const [deliveryZip, setDeliveryZip] = useState("");
@@ -279,36 +281,57 @@ export function SmokehouseOrderTray() {
                     </button>
                   </div>
 
-                  {trayItems.map((item) => (
-                    <div
-                      key={item.id}
-                      className="bg-[#171A20] p-3.5 rounded-xl border border-white/10 flex items-center justify-between gap-3"
-                    >
-                      {/* Image Thumbnail */}
-                      {item.image && (
-                        <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-stone-900 shrink-0">
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fill
-                            className="object-cover"
-                            sizes="56px"
-                          />
-                        </div>
-                      )}
+                  {trayItems.map((item) => {
+                    const live = getItemStatus(item.baseId || item.id);
+                    const isSmokingLive = live.status === "smoking-now";
+                    const isSoldOut = live.status === "sold-out";
 
-                      {/* Info */}
-                      <div className="flex-1 min-w-0">
-                        <h5 className="font-bold text-sm text-white truncate">{item.name}</h5>
-                        {item.selectedOption && (
-                          <p className="text-[11px] font-mono text-[#F59E0B]">
-                            {item.selectedOption}
-                          </p>
+                    return (
+                      <div
+                        key={item.id}
+                        className={`p-3.5 rounded-xl border flex items-center justify-between gap-3 ${
+                          isSmokingLive
+                            ? "bg-[#1d1712] border-[#EA580C]/50 shadow-sm"
+                            : "bg-[#171A20] border-white/10"
+                        }`}
+                      >
+                        {/* Image Thumbnail */}
+                        {item.image && (
+                          <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-stone-900 shrink-0">
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              className="object-cover"
+                              sizes="56px"
+                            />
+                          </div>
                         )}
-                        <p className="text-xs font-mono font-bold text-neutral-300 mt-0.5">
-                          ${(item.price * item.quantity).toFixed(2)}
-                        </p>
-                      </div>
+
+                        {/* Info */}
+                        <div className="flex-1 min-w-0">
+                          <h5 className="font-bold text-sm text-white truncate">{item.name}</h5>
+                          {item.selectedOption && (
+                            <p className="text-[11px] font-mono text-[#F59E0B]">
+                              {item.selectedOption}
+                            </p>
+                          )}
+                          {isSmokingLive && (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#FF7A00] bg-[#EA580C]/20 border border-[#EA580C]/40 px-1.5 py-0.5 rounded mt-0.5 animate-pulse">
+                              <span>🔥</span>
+                              <span>Smoking on rig today • Ready {live.readyTime || "~5:00 PM"}</span>
+                            </span>
+                          )}
+                          {isSoldOut && (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-neutral-400 bg-black/40 border border-neutral-700 px-1.5 py-0.5 rounded mt-0.5">
+                              <span>🚫</span>
+                              <span>Queued for next smoker cook</span>
+                            </span>
+                          )}
+                          <p className="text-xs font-mono font-bold text-neutral-300 mt-0.5">
+                            ${(item.price * item.quantity).toFixed(2)}
+                          </p>
+                        </div>
 
                       {/* Quantity Controls */}
                       <div className="flex items-center gap-1.5 bg-black/40 rounded-lg p-1 border border-white/10 shrink-0">
@@ -341,7 +364,8 @@ export function SmokehouseOrderTray() {
                         ✕
                       </button>
                     </div>
-                  ))}
+                  );
+                })}
                 </div>
 
                 {/* 1B. Complete the Feast 1-Click Upsell Strip (Jack Stack Pattern) */}

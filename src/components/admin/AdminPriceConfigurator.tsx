@@ -1,19 +1,30 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { AdminTheme } from "./AdminPortal";
-import { PER_PERSON_PACKAGES, PerPersonPackage } from "@/data/catering-packages";
-import { PITMASTER_MENU_ITEMS, MenuItem } from "@/data/pitmaster-menu";
-import { SITE_CONFIG } from "@/config/site-config";
+import { PER_PERSON_PACKAGES } from "@/data/catering-packages";
+import { PITMASTER_MENU_ITEMS, MENU_CATEGORIES, MenuCategory } from "@/data/pitmaster-menu";
+import {
+  SmokerItemStatus,
+  READY_TIME_PRESETS,
+  STORAGE_KEY_LIVE_STATUS,
+  STORAGE_KEY_PRICE_CONFIG,
+  saveStoredLiveMenuOverrides,
+  getStoredLiveMenuOverrides,
+  syncLiveSmokeToCalendar,
+} from "@/utils/smoker-live-status";
 
-export interface MeatAvailabilityItem {
+export interface SmokerConfigMenuItem {
   id: string;
   name: string;
-  category: "meats" | "slabs" | "wings" | "specialties";
+  category: "smoked-meats" | "bbq-slabs" | "wings" | "specialties" | "sides";
   basePrice: string;
-  status: "in-stock" | "smoking-now" | "sold-out";
+  status: SmokerItemStatus;
+  readyTime?: string;
+  syncCalendar?: boolean;
   batchNote: string;
-  isSpecialty?: boolean;
+  badge?: string;
+  popular?: boolean;
 }
 
 export interface PartyPanPricingItem {
@@ -37,120 +48,69 @@ export interface SmokerConfigState {
     minimumGuests: number;
     tagline: string;
   }[];
-  meatItems: MeatAvailabilityItem[];
+  menuItems: SmokerConfigMenuItem[];
   partyPans: PartyPanPricingItem[];
   lastSaved: string;
 }
 
-const DEFAULT_MEAT_ITEMS: MeatAvailabilityItem[] = [
-  {
-    id: "meat-brisket",
-    name: "14-Hour Prime Texas Brisket",
-    category: "meats",
-    basePrice: "$34 / lb",
-    status: "in-stock",
-    batchNote: "Prime Black Angus briskets rubbed in coarse black pepper & kosher salt.",
-  },
-  {
-    id: "meat-st-louis-ribs",
-    name: "St. Louis Cut Spare Rib Slabs",
-    category: "slabs",
-    basePrice: "$32 / slab",
-    status: "smoking-now",
-    batchNote: "Slow-rendered with cherry and hickory wood. Deep mahogany bark.",
-  },
-  {
-    id: "meat-turkey-chops",
-    name: "Pit-Smoked Turkey Chops",
-    category: "meats",
-    basePrice: "$28 / lb",
-    status: "in-stock",
-    batchNote: "Brined 24 hours, seasoned with poultry dry rub, juicy and tender.",
-  },
-  {
-    id: "meat-hot-links",
-    name: "Chicago Beef Hot Links",
-    category: "meats",
-    basePrice: "$22 / lb",
-    status: "in-stock",
-    batchNote: "Course ground all-beef hot links with red pepper flakes and smoke snap.",
-  },
-  {
-    id: "meat-pit-wings",
-    name: "Crispy Whole Smoked Pit Wings",
-    category: "wings",
-    basePrice: "$24 / dozen",
-    status: "in-stock",
-    batchNote: "Oak-smoked then charred over pit coals. Tossed in Honey Garlic or Mild.",
-  },
-  {
-    id: "meat-salmon",
-    name: "Cedar-Plank Wild Salmon Fillet",
-    category: "specialties",
-    basePrice: "$28 / portion",
-    status: "smoking-now",
-    batchNote: "Charred cedar planks with brown sugar mustard glaze and fresh dill.",
-  },
-  {
-    id: "meat-burnt-ends",
-    name: "Double-Smoked Brisket Burnt Ends",
-    category: "specialties",
-    basePrice: "$32 / lb",
-    status: "sold-out",
-    batchNote: "Cubed prime brisket point candied in dark molasses pit glaze.",
-    isSpecialty: true,
-  },
-  {
-    id: "meat-oxtails",
-    name: "Slow-Simmered Smoked Oxtails",
-    category: "specialties",
-    basePrice: "$38 / lb",
-    status: "sold-out",
-    batchNote: "Chef reserve item. Requires 72-hour advance booking.",
-    isSpecialty: true,
-  },
-];
+const DEFAULT_MENU_ITEMS: SmokerConfigMenuItem[] = PITMASTER_MENU_ITEMS.map((item) => {
+  const isDefaultSmoking = item.id === "st-louis-ribs" || item.id === "cedar-plank-salmon";
+  const isDefaultSoldOut = item.id === "burnt-ends-specialty" || item.id === "smoked-oxtails";
+
+  return {
+    id: item.id,
+    name: item.name,
+    category: item.category,
+    basePrice: item.price,
+    status: isDefaultSmoking ? "smoking-now" : isDefaultSoldOut ? "sold-out" : "in-stock",
+    readyTime: item.id === "st-louis-ribs" ? "~5:00 PM" : item.id === "cedar-plank-salmon" ? "~6:00 PM" : "~5:00 PM",
+    syncCalendar: true,
+    batchNote: item.portion ? `${item.portion}` : item.description,
+    badge: item.badge,
+    popular: item.popular,
+  };
+});
 
 const DEFAULT_PARTY_PANS: PartyPanPricingItem[] = [
   {
     id: "pan-mac-cheese",
     name: "4-Cheese Pitmaster Mac & Cheese",
     category: "sides",
-    halfPanPrice: 50,
-    fullPanPrice: 90,
+    halfPanPrice: 75,
+    fullPanPrice: 135,
     servesHalf: "12–15 guests",
     servesFull: "25–30 guests",
   },
   {
     id: "pan-baked-beans",
-    name: "Smokehouse Baked Beans (w/ Turkey)",
+    name: "Smokehouse Baked Beans (w/ Burnt Ends)",
     category: "sides",
-    halfPanPrice: 45,
-    fullPanPrice: 80,
-    servesHalf: "12–15 guests",
-    servesFull: "25–30 guests",
+    halfPanPrice: 55,
+    fullPanPrice: 95,
+    servesHalf: "15–20 guests",
+    servesFull: "30–40 guests",
   },
   {
     id: "pan-potato-salad",
     name: "Southern Mustard Potato Salad",
     category: "sides",
-    halfPanPrice: 40,
+    halfPanPrice: 45,
     fullPanPrice: 75,
-    servesHalf: "12–15 guests",
-    servesFull: "25–30 guests",
+    servesHalf: "15–20 guests",
+    servesFull: "30–40 guests",
   },
   {
     id: "pan-coleslaw",
     name: "Creamy Sweet Pepper Coleslaw",
     category: "sides",
-    halfPanPrice: 35,
+    halfPanPrice: 40,
     fullPanPrice: 65,
-    servesHalf: "12–15 guests",
-    servesFull: "25–30 guests",
+    servesHalf: "20–25 guests",
+    servesFull: "40–50 guests",
   },
   {
     id: "pan-cornbread",
-    name: "Honey Butter Skillet Cornbread",
+    name: "Habanero Cheddar Skillet Cornbread",
     category: "sides",
     halfPanPrice: 35,
     fullPanPrice: 65,
@@ -161,26 +121,26 @@ const DEFAULT_PARTY_PANS: PartyPanPricingItem[] = [
     id: "pan-spaghetti",
     name: "Pit-Style Smokehouse Spaghetti",
     category: "sides",
-    halfPanPrice: 50,
+    halfPanPrice: 55,
     fullPanPrice: 95,
     servesHalf: "12–15 guests",
     servesFull: "25–30 guests",
   },
   {
-    id: "pan-pulled-pork",
-    name: "Slow-Smoked Pulled Pork Pan",
+    id: "pan-rib-tips",
+    name: "Southside Chicago Rib Tips Pan",
     category: "meats",
-    halfPanPrice: 85,
-    fullPanPrice: 160,
+    halfPanPrice: 75,
+    fullPanPrice: 150,
     servesHalf: "12–15 guests",
     servesFull: "25–30 guests",
   },
   {
-    id: "pan-brisket-slices",
-    name: "Sliced Texas Prime Brisket Pan",
+    id: "pan-chili",
+    name: "Slow-Simmered Brisket Burnt-End Chili Pan",
     category: "meats",
-    halfPanPrice: 130,
-    fullPanPrice: 245,
+    halfPanPrice: 65,
+    fullPanPrice: 120,
     servesHalf: "12–15 guests",
     servesFull: "25–30 guests",
   },
@@ -192,11 +152,13 @@ interface AdminPriceConfiguratorProps {
 
 export function AdminPriceConfigurator({ theme }: AdminPriceConfiguratorProps) {
   const isDay = theme === "day";
-  const [activeSection, setActiveSection] = useState<"packages" | "meats" | "pans" | "delivery">("packages");
+  const [activeMainTab, setActiveMainTab] = useState<"packages" | "menu" | "pans" | "delivery">("menu");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const [copySuccess, setCopySuccess] = useState(false);
   const [saveToast, setSaveToast] = useState(false);
 
-  // Initial State from Catering Packages Data
+  // Initial State from Master Menu & Catering Packages
   const [config, setConfig] = useState<SmokerConfigState>(() => ({
     deliveryMinimum: 150,
     standardLeadTimeHours: 48,
@@ -208,41 +170,117 @@ export function AdminPriceConfigurator({ theme }: AdminPriceConfiguratorProps) {
       minimumGuests: p.minimumGuests,
       tagline: p.tagline,
     })),
-    meatItems: DEFAULT_MEAT_ITEMS,
+    menuItems: DEFAULT_MENU_ITEMS,
     partyPans: DEFAULT_PARTY_PANS,
     lastSaved: "Default System Settings",
   }));
 
-  // Load from LocalStorage
+  // Load from LocalStorage (with legacy migration support)
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("ats_smoker_price_config");
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          setConfig(parsed);
-        } catch (e) {
-          console.warn("Could not parse saved smoker config:", e);
+      try {
+        const savedConfigRaw = localStorage.getItem(STORAGE_KEY_PRICE_CONFIG);
+        const savedLiveRaw = localStorage.getItem(STORAGE_KEY_LIVE_STATUS);
+
+        let mergedItems = [...DEFAULT_MENU_ITEMS];
+
+        // 1. If old or previous config exists
+        if (savedConfigRaw) {
+          const parsed = JSON.parse(savedConfigRaw);
+          if (parsed && Array.isArray(parsed.menuItems) && parsed.menuItems.length > 0) {
+            // Map saved item settings onto master items
+            const savedMap = new Map<string, SmokerConfigMenuItem>(
+              parsed.menuItems.map((m: SmokerConfigMenuItem) => [m.id, m])
+            );
+            mergedItems = DEFAULT_MENU_ITEMS.map((item) => {
+              const found = savedMap.get(item.id);
+              if (found) {
+                return {
+                  ...item,
+                  basePrice: found.basePrice || item.basePrice,
+                  status: found.status || item.status,
+                  readyTime: found.readyTime || item.readyTime,
+                  syncCalendar: found.syncCalendar ?? item.syncCalendar,
+                };
+              }
+              return item;
+            });
+          }
         }
+
+        // 2. If live status storage exists, overlay it
+        if (savedLiveRaw) {
+          const liveState = JSON.parse(savedLiveRaw);
+          if (liveState && typeof liveState.items === "object") {
+            mergedItems = mergedItems.map((item) => {
+              const live = liveState.items[item.id];
+              if (live) {
+                return {
+                  ...item,
+                  status: live.status || item.status,
+                  readyTime: live.readyTime || item.readyTime,
+                  basePrice: live.priceOverride || item.basePrice,
+                };
+              }
+              return item;
+            });
+          }
+        }
+
+        setConfig((prev) => ({
+          ...prev,
+          menuItems: mergedItems,
+        }));
+      } catch (e) {
+        console.warn("Could not load smoker config state:", e);
       }
     }
   }, []);
 
+  // Save config to both localStorage endpoints and sync to calendar
   const saveConfig = () => {
-    const updated = {
+    const updated: SmokerConfigState = {
       ...config,
-      lastSaved: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", month: "short", day: "numeric" }),
+      lastSaved: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        month: "short",
+        day: "numeric",
+      }),
     };
     setConfig(updated);
+
     if (typeof window !== "undefined") {
-      localStorage.setItem("ats_smoker_price_config", JSON.stringify(updated));
+      // 1. Save general config
+      localStorage.setItem(STORAGE_KEY_PRICE_CONFIG, JSON.stringify(updated));
+
+      // 2. Build live overrides map for public website consumption
+      const liveOverrides: Record<string, any> = {};
+      updated.menuItems.forEach((m) => {
+        liveOverrides[m.id] = {
+          id: m.id,
+          status: m.status,
+          readyTime: m.readyTime,
+          priceOverride: m.basePrice,
+          batchNote: m.batchNote,
+          syncToCalendar: m.syncCalendar,
+        };
+
+        // 3. Auto-sync Live Smoke items to Marion's Smokehouse Calendar
+        if (m.syncCalendar) {
+          syncLiveSmokeToCalendar(m.id, m.name, m.status, m.readyTime);
+        }
+      });
+
+      saveStoredLiveMenuOverrides(liveOverrides);
     }
+
     setSaveToast(true);
     setTimeout(() => setSaveToast(false), 3000);
   };
 
   const resetDefaults = () => {
-    if (confirm("Reset all menu pricing, availability, and delivery parameters to master defaults?")) {
+    if (confirm("Reset all 32 menu items, live smoker statuses, and pricing to master defaults?")) {
       const defState: SmokerConfigState = {
         deliveryMinimum: 150,
         standardLeadTimeHours: 48,
@@ -254,13 +292,14 @@ export function AdminPriceConfigurator({ theme }: AdminPriceConfiguratorProps) {
           minimumGuests: p.minimumGuests,
           tagline: p.tagline,
         })),
-        meatItems: DEFAULT_MEAT_ITEMS,
+        menuItems: DEFAULT_MENU_ITEMS,
         partyPans: DEFAULT_PARTY_PANS,
-        lastSaved: "Reset to System Defaults",
+        lastSaved: "Reset to Master Defaults",
       };
       setConfig(defState);
       if (typeof window !== "undefined") {
-        localStorage.removeItem("ats_smoker_price_config");
+        localStorage.removeItem(STORAGE_KEY_PRICE_CONFIG);
+        localStorage.removeItem(STORAGE_KEY_LIVE_STATUS);
       }
       setSaveToast(true);
       setTimeout(() => setSaveToast(false), 3000);
@@ -268,29 +307,64 @@ export function AdminPriceConfigurator({ theme }: AdminPriceConfiguratorProps) {
   };
 
   // Updaters
+  const updateMenuItemStatus = (id: string, status: SmokerItemStatus) => {
+    setConfig((prev) => {
+      const updatedItems = prev.menuItems.map((m) => {
+        if (m.id === id) {
+          const readyTime = status === "smoking-now" ? (m.readyTime || "~5:00 PM") : m.readyTime;
+          return { ...m, status, readyTime };
+        }
+        return m;
+      });
+
+      // Instantly update calendar if item is smoking now or switched off
+      const target = updatedItems.find((m) => m.id === id);
+      if (target && target.syncCalendar) {
+        syncLiveSmokeToCalendar(target.id, target.name, status, target.readyTime);
+      }
+
+      return { ...prev, menuItems: updatedItems };
+    });
+  };
+
+  const updateMenuItemReadyTime = (id: string, readyTime: string) => {
+    setConfig((prev) => {
+      const updatedItems = prev.menuItems.map((m) =>
+        m.id === id ? { ...m, readyTime } : m
+      );
+
+      const target = updatedItems.find((m) => m.id === id);
+      if (target && target.status === "smoking-now" && target.syncCalendar) {
+        syncLiveSmokeToCalendar(target.id, target.name, target.status, readyTime);
+      }
+
+      return { ...prev, menuItems: updatedItems };
+    });
+  };
+
+  const updateMenuItemPrice = (id: string, basePrice: string) => {
+    setConfig((prev) => ({
+      ...prev,
+      menuItems: prev.menuItems.map((m) =>
+        m.id === id ? { ...m, basePrice } : m
+      ),
+    }));
+  };
+
+  const toggleMenuItemCalendarSync = (id: string) => {
+    setConfig((prev) => ({
+      ...prev,
+      menuItems: prev.menuItems.map((m) =>
+        m.id === id ? { ...m, syncCalendar: !m.syncCalendar } : m
+      ),
+    }));
+  };
+
   const updatePackage = (id: string, field: "pricePerPerson" | "minimumGuests", value: number) => {
     setConfig((prev) => ({
       ...prev,
       packages: prev.packages.map((pkg) =>
         pkg.id === id ? { ...pkg, [field]: value } : pkg
-      ),
-    }));
-  };
-
-  const updateMeatStatus = (id: string, status: MeatAvailabilityItem["status"]) => {
-    setConfig((prev) => ({
-      ...prev,
-      meatItems: prev.meatItems.map((m) =>
-        m.id === id ? { ...m, status } : m
-      ),
-    }));
-  };
-
-  const updateMeatPrice = (id: string, basePrice: string) => {
-    setConfig((prev) => ({
-      ...prev,
-      meatItems: prev.meatItems.map((m) =>
-        m.id === id ? { ...m, basePrice } : m
       ),
     }));
   };
@@ -304,21 +378,68 @@ export function AdminPriceConfigurator({ theme }: AdminPriceConfiguratorProps) {
     }));
   };
 
+  // Filtered menu items
+  const filteredMenuItems = useMemo(() => {
+    return config.menuItems.filter((item) => {
+      const matchesCategory =
+        selectedCategory === "all" || item.category === selectedCategory;
+      const matchesQuery =
+        !searchQuery.trim() ||
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.batchNote.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesQuery;
+    });
+  }, [config.menuItems, selectedCategory, searchQuery]);
+
+  // Statistics
+  const smokingNowCount = config.menuItems.filter((m) => m.status === "smoking-now").length;
+  const soldOutCount = config.menuItems.filter((m) => m.status === "sold-out").length;
+  const inStockCount = config.menuItems.filter((m) => m.status === "in-stock").length;
+
+  // Category counts
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: config.menuItems.length };
+    config.menuItems.forEach((m) => {
+      counts[m.category] = (counts[m.category] || 0) + 1;
+    });
+    return counts;
+  }, [config.menuItems]);
+
   const copyPriceSheetToClipboard = () => {
-    const text = `🔥 ALL THE SMOKE CATERING — CURRENT PRICE SHEET 🔥
+    const text = `🔥 ALL THE SMOKE CATERING — PITMASTER LIVE PRICE SHEET 🔥
 Pitmaster Marion Bolden | (773) 707-9988 | allthesmokecatering.com
 Chicago's Northwest Side (60634) • $150 Heated Delivery Minimum
 
---- PER-PERSON CATERING PACKAGES ---
-${config.packages.map((p) => `• ${p.name}: $${p.pricePerPerson.toFixed(2)}/guest (Min ${p.minimumGuests} guests)\n  ${p.tagline}`).join("\n")}
+--- 🥩 PER-PERSON CATERING PACKAGES ---
+${config.packages
+  .map(
+    (p) =>
+      `• ${p.name}: $${p.pricePerPerson.toFixed(2)}/guest (Min ${p.minimumGuests} guests)\n  ${p.tagline}`
+  )
+  .join("\n")}
 
---- SMOKEHOUSE PARTY PANS (HALF / FULL) ---
-${config.partyPans.map((pan) => `• ${pan.name}: Half Pan $${pan.halfPanPrice} (${pan.servesHalf}) | Full Pan $${pan.fullPanPrice} (${pan.servesFull})`).join("\n")}
+--- 🔥 SMOKER MEATS & LIVE RIG STATUS ---
+${config.menuItems
+  .map((m) => {
+    const statusNote =
+      m.status === "smoking-now"
+        ? `🔥 SMOKING LIVE TODAY (Ready ${m.readyTime || "~5:00 PM"})`
+        : m.status === "sold-out"
+        ? "🚫 SOLD OUT TODAY (Pre-Order)"
+        : "✅ IN STOCK";
+    return `• ${m.name}: ${m.basePrice} [${statusNote}]\n  Yield: ${m.batchNote}`;
+  })
+  .join("\n")}
 
---- LIVE SMOKER MEAT STATUS ---
-${config.meatItems.map((m) => `• ${m.name}: ${m.basePrice} [${m.status === "in-stock" ? "IN STOCK" : m.status === "smoking-now" ? "SMOKING LIVE" : "SOLD OUT"}]`).join("\n")}
+--- 🥘 SMOKEHOUSE PARTY PANS (HALF / FULL) ---
+${config.partyPans
+  .map(
+    (pan) =>
+      `• ${pan.name}: Half Pan $${pan.halfPanPrice} (${pan.servesHalf}) | Full Pan $${pan.fullPanPrice} (${pan.servesFull})`
+  )
+  .join("\n")}
 
-*Prices include heat delivery kit and pit sauces. 25% deposit locks event date.`;
+*Prices include heated catering insulation kit and house pit sauces. 25% deposit locks event date.`;
 
     navigator.clipboard.writeText(text);
     setCopySuccess(true);
@@ -327,7 +448,7 @@ ${config.meatItems.map((m) => `• ${m.name}: ${m.basePrice} [${m.status === "in
 
   return (
     <div className="space-y-6">
-      {/* Header Bar */}
+      {/* Top Header Bar */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-zinc-800">
         <div>
           <div className="flex items-center gap-2">
@@ -347,7 +468,7 @@ ${config.meatItems.map((m) => `• ${m.name}: ${m.basePrice} [${m.status === "in
               isDay ? "text-stone-600" : "text-zinc-400"
             }`}
           >
-            Manage per-person package pricing, live meat smoking availability, party pans, and delivery minimums.
+            Manage live smoking status, ready times, 32 handcrafted cuts, party pans, and catering packages.
           </p>
         </div>
 
@@ -392,64 +513,75 @@ ${config.meatItems.map((m) => `• ${m.name}: ${m.basePrice} [${m.status === "in
 
       {/* Save Notification Toast */}
       {saveToast && (
-        <div className="p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 text-xs font-bold flex items-center justify-between animate-fade-in shadow-lg">
+        <div className="p-3.5 rounded-xl bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 text-xs font-bold flex items-center justify-between animate-fade-in shadow-lg">
           <div className="flex items-center gap-2">
             <span>✓</span>
-            <span>Menu &amp; price sheet updated! Changes saved locally for Marion&rsquo;s session.</span>
+            <span>
+              All 32 menu items, live smoker ready times, and calendar events synchronized successfully!
+            </span>
           </div>
           <span className="text-[11px] font-mono text-emerald-400/80">{config.lastSaved}</span>
         </div>
       )}
 
-      {/* Navigation Pill Selectors */}
+      {/* Main Section Navigation Pills */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-thin">
         <button
           type="button"
-          onClick={() => setActiveSection("packages")}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-            activeSection === "packages"
+          onClick={() => setActiveMainTab("menu")}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-2 ${
+            activeMainTab === "menu"
               ? "bg-[#EA580C] text-white shadow-sm"
               : isDay
               ? "bg-stone-200 text-stone-700 hover:bg-stone-300"
               : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white"
           }`}
         >
-          🥩 Per-Person Packages ({config.packages.length})
+          <span>🔥 Smoker Menu &amp; Live Availability</span>
+          <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 text-white font-extrabold">
+            {config.menuItems.length}
+          </span>
         </button>
 
         <button
           type="button"
-          onClick={() => setActiveSection("meats")}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-            activeSection === "meats"
+          onClick={() => setActiveMainTab("packages")}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-2 ${
+            activeMainTab === "packages"
               ? "bg-[#EA580C] text-white shadow-sm"
               : isDay
               ? "bg-stone-200 text-stone-700 hover:bg-stone-300"
               : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white"
           }`}
         >
-          🔥 Smoker Meats &amp; Availability ({config.meatItems.length})
+          <span>🥩 Per-Person Packages</span>
+          <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 text-white font-extrabold">
+            {config.packages.length}
+          </span>
         </button>
 
         <button
           type="button"
-          onClick={() => setActiveSection("pans")}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-            activeSection === "pans"
+          onClick={() => setActiveMainTab("pans")}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-2 ${
+            activeMainTab === "pans"
               ? "bg-[#EA580C] text-white shadow-sm"
               : isDay
               ? "bg-stone-200 text-stone-700 hover:bg-stone-300"
               : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white"
           }`}
         >
-          🥘 Party Pans &amp; Bulk Sides ({config.partyPans.length})
+          <span>🥘 Party Pans &amp; Bulk Sides</span>
+          <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 text-white font-extrabold">
+            {config.partyPans.length}
+          </span>
         </button>
 
         <button
           type="button"
-          onClick={() => setActiveSection("delivery")}
+          onClick={() => setActiveMainTab("delivery")}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-            activeSection === "delivery"
+            activeMainTab === "delivery"
               ? "bg-[#EA580C] text-white shadow-sm"
               : isDay
               ? "bg-stone-200 text-stone-700 hover:bg-stone-300"
@@ -460,82 +592,371 @@ ${config.meatItems.map((m) => `• ${m.name}: ${m.basePrice} [${m.status === "in
         </button>
       </div>
 
-      {/* SECTION 1: PER-PERSON PACKAGES */}
-      {activeSection === "packages" && (
+      {/* SECTION 1: SMOKER MENU & LIVE AVAILABILITY (ALL 32 ITEMS) */}
+      {activeMainTab === "menu" && (
+        <div className="space-y-4">
+          {/* Live Smoke Quick Summary Bar */}
+          <div
+            className={`p-3.5 rounded-2xl border flex flex-col md:flex-row md:items-center justify-between gap-3 ${
+              isDay
+                ? "bg-amber-50/80 border-amber-200 text-amber-950"
+                : "bg-amber-950/20 border-amber-500/30 text-amber-200"
+            }`}
+          >
+            <div className="flex flex-wrap items-center gap-3 text-xs">
+              <span className="font-bold flex items-center gap-1.5">
+                <span>🔥</span>
+                <span>Active Live Smokes:</span>
+                <span className="px-2 py-0.5 rounded-full bg-[#EA580C] text-white font-black">
+                  {smokingNowCount}
+                </span>
+              </span>
+              <span className="text-zinc-500">•</span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
+                <span>In Stock:</span>
+                <strong>{inStockCount}</strong>
+              </span>
+              <span className="text-zinc-500">•</span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-red-500 inline-block" />
+                <span>Sold Out:</span>
+                <strong>{soldOutCount}</strong>
+              </span>
+            </div>
+
+            <div className="text-[11px] font-semibold text-amber-400 flex items-center gap-1.5">
+              <span>📅</span>
+              <span>1-Tap &quot;Live Smoke&quot; updates customer cards &amp; Smoke Calendar instantly</span>
+            </div>
+          </div>
+
+          {/* Subcategory Filter Tabs & Search Bar */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
+              {[
+                { id: "all", label: "All Items", count: categoryCounts.all || 32, icon: "📋" },
+                { id: "smoked-meats", label: "Smoked Meats", count: categoryCounts["smoked-meats"] || 8, icon: "🍖" },
+                { id: "bbq-slabs", label: "BBQ Slabs & Ribs", count: categoryCounts["bbq-slabs"] || 6, icon: "🔥" },
+                { id: "wings", label: "Pit Wings", count: categoryCounts.wings || 6, icon: "🍗" },
+                { id: "specialties", label: "Chef Specialties", count: categoryCounts.specialties || 6, icon: "★" },
+                { id: "sides", label: "Scratch Sides", count: categoryCounts.sides || 6, icon: "🧀" },
+              ].map((cat) => (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
+                    selectedCategory === cat.id
+                      ? "bg-zinc-800 text-[#FF7A00] border border-[#FF7A00]/50 shadow-sm"
+                      : isDay
+                      ? "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                      : "bg-zinc-900/80 text-zinc-400 hover:text-white hover:bg-zinc-800"
+                  }`}
+                >
+                  <span>{cat.icon}</span>
+                  <span>{cat.label}</span>
+                  <span className="text-[10px] opacity-75">({cat.count})</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Quick Search Input */}
+            <div className="sm:w-64 relative">
+              <input
+                type="text"
+                placeholder="Search cuts (e.g. Brisket, Ribs, Wings)..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={`w-full px-3 py-1.5 pl-8 rounded-xl text-xs border outline-none ${
+                  isDay
+                    ? "bg-white border-stone-300 text-stone-900 focus:border-[#EA580C]"
+                    : "bg-zinc-900 border-zinc-700 text-white focus:border-[#FF7A00]"
+                }`}
+              />
+              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-zinc-500">
+                🔍
+              </span>
+            </div>
+          </div>
+
+          {/* 32-Item Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {filteredMenuItems.map((item) => {
+              const isSmoking = item.status === "smoking-now";
+              const isSoldOut = item.status === "sold-out";
+
+              const statusBadgeColor = isSmoking
+                ? "bg-[#EA580C]/20 text-[#FF7A00] border-[#EA580C]/50 animate-pulse"
+                : isSoldOut
+                ? "bg-red-500/20 text-red-400 border-red-500/40"
+                : "bg-emerald-500/20 text-emerald-400 border-emerald-500/40";
+
+              const statusBadgeText = isSmoking
+                ? `🔥 Smoking Live • ${item.readyTime || "~5:00 PM"}`
+                : isSoldOut
+                ? "🚫 Sold Out / Next Cook"
+                : "In Stock / Smoking";
+
+              return (
+                <div
+                  key={item.id}
+                  className={`p-4 rounded-2xl border transition-all flex flex-col justify-between gap-3 ${
+                    isSmoking
+                      ? isDay
+                        ? "bg-amber-50/50 border-[#EA580C] shadow-md ring-1 ring-[#EA580C]/30"
+                        : "bg-[#18130e] border-[#EA580C]/60 shadow-lg ring-1 ring-[#EA580C]/40"
+                      : isDay
+                      ? "bg-white border-stone-300 shadow-sm"
+                      : "bg-[#141210] border-zinc-800 shadow-md hover:border-zinc-700"
+                  }`}
+                >
+                  <div>
+                    {/* Header: Title, Category & Status Pill */}
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <h4
+                            className={`font-display text-sm font-bold ${
+                              isDay ? "text-stone-900" : "text-white"
+                            }`}
+                          >
+                            {item.name}
+                          </h4>
+                          {item.badge && (
+                            <span className="text-[9px] font-bold uppercase px-1.5 py-0.2 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">
+                              {item.badge}
+                            </span>
+                          )}
+                          {item.popular && (
+                            <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded-full bg-[#EA580C]/20 text-[#FF7A00]">
+                              Popular
+                            </span>
+                          )}
+                        </div>
+                        <p
+                          className={`text-xs mt-1 line-clamp-2 ${
+                            isDay ? "text-stone-500" : "text-zinc-400"
+                          }`}
+                        >
+                          {item.batchNote}
+                        </p>
+                      </div>
+
+                      <span
+                        className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full border shrink-0 ${statusBadgeColor}`}
+                      >
+                        {statusBadgeText}
+                      </span>
+                    </div>
+
+                    {/* Price & 3-Way Status Toggle */}
+                    <div className="pt-3 mt-2 border-t border-zinc-800/60 flex flex-wrap items-center justify-between gap-2">
+                      {/* Price Input */}
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[11px] font-bold text-zinc-400">Price:</span>
+                        <input
+                          type="text"
+                          value={item.basePrice}
+                          onChange={(e) => updateMenuItemPrice(item.id, e.target.value)}
+                          className={`w-28 px-2 py-1 rounded-lg text-xs font-bold border outline-none ${
+                            isDay
+                              ? "bg-stone-50 border-stone-300 text-stone-900"
+                              : "bg-zinc-900 border-zinc-700 text-white focus:border-[#FF7A00]"
+                          }`}
+                        />
+                      </div>
+
+                      {/* 3-Way Status Toggle Buttons */}
+                      <div className="inline-flex rounded-xl border border-zinc-800 p-0.5 text-[10px] font-bold">
+                        <button
+                          type="button"
+                          onClick={() => updateMenuItemStatus(item.id, "in-stock")}
+                          className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                            item.status === "in-stock"
+                              ? "bg-emerald-500 text-white font-extrabold shadow-sm"
+                              : "text-zinc-400 hover:text-white"
+                          }`}
+                        >
+                          In Stock
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => updateMenuItemStatus(item.id, "smoking-now")}
+                          className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
+                            item.status === "smoking-now"
+                              ? "bg-[#EA580C] text-white font-extrabold shadow-sm"
+                              : "text-zinc-400 hover:text-white"
+                          }`}
+                        >
+                          <span>🔥</span>
+                          <span>Live Smoke</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => updateMenuItemStatus(item.id, "sold-out")}
+                          className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                            item.status === "sold-out"
+                              ? "bg-red-600 text-white font-extrabold shadow-sm"
+                              : "text-zinc-400 hover:text-white"
+                          }`}
+                        >
+                          Sold Out
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Expandable 1-Tap Ready Time Selector (Visible when Smoking Live) */}
+                  {isSmoking && (
+                    <div className="p-3 rounded-xl bg-black/30 border border-[#EA580C]/40 space-y-2.5 animate-fadeIn">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-[11px] font-bold text-[#FF7A00] flex items-center gap-1">
+                          <span>⏱️</span>
+                          <span>Select Customer Ready Time:</span>
+                        </span>
+                        <span className="text-[10px] font-mono font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">
+                          {item.readyTime || "~5:00 PM"}
+                        </span>
+                      </div>
+
+                      {/* Preset Buttons */}
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {READY_TIME_PRESETS.map((preset) => (
+                          <button
+                            key={preset}
+                            type="button"
+                            onClick={() => updateMenuItemReadyTime(item.id, preset)}
+                            className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
+                              item.readyTime === preset
+                                ? "bg-[#EA580C] text-white shadow-sm"
+                                : isDay
+                                ? "bg-white border border-stone-300 text-stone-700 hover:border-[#EA580C]"
+                                : "bg-zinc-800 text-zinc-300 border border-zinc-700 hover:text-white hover:border-amber-500/50"
+                            }`}
+                          >
+                            {preset}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Custom Time Input & Calendar Sync Checkbox */}
+                      <div className="pt-2 border-t border-zinc-800/60 flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] text-zinc-400">Custom:</span>
+                          <input
+                            type="text"
+                            placeholder="e.g. ~4:30 PM"
+                            value={item.readyTime || ""}
+                            onChange={(e) => updateMenuItemReadyTime(item.id, e.target.value)}
+                            className="w-24 px-2 py-0.5 rounded text-[11px] font-bold bg-zinc-900 border border-zinc-700 text-white outline-none focus:border-[#EA580C]"
+                          />
+                        </div>
+
+                        <label className="flex items-center gap-1.5 cursor-pointer text-[10px] text-zinc-300 hover:text-white">
+                          <input
+                            type="checkbox"
+                            checked={item.syncCalendar ?? true}
+                            onChange={() => toggleMenuItemCalendarSync(item.id)}
+                            className="rounded border-zinc-700 text-[#EA580C] focus:ring-0"
+                          />
+                          <span>Sync to Today&apos;s Calendar</span>
+                        </label>
+                      </div>
+
+                      {/* Public Card Badge Preview */}
+                      <div className="text-[10px] font-semibold text-zinc-400 flex items-center gap-1">
+                        <span>Public Badge:</span>
+                        <span className="px-2 py-0.5 rounded bg-[#EA580C]/20 text-[#FF7A00] border border-[#EA580C]/40 font-bold">
+                          🔥 SMOKING LIVE TODAY • READY AT {item.readyTime || "~5:00 PM"}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Sold Out Public Badge Preview */}
+                  {isSoldOut && (
+                    <div className="p-2 rounded-xl bg-red-950/20 border border-red-500/30 text-[10px] text-red-300 flex items-center justify-between">
+                      <span>Public Badge: <strong>SOLD OUT TODAY • PRE-ORDER FOR NEXT SMOKE</strong></span>
+                      <span className="text-[9px] text-red-400">Adds as Pre-Order in tray</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* SECTION 2: PER-PERSON CATERING PACKAGES */}
+      {activeMainTab === "packages" && (
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {config.packages.map((pkg) => (
               <div
                 key={pkg.id}
-                className={`p-5 rounded-2xl border transition-all flex flex-col justify-between gap-4 ${
+                className={`p-5 rounded-2xl border space-y-4 transition-all ${
                   isDay
                     ? "bg-white border-stone-300 shadow-sm"
                     : "bg-[#141210] border-amber-500/25 shadow-md"
                 }`}
               >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <h3
-                      className={`font-display text-base font-bold ${
-                        isDay ? "text-stone-900" : "text-white"
-                      }`}
-                    >
-                      {pkg.name}
-                    </h3>
-                    <span className="text-[10px] font-mono uppercase bg-amber-500/15 text-[#FF7A00] border border-amber-500/30 px-2 py-0.5 rounded-full font-bold">
-                      {pkg.id}
-                    </span>
-                  </div>
-                  <p
-                    className={`text-xs leading-relaxed ${
-                      isDay ? "text-stone-600" : "text-zinc-400"
+                <div>
+                  <h4
+                    className={`font-display text-base font-bold ${
+                      isDay ? "text-stone-900" : "text-white"
                     }`}
                   >
+                    {pkg.name}
+                  </h4>
+                  <p className="text-xs text-zinc-400 mt-1 line-clamp-2">
                     {pkg.tagline}
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-zinc-800/60 grid grid-cols-2 gap-3">
+                <div className="space-y-3 pt-2 border-t border-zinc-800/60">
+                  {/* Price Per Person */}
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">
-                      Price / Guest ($)
+                    <label className="text-[11px] font-bold text-zinc-400 block mb-1">
+                      Price Per Person ($)
                     </label>
                     <div className="relative">
-                      <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-500 text-xs font-bold">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-500">
                         $
                       </span>
                       <input
                         type="number"
-                        step="0.05"
-                        min="1"
+                        step="0.5"
+                        min="5"
                         value={pkg.pricePerPerson}
                         onChange={(e) =>
                           updatePackage(pkg.id, "pricePerPerson", parseFloat(e.target.value) || 0)
                         }
-                        className={`w-full pl-6 pr-2 py-1.5 rounded-xl text-xs font-bold border outline-none ${
+                        className={`w-full pl-7 pr-3 py-1.5 rounded-xl text-xs font-bold border outline-none ${
                           isDay
-                            ? "bg-stone-50 border-stone-300 text-stone-900 focus:border-[#EA580C]"
+                            ? "bg-stone-50 border-stone-300 text-stone-900"
                             : "bg-zinc-900 border-zinc-700 text-white focus:border-[#FF7A00]"
                         }`}
                       />
                     </div>
                   </div>
 
+                  {/* Minimum Guests */}
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">
-                      Min Guests
+                    <label className="text-[11px] font-bold text-zinc-400 block mb-1">
+                      Minimum Guest Count
                     </label>
                     <input
                       type="number"
-                      min="5"
                       step="5"
+                      min="10"
                       value={pkg.minimumGuests}
                       onChange={(e) =>
-                        updatePackage(pkg.id, "minimumGuests", parseInt(e.target.value, 10) || 10)
+                        updatePackage(pkg.id, "minimumGuests", parseInt(e.target.value, 10) || 0)
                       }
                       className={`w-full px-3 py-1.5 rounded-xl text-xs font-bold border outline-none ${
                         isDay
-                          ? "bg-stone-50 border-stone-300 text-stone-900 focus:border-[#EA580C]"
+                          ? "bg-stone-50 border-stone-300 text-stone-900"
                           : "bg-zinc-900 border-zinc-700 text-white focus:border-[#FF7A00]"
                       }`}
                     />
@@ -549,7 +970,9 @@ ${config.meatItems.map((m) => `• ${m.name}: ${m.basePrice} [${m.status === "in
                 >
                   <span>Min Package Total:</span>
                   <span className="font-bold text-[#FF7A00]">
-                    ${(pkg.pricePerPerson * pkg.minimumGuests).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                    ${(pkg.pricePerPerson * pkg.minimumGuests).toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                    })}
                   </span>
                 </div>
               </div>
@@ -558,143 +981,8 @@ ${config.meatItems.map((m) => `• ${m.name}: ${m.basePrice} [${m.status === "in
         </div>
       )}
 
-      {/* SECTION 2: SMOKER MEATS & LIVE AVAILABILITY */}
-      {activeSection === "meats" && (
-        <div className="space-y-4">
-          <div
-            className={`p-3 rounded-xl border text-xs flex items-center justify-between ${
-              isDay
-                ? "bg-amber-50 border-amber-200 text-amber-900"
-                : "bg-amber-950/20 border-amber-500/30 text-amber-200"
-            }`}
-          >
-            <span>
-              💡 <strong>Pitmaster Tip:</strong> Switch a meat cut to <em>&quot;Smoking Live&quot;</em> to highlight current weekend pit cooks, or <em>&quot;Sold Out&quot;</em> when daily smoker capacity is booked.
-            </span>
-            <span className="text-[11px] font-semibold text-amber-400 shrink-0">
-              Instant Status Toggles
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-            {config.meatItems.map((meat) => {
-              const statusColor =
-                meat.status === "in-stock"
-                  ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/40"
-                  : meat.status === "smoking-now"
-                  ? "bg-amber-500/20 text-[#FF7A00] border-amber-500/40 animate-pulse"
-                  : "bg-red-500/20 text-red-400 border-red-500/40";
-
-              const statusText =
-                meat.status === "in-stock"
-                  ? "In Stock / Smoking"
-                  : meat.status === "smoking-now"
-                  ? "Smoking Live Today"
-                  : "Sold Out / Next Cook";
-
-              return (
-                <div
-                  key={meat.id}
-                  className={`p-4 rounded-2xl border transition-all space-y-3 ${
-                    isDay
-                      ? "bg-white border-stone-300 shadow-sm"
-                      : "bg-[#141210] border-amber-500/25 shadow-md"
-                  }`}
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h4
-                          className={`font-display text-sm font-bold ${
-                            isDay ? "text-stone-900" : "text-white"
-                          }`}
-                        >
-                          {meat.name}
-                        </h4>
-                        {meat.isSpecialty && (
-                          <span className="text-[9px] font-bold uppercase px-1.5 py-0.2 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/40">
-                            Chef Reserve
-                          </span>
-                        )}
-                      </div>
-                      <p
-                        className={`text-xs mt-0.5 line-clamp-1 ${
-                          isDay ? "text-stone-500" : "text-zinc-400"
-                        }`}
-                      >
-                        {meat.batchNote}
-                      </p>
-                    </div>
-
-                    <span
-                      className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full border shrink-0 ${statusColor}`}
-                    >
-                      {statusText}
-                    </span>
-                  </div>
-
-                  <div className="pt-2 border-t border-zinc-800/60 flex flex-wrap items-center justify-between gap-2">
-                    {/* Price Input */}
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[11px] font-bold text-zinc-400">Price:</span>
-                      <input
-                        type="text"
-                        value={meat.basePrice}
-                        onChange={(e) => updateMeatPrice(meat.id, e.target.value)}
-                        className={`w-28 px-2 py-1 rounded-lg text-xs font-bold border outline-none ${
-                          isDay
-                            ? "bg-stone-50 border-stone-300 text-stone-900"
-                            : "bg-zinc-900 border-zinc-700 text-white focus:border-[#FF7A00]"
-                        }`}
-                      />
-                    </div>
-
-                    {/* Status Toggle Buttons */}
-                    <div className="inline-flex rounded-xl border border-zinc-800 p-0.5 text-[10px] font-bold">
-                      <button
-                        type="button"
-                        onClick={() => updateMeatStatus(meat.id, "in-stock")}
-                        className={`px-2 py-1 rounded-lg transition-all ${
-                          meat.status === "in-stock"
-                            ? "bg-emerald-500 text-white font-extrabold"
-                            : "text-zinc-400 hover:text-white"
-                        }`}
-                      >
-                        In Stock
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => updateMeatStatus(meat.id, "smoking-now")}
-                        className={`px-2 py-1 rounded-lg transition-all ${
-                          meat.status === "smoking-now"
-                            ? "bg-[#EA580C] text-white font-extrabold"
-                            : "text-zinc-400 hover:text-white"
-                        }`}
-                      >
-                        Live Smoke
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => updateMeatStatus(meat.id, "sold-out")}
-                        className={`px-2 py-1 rounded-lg transition-all ${
-                          meat.status === "sold-out"
-                            ? "bg-red-600 text-white font-extrabold"
-                            : "text-zinc-400 hover:text-white"
-                        }`}
-                      >
-                        Sold Out
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
       {/* SECTION 3: PARTY PANS & BULK SIDES */}
-      {activeSection === "pans" && (
+      {activeMainTab === "pans" && (
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
             {config.partyPans.map((pan) => (
@@ -799,7 +1087,7 @@ ${config.meatItems.map((m) => `• ${m.name}: ${m.basePrice} [${m.status === "in
       )}
 
       {/* SECTION 4: DELIVERY & BOOKING PARAMETERS */}
-      {activeSection === "delivery" && (
+      {activeMainTab === "delivery" && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Delivery Minimum */}
           <div
@@ -821,7 +1109,7 @@ ${config.meatItems.map((m) => `• ${m.name}: ${m.basePrice} [${m.status === "in
                 Heated Delivery Minimum
               </h4>
               <p className="text-[11px] text-zinc-400 mt-0.5">
-                Minimum order amount required for hot insulated drop-off delivery across Cook County.
+                Minimum food total required for hot insulated drop-off delivery across Cook County.
               </p>
             </div>
             <div className="relative pt-1">
@@ -868,7 +1156,7 @@ ${config.meatItems.map((m) => `• ${m.name}: ${m.basePrice} [${m.status === "in
                 Minimum Smoker Lead Time
               </h4>
               <p className="text-[11px] text-zinc-400 mt-0.5">
-                Advance notice required for curing and low-and-slow hardwood pit cooks.
+                Advance notice required for curing, brining, and low-and-slow hardwood pit cooks.
               </p>
             </div>
             <div className="relative pt-1">
