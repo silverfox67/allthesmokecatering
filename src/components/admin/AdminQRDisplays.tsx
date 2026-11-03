@@ -105,6 +105,9 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
     "Support a Chicago local family pitmaster! Scan to leave Marion a 5-star Google review."
   );
 
+  // Tent Fold Orientation (Top panel inverted 180° so both sides are upright when folded)
+  const [invertTopPanel, setInvertTopPanel] = useState<boolean>(true);
+
   // Generated QR SVG Data
   const [qrSvgPrimary, setQrSvgPrimary] = useState<string>("");
   const [qrSvgSecondary, setQrSvgSecondary] = useState<string>("");
@@ -333,6 +336,35 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
                 </button>
               ))}
             </div>
+
+            {/* Tent Fold Orientation Setting (When Table Tent is Selected) */}
+            {selectedTemplate === "table-tent" && (
+              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs space-y-2 animate-fadeIn">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-amber-400 flex items-center gap-1.5">
+                    <span>🔄</span>
+                    <span>Tent Fold Orientation</span>
+                  </span>
+                  <span className="text-[10px] text-zinc-400 font-mono">
+                    {invertTopPanel ? "Top Inverted (180°)" : "Both Upright (Flat)"}
+                  </span>
+                </div>
+                <label className="flex items-start gap-2 cursor-pointer text-stone-700 dark:text-zinc-200">
+                  <input
+                    type="checkbox"
+                    checked={invertTopPanel}
+                    onChange={(e) => setInvertTopPanel(e.target.checked)}
+                    className="mt-0.5 rounded text-[#EA580C] focus:ring-0"
+                  />
+                  <span className="text-[11px] leading-tight">
+                    <strong>Invert top side 180° for standing tent fold.</strong>
+                    <span className="block text-[10px] text-zinc-400 mt-0.5">
+                      Guarantees both sides stand right-side up when folded along the top ridge. Uncheck only if cutting into 2 separate flat cards.
+                    </span>
+                  </span>
+                </label>
+              </div>
+            )}
           </div>
 
           {/* 2. Destination Preset Selector */}
@@ -527,9 +559,18 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
             {/* TEMPLATE 1: FOLDABLE 2-SIDED TABLE TENT */}
             {selectedTemplate === "table-tent" && (
               <div className="space-y-6">
-                {/* SIDE A: FRONT (Menu & Quote Tray) */}
+                {/* Table Tent Orientation Banner Guide */}
+                {invertTopPanel && (
+                  <div className="text-center py-1.5 px-3 text-[10px] text-amber-400 font-mono tracking-widest border border-dashed border-amber-500/40 rounded-xl bg-amber-500/10">
+                    ▼ BOTTOM BASE OF FRONT SIDE (Rests on Table Surface) ▼
+                  </div>
+                )}
+
+                {/* SIDE A: FRONT (Menu & Quote Tray - Inverted 180° for true 2-sided tent standing) */}
                 <div
-                  className={`p-6 rounded-2xl border flex flex-col items-center text-center space-y-4 ${
+                  className={`p-6 rounded-2xl border flex flex-col items-center text-center space-y-4 transition-transform duration-300 origin-center ${
+                    invertTopPanel ? "rotate-180" : ""
+                  } ${
                     styleTheme === "smokehouse-dark"
                       ? "bg-[#18191D] border-amber-500/30 shadow-md"
                       : styleTheme === "butcher-paper"
@@ -600,9 +641,11 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
 
                 {/* FOLD CUT LINE INDICATOR */}
                 <div className="py-2 flex items-center gap-3 text-zinc-500 font-mono text-[10px] uppercase">
-                  <div className="flex-1 border-t-2 border-dashed border-zinc-500/60" />
-                  <span>✂️ FOLD HERE FOR 2-SIDED STANDING TENT CARD ✂️</span>
-                  <div className="flex-1 border-t-2 border-dashed border-zinc-500/60" />
+                  <div className="flex-1 border-t-2 border-dashed border-[#EA580C]/80" />
+                  <span className="px-3 py-1 rounded-full bg-[#EA580C]/20 text-[#FF7A00] border border-[#EA580C]/50 font-bold tracking-wider">
+                    ▲ CREASE &amp; FOLD HERE (TOP RIDGE OF TENT) ▲
+                  </span>
+                  <div className="flex-1 border-t-2 border-dashed border-[#EA580C]/80" />
                 </div>
 
                 {/* SIDE B: BACK (Google 5-Star Reviews & Thank You) */}
@@ -658,6 +701,13 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
                     </p>
                   </div>
                 </div>
+
+                {/* Table Tent Bottom Base Guide */}
+                {invertTopPanel && (
+                  <div className="text-center py-1.5 px-3 text-[10px] text-amber-400 font-mono tracking-widest border border-dashed border-amber-500/40 rounded-xl bg-amber-500/10">
+                    ▼ BOTTOM BASE OF BACK SIDE (Rests on Table Surface) ▼
+                  </div>
+                )}
               </div>
             )}
 
@@ -875,3 +925,4 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
     </div>
   );
 }
+
