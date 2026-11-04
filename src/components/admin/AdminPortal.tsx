@@ -11,6 +11,7 @@ import { AdminCalendar } from "./AdminCalendar";
 import { AdminTodoList } from "./AdminTodoList";
 import { AdminPriceConfigurator } from "./AdminPriceConfigurator";
 import { AdminQRDisplays } from "./AdminQRDisplays";
+import { AdminPitmasterApp } from "./AdminPitmasterApp";
 import { SITE_CONFIG } from "@/config/site-config";
 
 export type AdminTheme = "day" | "night";
@@ -245,8 +246,8 @@ export function AdminPortal() {
         {
           key: "pitmaster-app" as AdminTab,
           label: "Pitmaster App",
-          status: "Coming Soon",
-          badgeColor: "stone",
+          status: "Live",
+          badgeColor: "emerald",
           icon: (
             <svg className="w-4 h-4 shrink-0 text-[#FF7A00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
@@ -708,23 +709,7 @@ export function AdminPortal() {
               />
             )}
 
-            {activeTab === "pitmaster-app" && (
-              <ComingSoonModule
-                title="Pitmaster Mobile Portal (Trailer Rig Mode)"
-                subtitle="Fast, high-contrast mobile interface for Marion on-site at live-fire smokehouse events"
-                icon="🔥"
-                theme={theme}
-                features={[
-                  "1-tap offline event client slip viewer with guest count and delivery instructions",
-                  "Smoker rig firebox & internal meat temp log with timer alerts",
-                  "Instant dispatch call button directly to client upon rig arrival",
-                  "On-site photo and video upload directly to the team media board",
-                ]}
-                actionTab="calendar"
-                actionLabel="Open Event Smoke Schedule →"
-                onAction={() => setActiveTab("calendar")}
-              />
-            )}
+            {activeTab === "pitmaster-app" && <AdminPitmasterApp theme={theme} />}
           </div>
         </main>
       </div>
