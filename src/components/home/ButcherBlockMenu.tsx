@@ -180,7 +180,7 @@ export function ButcherBlockMenu() {
       className="bg-[#FAF8F5] text-[#1E293B] py-20 px-4 sm:px-6 lg:px-8 border-y border-[#E5E0D8] relative overflow-hidden"
     >
       <div className="max-w-6xl mx-auto relative z-10">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="mb-3">
@@ -194,14 +194,14 @@ export function ButcherBlockMenu() {
             Pitmaster Catering Menu
           </h2>
           <p className="mt-3 text-base sm:text-lg text-slate-600 leading-relaxed">
-            Hardwood smoked low-and-slow on Marion&rsquo;s custom live-fire trailer rig. 
+            Hardwood smoked low-and-slow on Marion&rsquo;s custom live-fire trailer rig.
             All party pans and bulk meats include sternos, serving tongs, and house pit sauce.
           </p>
         </div>
 
         {/* 1. AUTHENTIC HANDCRAFTED 4-PIECE MITERED TIMBER CHALKBOARD FRAME */}
         <div className="mb-16 mitered-wood-frame-container">
-          
+
           {/* 4 Mitered Timber Rails with True Grain Orientation */}
           <div className="frame-rail-top" aria-hidden="true" />
           <div className="frame-rail-bottom" aria-hidden="true" />
@@ -219,10 +219,10 @@ export function ButcherBlockMenu() {
 
           {/* Deep Slate Chalkboard Surface */}
           <div className="chalkboard-slate rounded-xs p-5 sm:p-7 md:p-9 relative z-[1] overflow-hidden">
-            
+
             {/* Hand-Drawn Dashed Chalk Perimeter */}
             <div className="border border-dashed border-white/20 rounded-xl p-4 sm:p-6 md:p-7">
-              
+
               {/* Chalkboard Header */}
               <div className="text-center pb-5 border-b border-dashed border-white/20">
                 <div className="flex items-center justify-center gap-2 mb-1">
@@ -243,9 +243,8 @@ export function ButcherBlockMenu() {
                 {WEEKLY_CHALKBOARD.items.map((special, idx) => (
                   <div
                     key={special.id}
-                    className={`group border-b border-dashed border-white/15 py-2.5 flex-col gap-1.5 hover:bg-white/[0.03] rounded-lg px-2 transition-all ${
-                      idx >= 3 ? "hidden md:flex" : "flex"
-                    }`}
+                    className={`group border-b border-dashed border-white/15 py-2.5 flex-col gap-1.5 hover:bg-white/[0.03] rounded-lg px-2 transition-all ${idx >= 3 ? "hidden md:flex" : "flex"
+                      }`}
                   >
                     {/* Dish Number & Name */}
                     <div className="flex items-baseline gap-2">
@@ -268,7 +267,7 @@ export function ButcherBlockMenu() {
                         <button
                           type="button"
                           onClick={() => handleJumpToMenuItem(special)}
-                          className="font-chalk text-[11px] sm:text-xs text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-3 py-1 min-h-12 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border border-white/15 transition flex items-center gap-1"
+                          className="font-sans text-[11px] font-semibold text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-2.5 py-1 min-h-11 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border border-white/15 transition flex items-center gap-1"
                           title="View photo and description in menu below"
                         >
                           <span>Menu</span>
@@ -279,7 +278,7 @@ export function ButcherBlockMenu() {
                         <button
                           type="button"
                           onClick={() => handleAddChalkboardSpecial(special)}
-                          className="font-chalk chalk-orange bg-[#FB923C]/10 hover:bg-[#FB923C]/25 text-xs font-bold px-3 py-1 min-h-12 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border border-[#FB923C]/40 transition flex items-center gap-1 shadow-sm active:scale-95"
+                          className="font-sans text-xs font-bold text-[#FB923C] bg-[#FB923C]/10 hover:bg-[#FB923C]/25 px-2.5 py-1 min-h-11 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border border-[#FB923C]/40 transition flex items-center gap-1 shadow-sm active:scale-95"
                         >
                           <span>+ Add</span>
                         </button>
@@ -324,13 +323,11 @@ export function ButcherBlockMenu() {
                   key={cat.id}
                   onClick={() => setActiveTab(cat.id)}
                   type="button"
-                  className={`${
-                    isLastOdd ? "col-span-2 sm:col-span-1" : ""
-                  } px-3.5 lg:px-4 py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer ${
-                    isActive
+                  className={`${isLastOdd ? "col-span-2 sm:col-span-1" : ""
+                    } px-3.5 lg:px-4 py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer ${isActive
                       ? "bg-[#0F172A] text-white shadow-md ring-2 ring-[#EA580C]"
                       : "bg-[#EDE7DE] text-slate-700 hover:bg-[#E2D8CC] hover:text-[#0F172A]"
-                  }`}
+                    }`}
                 >
                   <span>{cat.icon}</span>
                   <span>{cat.name}</span>
@@ -364,11 +361,10 @@ export function ButcherBlockMenu() {
                 <button
                   type="button"
                   onClick={() => setZipDrawerOpen((prev) => !prev)}
-                  className={`px-2.5 py-1 rounded-lg border font-bold text-[11px] transition cursor-pointer shrink-0 flex items-center gap-1 ${
-                    zipDrawerOpen
+                  className={`px-2.5 py-1 rounded-lg border font-bold text-[11px] transition cursor-pointer shrink-0 flex items-center gap-1 ${zipDrawerOpen
                       ? "bg-[#EA580C] border-[#FF7A00] text-white"
                       : "bg-slate-800/90 hover:bg-slate-800 border-[#C8A97E]/40 text-[#C8A97E] hover:text-white"
-                  }`}
+                    }`}
                 >
                   <span>📍</span>
                   <span>{zipResult ? `ZIP ${zipResult.zip}: $${zipResult.zone.fee} Fee` : "Check Delivery ZIP"}</span>
@@ -550,15 +546,14 @@ export function ButcherBlockMenu() {
               <div
                 id={item.id}
                 key={item.id}
-                className={`bg-[#FFFDF9] rounded-xl overflow-hidden border transition-all duration-500 flex flex-col justify-between group relative ${
-                  isSmokingLive
+                className={`bg-[#FFFDF9] rounded-xl overflow-hidden border transition-all duration-500 flex flex-col justify-between group relative ${isSmokingLive
                     ? "border-[#EA580C] ring-2 ring-[#EA580C]/40 shadow-lg scale-[1.005]"
                     : isHighlighted
-                    ? "border-[#EA580C] ring-4 ring-[#EA580C]/30 shadow-2xl scale-[1.01]"
-                    : isSoldOut
-                    ? "border-[#E2D5C5] shadow-sm opacity-95"
-                    : "border-[#E2D5C5] shadow-sm hover:border-[#EA580C]/60 hover:shadow-md"
-                }`}
+                      ? "border-[#EA580C] ring-4 ring-[#EA580C]/30 shadow-2xl scale-[1.01]"
+                      : isSoldOut
+                        ? "border-[#E2D5C5] shadow-sm opacity-95"
+                        : "border-[#E2D5C5] shadow-sm hover:border-[#EA580C]/60 hover:shadow-md"
+                  }`}
               >
                 {/* Food Photo with Live Smoking / Sold Out Overlays */}
                 {item.image && (
@@ -709,11 +704,10 @@ export function ButcherBlockMenu() {
                         <button
                           type="button"
                           onClick={() => handleAddSingle(item, priceInfo.single || 50)}
-                          className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-white text-xs font-bold transition shadow-sm cursor-pointer ${
-                            isSmokingLive
+                          className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-white text-xs font-bold transition shadow-sm cursor-pointer ${isSmokingLive
                               ? "bg-gradient-to-r from-[#EA580C] to-[#C2410C] hover:from-[#FF7A00] hover:to-[#EA580C] shadow-md"
                               : "bg-[#0F172A] hover:bg-[#EA580C]"
-                          }`}
+                            }`}
                         >
                           <span>{isSmokingLive ? "🔥 Add Live Smoke Cut" : "+ Add to Tray"}</span>
                           <span className="text-[#F59E0B]">(${priceInfo.single || 50})</span>

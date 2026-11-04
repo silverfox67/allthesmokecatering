@@ -138,9 +138,16 @@ export default function RootLayout({
           rel="preload"
           href="/fonts/inter-latin.woff2"
         />
+                <link
+          rel="preload"
+          href="/fonts/satisfy-regular.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
         <link
           rel="preload"
-          href="/fonts/caveat-bold.woff2"
+          href="/fonts/dancing-script.woff2"
           as="font"
           type="font/woff2"
           crossOrigin="anonymous"

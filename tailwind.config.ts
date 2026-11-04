@@ -22,6 +22,7 @@ const config: Config = {
         display: ["var(--font-display)", "Bebas Neue", "Oswald", "Impact", "sans-serif"],
         sans: ["var(--font-body)", "Inter", "Geist", "sans-serif"],
         body: ["var(--font-body)", "Inter", "Geist", "sans-serif"],
+        chalk: ["Satisfy", "Dancing Script", "Caveat", "cursive", "sans-serif"],
       },
     },
   },

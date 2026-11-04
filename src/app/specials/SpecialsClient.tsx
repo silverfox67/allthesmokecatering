@@ -150,7 +150,7 @@ function ChalkboardContent() {
                         {/* 1. View in Menu Link */}
                         <Link
                           href={`/#menu`}
-                          className="font-chalk text-[11px] sm:text-xs text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-3 py-1 min-h-12 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border border-white/15 transition flex items-center gap-1"
+                          className="font-sans text-[11px] font-semibold text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-2.5 py-1 min-h-11 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border border-white/15 transition flex items-center gap-1"
                           title="View photo and full description in menu"
                         >
                           <span>Menu</span>
@@ -161,7 +161,7 @@ function ChalkboardContent() {
                         <button
                           type="button"
                           onClick={() => handleAddSpecial(special)}
-                          className={`font-chalk text-xs font-bold px-3 py-1 min-h-12 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border transition flex items-center gap-1.5 shadow-sm active:scale-95 ${
+                          className={`font-sans text-xs font-bold px-2.5 py-1 min-h-11 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border transition flex items-center gap-1.5 shadow-sm active:scale-95 ${
                             isJustAdded
                               ? "bg-emerald-600/90 text-white border-emerald-500"
                               : "chalk-orange bg-[#FB923C]/10 hover:bg-[#FB923C]/25 border-[#FB923C]/40"

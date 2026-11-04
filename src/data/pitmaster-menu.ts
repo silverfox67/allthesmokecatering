@@ -39,7 +39,7 @@ export interface WeeklyChalkboard {
 }
 
 export const WEEKLY_CHALKBOARD: WeeklyChalkboard = {
-  headline: "PITMASTER WEEKLY SPECIALS",
+  headline: "Pitmaster Weekly Specials",
   season: "Chicagoland Fall & Game-Day Smoker Specials",
   badge: "Rolling Hardwood Smoke This Week",
   note: "Small-batch specialty cuts smoked fresh on Marion's trailer rig. Limited quantities for weekend commissary pickup & heated drop-off.",
