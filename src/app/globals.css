@@ -19,6 +19,30 @@
 }
 
 @font-face {
+  font-family: "Caveat";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/caveat-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Caveat";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/caveat-bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Satisfy";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/satisfy-regular.woff2") format("woff2");
+}
+
+@font-face {
   font-family: "Kalam";
   font-style: normal;
   font-weight: 400;
@@ -99,7 +123,16 @@ h1, h2, h3, h4, .font-display {
 
 /* Authentic Weathered Barnwood & Smokehouse Chalkboard */
 .font-chalk {
-  font-family: 'Kalam', cursive, sans-serif;
+  font-family: 'Caveat', 'Satisfy', 'Kalam', cursive, sans-serif;
+  letter-spacing: 0.015em;
+  font-feature-settings: "calt" 1, "liga" 1;
+}
+
+.font-chalk-heading {
+  font-family: 'Caveat', 'Satisfy', cursive, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-feature-settings: "calt" 1, "liga" 1;
 }
 
 .chalk-white {

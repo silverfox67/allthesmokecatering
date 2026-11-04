@@ -226,14 +226,14 @@ export function ButcherBlockMenu() {
               {/* Chalkboard Header */}
               <div className="text-center pb-5 border-b border-dashed border-white/20">
                 <div className="flex items-center justify-center gap-2 mb-1">
-                  <span className="font-chalk chalk-yellow text-xs sm:text-sm tracking-widest font-bold">
+                  <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold">
                     ★ {WEEKLY_CHALKBOARD.badge} ★
                   </span>
                 </div>
-                <h3 className="font-chalk chalk-orange text-3xl sm:text-4xl md:text-5xl font-bold tracking-wide">
+                <h3 className="font-chalk chalk-orange text-4xl sm:text-5xl md:text-6xl font-bold tracking-normal leading-tight">
                   {WEEKLY_CHALKBOARD.headline}
                 </h3>
-                <p className="font-chalk chalk-white text-xs sm:text-sm opacity-85 mt-1">
+                <p className="font-chalk chalk-white text-sm sm:text-base opacity-90 mt-1">
                   {WEEKLY_CHALKBOARD.season}
                 </p>
               </div>
@@ -249,17 +249,17 @@ export function ButcherBlockMenu() {
                   >
                     {/* Dish Number & Name */}
                     <div className="flex items-baseline gap-2">
-                      <span className="font-chalk chalk-yellow text-xs sm:text-sm font-bold shrink-0">
+                      <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold shrink-0">
                         #{idx + 1}
                       </span>
-                      <h4 className="font-chalk chalk-white text-base sm:text-lg font-bold group-hover:text-[#FB923C] transition-colors leading-snug">
+                      <h4 className="font-chalk chalk-white text-lg sm:text-xl font-bold group-hover:text-[#FB923C] transition-colors leading-snug">
                         {special.name}
                       </h4>
                     </div>
 
                     {/* Price & Action CTAs */}
                     <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pl-7">
-                      <span className="font-chalk chalk-yellow text-xs sm:text-sm font-bold whitespace-nowrap">
+                      <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold whitespace-nowrap">
                         {special.price}
                       </span>
 

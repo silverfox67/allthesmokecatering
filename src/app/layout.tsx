@@ -137,6 +137,17 @@ export default function RootLayout({
         <link
           rel="preload"
           href="/fonts/inter-latin.woff2"
+        />
+        <link
+          rel="preload"
+          href="/fonts/caveat-bold.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/caveat-regular.woff2"
           as="font"
           type="font/woff2"
           crossOrigin="anonymous"
