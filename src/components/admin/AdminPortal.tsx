@@ -113,14 +113,14 @@ export function AdminPortal() {
 
   const isDay = theme === "day";
 
-  // Sidebar navigation items definition matching Blind Cook structure
+  // Streamlined 3-Tier Navigation for Maximum Ergonomics & Zero Clutter
   const navGroups = [
     {
       groupTitle: "Daily Operations",
       items: [
         {
           key: "leads" as AdminTab,
-          label: "Leads",
+          label: "Leads & Quotes",
           status: "Live",
           badgeColor: "emerald",
           icon: (
@@ -131,7 +131,7 @@ export function AdminPortal() {
         },
         {
           key: "emails" as AdminTab,
-          label: "Emails",
+          label: "Client Emails",
           status: "Inbox",
           badgeColor: "amber",
           icon: (
@@ -142,7 +142,7 @@ export function AdminPortal() {
         },
         {
           key: "calendar" as AdminTab,
-          label: "Calendar",
+          label: "Smoke Calendar",
           status: "Live",
           badgeColor: "emerald",
           icon: (
@@ -152,40 +152,41 @@ export function AdminPortal() {
           ),
         },
         {
-          key: "todos" as AdminTab,
-          label: "To-Do & Roadmap",
-          status: "Backlog",
-          badgeColor: "amber",
+          key: "pitmaster-app" as AdminTab,
+          label: "Pitmaster Rig App",
+          status: "Live",
+          badgeColor: "emerald",
           icon: (
             <svg className="w-4 h-4 shrink-0 text-[#FF7A00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
             </svg>
           ),
         },
       ],
     },
     {
-      groupTitle: "Growth, Performance & Marketing",
+      groupTitle: "Revenue & Menu",
       items: [
         {
+          key: "services" as AdminTab,
+          label: "Smoker Menu & Pricing",
+          status: "Live",
+          badgeColor: "emerald",
+          icon: (
+            <svg className="w-4 h-4 shrink-0 text-[#FF7A00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          ),
+        },
+        {
           key: "analytics" as AdminTab,
-          label: "Analytics",
+          label: "Revenue Analytics",
           status: "Live",
           badgeColor: "emerald",
           icon: (
             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-          ),
-        },
-        {
-          key: "qr-displays" as AdminTab,
-          label: "QR Displays & Print",
-          status: "Live",
-          badgeColor: "emerald",
-          icon: (
-            <svg className="w-4 h-4 shrink-0 text-[#FF7A00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
             </svg>
           ),
         },
@@ -201,57 +202,40 @@ export function AdminPortal() {
           ),
         },
         {
-          key: "services" as AdminTab,
-          label: "Smoker Menu & Pricing",
+          key: "qr-displays" as AdminTab,
+          label: "QR Displays & Print",
           status: "Live",
           badgeColor: "emerald",
           icon: (
             <svg className="w-4 h-4 shrink-0 text-[#FF7A00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-          ),
-        },
-        {
-          key: "directories" as AdminTab,
-          label: "Directories",
-          status: "Coming Soon",
-          badgeColor: "stone",
-          icon: (
-            <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
             </svg>
           ),
         },
       ],
     },
     {
-      groupTitle: "Internal Admin & Notes",
+      groupTitle: "Admin & Tools",
       items: [
         {
+          key: "todos" as AdminTab,
+          label: "To-Do & Roadmap",
+          status: "Live",
+          badgeColor: "amber",
+          icon: (
+            <svg className="w-4 h-4 shrink-0 text-[#FF7A00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            </svg>
+          ),
+        },
+        {
           key: "notes" as AdminTab,
-          label: "Notes",
+          label: "Pitmaster Notes",
           status: "Live",
           badgeColor: "emerald",
           icon: (
             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          ),
-        },
-      ],
-    },
-    {
-      groupTitle: "Mobile Rig Operations",
-      items: [
-        {
-          key: "pitmaster-app" as AdminTab,
-          label: "Pitmaster App",
-          status: "Live",
-          badgeColor: "emerald",
-          icon: (
-            <svg className="w-4 h-4 shrink-0 text-[#FF7A00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
             </svg>
           ),
         },

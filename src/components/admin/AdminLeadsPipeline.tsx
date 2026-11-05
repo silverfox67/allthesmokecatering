@@ -769,100 +769,100 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                     </div>
                   </div>
 
-                  {/* Right Cluster: THE 4 ACTION ICONS (MATCHING USER SCREENSHOT EXACTLY - CRISP BLACK ICONS) */}
-                  <div className="flex items-center gap-1 shrink-0 pl-1">
-                    {/* 1. Quick Note / Message Icon (All The Smoke Ember Outline) */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setQuickNoteLead(lead);
-                        setNewNoteText("");
-                      }}
-                      className="p-1.5 rounded-lg text-[#EA580C] hover:text-[#C84A0A] hover:bg-orange-500/10 transition-all cursor-pointer"
-                      title="Add Quick Note"
-                    >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                      </svg>
-                    </button>
+                  {/* Right Cluster: DECOUPLED CLIENT & ADMIN ACTION ICONS */}
+                  <div className="flex items-center gap-1.5 shrink-0 pl-1">
+                    {/* PRIMARY CLIENT ACTIONS (HIGH VISIBILITY CAPSULE) */}
+                    <div className={`flex items-center gap-1 p-0.5 rounded-lg border ${
+                      isDay
+                        ? "bg-stone-100 border-stone-300"
+                        : "bg-zinc-800/80 border-zinc-700/60"
+                    }`}>
+                      {/* 1. Client SMS & Email Outreach */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setQuickMessageLead(lead);
+                          setShowQuickMessageModal(true);
+                        }}
+                        className="p-1.5 rounded-md hover:bg-amber-500/20 text-amber-500 hover:text-amber-400 transition-all cursor-pointer flex items-center justify-center"
+                        title="📲 1-Click Client SMS & Email Outreach"
+                      >
+                        <span className="text-xs">📲</span>
+                      </button>
 
-                    {/* 2. Edit Booking Icon (Pencil outline - Crisp Black) */}
-                    <button
-                      type="button"
-                      onClick={() => setEditingLead(lead)}
-                      className={`p-1.5 rounded-lg transition-all cursor-pointer ${
-                        isDay
-                          ? "text-black hover:text-[#EA580C] hover:bg-black/5"
-                          : "text-white hover:text-[#FF7A00] hover:bg-white/10"
-                      }`}
-                      title="Edit Booking Details"
-                    >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.4}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                      </svg>
-                    </button>
+                      {/* 2. Invoice / Agreement Button */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setInvoiceLead(lead);
+                          setShowInvoiceModal(true);
+                        }}
+                        className="p-1.5 rounded-md hover:bg-orange-500/20 text-[#EA580C] hover:text-[#FF7A00] transition-all cursor-pointer flex items-center justify-center"
+                        title="📄 Generate Catering Invoice / 50% Deposit Contract (PDF)"
+                      >
+                        <span className="text-xs">📄</span>
+                      </button>
 
-                    {/* Invoice / Agreement Button */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setInvoiceLead(lead);
-                        setShowInvoiceModal(true);
-                      }}
-                      className={`p-1.5 rounded-lg transition-all cursor-pointer ${
-                        isDay
-                          ? "text-black hover:text-[#FF7A00] hover:bg-black/5"
-                          : "text-white hover:text-[#FF7A00] hover:bg-white/10"
-                      }`}
-                      title="Generate Catering Invoice / Contract (Print / PDF)"
-                    >
-                      <span className="text-xs">📄</span>
-                    </button>
+                      {/* 3. Blow Up Full Page Modal */}
+                      <button
+                        type="button"
+                        onClick={() => setBlowUpLead(lead)}
+                        className={`p-1.5 rounded-md transition-all cursor-pointer flex items-center justify-center ${
+                          isDay
+                            ? "text-black hover:text-[#FF7A00] hover:bg-black/5"
+                            : "text-white hover:text-[#FF7A00] hover:bg-white/10"
+                        }`}
+                        title="⤢ Blow up to full page for easy reading"
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.4}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M14 10l6-6m0 0h-5m5 0v5M10 14l-6 6m0 0h5m-5 0v-5" />
+                        </svg>
+                      </button>
+                    </div>
 
-                    {/* Quick SMS & Email Outreach Templates Button */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setQuickMessageLead(lead);
-                        setShowQuickMessageModal(true);
-                      }}
-                      className={`p-1.5 rounded-lg transition-all cursor-pointer ${
-                        isDay
-                          ? "text-[#EA580C] hover:text-[#C84A0A] hover:bg-orange-500/10"
-                          : "text-amber-400 hover:text-amber-300 hover:bg-amber-500/10"
-                      }`}
-                      title="1-Click SMS & Email Notification Templates"
-                    >
-                      <span className="text-xs">💬</span>
-                    </button>
+                    {/* SECONDARY INTERNAL ADMIN ACTIONS (SAFE SEPARATION) */}
+                    <div className="flex items-center gap-0.5">
+                      {/* 4. Private Pitmaster Note */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setQuickNoteLead(lead);
+                          setNewNoteText("");
+                        }}
+                        className="p-1.5 rounded-lg text-amber-600 hover:text-amber-500 hover:bg-amber-500/10 transition-all cursor-pointer flex items-center justify-center"
+                        title="📝 Add Private Pitmaster Note (Internal Only)"
+                      >
+                        <span className="text-xs">📝</span>
+                      </button>
 
-                    {/* 3. Blow Up Pop-Up Icon (Opposite Diagonal Arrows - Crisp Black) */}
-                    <button
-                      type="button"
-                      onClick={() => setBlowUpLead(lead)}
-                      className={`p-1.5 rounded-lg transition-all cursor-pointer ${
-                        isDay
-                          ? "text-black hover:text-[#FF7A00] hover:bg-black/5"
-                          : "text-white hover:text-[#FF7A00] hover:bg-white/10"
-                      }`}
-                      title="Blow up to popup page so Marion can read it better"
-                    >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.4}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M14 10l6-6m0 0h-5m5 0v5M10 14l-6 6m0 0h5m-5 0v-5" />
-                      </svg>
-                    </button>
+                      {/* 5. Edit Booking Details */}
+                      <button
+                        type="button"
+                        onClick={() => setEditingLead(lead)}
+                        className={`p-1.5 rounded-lg transition-all cursor-pointer flex items-center justify-center ${
+                          isDay
+                            ? "text-stone-700 hover:text-black hover:bg-black/5"
+                            : "text-stone-400 hover:text-white hover:bg-white/10"
+                        }`}
+                        title="✏️ Edit Booking Details"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                      </button>
 
-                    {/* 4. Delete Icon (Red Trash Can with lid) */}
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteLead(lead.id)}
-                      className="p-1.5 rounded-lg text-red-600 hover:text-red-700 hover:bg-red-500/10 transition-all cursor-pointer"
-                      title="Delete Booking"
-                    >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                    </button>
+                      {/* 6. Delete Booking */}
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteLead(lead.id)}
+                        className="p-1.5 rounded-lg text-red-500 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer ml-0.5 flex items-center justify-center"
+                        title="🗑️ Delete Booking"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
 

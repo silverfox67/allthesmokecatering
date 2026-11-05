@@ -7,6 +7,7 @@ import { AboutSection } from "@/components/home/AboutSection";
 import { PackageGrid } from "@/components/catering/PackageGrid";
 import { ButcherBlockMenu } from "@/components/home/ButcherBlockMenu";
 import { TikTokReels } from "@/components/social/TikTokReels";
+import { TestimonialSection } from "@/components/home/TestimonialSection";
 import { Footer } from "@/components/layout/Footer";
 import { QuoteModal } from "@/components/forms/QuoteModal";
 import { ContactSection } from "@/components/home/ContactSection";
@@ -33,7 +34,10 @@ export default function HomePage() {
         {/* 5. TikTok Pitmaster Reels: Authentic Live-Fire Proof & Video Demonstrations (#0A0A0A) */}
         <TikTokReels />
 
-        {/* 6. Smokehouse FAQ: Warm Butcher Paper & Stone Linen (#F5F0EB) + Google Schema */}
+        {/* 6. Client Proof & Verified Google Reviews Showcase */}
+        <TestimonialSection />
+
+        {/* 7. Smokehouse FAQ: Warm Butcher Paper & Stone Linen (#F5F0EB) + Google Schema */}
         <FaqSection />
 
         {/* 7. Contact & Smokehouse Quote Intake: 2-Column Live-Fire Intake Form (#0E0D0C) */}
