@@ -192,23 +192,21 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
     if (typeof window !== "undefined") {
       try {
         const saved = localStorage.getItem("ats_pitmaster_leads");
-        if (saved) {
+        if (saved !== null) {
           const parsed: PitmasterLead[] = JSON.parse(saved);
-          const has7585 = parsed.some((l) => l.ticketId === "ATS-QUOTE-7585" || l.phone.includes("6782076008"));
-          if (!has7585) {
-            const combined = [SEED_LEADS[0], ...parsed];
-            setLeads(combined);
-            localStorage.setItem("ats_pitmaster_leads", JSON.stringify(combined));
-          } else {
+          if (Array.isArray(parsed)) {
             setLeads(parsed);
+          } else {
+            setLeads([]);
           }
         } else {
+          // Initialize seed leads ONLY if user has never initialized leads storage
           setLeads(SEED_LEADS);
           localStorage.setItem("ats_pitmaster_leads", JSON.stringify(SEED_LEADS));
         }
       } catch (err) {
         console.error("Failed to parse ats_pitmaster_leads:", err);
-        setLeads(SEED_LEADS);
+        setLeads([]);
       }
     }
   }, []);
