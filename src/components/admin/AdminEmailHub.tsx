@@ -19,35 +19,72 @@ export interface AdminEmailHubProps {
   prefilledLead?: PitmasterLead;
 }
 
-// 4 1-Tap Quick-Reply Catering Templates for Live-Fire Texas BBQ
+// 5 1-Tap Quick-Reply Catering Lifecycle Templates for Live-Fire Texas BBQ
 const QUICK_REPLY_TEMPLATES = [
   {
-    id: "availability",
-    name: "Availability & Call",
-    badge: "Availability",
-    generate: (lead: PitmasterLead) =>
-      `Hi ${lead.name || "there"},\n\nThank you for considering All The Smoke BBQ & Catering! We received your catering inquiry for your ${lead.eventType || "event"}${lead.eventDate ? ` on ${lead.eventDate}` : ""}.\n\nMarion Bolden would love to connect with you for a brief consultation call to review your menu vision, smoker trailer rig clearance, timeline, and guest count (${lead.guestCount || 0} guests). What is the best time today or tomorrow to speak?\n\nYou can also reach us directly at (773) 707-9988.\n\nWarm regards,\nMarion Bolden | Pitmaster\nAll The Smoke BBQ & Catering\nallthesmokecatering.com`,
+    id: "quote-followup",
+    name: "Quote Follow-Up",
+    badge: "1. Follow-Up",
+    generateSubject: (lead: PitmasterLead) =>
+      `Following up on your ${lead.eventType || "Catering"} Quote | All The Smoke BBQ`,
+    generateBody: (lead: PitmasterLead) =>
+      `Hi ${lead.name || "there"},\n\nThank you again for considering All The Smoke BBQ & Catering for your ${
+        lead.eventType || "upcoming event"
+      }${lead.eventDate ? ` on ${lead.eventDate}` : ""}!\n\nI wanted to quickly check in on your plans for your party of ${
+        lead.guestCount || "approximate"
+      } guests. Weekend pit trailer bookings fill up quickly on our commissary calendar, and I want to make sure you have first priority for your date.\n\nWhether you'd like to adjust meats (14-hour Texas brisket, St. Louis ribs, smoked turkey, or wings) or need a customized package, I'm happy to help.\n\nWhenever you're ready to secure your date, we can generate your catering agreement and 50% deposit link.\n\nFeel free to reply directly to this email or call/text me at (773) 707-9988.\n\nWarm regards,\nMarion Bolden | Pitmaster & Owner\nAll The Smoke BBQ & Catering\n(773) 707-9988 | allthesmokecatering.com`,
   },
   {
-    id: "quote-prep",
-    name: "Custom Proposal",
-    badge: "Menu & Quote",
-    generate: (lead: PitmasterLead) =>
-      `Hi ${lead.name || "there"},\n\nThank you for reaching out to All The Smoke BBQ! For your party of ${lead.guestCount || "approximate"} guests, our pitmasters specialize in 14-hour post oak smoked Texas brisket, hardwood turkey chops, and scratch-made Southern sides.\n\nWe are currently drafting a customized proposal for your ${lead.eventType || "event"} (${lead.packageName || "Live-Fire BBQ Experience"}). In the meantime, please let us know if there are specific dietary preferences or must-have signature meats you'd like included.\n\nLooking forward to feeding your guests!\n\nMarion Bolden | Pitmaster\nAll The Smoke BBQ & Catering\n(773) 707-9988`,
+    id: "deposit-confirmed",
+    name: "Deposit & Date Locked",
+    badge: "2. Confirmed",
+    generateSubject: (lead: PitmasterLead) =>
+      `Deposit Confirmed — ${lead.eventDate || "Your Date"} is Officially Locked! | All The Smoke BBQ`,
+    generateBody: (lead: PitmasterLead) =>
+      `Hi ${lead.name || "there"},\n\nGreat news! We have received your 50% deposit, and your date (${
+        lead.eventDate || "Confirmed Date"
+      }) is officially LOCKED onto the All The Smoke commercial smoker calendar!\n\nConfirmed Reservation Summary:\n• Event: ${
+        lead.eventType || "Private Catering"
+      }\n• Confirmed Date: ${lead.eventDate || "Pending"}\n• Headcount: ${
+        lead.guestCount || 0
+      } Guests\n• Menu Package: ${lead.packageName || "Live-Fire BBQ Experience"}\n• Service Location: ${
+        lead.deliveryAddress || "Chicago, IL"
+      }\n\nWhat happens next:\n1. Two Weeks Out: We'll touch base to verify any minor adjustments to headcount or sides.\n2. One Week Out: We'll confirm load-in timing, rig parking clearance, and final balance payment.\n3. Day-Of: We fire up our post oak & hickory smoker 14 hours in advance so your meats arrive mahogany-bark tender in insulated hot-boxes right on schedule.\n\nThank you for choosing All The Smoke to feed your crew. If you need anything before then, call or text me at (773) 707-9988.\n\nBest regards,\nMarion Bolden | Pitmaster & Owner\nAll The Smoke BBQ & Catering`,
   },
   {
-    id: "rig-logistics",
-    name: "Smoker Rig Clearance",
-    badge: "Logistics",
-    generate: (lead: PitmasterLead) =>
-      `Hi ${lead.name || "there"},\n\nWe are reviewing logistics for your upcoming ${lead.eventType || "gathering"}${lead.eventDate ? ` on ${lead.eventDate}` : ""}.\n\nBecause our live-fire offset trailer rig requires dedicated space, could you confirm:\n1. Is there flat driveway, parking lot, or alleyway clearance for our pit trailer?\n2. Are there low-hanging tree branches or tight gates we should be mindful of?\n3. What is your preferred load-in and hot-box serving schedule for your guests?\n\nThank you, and we look forward to bringing the smoke!\n\nMarion Bolden & The Pitmaster Crew\n(773) 707-9988\ninfo@allthesmokecatering.com`,
+    id: "week-countdown",
+    name: "1-Week Rig Logistics",
+    badge: "3. Logistics",
+    generateSubject: (lead: PitmasterLead) =>
+      `1-Week Countdown & Smoker Rig Logistics for ${lead.eventDate || "Your Event"} | All The Smoke BBQ`,
+    generateBody: (lead: PitmasterLead) =>
+      `Hi ${lead.name || "there"},\n\nWe are exactly one week away from firing up the pits for your ${
+        lead.eventType || "event"
+      }${lead.eventDate ? ` on ${lead.eventDate}` : ""}!\n\nTo ensure flawless execution, please take a quick minute to verify these key details:\n\n1. Final Headcount: Currently marked for ${
+        lead.guestCount || 0
+      } guests. Please let us know if there are any final adjustments today so our butcher orders are exact.\n2. Serving Time: What time should we have hot-boxes unsealed and food ready for your guests? (We recommend arriving 45-60 mins prior for staging).\n3. Smoker Trailer & Vehicle Clearance: Please confirm flat driveway, alleyway, or parking lot clearance with approximately 25-30 ft of clearance for the pit rig.\n4. Remaining Balance: Any remaining balance is due prior to or at time of delivery.\n\nPlease reply to this email or call/text me at (773) 707-9988 so we can lock in the final schedule.\n\nCan't wait to bring the smoke!\n\nMarion Bolden & The Pitmaster Crew\nAll The Smoke BBQ & Catering`,
   },
   {
-    id: "lock-in-date",
-    name: "Hold Date & Contract",
-    badge: "Lock In Date",
-    generate: (lead: PitmasterLead) =>
-      `Hi ${lead.name || "there"},\n\nFollowing up regarding your catering inquiry for ${lead.eventDate || "your upcoming date"}.\n\nOur pitmaster smoke schedule fills up quickly, and we would love to secure your date exclusively on our commissary calendar. Please let us know if you are ready to review the contract and 25% deposit steps so we can hold your date.\n\nWe look forward to firing up the smoker for you and your guests!\n\nMarion Bolden\nAll The Smoke BBQ & Catering\n(773) 707-9988\ninfo@allthesmokecatering.com`,
+    id: "day-of-fired-up",
+    name: "Day-Of: Pit Fired Up",
+    badge: "4. Day-Of",
+    generateSubject: (lead: PitmasterLead) =>
+      `Smoker Fired Up & Delivery on Schedule for Today (${lead.eventDate || "Event Day"}) | All The Smoke BBQ`,
+    generateBody: (lead: PitmasterLead) =>
+      `Good morning ${lead.name || "there"},\n\nThe smokehouse pits are running at full temp, hardwood oak logs are rolling, and your catering order is in the chamber developing that signature deep mahogany bark!\n\nWe are right on schedule for your ${
+        lead.eventType || "event"
+      } today. Our commercial hot-boxes are preheated to 165°F to ensure your food arrives piping hot and fresh.\n\nIf you have any last-minute gate codes, parking instructions, or day-of updates, please text or call my cell directly at (773) 707-9988.\n\nSee you shortly!\n\nPitmaster Marion Bolden\nAll The Smoke BBQ & Catering\n(773) 707-9988`,
+  },
+  {
+    id: "review-request",
+    name: "5-Star Review Request",
+    badge: "5. Review",
+    generateSubject: (lead: PitmasterLead) =>
+      `Thank You from All The Smoke BBQ (+ A Quick 30-Sec Favor) | Pitmaster Marion`,
+    generateBody: (lead: PitmasterLead) =>
+      `Hi ${lead.name || "there"},\n\nOn behalf of the entire crew at All The Smoke BBQ & Catering, thank you so much for trusting us to feed your guests at your ${
+        lead.eventType || "event"
+      }!\n\nSmoking authentic, live-fire craft barbecue for Chicago events is our passion, and we hope every guest left full and happy.\n\nIf you enjoyed the barbecue and our service, would you take 30 seconds to leave us a quick 5-star Google review?\n\n👉 https://g.page/r/allthesmokecatering/review\n\nAs an independent Chicago smokehouse, word of mouth and Google reviews mean the world to us.\n\nThank you again for your business, and we hope to see you at your next celebration!\n\nWarmly,\nMarion Bolden | Pitmaster & Owner\nAll The Smoke BBQ & Catering\n(773) 707-9988 | allthesmokecatering.com`,
   },
 ];
 
@@ -622,12 +659,15 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                   <label className={`text-[11px] font-black block ${isDay ? "text-black" : "text-stone-200"}`}>
                     ⚡ 1-Tap Catering Reply Templates:
                   </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
                     {QUICK_REPLY_TEMPLATES.map((tmpl) => (
                       <button
                         key={tmpl.id}
                         type="button"
-                        onClick={() => setReplyBody(tmpl.generate(currentLead))}
+                        onClick={() => {
+                          setReplyBody(tmpl.generateBody(currentLead));
+                          setReplySubject(tmpl.generateSubject(currentLead));
+                        }}
                         className={`h-auto py-2 px-2 rounded-xl border text-[11px] flex flex-col items-center justify-center text-center font-bold leading-tight transition-all cursor-pointer ${
                           isDay
                             ? "bg-stone-50 border-stone-300 text-black hover:border-[#FF7A00] hover:bg-amber-50"

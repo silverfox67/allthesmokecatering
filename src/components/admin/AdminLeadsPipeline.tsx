@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { AdminInvoiceGenerator } from "./AdminInvoiceGenerator";
+import { AdminQuickMessageModal } from "./AdminQuickMessageModal";
 
 export type LeadStatus = "new" | "contacted" | "quoted" | "booked" | "completed" | "ghosted";
 
@@ -167,6 +168,8 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
   const [quickNoteLead, setQuickNoteLead] = useState<PitmasterLead | null>(null);
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
   const [invoiceLead, setInvoiceLead] = useState<PitmasterLead | null>(null);
+  const [quickMessageLead, setQuickMessageLead] = useState<PitmasterLead | null>(null);
+  const [showQuickMessageModal, setShowQuickMessageModal] = useState(false);
   const [newNoteText, setNewNoteText] = useState("");
 
   // Modals for Phone Lead Intake & Promo Blast
@@ -816,6 +819,23 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                       <span className="text-xs">📄</span>
                     </button>
 
+                    {/* Quick SMS & Email Outreach Templates Button */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setQuickMessageLead(lead);
+                        setShowQuickMessageModal(true);
+                      }}
+                      className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+                        isDay
+                          ? "text-[#EA580C] hover:text-[#C84A0A] hover:bg-orange-500/10"
+                          : "text-amber-400 hover:text-amber-300 hover:bg-amber-500/10"
+                      }`}
+                      title="1-Click SMS & Email Notification Templates"
+                    >
+                      <span className="text-xs">💬</span>
+                    </button>
+
                     {/* 3. Blow Up Pop-Up Icon (Opposite Diagonal Arrows - Crisp Black) */}
                     <button
                       type="button"
@@ -1137,6 +1157,19 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                 >
                   <span>📄</span>
                   <span>Generate Invoice / Contract</span>
+                </button>
+
+                {/* 1-Click SMS & Email Notification Templates */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuickMessageLead(blowUpLead);
+                    setShowQuickMessageModal(true);
+                  }}
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-md hover:scale-105 active:scale-95 transition cursor-pointer"
+                >
+                  <span>📲</span>
+                  <span>1-Click SMS &amp; Email Templates</span>
                 </button>
 
                 {/* Edit Booking Details */}
@@ -1732,6 +1765,24 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
           saveLeads(updated);
         }}
         theme={theme as any}
+      />
+
+      {/* 9. ONE-CLICK SMS & EMAIL NOTIFICATION TEMPLATES MODAL */}
+      <AdminQuickMessageModal
+        isOpen={showQuickMessageModal}
+        lead={quickMessageLead}
+        onClose={() => {
+          setShowQuickMessageModal(false);
+          setQuickMessageLead(null);
+        }}
+        theme={theme as any}
+        onLeadUpdated={(updatedLead) => {
+          const updated = leads.map((l) => (l.id === updatedLead.id ? updatedLead : l));
+          saveLeads(updated);
+          if (blowUpLead && blowUpLead.id === updatedLead.id) {
+            setBlowUpLead(updatedLead);
+          }
+        }}
       />
     </div>
   );
