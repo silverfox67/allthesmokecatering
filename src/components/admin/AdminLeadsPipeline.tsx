@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { AdminInvoiceGenerator } from "./AdminInvoiceGenerator";
 
 export type LeadStatus = "new" | "contacted" | "quoted" | "booked" | "completed" | "ghosted";
 
@@ -164,6 +165,8 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
   const [blowUpLead, setBlowUpLead] = useState<PitmasterLead | null>(null);
   const [editingLead, setEditingLead] = useState<PitmasterLead | null>(null);
   const [quickNoteLead, setQuickNoteLead] = useState<PitmasterLead | null>(null);
+  const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+  const [invoiceLead, setInvoiceLead] = useState<PitmasterLead | null>(null);
   const [newNoteText, setNewNoteText] = useState("");
 
   // Modals for Phone Lead Intake & Promo Blast
@@ -443,6 +446,24 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
             className="h-8 px-3 rounded-xl bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border border-[#FF7A00] text-white text-xs font-bold uppercase tracking-wider transition-all hover:scale-105 active:scale-95 cursor-pointer whitespace-nowrap shadow-sm"
           >
             + Phone Lead
+          </button>
+
+          {/* New Invoice / Contract Button */}
+          <button
+            type="button"
+            onClick={() => {
+              setInvoiceLead(null);
+              setShowInvoiceModal(true);
+            }}
+            className={`h-8 px-3 rounded-xl border text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer ${
+              isDay
+                ? "bg-white border-[#D8CEC1] text-neutral-800 hover:bg-[#FAF8F5]"
+                : "bg-zinc-800 border-zinc-700 text-zinc-200 hover:bg-zinc-700 hover:text-white"
+            }`}
+            title="Create a new catering invoice / agreement"
+          >
+            <span>📄</span>
+            <span>New Invoice</span>
           </button>
 
           {/* Promo Special Blast Button */}
@@ -778,6 +799,23 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                       </svg>
                     </button>
 
+                    {/* Invoice / Agreement Button */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setInvoiceLead(lead);
+                        setShowInvoiceModal(true);
+                      }}
+                      className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+                        isDay
+                          ? "text-black hover:text-[#FF7A00] hover:bg-black/5"
+                          : "text-white hover:text-[#FF7A00] hover:bg-white/10"
+                      }`}
+                      title="Generate Catering Invoice / Contract (Print / PDF)"
+                    >
+                      <span className="text-xs">📄</span>
+                    </button>
+
                     {/* 3. Blow Up Pop-Up Icon (Opposite Diagonal Arrows - Crisp Black) */}
                     <button
                       type="button"
@@ -1086,6 +1124,19 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
                 >
                   <span>✉️</span>
                   <span>Direct Reply In-App</span>
+                </button>
+
+                {/* Generate Invoice / Contract */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setInvoiceLead(blowUpLead);
+                    setShowInvoiceModal(true);
+                  }}
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#E65100] text-white text-xs font-bold flex items-center gap-1.5 shadow-md hover:scale-105 active:scale-95 transition cursor-pointer"
+                >
+                  <span>📄</span>
+                  <span>Generate Invoice / Contract</span>
                 </button>
 
                 {/* Edit Booking Details */}
@@ -1668,6 +1719,20 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
           </div>
         </div>
       )}
+          {/* 8. INVOICE & CATERING AGREEMENT GENERATOR MODAL */}
+      <AdminInvoiceGenerator
+        isOpen={showInvoiceModal}
+        lead={invoiceLead}
+        onClose={() => {
+          setShowInvoiceModal(false);
+          setInvoiceLead(null);
+        }}
+        onSaveLeadTotal={(leadId, newTotal) => {
+          const updated = leads.map((l) => (l.id === leadId ? { ...l, estimatedTotal: newTotal } : l));
+          saveLeads(updated);
+        }}
+        theme={theme as any}
+      />
     </div>
   );
 }
