@@ -37,6 +37,15 @@ export function Footer() {
             <p className="text-stone-500 text-xs mt-1">
               (By booked dispatch only; exclusive commercial kitchen commissary)
             </p>
+            <div className="pt-3">
+              <a
+                href="/review"
+                className="inline-flex items-center gap-1.5 text-xs text-amber-400 hover:text-amber-300 font-bold transition-colors"
+              >
+                <span>⭐ Rate Your Feast &amp; Leave a Review</span>
+                <span>→</span>
+              </a>
+            </div>
           </div>
         </div>
 
