@@ -8,152 +8,46 @@ interface AdminAnalyticsProps {
   theme: AdminTheme;
 }
 
-// Fallback seed data if no leads currently exist in localStorage
-const DEFAULT_ANALYTICS_LEADS: PitmasterLead[] = [
-  {
-    id: "ATS-QUOTE-7585",
-    ticketId: "ATS-QUOTE-7585",
-    name: "Todd Davis",
-    email: "todddavis923@gmail.com",
-    phone: "(678) 207-6008",
-    guestCount: 35,
-    eventDate: "2026-11-20",
-    eventType: "private",
-    packageName: "The Pitmaster Feast ($30/pp)",
-    serviceStyle: "Heated Drop-Off Delivery",
-    deliveryAddress: "Chicago Area (North Side)",
-    status: "booked",
-    createdAt: "2026-11-01T14:30:00.000Z",
-    source: "Website Contact Form",
-    estimatedTotal: 1050,
-  },
-  {
-    id: "ATS-QUOTE-8221",
-    ticketId: "ATS-QUOTE-8221",
-    name: "Marcus Vance",
-    email: "marcus.vance@chicagoevents.org",
-    phone: "(773) 555-0199",
-    guestCount: 65,
-    eventDate: "2026-11-14",
-    eventType: "corporate",
-    packageName: "The Pitmaster Feast ($30/pp)",
-    serviceStyle: "On-Site Smoker Trailer Rig",
-    deliveryAddress: "Lincoln Park Conservatory Alleyway, Chicago, IL",
-    status: "booked",
-    createdAt: "2026-11-02T10:15:00.000Z",
-    source: "Website Quote Form",
-    estimatedTotal: 2275,
-  },
-  {
-    id: "ATS-QUOTE-6104",
-    ticketId: "ATS-QUOTE-6104",
-    name: "Elena Rostova",
-    email: "elena@fultonmarketsummit.com",
-    phone: "(312) 555-8842",
-    guestCount: 120,
-    eventDate: "2026-12-05",
-    eventType: "corporate",
-    packageName: "Full Live-Fire Smokehouse ($45/pp)",
-    serviceStyle: "Full Live-Fire Buffet",
-    deliveryAddress: "Fulton Market District Loft, Chicago, IL",
-    status: "quoted",
-    createdAt: "2026-11-03T18:45:00.000Z",
-    source: "Phone Intake",
-    estimatedTotal: 5400,
-  },
-  {
-    id: "ATS-QUOTE-9932",
-    ticketId: "ATS-QUOTE-9932",
-    name: "Darius Washington",
-    email: "dwash99@gmail.com",
-    phone: "(312) 709-4411",
-    guestCount: 85,
-    eventDate: "2026-11-28",
-    eventType: "wedding",
-    packageName: "Full Live-Fire Smokehouse ($45/pp)",
-    serviceStyle: "On-Site Smoker Trailer Rig",
-    deliveryAddress: "Promontory Point, Hyde Park, Chicago, IL",
-    status: "booked",
-    createdAt: "2026-10-28T09:20:00.000Z",
-    source: "Instagram / TikTok Reel",
-    estimatedTotal: 4250,
-  },
-  {
-    id: "ATS-QUOTE-4401",
-    ticketId: "ATS-QUOTE-4401",
-    name: "Sarah Jenkins",
-    email: "sarah.j@alliedhealthchicago.com",
-    phone: "(773) 891-2200",
-    guestCount: 45,
-    eventDate: "2026-11-18",
-    eventType: "corporate",
-    packageName: "The Pitmaster Feast ($30/pp)",
-    serviceStyle: "Heated Drop-Off Delivery",
-    deliveryAddress: "Rosemont Corporate Center, Des Plaines, IL",
-    status: "completed",
-    createdAt: "2026-10-15T11:00:00.000Z",
-    source: "Google Search (Local SEO)",
-    estimatedTotal: 1575,
-  },
-  {
-    id: "ATS-QUOTE-3329",
-    ticketId: "ATS-QUOTE-3329",
-    name: "Coach Malik Bell",
-    email: "malik.bell@cps.edu",
-    phone: "(773) 441-9080",
-    guestCount: 50,
-    eventDate: "2026-11-21",
-    eventType: "private",
-    packageName: "Party Pans & Bulk BBQ ($25/pp est)",
-    serviceStyle: "Commissary Pickup",
-    deliveryAddress: "Northwest Side Commissary, Chicago, IL",
-    status: "contacted",
-    createdAt: "2026-11-03T20:10:00.000Z",
-    source: "Word of Mouth / Referral",
-    estimatedTotal: 1250,
-  },
-  {
-    id: "ATS-QUOTE-1194",
-    ticketId: "ATS-QUOTE-1194",
-    name: "Kendall Brooks",
-    email: "kbrooks@wickerparklofts.com",
-    phone: "(312) 604-1888",
-    guestCount: 110,
-    eventDate: "2026-12-19",
-    eventType: "corporate",
-    packageName: "Full Live-Fire Smokehouse ($45/pp)",
-    serviceStyle: "On-Site Smoker Trailer Rig",
-    deliveryAddress: "Wicker Park Loft Space, Chicago, IL",
-    status: "quoted",
-    createdAt: "2026-11-02T16:22:00.000Z",
-    source: "Tabletop QR Tent Display",
-    estimatedTotal: 4950,
-  },
-];
-
 type TimeRangeFilter = "all" | "this-month" | "upcoming";
 
 export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
   const isDay = theme === "day";
-  const [leads, setLeads] = useState<PitmasterLead[]>(DEFAULT_ANALYTICS_LEADS);
+  // Zero fake data - strictly loads real leads from localStorage
+  const [leads, setLeads] = useState<PitmasterLead[]>([]);
   const [timeFilter, setTimeFilter] = useState<TimeRangeFilter>("all");
-  const [monthlyTarget] = useState<number>(25000); // Marion's monthly catering target ($25k)
+  const [monthlyTarget] = useState<number>(25000); // Marion's monthly catering target ($25,000)
 
-  // Load actual leads from localStorage if available
-  useEffect(() => {
+  // Load real leads from localStorage on mount & on storage change
+  const syncLeadsFromStorage = () => {
     if (typeof window !== "undefined") {
       try {
         const stored = localStorage.getItem("ats_pitmaster_leads");
         if (stored) {
           const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) {
+          if (Array.isArray(parsed)) {
             setLeads(parsed);
+            return;
           }
         }
+        setLeads([]);
       } catch (e) {
         console.warn("Could not load leads for analytics:", e);
+        setLeads([]);
       }
     }
+  };
+
+  useEffect(() => {
+    syncLeadsFromStorage();
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "ats_pitmaster_leads") {
+        syncLeadsFromStorage();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   // Filter leads based on selected timeframe
@@ -176,7 +70,7 @@ export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
     });
   }, [leads, timeFilter]);
 
-  // Executive Revenue Metrics
+  // Executive Revenue Metrics (Calculated 100% from real leads)
   const metrics = useMemo(() => {
     let bookedRevenue = 0;
     let pendingQuotedRevenue = 0;
@@ -184,7 +78,7 @@ export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
     let totalGuestsProjected = 0;
     let bookedCount = 0;
     let quotedCount = 0;
-    let totalLeadsCount = filteredLeads.length;
+    const totalLeadsCount = filteredLeads.length;
 
     filteredLeads.forEach((lead) => {
       const total = Number(lead.estimatedTotal) || (lead.guestCount ? lead.guestCount * 30 : 0);
@@ -247,12 +141,33 @@ export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
       target.revenue += total;
     });
 
-    const totalRev = Object.values(counts).reduce((sum, item) => sum + item.revenue, 0) || 1;
+    const totalRev = Object.values(counts).reduce((sum, item) => sum + item.revenue, 0);
 
     return [
-      { key: "corporate", label: "Corporate Banquets & Galas", count: counts.corporate.count, revenue: counts.corporate.revenue, pct: Math.round((counts.corporate.revenue / totalRev) * 100), color: "bg-amber-500" },
-      { key: "wedding", label: "Weddings & Rehearsal Dinners", count: counts.wedding.count, revenue: counts.wedding.revenue, pct: Math.round((counts.wedding.revenue / totalRev) * 100), color: "bg-emerald-500" },
-      { key: "private", label: "Private Celebrations & Game Days", count: counts.private.count, revenue: counts.private.revenue, pct: Math.round((counts.private.revenue / totalRev) * 100), color: "bg-orange-500" },
+      {
+        key: "corporate",
+        label: "Corporate Banquets & Galas",
+        count: counts.corporate.count,
+        revenue: counts.corporate.revenue,
+        pct: totalRev > 0 ? Math.round((counts.corporate.revenue / totalRev) * 100) : 0,
+        color: "bg-amber-500",
+      },
+      {
+        key: "wedding",
+        label: "Weddings & Rehearsal Dinners",
+        count: counts.wedding.count,
+        revenue: counts.wedding.revenue,
+        pct: totalRev > 0 ? Math.round((counts.wedding.revenue / totalRev) * 100) : 0,
+        color: "bg-emerald-500",
+      },
+      {
+        key: "private",
+        label: "Private Celebrations & Game Days",
+        count: counts.private.count,
+        revenue: counts.private.revenue,
+        pct: totalRev > 0 ? Math.round((counts.private.revenue / totalRev) * 100) : 0,
+        color: "bg-orange-500",
+      },
     ];
   }, [filteredLeads]);
 
@@ -274,18 +189,32 @@ export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
       }
     });
 
-    const total = fullSmokehouseRev + pitmasterFeastRev + partyPansRev || 1;
+    const total = fullSmokehouseRev + pitmasterFeastRev + partyPansRev;
 
     return [
-      { name: "Full Live-Fire Smokehouse ($45/pp)", revenue: fullSmokehouseRev, pct: Math.round((fullSmokehouseRev / total) * 100), badge: "Highest Margin" },
-      { name: "The Pitmaster Feast ($30/pp)", revenue: pitmasterFeastRev, pct: Math.round((pitmasterFeastRev / total) * 100), badge: "Most Popular" },
-      { name: "A La Carte Bulk Pans & Reserve", revenue: partyPansRev, pct: Math.round((partyPansRev / total) * 100), badge: "Volume Add-On" },
+      {
+        name: "Full Live-Fire Smokehouse ($45/pp)",
+        revenue: fullSmokehouseRev,
+        pct: total > 0 ? Math.round((fullSmokehouseRev / total) * 100) : 0,
+        badge: "Highest Margin",
+      },
+      {
+        name: "The Pitmaster Feast ($30/pp)",
+        revenue: pitmasterFeastRev,
+        pct: total > 0 ? Math.round((pitmasterFeastRev / total) * 100) : 0,
+        badge: "Most Popular",
+      },
+      {
+        name: "A La Carte Bulk Pans & Reserve",
+        revenue: partyPansRev,
+        pct: total > 0 ? Math.round((partyPansRev / total) * 100) : 0,
+        badge: "Volume Add-On",
+      },
     ];
   }, [filteredLeads]);
 
   // Smokehouse Prep & Butcher Estimator (Pounds of meat needed for booked events)
   const butcherProjections = useMemo(() => {
-    // Estimating ~0.65 lbs raw brisket per guest, ~0.4 slabs ribs per guest, 0.5 lbs poultry/chops
     const guests = metrics.totalGuestsBooked;
 
     return [
@@ -294,28 +223,40 @@ export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
         icon: "🥩",
         rawPounds: Math.round(guests * 0.7),
         yieldPounds: Math.round(guests * 0.38),
-        cutsNote: `Approx. ${Math.ceil((guests * 0.7) / 14)} full packer briskets (14-16 lb packers)`,
+        cutsNote:
+          guests > 0
+            ? `Approx. ${Math.ceil((guests * 0.7) / 14)} full packer briskets (14-16 lb packers)`
+            : "No active bookings",
       },
       {
         meat: "St. Louis Spare Rib Slabs",
         icon: "🍖",
         rawPounds: Math.round(guests * 0.4),
-        yieldPounds: Math.round(guests * 0.4), // Slabs
-        cutsNote: `Approx. ${Math.ceil(guests * 0.35)} slabs trimmed cherry-smoked ribs`,
+        yieldPounds: Math.round(guests * 0.4),
+        cutsNote:
+          guests > 0
+            ? `Approx. ${Math.ceil(guests * 0.35)} slabs trimmed cherry-smoked ribs`
+            : "No active bookings",
       },
       {
         meat: "Pit-Smoked Turkey Chops & Wings",
         icon: "🍗",
         rawPounds: Math.round(guests * 0.5),
         yieldPounds: Math.round(guests * 0.45),
-        cutsNote: `Approx. ${Math.round(guests * 0.5)} lbs brined poultry cuts`,
+        cutsNote:
+          guests > 0
+            ? `Approx. ${Math.round(guests * 0.5)} lbs brined poultry cuts`
+            : "No active bookings",
       },
       {
         meat: "Scratch Sides (Beans, Mac & Yams)",
         icon: "🧀",
-        rawPounds: Math.ceil(guests / 20), // Half pans
+        rawPounds: Math.ceil(guests / 20),
         yieldPounds: Math.ceil(guests / 20),
-        cutsNote: `Approx. ${Math.ceil(guests / 18)} deep aluminum half pans per side`,
+        cutsNote:
+          guests > 0
+            ? `Approx. ${Math.ceil(guests / 18)} deep aluminum half pans per side`
+            : "No active bookings",
       },
     ];
   }, [metrics.totalGuestsBooked]);
@@ -359,6 +300,8 @@ export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
     link.click();
     document.body.removeChild(link);
   };
+
+  const hasNoData = filteredLeads.length === 0;
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
@@ -418,7 +361,12 @@ export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
             <button
               type="button"
               onClick={handleExportCSV}
-              className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-200 font-bold text-xs flex items-center gap-2 transition active:scale-95 shadow-sm"
+              disabled={hasNoData}
+              className={`px-4 py-2 rounded-xl border font-bold text-xs flex items-center gap-2 transition active:scale-95 shadow-sm ${
+                hasNoData
+                  ? "bg-zinc-800/40 border-zinc-800 text-zinc-600 cursor-not-allowed"
+                  : "bg-zinc-800 hover:bg-zinc-700 border-zinc-700 text-zinc-200"
+              }`}
               title="Download CSV spreadsheet of all leads & revenue"
             >
               <span>📥</span>
@@ -426,6 +374,19 @@ export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
             </button>
           </div>
         </div>
+
+        {/* Empty State Banner if no leads exist */}
+        {hasNoData && (
+          <div className="mt-4 p-3.5 rounded-xl bg-zinc-900/60 border border-zinc-800 text-zinc-400 text-xs flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span>📋</span>
+              <span>
+                No active leads or bookings recorded yet. Once quote inquiries arrive from the website or are added in the <strong>Leads</strong> tab, real numbers will populate here.
+              </span>
+            </div>
+            <span className="font-mono text-zinc-500 text-[11px] shrink-0">Live $0 Baseline</span>
+          </div>
+        )}
       </div>
 
       {/* 2. TOP EXECUTIVE KPI CARDS */}
@@ -608,7 +569,9 @@ export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
               </h3>
               <p className="text-xs text-zinc-400">Distribution across corporate, weddings, and private events</p>
             </div>
-            <span className="text-xs font-mono text-[#FF7A00]">3 Main Segments</span>
+            <span className="text-xs font-mono text-[#FF7A00]">
+              {hasNoData ? "0 Events" : `${filteredLeads.length} Events`}
+            </span>
           </div>
 
           <div className="space-y-4">
@@ -735,4 +698,3 @@ export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
     </div>
   );
 }
-
