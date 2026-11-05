@@ -14,6 +14,7 @@ import {
 import { SITE_CONFIG, DeliveryZone } from "@/config/site-config";
 import { useOrderTray } from "@/context/OrderTrayContext";
 import { useLiveSmokerStatus } from "@/utils/smoker-live-status";
+import { useWeeklyChalkboard } from "@/utils/chalkboard-specials";
 
 // Chicagoland Zip Code Lookup Map (3-Zone Heated Delivery Engine)
 const ZONE_1_ZIPS = new Set([
@@ -72,6 +73,7 @@ export function ButcherBlockMenu() {
   const [zipError, setZipError] = useState("");
   const { addItem, subtotal, totalItemCount, openTray } = useOrderTray();
   const { getItemStatus, activeSmokingItems } = useLiveSmokerStatus();
+  const { chalkboard: weeklyChalkboard } = useWeeklyChalkboard();
   const MIN_DELIVERY_SUBTOTAL = 150;
   const remainingForMin = Math.max(0, MIN_DELIVERY_SUBTOTAL - subtotal);
   const isMinMet = subtotal >= MIN_DELIVERY_SUBTOTAL;
@@ -227,72 +229,99 @@ export function ButcherBlockMenu() {
               <div className="text-center pb-5 border-b border-dashed border-white/20">
                 <div className="flex items-center justify-center gap-2 mb-1">
                   <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold">
-                    ★ {WEEKLY_CHALKBOARD.badge} ★
+                    ★ {weeklyChalkboard.badge} ★
                   </span>
                 </div>
                 <h3 className="font-chalk chalk-orange text-4xl sm:text-5xl md:text-6xl font-bold tracking-normal leading-tight">
-                  {WEEKLY_CHALKBOARD.headline}
+                  {weeklyChalkboard.headline}
                 </h3>
                 <p className="font-chalk chalk-white text-sm sm:text-base opacity-90 mt-1">
-                  {WEEKLY_CHALKBOARD.season}
+                  {weeklyChalkboard.season}
                 </p>
               </div>
 
               {/* Pure Chalk Handwritten Specials List - Compact Single-Line Dishes (No Cluttered Descriptions) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 mt-6">
-                {WEEKLY_CHALKBOARD.items.map((special, idx) => (
-                  <div
-                    key={special.id}
-                    className={`group border-b border-dashed border-white/15 py-2.5 flex-col gap-1.5 hover:bg-white/[0.03] rounded-lg px-2 transition-all ${idx >= 3 ? "hidden md:flex" : "flex"
-                      }`}
-                  >
-                    {/* Dish Number & Name */}
-                    <div className="flex items-baseline gap-2">
-                      <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold shrink-0">
-                        #{idx + 1}
-                      </span>
-                      <h4 className="font-chalk chalk-white text-lg sm:text-xl font-bold group-hover:text-[#FB923C] transition-colors leading-snug">
-                        {special.name}
-                      </h4>
-                    </div>
+                {weeklyChalkboard.items
+                  .filter((special) => special.active !== false)
+                  .map((special, idx) => {
+                    const isSoldOut = !!special.soldOut;
 
-                    {/* Price & Action CTAs */}
-                    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pl-7">
-                      <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold whitespace-nowrap">
-                        {special.price}
-                      </span>
+                    return (
+                      <div
+                        key={special.id}
+                        className={`group border-b border-dashed border-white/15 py-2.5 flex-col gap-1.5 hover:bg-white/[0.03] rounded-lg px-2 transition-all ${
+                          idx >= 3 ? "hidden md:flex" : "flex"
+                        } ${isSoldOut ? "opacity-75" : ""}`}
+                      >
+                        {/* Dish Number & Name */}
+                        <div className="flex items-baseline gap-2 flex-wrap">
+                          <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold shrink-0">
+                            #{idx + 1}
+                          </span>
+                          <h4
+                            className={`font-chalk text-lg sm:text-xl font-bold group-hover:text-[#FB923C] transition-colors leading-snug ${
+                              isSoldOut ? "chalk-white line-through opacity-70" : "chalk-white"
+                            }`}
+                          >
+                            {special.name}
+                          </h4>
+                          {special.badge && !isSoldOut && (
+                            <span className="font-sans text-[10px] font-bold px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider">
+                              {special.badge}
+                            </span>
+                          )}
+                          {isSoldOut && (
+                            <span className="font-sans text-[10px] font-black bg-red-600 text-white px-1.5 py-0.2 rounded uppercase tracking-wider">
+                              Sold Out
+                            </span>
+                          )}
+                        </div>
 
-                      <div className="flex items-center gap-2 w-full sm:w-auto">
-                        {/* 1. View In Menu CTA (Scrolls to photo & full description below) */}
-                        <button
-                          type="button"
-                          onClick={() => handleJumpToMenuItem(special)}
-                          className="font-sans text-[11px] font-semibold text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-2.5 py-1 min-h-11 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border border-white/15 transition flex items-center gap-1"
-                          title="View photo and description in menu below"
-                        >
-                          <span>Menu</span>
-                          <span>↓</span>
-                        </button>
+                        {/* Price & Action CTAs */}
+                        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pl-7">
+                          <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold whitespace-nowrap">
+                            {special.price}
+                          </span>
 
-                        {/* 2. Direct Add to Tray CTA */}
-                        <button
-                          type="button"
-                          onClick={() => handleAddChalkboardSpecial(special)}
-                          className="font-sans text-xs font-bold text-[#FB923C] bg-[#FB923C]/10 hover:bg-[#FB923C]/25 px-2.5 py-1 min-h-11 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border border-[#FB923C]/40 transition flex items-center gap-1 shadow-sm active:scale-95"
-                        >
-                          <span>+ Add</span>
-                        </button>
+                          <div className="flex items-center gap-2 w-full sm:w-auto">
+                            {/* 1. View In Menu CTA (Scrolls to photo & full description below) */}
+                            <button
+                              type="button"
+                              onClick={() => handleJumpToMenuItem(special)}
+                              className="font-sans text-[11px] font-semibold text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-2.5 py-1 min-h-11 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border border-white/15 transition flex items-center gap-1"
+                              title="View photo and description in menu below"
+                            >
+                              <span>Menu</span>
+                              <span>↓</span>
+                            </button>
+
+                            {/* 2. Direct Add to Tray CTA */}
+                            {isSoldOut ? (
+                              <span className="font-sans text-[11px] font-bold text-stone-400 bg-white/5 px-2.5 py-1 rounded border border-white/10">
+                                Sold Out
+                              </span>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => handleAddChalkboardSpecial(special)}
+                                className="font-sans text-xs font-bold text-[#FB923C] bg-[#FB923C]/10 hover:bg-[#FB923C]/25 px-2.5 py-1 min-h-11 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border border-[#FB923C]/40 transition flex items-center gap-1 shadow-sm active:scale-95"
+                              >
+                                <span>+ Add</span>
+                              </button>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                ))}
+                    );
+                  })}
               </div>
 
               {/* Mobile Chalkboard CTA: See All Weekly Specials on Dedicated Chalkboard Page */}
               <div className="mt-7 pt-4 border-t border-dashed border-white/20 flex flex-col sm:flex-row items-center justify-between gap-3 md:hidden">
                 <div className="text-center sm:text-left">
                   <p className="font-chalk chalk-white text-xs opacity-90">
-                    ★ Showing 3 of {WEEKLY_CHALKBOARD.items.length} rotating smoker specials
+                    ★ Showing 3 of {weeklyChalkboard.items.filter((i) => i.active !== false).length} rotating smoker specials
                   </p>
                   <p className="font-chalk chalk-yellow text-[11px] opacity-75">
                     Smoked fresh on Marion&rsquo;s trailer rig

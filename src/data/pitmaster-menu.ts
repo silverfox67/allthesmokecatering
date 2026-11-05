@@ -28,6 +28,8 @@ export interface WeeklyChalkboardItem {
   badge?: string;
   categoryTab: MenuCategory["id"];
   menuTargetId: string;
+  soldOut?: boolean;
+  active?: boolean;
 }
 
 export interface WeeklyChalkboard {

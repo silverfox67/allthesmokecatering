@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { AdminTheme } from "./AdminPortal";
+import { AdminChalkboardManager } from "./AdminChalkboardManager";
 import { PER_PERSON_PACKAGES } from "@/data/catering-packages";
 import { PITMASTER_MENU_ITEMS, MENU_CATEGORIES, MenuCategory } from "@/data/pitmaster-menu";
 import {
@@ -152,11 +153,24 @@ interface AdminPriceConfiguratorProps {
 
 export function AdminPriceConfigurator({ theme }: AdminPriceConfiguratorProps) {
   const isDay = theme === "day";
-  const [activeMainTab, setActiveMainTab] = useState<"packages" | "menu" | "pans" | "delivery">("menu");
+  const [activeMainTab, setActiveMainTab] = useState<
+    "packages" | "menu" | "pans" | "delivery" | "chalkboard"
+  >("menu");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [copySuccess, setCopySuccess] = useState(false);
   const [saveToast, setSaveToast] = useState(false);
+
+  // Check URL params for direct subtab linking (e.g. ?tab=services&sub=chalkboard)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const sub = params.get("sub");
+      if (sub === "chalkboard") {
+        setActiveMainTab("chalkboard");
+      }
+    }
+  }, []);
 
   // Initial State from Master Menu & Catering Packages
   const [config, setConfig] = useState<SmokerConfigState>(() => ({
@@ -589,6 +603,23 @@ ${config.partyPans
           }`}
         >
           🚚 Delivery &amp; Booking Rules
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveMainTab("chalkboard")}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-2 ${
+            activeMainTab === "chalkboard"
+              ? "bg-[#EA580C] text-white shadow-sm"
+              : isDay
+              ? "bg-stone-200 text-stone-700 hover:bg-stone-300"
+              : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white"
+          }`}
+        >
+          <span>📋 Weekly Chalkboard Specials</span>
+          <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-extrabold border border-amber-500/30">
+            8 Specials
+          </span>
         </button>
       </div>
 
@@ -1232,6 +1263,9 @@ ${config.partyPans
           </div>
         </div>
       )}
+
+      {/* SECTION 5: WEEKLY SPECIALS CHALKBOARD MANAGER */}
+      {activeMainTab === "chalkboard" && <AdminChalkboardManager theme={theme} />}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { WEEKLY_CHALKBOARD, WeeklyChalkboardItem } from "@/data/pitmaster-menu";
 import { OrderTrayProvider, useOrderTray } from "@/context/OrderTrayContext";
 import { useLiveSmokerStatus } from "@/utils/smoker-live-status";
+import { useWeeklyChalkboard } from "@/utils/chalkboard-specials";
 import { SmokehouseOrderTray } from "@/components/tray/SmokehouseOrderTray";
 import { SmokehouseTrayButton } from "@/components/tray/SmokehouseTrayButton";
 import { QuoteModal } from "@/components/forms/QuoteModal";
@@ -14,6 +15,7 @@ import { Footer } from "@/components/layout/Footer";
 function ChalkboardContent() {
   const { addItem, subtotal, totalItemCount, openTray } = useOrderTray();
   const { getItemStatus } = useLiveSmokerStatus();
+  const { chalkboard: weeklyChalkboard } = useWeeklyChalkboard();
   const [addedId, setAddedId] = useState<string | null>(null);
   const MIN_DELIVERY_SUBTOTAL = 150;
   const remainingForMin = Math.max(0, MIN_DELIVERY_SUBTOTAL - subtotal);
@@ -91,89 +93,106 @@ function ChalkboardContent() {
             <div className="text-center pb-6 border-b border-dashed border-white/20">
               <div className="flex items-center justify-center gap-2 mb-1">
                 <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold">
-                  ★ {WEEKLY_CHALKBOARD.badge} ★
+                  ★ {weeklyChalkboard.badge} ★
                 </span>
               </div>
               <h1 className="font-chalk chalk-orange text-4xl sm:text-5xl md:text-6xl font-bold tracking-normal leading-tight">
-                {WEEKLY_CHALKBOARD.headline}
+                {weeklyChalkboard.headline}
               </h1>
               <p className="font-chalk chalk-white text-sm sm:text-base opacity-90 mt-1">
-                {WEEKLY_CHALKBOARD.season} • Complete Smoker Lineup
+                {weeklyChalkboard.season} • Complete Smoker Lineup
               </p>
             </div>
 
             {/* All 8 Pure Chalk Handwritten Specials (Compact Single-Row Format - No Cluttered Descriptions) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3.5 mt-7">
-              {WEEKLY_CHALKBOARD.items.map((special, idx) => {
-                const isJustAdded = addedId === special.id;
-                const live = getItemStatus(special.menuTargetId);
-                const isSmokingLive = live.status === "smoking-now";
-                const isSoldOut = live.status === "sold-out";
+              {weeklyChalkboard.items
+                .filter((special) => special.active !== false)
+                .map((special, idx) => {
+                  const isJustAdded = addedId === special.id;
+                  const live = getItemStatus(special.menuTargetId);
+                  const isSmokingLive = live.status === "smoking-now";
+                  const isSoldOut = special.soldOut || live.status === "sold-out";
 
-                return (
-                  <div
-                    key={special.id}
-                    className={`group border-b border-dashed border-white/15 py-3 flex-col gap-1.5 rounded-lg px-2.5 transition-all flex ${
-                      isSmokingLive
-                        ? "bg-[#EA580C]/10 border-[#EA580C]/40"
-                        : "hover:bg-white/[0.03]"
-                    }`}
-                  >
-                    {/* Dish Number, Name & Live Smoke Badges */}
-                    <div className="flex flex-wrap items-baseline gap-2">
-                      <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold shrink-0">
-                        #{idx + 1}
-                      </span>
-                      <h2 className="font-chalk chalk-white text-lg sm:text-xl font-bold group-hover:text-[#FB923C] transition-colors leading-snug">
-                        {special.name}
-                      </h2>
-                      {isSmokingLive && (
-                        <span className="font-chalk chalk-orange text-[10px] sm:text-[11px] font-bold bg-[#FB923C]/20 border border-[#FB923C]/50 px-2 py-0.5 rounded animate-pulse flex items-center gap-1">
-                          <span>🔥</span>
-                          <span>Smoking Live Today • Ready {live.readyTime || "~5:00 PM"}</span>
+                  return (
+                    <div
+                      key={special.id}
+                      className={`group border-b border-dashed border-white/15 py-3 flex-col gap-1.5 rounded-lg px-2.5 transition-all flex ${
+                        isSmokingLive
+                          ? "bg-[#EA580C]/10 border-[#EA580C]/40"
+                          : "hover:bg-white/[0.03]"
+                      } ${isSoldOut ? "opacity-75" : ""}`}
+                    >
+                      {/* Dish Number, Name & Live Smoke Badges */}
+                      <div className="flex flex-wrap items-baseline gap-2">
+                        <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold shrink-0">
+                          #{idx + 1}
                         </span>
-                      )}
-                      {isSoldOut && (
-                        <span className="font-chalk chalk-white text-[10px] sm:text-[11px] font-bold bg-neutral-800 border border-neutral-700 px-2 py-0.5 rounded opacity-80">
-                          🚫 Sold Out Today (Pre-Order)
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Price & Action CTAs */}
-                    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pl-7">
-                      <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold whitespace-nowrap">
-                        {special.price}
-                      </span>
-
-                      <div className="flex items-center gap-2 w-full sm:w-auto">
-                        {/* 1. View in Menu Link */}
-                        <Link
-                          href={`/#menu`}
-                          className="font-sans text-[11px] font-semibold text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-2.5 py-1 min-h-11 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border border-white/15 transition flex items-center gap-1"
-                          title="View photo and full description in menu"
-                        >
-                          <span>Menu</span>
-                          <span>→</span>
-                        </Link>
-
-                        {/* 2. Direct Add to Tray CTA */}
-                        <button
-                          type="button"
-                          onClick={() => handleAddSpecial(special)}
-                          className={`font-sans text-xs font-bold px-2.5 py-1 min-h-11 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border transition flex items-center gap-1.5 shadow-sm active:scale-95 ${
-                            isJustAdded
-                              ? "bg-emerald-600/90 text-white border-emerald-500"
-                              : "chalk-orange bg-[#FB923C]/10 hover:bg-[#FB923C]/25 border-[#FB923C]/40"
+                        <h2
+                          className={`font-chalk text-lg sm:text-xl font-bold group-hover:text-[#FB923C] transition-colors leading-snug ${
+                            isSoldOut ? "chalk-white line-through opacity-70" : "chalk-white"
                           }`}
                         >
-                          <span>{isJustAdded ? "✓ Added" : "+ Add"}</span>
-                        </button>
+                          {special.name}
+                        </h2>
+                        {special.badge && !isSoldOut && (
+                          <span className="font-sans text-[10px] font-bold px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider">
+                            {special.badge}
+                          </span>
+                        )}
+                        {isSmokingLive && !isSoldOut && (
+                          <span className="font-chalk chalk-orange text-[10px] sm:text-[11px] font-bold bg-[#FB923C]/20 border border-[#FB923C]/50 px-2 py-0.5 rounded animate-pulse flex items-center gap-1">
+                            <span>🔥</span>
+                            <span>Smoking Live Today • Ready {live.readyTime || "~5:00 PM"}</span>
+                          </span>
+                        )}
+                        {isSoldOut && (
+                          <span className="font-chalk chalk-white text-[10px] sm:text-[11px] font-bold bg-neutral-800 border border-neutral-700 px-2 py-0.5 rounded opacity-80">
+                            🚫 Sold Out Today (Pre-Order)
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Price & Action CTAs */}
+                      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pl-7">
+                        <span className="font-chalk chalk-yellow text-sm sm:text-base font-bold whitespace-nowrap">
+                          {special.price}
+                        </span>
+
+                        <div className="flex items-center gap-2 w-full sm:w-auto">
+                          {/* 1. View in Menu Link */}
+                          <Link
+                            href={`/#menu`}
+                            className="font-sans text-[11px] font-semibold text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-2.5 py-1 min-h-11 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border border-white/15 transition flex items-center gap-1"
+                            title="View photo and full description in menu"
+                          >
+                            <span>Menu</span>
+                            <span>→</span>
+                          </Link>
+
+                          {/* 2. Direct Add to Tray CTA */}
+                          {isSoldOut ? (
+                            <span className="font-sans text-[11px] font-bold text-stone-400 bg-white/5 px-2.5 py-1 rounded border border-white/10">
+                              Sold Out
+                            </span>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => handleAddSpecial(special)}
+                              className={`font-sans text-xs font-bold px-2.5 py-1 min-h-11 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border transition flex items-center gap-1.5 shadow-sm active:scale-95 ${
+                                isJustAdded
+                                  ? "bg-emerald-600/90 text-white border-emerald-500"
+                                  : "chalk-orange bg-[#FB923C]/10 hover:bg-[#FB923C]/25 border-[#FB923C]/40"
+                              }`}
+                            >
+                              <span>{isJustAdded ? "✓ Added" : "+ Add"}</span>
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
 
             {/* Bottom Chalk Notice */}
