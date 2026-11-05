@@ -12,6 +12,7 @@ import { AdminTodoList } from "./AdminTodoList";
 import { AdminPriceConfigurator } from "./AdminPriceConfigurator";
 import { AdminQRDisplays } from "./AdminQRDisplays";
 import { AdminPitmasterApp } from "./AdminPitmasterApp";
+import { AdminAnalytics } from "./AdminAnalytics";
 import { SITE_CONFIG } from "@/config/site-config";
 
 export type AdminTheme = "day" | "night";
@@ -168,8 +169,8 @@ export function AdminPortal() {
         {
           key: "analytics" as AdminTab,
           label: "Analytics",
-          status: "Coming Soon",
-          badgeColor: "stone",
+          status: "Live",
+          badgeColor: "emerald",
           icon: (
             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -649,23 +650,7 @@ export function AdminPortal() {
             {activeTab === "notes" && <AdminNotes theme={theme} />}
 
             {/* TAB 5-10: COMING SOON MODULES (ALL THE SMOKE TAILORED) */}
-            {activeTab === "analytics" && (
-              <ComingSoonModule
-                title="Live-Fire Catering Analytics"
-                subtitle="Quote conversion metrics, revenue pipeline, and popular meat package statistics"
-                icon="📊"
-                theme={theme}
-                features={[
-                  "Real-time quote inquiry to booked event conversion rates",
-                  "Revenue tracking: Prime Brisket Feast vs Full Live-Fire Smokehouse",
-                  "Average party size & per-person yield analytics",
-                  "Monthly smokehouse revenue projections and Brevo campaign performance",
-                ]}
-                actionTab="leads"
-                actionLabel="View Current Leads Pipeline →"
-                onAction={() => setActiveTab("leads")}
-              />
-            )}
+            {activeTab === "analytics" && <AdminAnalytics theme={theme} />}
 
             {/* TAB: QR DISPLAYS & PRINT MARKETING ENGINE (LIVE) */}
             {activeTab === "qr-displays" && <AdminQRDisplays theme={theme} />}
