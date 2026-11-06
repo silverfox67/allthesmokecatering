@@ -8,6 +8,11 @@ export function TestimonialSection() {
   const { reviews } = useCustomerReviews();
   const featuredReviews = reviews.filter((r) => r.isFeatured || r.rating === 5).slice(0, 3);
 
+  // If no authentic reviews have been approved yet, silently hide section to preserve integrity
+  if (featuredReviews.length === 0) {
+    return null;
+  }
+
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#0A0A0A] via-[#110E0C] to-[#0A0A0A] border-t border-[#291E16] relative overflow-hidden">
       {/* Background Ember Glow */}

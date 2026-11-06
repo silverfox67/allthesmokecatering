@@ -379,9 +379,20 @@ export function AdminReviewsHub({ theme = "night" }: AdminReviewsHubProps) {
           <div
             className={`p-10 text-center rounded-2xl border ${
               isDay ? "bg-white border-stone-300 text-stone-600" : "bg-[#141210] border-zinc-800 text-stone-400"
-            } text-xs`}
+            } text-xs space-y-2`}
           >
-            No reviews match the selected filter.
+            <p className="font-bold text-sm text-stone-300">
+              {totalReviews === 0
+                ? "🔥 No customer reviews received yet."
+                : "No reviews match the selected filter."}
+            </p>
+            {totalReviews === 0 && (
+              <p className="text-stone-400 text-xs max-w-md mx-auto">
+                As catering gigs wrap up, use the 1-Tap SMS generator above or text clients{" "}
+                <code className="text-[#FF7A00] font-mono">allthesmokecatering.com/review</code>. 
+                Reviews will appear here instantly for your review and approval!
+              </p>
+            )}
           </div>
         ) : (
           filteredReviews.map((rev) => (

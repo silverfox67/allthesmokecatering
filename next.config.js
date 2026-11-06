@@ -13,6 +13,10 @@ const nextConfig = {
   },
   trailingSlash: true,
   output: 'export',
+  experimental: {
+    workerThreads: false,
+    cpus: 1,
+  },
 };
 
 module.exports = nextConfig;
