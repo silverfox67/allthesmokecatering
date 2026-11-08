@@ -200,9 +200,10 @@
     }
 
     .theme-btn.active.theme-btn-light {
-      background: #FAF5EE;
-      color: #1C1917;
-      border: 1px solid #C8A97E;
+      background: #E8DEC8;
+      color: #2D2115;
+      font-weight: 800;
+      border: 1.5px solid #C8A97E;
     }
 
     .view-mode-tabs {
@@ -324,83 +325,86 @@
     }
 
     /* =========================================================================
-       THEME 1: SMOKEHOUSE DARK (HARDWOOD PIT FIRE EDITION)
+       CARD INTERIOR & DECORATIVE ARCHITECTURE (VINTAGE DUAL BORDER)
        ========================================================================= */
-    .theme-dark .card-front {
-      background: radial-gradient(circle at 50% 50%, #1A1612 0%, #0E0C0A 75%, #050505 100%);
-      border: 1.5px solid #4D382A;
+    .card-inner-frame {
+      position: absolute;
+      inset: 5px;
+      border: 1px dashed rgba(200, 169, 126, 0.45);
+      border-radius: 8px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* FRONT CARD LAYOUT */
+    .card-front {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 10px 14px;
       text-align: center;
       position: relative;
     }
 
-    .theme-dark .card-front::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: url('/images/textures/weathered-wood-char.png') repeat;
-      opacity: 0.15;
-      pointer-events-none;
-    }
-
-    .theme-dark .card-front-logo {
-      width: 140px;
-      height: 105px;
-      object-fit: contain;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.8));
+    .card-front-header {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.48rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
       position: relative;
       z-index: 2;
     }
 
-    .theme-dark .card-front-tagline {
+    .card-front-logo {
+      width: 145px;
+      height: 96px;
+      object-fit: contain;
+      position: relative;
+      z-index: 2;
+      transition: transform 0.2s ease;
+    }
+
+    .card-front-tagline {
       font-family: 'Outfit', sans-serif;
       font-size: 0.62rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      color: #F59E0B;
+      font-weight: 900;
+      letter-spacing: 0.10em;
       text-transform: uppercase;
-      margin-top: 6px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .theme-dark .card-front-sub {
-      font-size: 0.58rem;
-      color: #A8A29E;
-      font-weight: 600;
-      letter-spacing: 0.05em;
       margin-top: 2px;
       position: relative;
       z-index: 2;
     }
 
-    /* BACK: SMOKEHOUSE DARK */
-    .theme-dark .card-back {
-      background: #120E0B;
-      border: 1.5px solid #4D382A;
-      display: flex;
+    .card-front-specialties {
+      margin-top: 3px;
+      padding: 1.5px 7px;
+      border-radius: 4px;
+      font-family: 'Work Sans', sans-serif;
+      font-size: 0.49rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
       position: relative;
-      padding: 14px 16px;
-      overflow: hidden;
+      z-index: 2;
     }
 
-    /* Live Flames on Left Edge */
-    .flame-accent-strip {
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 48px;
-      background: linear-gradient(135deg, rgba(234, 88, 12, 0.45), rgba(153, 0, 0, 0.7)),
-                  radial-gradient(circle at 0% 100%, #F59E0B 0%, #EA580C 50%, #7F1D1D 100%);
-      clip-path: polygon(0 0, 100% 0, 65% 100%, 0% 100%);
-      pointer-events-none;
-      z-index: 1;
-      opacity: 0.9;
+    .card-front-sub {
+      font-size: 0.52rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* BACK CARD LAYOUT */
+    .card-back {
+      display: flex;
+      position: relative;
+      padding: 12px 14px;
+      overflow: hidden;
     }
 
     .card-back-content {
@@ -410,169 +414,262 @@
       width: 100%;
       justify-content: space-between;
       align-items: center;
-      padding-left: 36px; /* Offset for flame strip */
+      padding-left: 32px; /* Offset for flame strip */
     }
 
     .card-back-info {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 2px;
+      flex: 1;
+      padding-right: 8px;
+    }
+
+    .card-back-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
     }
 
     .card-back-title {
       font-family: 'Satisfy', cursive;
-      font-size: 1.35rem;
-      color: #F59E0B;
+      font-size: 1.45rem;
       line-height: 1;
-      border-bottom: 1.5px solid rgba(245, 158, 11, 0.4);
-      padding-bottom: 2px;
       display: inline-block;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .card-back-role {
       font-family: 'Outfit', sans-serif;
-      font-size: 0.58rem;
+      font-size: 0.54rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: #FB923C;
+    }
+
+    .card-back-credibility {
+      margin-top: 2px;
+      margin-bottom: 2px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.51rem;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: 0.02em;
+    }
+
+    .card-back-contacts {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-top: 1px;
     }
 
     .card-back-item {
-      font-size: 0.65rem;
-      color: #E2E8F0;
+      font-size: 0.62rem;
       display: flex;
       align-items: center;
       gap: 5px;
       font-weight: 600;
     }
+
     .card-back-item strong {
-      color: #FFFFFF;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
+      font-size: 0.66rem;
     }
 
     .card-back-web {
       font-family: 'Outfit', sans-serif;
-      font-size: 0.62rem;
+      font-size: 0.60rem;
       font-weight: 800;
-      color: #F59E0B;
       letter-spacing: 0.05em;
-      margin-top: 2px;
+      margin-top: 1px;
     }
 
-    /* QR Code Display on Right */
+    /* Live Flames on Left Edge */
+    .flame-accent-strip {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 44px;
+      clip-path: polygon(0 0, 100% 0, 68% 100%, 0% 100%);
+      pointer-events-none;
+      z-index: 1;
+    }
+
+    /* QR Code "Pit Pass" Display on Right */
     .card-back-qr-box {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       background: #FFFFFF;
-      padding: 6px;
+      padding: 5px 6px 4px;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(245, 158, 11, 0.5);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
       shrink-0: 0;
     }
 
+    .qr-pass-header {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.46rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1;
+    }
+
     .qr-img {
-      width: 72px;
-      height: 72px;
+      width: 68px;
+      height: 68px;
       display: block;
     }
 
     .qr-label-strip {
-      font-size: 0.45rem;
+      font-size: 0.44rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: #120E0B;
       text-align: center;
-      line-height: 1.1;
-      max-width: 75px;
+      line-height: 1;
+      max-width: 72px;
     }
 
     /* =========================================================================
-       THEME 2: BUTCHER PAPER (INK-SAVER LIGHT LUXURY FOR HOME PRINTING)
+       THEME 1: SMOKEHOUSE DARK (HARDWOOD PIT FIRE EDITION)
+       ========================================================================= */
+    .theme-dark .card-front {
+      background: radial-gradient(circle at 50% 50%, #1A1612 0%, #0E0C0A 75%, #050505 100%);
+      border: 1.5px solid #4D382A;
+    }
+    .theme-dark .card-inner-frame {
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+    .theme-dark .card-front-header {
+      color: #F59E0B;
+    }
+    .theme-dark .card-front-logo {
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.85));
+    }
+    .theme-dark .card-front-tagline {
+      color: #F59E0B;
+    }
+    .theme-dark .card-front-specialties {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #FEF3C7;
+    }
+    .theme-dark .card-front-sub {
+      color: #A8A29E;
+    }
+
+    .theme-dark .card-back {
+      background: repeating-linear-gradient(180deg, #16120E 0px, #16120E 24px, #0F0C09 25px);
+      border: 1.5px solid #4D382A;
+    }
+    .theme-dark .flame-accent-strip {
+      background: linear-gradient(135deg, rgba(234, 88, 12, 0.45), rgba(153, 0, 0, 0.7)),
+                  radial-gradient(circle at 0% 100%, #F59E0B 0%, #EA580C 50%, #7F1D1D 100%);
+      opacity: 0.95;
+    }
+    .theme-dark .card-back-title {
+      color: #F59E0B;
+      border-bottom: 1.5px solid rgba(245, 158, 11, 0.4);
+    }
+    .theme-dark .card-back-role {
+      color: #FB923C;
+    }
+    .theme-dark .card-back-credibility {
+      background: rgba(245, 158, 11, 0.08);
+      border-left: 2px solid #F59E0B;
+      color: #E2E8F0;
+    }
+    .theme-dark .card-back-item {
+      color: #E2E8F0;
+    }
+    .theme-dark .card-back-item strong {
+      color: #FFFFFF;
+    }
+    .theme-dark .card-back-web {
+      color: #F59E0B;
+    }
+    .theme-dark .card-back-qr-box {
+      border: 1.5px solid #F59E0B;
+    }
+    .theme-dark .qr-pass-header {
+      color: #7C2D12;
+    }
+    .theme-dark .qr-label-strip {
+      color: #120E0B;
+    }
+
+    /* =========================================================================
+       THEME 2: SMOKED BUTCHER KRAFT TAN & CAST IRON (ARTISAN SMOKEHOUSE)
        ========================================================================= */
     .theme-light .card-front {
-      background: #FAF5EE;
-      border: 1.5px solid #D6C7B2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      text-align: center;
-      position: relative;
+      background: linear-gradient(135deg, #EFE7DA 0%, #E8DEC8 50%, #DFD4BE 100%);
+      border: 1.5px solid #C8A97E;
     }
-
+    .theme-light .card-inner-frame {
+      border-color: rgba(180, 140, 95, 0.55);
+    }
+    .theme-light .card-front-header {
+      color: #8C6239;
+    }
     .theme-light .card-front-logo {
-      width: 140px;
-      height: 105px;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.18));
     }
-
     .theme-light .card-front-tagline {
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.62rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      color: #C2410C;
-      text-transform: uppercase;
-      margin-top: 6px;
+      color: #991B1B; /* Burnt crimson ember from logo */
     }
-
+    .theme-light .card-front-specialties {
+      background: rgba(200, 169, 126, 0.28);
+      border: 1px solid rgba(180, 140, 95, 0.5);
+      color: #2D2115;
+    }
     .theme-light .card-front-sub {
-      font-size: 0.58rem;
-      color: #57534E;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      margin-top: 2px;
+      color: #4A433B;
     }
 
-    /* BACK: BUTCHER PAPER LIGHT */
     .theme-light .card-back {
-      background: #FFFDF9;
-      border: 1.5px solid #D6C7B2;
-      display: flex;
-      position: relative;
-      padding: 14px 16px;
-      overflow: hidden;
+      background: repeating-linear-gradient(180deg, #E8DEC8 0px, #E8DEC8 22px, #DFD4BE 23px);
+      border: 1.5px solid #C8A97E;
     }
-
     .theme-light .flame-accent-strip {
-      background: linear-gradient(135deg, rgba(234, 88, 12, 0.25), rgba(194, 65, 12, 0.4)),
-                  radial-gradient(circle at 0% 100%, #F59E0B 0%, #EA580C 70%, #990000 100%);
-      opacity: 0.45;
+      background: linear-gradient(180deg, #F59E0B 0%, #EA580C 45%, #991B1B 100%);
+      opacity: 0.95;
     }
-
     .theme-light .card-back-title {
-      color: #9A3412;
-      border-bottom: 1.5px solid rgba(154, 52, 18, 0.4);
+      color: #7C2D12;
+      border-bottom: 1.5px solid rgba(180, 140, 95, 0.6);
     }
-
     .theme-light .card-back-role {
-      color: #C2410C;
+      color: #991B1B;
     }
-
+    .theme-light .card-back-credibility {
+      background: rgba(200, 169, 126, 0.25);
+      border-left: 2px solid #991B1B;
+      color: #2D2115;
+    }
     .theme-light .card-back-item {
       color: #292524;
     }
     .theme-light .card-back-item strong {
       color: #1C1917;
     }
-
     .theme-light .card-back-web {
-      color: #C2410C;
+      color: #991B1B;
     }
-
     .theme-light .card-back-qr-box {
-      background: #FFFFFF;
-      border: 1px solid #D6C7B2;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border: 1.5px solid #C8A97E;
+    }
+    .theme-light .qr-pass-header {
+      color: #7C2D12;
+    }
+    .theme-light .qr-label-strip {
+      color: #1C1917;
     }
 
     /* =========================================================================
@@ -757,7 +854,7 @@
           <span>🪵 Smokehouse Dark</span>
         </button>
         <button type="button" class="theme-btn theme-btn-light" id="btn-theme-light" onclick="setTheme('light')">
-          <span>📜 Butcher Paper (Ink-Saver)</span>
+          <span>📜 Smoked Butcher Kraft Tan</span>
         </button>
       </div>
     </div>
@@ -798,13 +895,24 @@
       <div class="card-wrapper">
         <span class="card-label">Front Side (Master Crest)</span>
         <div class="business-card card-front" id="card-front-element">
+          <!-- Inner Decorative Vintage Frame -->
+          <div class="card-inner-frame"></div>
+          
+          <div class="card-front-header">EST. CHICAGO, IL &bull; LIVE-FIRE PITMASTER</div>
+
           <img 
             src="/brand/allthesmoke-master-crest.png" 
             alt="All The Smoke BBQ &amp; Catering Crest" 
             class="card-front-logo"
           />
+
           <div class="card-front-tagline">Chicagoland&rsquo;s Premier Live-Fire Smokehouse</div>
-          <div class="card-front-sub">Authentic Hardwood Smoked • Weddings &amp; Events</div>
+
+          <div class="card-front-specialties">
+            <span>&starf; WHOLE HOG &bull; PRIME BRISKET &bull; RIBS &bull; SMOKED HENS &starf;</span>
+          </div>
+
+          <div class="card-front-sub">Pitmaster Marion Bolden &bull; Low &amp; Slow Hardwood Smoke</div>
         </div>
       </div>
 
@@ -812,38 +920,53 @@
       <div class="card-wrapper">
         <span class="card-label">Back Side (Mr. Smoke + Scannable QR)</span>
         <div class="business-card card-back" id="card-back-element">
+          <!-- Inner Decorative Vintage Frame -->
+          <div class="card-inner-frame"></div>
+
           <!-- Live Fire Accent Strip -->
           <div class="flame-accent-strip"></div>
 
           <div class="card-back-content">
             <div class="card-back-info">
-              <div class="card-back-title">Mr. Smoke</div>
-              <div class="card-back-role">Pitmaster Marion Bolden</div>
+              <div class="card-back-title-wrap">
+                <div class="card-back-title">Mr. Smoke</div>
+                <div class="card-back-role">Pitmaster Marion Bolden &bull; Chicago, IL</div>
+              </div>
               
-              <div class="card-back-item" style="margin-top: 4px;">
-                <span>📞</span>
-                <span>Phone: <strong>773 707 9988</strong></span>
+              <!-- Catering Pitch & Credibility Box -->
+              <div class="card-back-credibility">
+                <div>&bull; On-Site Mobile Smoker Trailer Catering</div>
+                <div>&bull; Weddings &bull; Corporate Summits &bull; Private Parties</div>
               </div>
 
-              <div class="card-back-item">
-                <span>✉️</span>
-                <span>bbqcateringking83@gmail.com</span>
-              </div>
+              <!-- Direct Contact Details -->
+              <div class="card-back-contacts">
+                <div class="card-back-item">
+                  <span>&#128222;</span>
+                  <span>Call / Text: <strong>(773) 707-9988</strong></span>
+                </div>
 
-              <div class="card-back-web">
-                allthesmokecatering.com
+                <div class="card-back-item">
+                  <span>&#9993;</span>
+                  <span>bbqcateringking83@gmail.com</span>
+                </div>
+
+                <div class="card-back-web">
+                  allthesmokecatering.com
+                </div>
               </div>
             </div>
 
-            <!-- Dynamic QR Code Container -->
+            <!-- Dynamic QR Code Container ("Pit Pass") -->
             <div class="card-back-qr-box">
+              <div class="qr-pass-header">&starf; PIT PASS &starf;</div>
               <img 
                 src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fallthesmokecatering.com%2F%23contact&color=000000&bgcolor=FFFFFF&margin=0" 
                 alt="Scan to Book Catering" 
                 class="qr-img" 
                 id="active-qr-img"
               />
-              <span class="qr-label-strip" id="qr-caption">Scan for Menu &amp; Quote</span>
+              <span class="qr-label-strip" id="qr-caption">Instant Camera Scan</span>
             </div>
           </div>
         </div>
@@ -1003,125 +1126,208 @@
       if (side === 'front') {
         // BACKGROUND
         if (isLight) {
-          ctx.fillStyle = '#FAF5EE';
+          ctx.fillStyle = '#E8DEC8'; // Rich Smoked Butcher Kraft Tan
           ctx.fillRect(0, 0, width, height);
-          ctx.strokeStyle = '#D6C7B2';
-          ctx.lineWidth = 12;
+          ctx.strokeStyle = '#C8A97E';
+          ctx.lineWidth = 10;
           ctx.strokeRect(10, 10, width - 20, height - 20);
+          
+          // Inner decorative dashed border
+          ctx.setLineDash([8, 6]);
+          ctx.strokeStyle = 'rgba(180, 140, 95, 0.7)';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(26, 26, width - 52, height - 52);
+          ctx.setLineDash([]);
         } else {
           ctx.fillStyle = '#100D0B';
           ctx.fillRect(0, 0, width, height);
           ctx.strokeStyle = '#4D382A';
-          ctx.lineWidth = 12;
+          ctx.lineWidth = 10;
           ctx.strokeRect(10, 10, width - 20, height - 20);
+          
+          // Inner decorative dashed border
+          ctx.setLineDash([8, 6]);
+          ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(26, 26, width - 52, height - 52);
+          ctx.setLineDash([]);
         }
+
+        // Top Header
+        ctx.textAlign = 'center';
+        ctx.fillStyle = isLight ? '#8C6239' : '#F59E0B';
+        ctx.font = '800 20px "Outfit", sans-serif';
+        ctx.letterSpacing = '5px';
+        ctx.fillText("EST. CHICAGO, IL • LIVE-FIRE PITMASTER", width / 2, 68);
 
         // Draw Master Crest Logo
         const logo = new Image();
         logo.crossOrigin = 'anonymous';
         logo.src = '/brand/allthesmoke-master-crest.png';
         logo.onload = () => {
-          const logoW = 480;
-          const logoH = 360;
-          ctx.drawImage(logo, (width - logoW) / 2, 80, logoW, logoH);
+          const logoW = 460;
+          const logoH = 310;
+          ctx.drawImage(logo, (width - logoW) / 2, 85, logoW, logoH);
 
           // Tagline
-          ctx.fillStyle = isLight ? '#C2410C' : '#F59E0B';
-          ctx.font = 'bold 24px "Outfit", sans-serif';
+          ctx.fillStyle = isLight ? '#991B1B' : '#F59E0B';
+          ctx.font = '900 26px "Outfit", sans-serif';
           ctx.textAlign = 'center';
           ctx.letterSpacing = '3px';
-          ctx.fillText("CHICAGOLAND'S PREMIER LIVE-FIRE SMOKEHOUSE", width / 2, 490);
+          ctx.fillText("CHICAGOLAND'S PREMIER LIVE-FIRE SMOKEHOUSE", width / 2, 445);
 
-          ctx.fillStyle = isLight ? '#57534E' : '#A8A29E';
+          // Specialty Ribbon / Badge
+          ctx.fillStyle = isLight ? 'rgba(200, 169, 126, 0.35)' : 'rgba(245, 158, 11, 0.15)';
+          const ribbonW = 720;
+          const ribbonH = 40;
+          ctx.fillRect((width - ribbonW) / 2, 475, ribbonW, ribbonH);
+          ctx.strokeStyle = isLight ? 'rgba(180, 140, 95, 0.6)' : 'rgba(245, 158, 11, 0.4)';
+          ctx.lineWidth = 2;
+          ctx.strokeRect((width - ribbonW) / 2, 475, ribbonW, ribbonH);
+
+          ctx.fillStyle = isLight ? '#2D2115' : '#FEF3C7';
+          ctx.font = '700 20px "Work Sans", sans-serif';
+          ctx.letterSpacing = '1px';
+          ctx.fillText("★ WHOLE HOG • PRIME BRISKET • RIBS • SMOKED HENS ★", width / 2, 502);
+
+          // Subhead
+          ctx.fillStyle = isLight ? '#4A433B' : '#A8A29E';
           ctx.font = '600 20px "Work Sans", sans-serif';
-          ctx.fillText("Authentic Hardwood Smoked • Weddings & Events", width / 2, 530);
+          ctx.letterSpacing = '0.5px';
+          ctx.fillText("Pitmaster Marion Bolden • Low & Slow Hardwood Smoke", width / 2, 545);
 
           exportCanvasImage(`AllTheSmoke_Card_Front_300DPI_${currentTheme}.png`);
         };
       } else {
         // BACK
         if (isLight) {
-          ctx.fillStyle = '#FFFDF9';
+          ctx.fillStyle = '#E8DEC8';
           ctx.fillRect(0, 0, width, height);
-          ctx.strokeStyle = '#D6C7B2';
-          ctx.lineWidth = 12;
+
+          // Draw subtle horizontal wood slats
+          ctx.fillStyle = '#DFD4BE';
+          for (let y = 60; y < height; y += 65) {
+            ctx.fillRect(0, y, width, 3);
+          }
+
+          ctx.strokeStyle = '#C8A97E';
+          ctx.lineWidth = 10;
           ctx.strokeRect(10, 10, width - 20, height - 20);
+
+          ctx.setLineDash([8, 6]);
+          ctx.strokeStyle = 'rgba(180, 140, 95, 0.7)';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(26, 26, width - 52, height - 52);
+          ctx.setLineDash([]);
         } else {
           ctx.fillStyle = '#120E0B';
           ctx.fillRect(0, 0, width, height);
+
+          // Draw subtle horizontal wood slats
+          ctx.fillStyle = '#0F0C09';
+          for (let y = 60; y < height; y += 65) {
+            ctx.fillRect(0, y, width, 3);
+          }
+
           ctx.strokeStyle = '#4D382A';
-          ctx.lineWidth = 12;
+          ctx.lineWidth = 10;
           ctx.strokeRect(10, 10, width - 20, height - 20);
+
+          ctx.setLineDash([8, 6]);
+          ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(26, 26, width - 52, height - 52);
+          ctx.setLineDash([]);
         }
 
         // Left Flame Bar
-        const grad = ctx.createLinearGradient(0, 0, 120, height);
+        const grad = ctx.createLinearGradient(0, 0, 140, height);
         grad.addColorStop(0, '#F59E0B');
-        grad.addColorStop(0.5, '#EA580C');
-        grad.addColorStop(1, '#990000');
+        grad.addColorStop(0.45, '#EA580C');
+        grad.addColorStop(1, '#991B1B');
         ctx.fillStyle = grad;
         ctx.beginPath();
         ctx.moveTo(0, 0);
-        ctx.lineTo(130, 0);
-        ctx.lineTo(80, height);
+        ctx.lineTo(135, 0);
+        ctx.lineTo(85, height);
         ctx.lineTo(0, height);
         ctx.closePath();
         ctx.fill();
 
         // Title: Mr. Smoke
         ctx.textAlign = 'left';
-        ctx.fillStyle = isLight ? '#9A3412' : '#F59E0B';
-        ctx.font = 'bold 54px "Satisfy", cursive';
-        ctx.fillText("Mr. Smoke", 180, 130);
+        ctx.fillStyle = isLight ? '#7C2D12' : '#F59E0B';
+        ctx.font = 'bold 56px "Satisfy", cursive';
+        ctx.fillText("Mr. Smoke", 175, 115);
 
         // Underline
-        ctx.strokeStyle = isLight ? '#9A3412' : '#F59E0B';
+        ctx.strokeStyle = isLight ? '#C8A97E' : '#F59E0B';
         ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.moveTo(180, 145);
-        ctx.lineTo(380, 145);
+        ctx.moveTo(175, 128);
+        ctx.lineTo(410, 128);
         ctx.stroke();
 
-        ctx.fillStyle = isLight ? '#C2410C' : '#FB923C';
-        ctx.font = 'bold 22px "Outfit", sans-serif';
-        ctx.fillText("PITMASTER MARION BOLDEN", 180, 185);
+        ctx.fillStyle = isLight ? '#991B1B' : '#FB923C';
+        ctx.font = '800 21px "Outfit", sans-serif';
+        ctx.letterSpacing = '1.5px';
+        ctx.fillText("PITMASTER MARION BOLDEN • CHICAGO, IL", 175, 165);
 
+        // Catering Credibility Mini-Block
+        ctx.fillStyle = isLight ? 'rgba(200, 169, 126, 0.3)' : 'rgba(245, 158, 11, 0.1)';
+        ctx.fillRect(175, 185, 530, 60);
+        ctx.fillStyle = isLight ? '#991B1B' : '#F59E0B';
+        ctx.fillRect(175, 185, 5, 60);
+
+        ctx.fillStyle = isLight ? '#2D2115' : '#E2E8F0';
+        ctx.font = '700 19px "Work Sans", sans-serif';
+        ctx.fillText("• On-Site Mobile Smoker Trailer Catering", 195, 212);
+        ctx.fillText("• Weddings • Corporate Summits • Private Parties", 195, 235);
+
+        // Contacts Grouping
         ctx.fillStyle = isLight ? '#1C1917' : '#FFFFFF';
         ctx.font = '600 24px "JetBrains Mono", monospace';
-        ctx.fillText("Phone: (773) 707-9988", 180, 260);
+        ctx.fillText("Call / Text: (773) 707-9988", 175, 310);
 
         ctx.fillStyle = isLight ? '#292524' : '#E2E8F0';
         ctx.font = '500 22px "Work Sans", sans-serif';
-        ctx.fillText("bbqcateringking83@gmail.com", 180, 315);
+        ctx.fillText("bbqcateringking83@gmail.com", 175, 365);
 
-        ctx.fillStyle = isLight ? '#C2410C' : '#F59E0B';
-        ctx.font = 'bold 24px "Outfit", sans-serif';
-        ctx.fillText("allthesmokecatering.com", 180, 385);
+        ctx.fillStyle = isLight ? '#991B1B' : '#F59E0B';
+        ctx.font = '800 24px "Outfit", sans-serif';
+        ctx.fillText("allthesmokecatering.com", 175, 425);
 
-        // Draw QR Code on Right
+        // Draw QR Code on Right with "Pit Pass" Badge
         const qr = new Image();
         qr.crossOrigin = 'anonymous';
         qr.src = document.getElementById('active-qr-img').src;
         qr.onload = () => {
-          const qrBoxX = 760;
-          const qrBoxY = 120;
-          const qrBoxW = 230;
-          const qrBoxH = 270;
+          const qrBoxX = 745;
+          const qrBoxY = 85;
+          const qrBoxW = 250;
+          const qrBoxH = 340;
 
           ctx.fillStyle = '#FFFFFF';
           ctx.fillRect(qrBoxX, qrBoxY, qrBoxW, qrBoxH);
-          ctx.strokeStyle = '#D6C7B2';
-          ctx.lineWidth = 2;
+          ctx.strokeStyle = isLight ? '#C8A97E' : '#F59E0B';
+          ctx.lineWidth = 3;
           ctx.strokeRect(qrBoxX, qrBoxY, qrBoxW, qrBoxH);
 
-          ctx.drawImage(qr, qrBoxX + 15, qrBoxY + 15, 200, 200);
-
-          ctx.fillStyle = '#120E0B';
-          ctx.font = 'bold 15px "Outfit", sans-serif';
+          // Pass Header
+          ctx.fillStyle = '#7C2D12';
+          ctx.font = '800 18px "Outfit", sans-serif';
           ctx.textAlign = 'center';
-          ctx.fillText("SCAN WITH CAMERA", qrBoxX + qrBoxW / 2, qrBoxY + 235);
-          ctx.font = '600 13px "Work Sans", sans-serif';
-          ctx.fillText("For Menu & Free Quote", qrBoxX + qrBoxW / 2, qrBoxY + 255);
+          ctx.fillText("★ PIT PASS ★", qrBoxX + qrBoxW / 2, qrBoxY + 30);
+
+          ctx.drawImage(qr, qrBoxX + 25, qrBoxY + 45, 200, 200);
+
+          // Pass Footer
+          ctx.fillStyle = '#1C1917';
+          ctx.font = '800 16px "Outfit", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText("POINT CAMERA TO SCAN", qrBoxX + qrBoxW / 2, qrBoxY + 280);
+          ctx.font = '600 14px "Work Sans", sans-serif';
+          ctx.fillText("For Menu & Free Quote", qrBoxX + qrBoxW / 2, qrBoxY + 308);
 
           exportCanvasImage(`AllTheSmoke_Card_Back_300DPI_${currentTheme}.png`);
         };

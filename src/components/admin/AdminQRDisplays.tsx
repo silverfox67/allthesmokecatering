@@ -361,12 +361,12 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
                   onClick={() => setCardTheme("light")}
                   className={`px-3 py-1 rounded-lg font-bold text-xs transition-all cursor-pointer flex items-center gap-1 ${
                     cardTheme === "light"
-                      ? "bg-[#FAF5EE] text-stone-900 border border-[#C8A97E] shadow-sm font-black"
+                      ? "bg-[#E8DEC8] text-[#2D2115] border border-[#C8A97E] shadow-sm font-black"
                       : isDay ? "text-stone-600 hover:text-stone-900" : "text-zinc-400 hover:text-white"
                   }`}
                 >
                   <span>📜</span>
-                  <span>Butcher Light (Ink-Saver)</span>
+                  <span>Smoked Butcher Kraft Tan</span>
                 </button>
               </div>
             )}
@@ -382,13 +382,43 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
                 Front Side • Distressed Master Crest
               </span>
               <div
-                className={`w-full max-w-[340px] aspect-[7/4] rounded-xl p-4 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-xl border transition-all ${
+                className={`w-full max-w-[340px] aspect-[7/4] rounded-xl p-3.5 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-xl border transition-all ${
                   cardTheme === "dark"
                     ? "bg-[#100D0B] border-[#4D382A] text-white"
-                    : "bg-[#FAF5EE] border-[#D6C7B2] text-stone-900"
+                    : "border-[#C8A97E] text-stone-900 shadow-amber-900/10"
                 }`}
+                style={
+                  cardTheme === "light"
+                    ? {
+                        background:
+                          "linear-gradient(135deg, #EFE7DA 0%, #E8DEC8 50%, #DFD4BE 100%)",
+                      }
+                    : undefined
+                }
               >
-                <div className="relative w-28 h-20 mb-1">
+                {/* Inner Decorative Vintage Frame */}
+                <div
+                  className="absolute inset-1.5 border border-dashed rounded-lg pointer-events-none z-10"
+                  style={{
+                    borderColor:
+                      cardTheme === "dark"
+                        ? "rgba(245, 158, 11, 0.35)"
+                        : "rgba(180, 140, 95, 0.6)",
+                  }}
+                />
+
+                {/* Top Origin Header */}
+                <div
+                  className="font-display text-[8px] font-black uppercase tracking-widest mb-0.5 z-10"
+                  style={{
+                    color: cardTheme === "dark" ? "#F59E0B" : "#8C6239",
+                  }}
+                >
+                  EST. CHICAGO, IL • LIVE-FIRE PITMASTER
+                </div>
+
+                {/* Master Crest Logo */}
+                <div className="relative w-32 h-20 z-10">
                   <Image
                     src="/brand/allthesmoke-master-crest.png"
                     alt="All The Smoke Master Crest"
@@ -396,17 +426,41 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
                     className="object-contain"
                   />
                 </div>
+
+                {/* Tagline */}
                 <div
-                  className={`font-display text-[10px] font-extrabold uppercase tracking-widest ${
-                    cardTheme === "dark" ? "text-amber-400" : "text-[#C2410C]"
-                  }`}
+                  className="font-display text-[10px] font-black uppercase tracking-wider z-10 mt-0.5"
+                  style={{
+                    color: cardTheme === "dark" ? "#F59E0B" : "#991B1B",
+                  }}
                 >
                   CHICAGOLAND&apos;S PREMIER LIVE-FIRE SMOKEHOUSE
                 </div>
+
+                {/* Specialty Ribbon / Stamp */}
                 <div
-                  className={`text-[9px] mt-0.5 font-medium ${
-                    cardTheme === "dark" ? "text-zinc-400" : "text-stone-600"
-                  }`}
+                  className="mt-1 px-2 py-0.5 rounded text-[7.5px] font-bold tracking-wide z-10"
+                  style={{
+                    background:
+                      cardTheme === "dark"
+                        ? "rgba(245, 158, 11, 0.12)"
+                        : "rgba(200, 169, 126, 0.3)",
+                    border:
+                      cardTheme === "dark"
+                        ? "1px solid rgba(245, 158, 11, 0.3)"
+                        : "1px solid rgba(180, 140, 95, 0.55)",
+                    color: cardTheme === "dark" ? "#FEF3C7" : "#2D2115",
+                  }}
+                >
+                  ★ WHOLE HOG • PRIME BRISKET • RIBS • SMOKED HENS ★
+                </div>
+
+                {/* Subtitle */}
+                <div
+                  className="text-[8px] mt-0.5 font-semibold z-10"
+                  style={{
+                    color: cardTheme === "dark" ? "#A8A29E" : "#4A433B",
+                  }}
                 >
                   Pitmaster Marion Bolden • Low &amp; Slow Hardwood Smoke
                 </div>
@@ -419,78 +473,130 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
                 Back Side • &quot;Mr. Smoke&quot; Live Fire + Camera QR
               </span>
               <div
-                className={`w-full max-w-[340px] aspect-[7/4] rounded-xl p-3.5 flex items-center justify-between relative overflow-hidden shadow-xl border transition-all ${
+                className={`w-full max-w-[340px] aspect-[7/4] rounded-xl p-3 flex items-center justify-between relative overflow-hidden shadow-xl border transition-all ${
                   cardTheme === "dark"
-                    ? "bg-[#120E0B] border-[#4D382A] text-white"
-                    : "bg-[#FFFDF9] border-[#D6C7B2] text-stone-900"
+                    ? "border-[#4D382A] text-white"
+                    : "border-[#C8A97E] text-stone-900 shadow-amber-900/10"
                 }`}
+                style={{
+                  background:
+                    cardTheme === "dark"
+                      ? "repeating-linear-gradient(180deg, #16120E 0px, #16120E 24px, #0F0C09 25px)"
+                      : "repeating-linear-gradient(180deg, #E8DEC8 0px, #E8DEC8 22px, #DFD4BE 23px)",
+                }}
               >
+                {/* Inner Decorative Vintage Frame */}
+                <div
+                  className="absolute inset-1.5 border border-dashed rounded-lg pointer-events-none z-10"
+                  style={{
+                    borderColor:
+                      cardTheme === "dark"
+                        ? "rgba(245, 158, 11, 0.35)"
+                        : "rgba(180, 140, 95, 0.6)",
+                  }}
+                />
+
                 {/* Flame strip on left */}
                 <div
-                  className="absolute left-0 top-0 bottom-0 w-8 opacity-90 pointer-events-none"
+                  className="absolute left-0 top-0 bottom-0 w-8 pointer-events-none z-0"
                   style={{
                     background:
                       cardTheme === "dark"
                         ? "linear-gradient(180deg, #F59E0B 0%, #EA580C 50%, #990000 100%)"
-                        : "linear-gradient(180deg, rgba(245, 158, 11, 0.4) 0%, rgba(234, 88, 12, 0.4) 50%, rgba(153, 0, 0, 0.4) 100%)",
+                        : "linear-gradient(180deg, #F59E0B 0%, #EA580C 45%, #991B1B 100%)",
+                    clipPath: "polygon(0 0, 100% 0, 68% 100%, 0% 100%)",
                   }}
                 />
 
                 <div className="pl-6 flex-1 pr-2 space-y-1 text-left z-10">
                   <div>
                     <span
-                      className={`text-xl sm:text-2xl font-bold leading-none block ${
-                        cardTheme === "dark" ? "text-amber-400" : "text-[#9A3412]"
-                      }`}
-                      style={{ fontFamily: "'Satisfy', cursive" }}
+                      className="text-xl sm:text-2xl font-bold leading-none block"
+                      style={{
+                        fontFamily: "'Satisfy', cursive",
+                        color: cardTheme === "dark" ? "#F59E0B" : "#7C2D12",
+                      }}
                     >
                       Mr. Smoke
                     </span>
                     <div
-                      className={`w-20 h-0.5 mt-0.5 rounded-full ${
-                        cardTheme === "dark" ? "bg-amber-400" : "bg-[#9A3412]"
-                      }`}
+                      className="w-20 h-0.5 mt-0.5 rounded-full"
+                      style={{
+                        background:
+                          cardTheme === "dark" ? "#F59E0B" : "#C8A97E",
+                      }}
                     />
                   </div>
                   <div
-                    className={`text-[9px] font-black uppercase tracking-wider ${
-                      cardTheme === "dark" ? "text-[#FF7A00]" : "text-[#C2410C]"
-                    }`}
+                    className="text-[8.5px] font-black uppercase tracking-wider"
+                    style={{
+                      color: cardTheme === "dark" ? "#FB923C" : "#991B1B",
+                    }}
                   >
-                    PITMASTER MARION BOLDEN
+                    PITMASTER MARION BOLDEN • CHICAGO, IL
                   </div>
-                  <div className="space-y-0.5 pt-0.5 text-[9px] font-mono leading-tight">
+
+                  {/* Catering Credibility Pitch Box */}
+                  <div
+                    className="p-1 rounded text-[7.5px] font-bold leading-tight my-0.5"
+                    style={{
+                      background:
+                        cardTheme === "dark"
+                          ? "rgba(245, 158, 11, 0.1)"
+                          : "rgba(200, 169, 126, 0.28)",
+                      borderLeft:
+                        cardTheme === "dark"
+                          ? "2px solid #F59E0B"
+                          : "2px solid #991B1B",
+                      color: cardTheme === "dark" ? "#E2E8F0" : "#2D2115",
+                    }}
+                  >
+                    <div>• On-Site Mobile Smoker Trailer Catering</div>
+                    <div>• Weddings • Corporate Summits • Private Parties</div>
+                  </div>
+
+                  <div className="space-y-0.5 text-[8.5px] font-mono leading-tight">
                     <div className="font-bold flex items-center gap-1">
                       <span>📞</span>
-                      <span>(773) 707-9988</span>
+                      <span>Call / Text: (773) 707-9988</span>
                     </div>
                     <div
                       className={`truncate ${
-                        cardTheme === "dark" ? "text-zinc-300" : "text-stone-700"
+                        cardTheme === "dark"
+                          ? "text-zinc-300"
+                          : "text-stone-700 font-sans"
                       }`}
                     >
                       bbqcateringking83@gmail.com
                     </div>
                   </div>
                   <div
-                    className={`text-[9px] font-bold tracking-tight pt-0.5 ${
-                      cardTheme === "dark" ? "text-amber-400" : "text-[#C2410C]"
-                    }`}
+                    className="text-[8.5px] font-extrabold tracking-tight pt-0.5 font-display"
+                    style={{
+                      color: cardTheme === "dark" ? "#F59E0B" : "#991B1B",
+                    }}
                   >
                     allthesmokecatering.com
                   </div>
                 </div>
 
-                {/* QR Code Block */}
-                <div className="shrink-0 z-10 flex flex-col items-center">
-                  <div className="p-1.5 bg-white rounded-lg border border-stone-200 shadow-sm">
-                    <div
-                      className="w-16 h-16 sm:w-18 sm:h-18"
-                      dangerouslySetInnerHTML={{ __html: qrSvgPrimary }}
-                    />
-                  </div>
-                  <span className="text-[7px] font-extrabold uppercase tracking-tight text-zinc-400 mt-1">
-                    Scan For Quotes
+                {/* QR Code "Pit Pass" Block */}
+                <div
+                  className="shrink-0 z-10 flex flex-col items-center p-1.5 bg-white rounded-lg border shadow-md"
+                  style={{
+                    borderColor:
+                      cardTheme === "dark" ? "#F59E0B" : "#C8A97E",
+                  }}
+                >
+                  <span className="text-[7px] font-black uppercase tracking-wider text-[#7C2D12] pb-0.5">
+                    ★ PIT PASS ★
+                  </span>
+                  <div
+                    className="w-16 h-16 sm:w-18 sm:h-18"
+                    dangerouslySetInnerHTML={{ __html: qrSvgPrimary }}
+                  />
+                  <span className="text-[6.5px] font-extrabold uppercase tracking-tight text-zinc-900 pt-0.5">
+                    Point Camera to Scan
                   </span>
                 </div>
               </div>
@@ -900,13 +1006,44 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* FRONT */}
                   <div
-                    className={`aspect-[7/4] rounded-xl p-4 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-lg border ${
+                    className={`aspect-[7/4] rounded-xl p-3.5 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-lg border ${
                       styleTheme === "smokehouse-dark"
                         ? "bg-[#100D0B] border-[#4D382A] text-white"
-                        : "bg-[#FAF5EE] border-[#D6C7B2] text-stone-900"
+                        : "border-[#C8A97E] text-stone-900"
                     }`}
+                    style={
+                      styleTheme !== "smokehouse-dark"
+                        ? {
+                            background:
+                              "linear-gradient(135deg, #EFE7DA 0%, #E8DEC8 50%, #DFD4BE 100%)",
+                          }
+                        : undefined
+                    }
                   >
-                    <div className="relative w-32 h-20 mb-1">
+                    {/* Inner Decorative Vintage Frame */}
+                    <div
+                      className="absolute inset-1.5 border border-dashed rounded-lg pointer-events-none z-10"
+                      style={{
+                        borderColor:
+                          styleTheme === "smokehouse-dark"
+                            ? "rgba(245, 158, 11, 0.35)"
+                            : "rgba(180, 140, 95, 0.6)",
+                      }}
+                    />
+
+                    <div
+                      className="font-display text-[8px] font-black uppercase tracking-widest mb-0.5 z-10"
+                      style={{
+                        color:
+                          styleTheme === "smokehouse-dark"
+                            ? "#F59E0B"
+                            : "#8C6239",
+                      }}
+                    >
+                      EST. CHICAGO, IL • LIVE-FIRE PITMASTER
+                    </div>
+
+                    <div className="relative w-32 h-20 mb-0.5 z-10">
                       <Image
                         src="/brand/allthesmoke-master-crest.png"
                         alt="Master Crest Logo"
@@ -914,96 +1051,194 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
                         className="object-contain"
                       />
                     </div>
+
                     <div
-                      className={`font-display text-[11px] font-extrabold uppercase tracking-widest ${
-                        styleTheme === "smokehouse-dark" ? "text-amber-400" : "text-[#C2410C]"
-                      }`}
+                      className="font-display text-[9.5px] font-black uppercase tracking-wider z-10"
+                      style={{
+                        color:
+                          styleTheme === "smokehouse-dark"
+                            ? "#F59E0B"
+                            : "#991B1B",
+                      }}
                     >
                       CHICAGOLAND&apos;S PREMIER LIVE-FIRE SMOKEHOUSE
                     </div>
+
                     <div
-                      className={`text-[9px] mt-0.5 font-medium ${
-                        styleTheme === "smokehouse-dark" ? "text-zinc-400" : "text-stone-600"
-                      }`}
+                      className="mt-1 px-2 py-0.5 rounded text-[7.5px] font-bold tracking-wide z-10"
+                      style={{
+                        background:
+                          styleTheme === "smokehouse-dark"
+                            ? "rgba(245, 158, 11, 0.12)"
+                            : "rgba(200, 169, 126, 0.3)",
+                        border:
+                          styleTheme === "smokehouse-dark"
+                            ? "1px solid rgba(245, 158, 11, 0.3)"
+                            : "1px solid rgba(180, 140, 95, 0.55)",
+                        color:
+                          styleTheme === "smokehouse-dark"
+                            ? "#FEF3C7"
+                            : "#2D2115",
+                      }}
                     >
-                      Authentic Hardwood Smoked • Weddings &amp; Events
+                      ★ WHOLE HOG • PRIME BRISKET • RIBS • SMOKED HENS ★
+                    </div>
+
+                    <div
+                      className="text-[8px] mt-0.5 font-semibold z-10"
+                      style={{
+                        color:
+                          styleTheme === "smokehouse-dark"
+                            ? "#A8A29E"
+                            : "#4A433B",
+                      }}
+                    >
+                      Pitmaster Marion Bolden • Low &amp; Slow Hardwood Smoke
                     </div>
                   </div>
 
                   {/* BACK */}
                   <div
-                    className={`aspect-[7/4] rounded-xl p-3.5 flex items-center justify-between relative overflow-hidden shadow-lg border ${
+                    className={`aspect-[7/4] rounded-xl p-3 flex items-center justify-between relative overflow-hidden shadow-lg border ${
                       styleTheme === "smokehouse-dark"
-                        ? "bg-[#120E0B] border-[#4D382A] text-white"
-                        : "bg-[#FFFDF9] border-[#D6C7B2] text-stone-900"
+                        ? "border-[#4D382A] text-white"
+                        : "border-[#C8A97E] text-stone-900"
                     }`}
+                    style={{
+                      background:
+                        styleTheme === "smokehouse-dark"
+                          ? "repeating-linear-gradient(180deg, #16120E 0px, #16120E 24px, #0F0C09 25px)"
+                          : "repeating-linear-gradient(180deg, #E8DEC8 0px, #E8DEC8 22px, #DFD4BE 23px)",
+                    }}
                   >
+                    {/* Inner Decorative Vintage Frame */}
+                    <div
+                      className="absolute inset-1.5 border border-dashed rounded-lg pointer-events-none z-10"
+                      style={{
+                        borderColor:
+                          styleTheme === "smokehouse-dark"
+                            ? "rgba(245, 158, 11, 0.35)"
+                            : "rgba(180, 140, 95, 0.6)",
+                      }}
+                    />
+
                     {/* Flame strip on left */}
                     <div
-                      className="absolute left-0 top-0 bottom-0 w-8 opacity-90 pointer-events-none"
+                      className="absolute left-0 top-0 bottom-0 w-8 pointer-events-none z-0"
                       style={{
                         background:
                           styleTheme === "smokehouse-dark"
                             ? "linear-gradient(180deg, #F59E0B 0%, #EA580C 50%, #990000 100%)"
-                            : "linear-gradient(180deg, rgba(245, 158, 11, 0.4) 0%, rgba(234, 88, 12, 0.4) 50%, rgba(153, 0, 0, 0.4) 100%)",
+                            : "linear-gradient(180deg, #F59E0B 0%, #EA580C 45%, #991B1B 100%)",
+                        clipPath: "polygon(0 0, 100% 0, 68% 100%, 0% 100%)",
                       }}
                     />
 
                     <div className="pl-6 flex-1 pr-2 space-y-1 text-left z-10">
                       <div>
                         <span
-                          className={`text-xl font-bold leading-none block ${
-                            styleTheme === "smokehouse-dark" ? "text-amber-400" : "text-[#9A3412]"
-                          }`}
-                          style={{ fontFamily: "'Satisfy', cursive" }}
+                          className="text-xl font-bold leading-none block"
+                          style={{
+                            fontFamily: "'Satisfy', cursive",
+                            color:
+                              styleTheme === "smokehouse-dark"
+                                ? "#F59E0B"
+                                : "#7C2D12",
+                          }}
                         >
                           Mr. Smoke
                         </span>
                         <div
-                          className={`w-18 h-0.5 mt-0.5 rounded-full ${
-                            styleTheme === "smokehouse-dark" ? "bg-amber-400" : "bg-[#9A3412]"
-                          }`}
+                          className="w-18 h-0.5 mt-0.5 rounded-full"
+                          style={{
+                            background:
+                              styleTheme === "smokehouse-dark"
+                                ? "#F59E0B"
+                                : "#C8A97E",
+                          }}
                         />
                       </div>
                       <div
-                        className={`text-[9px] font-black uppercase tracking-wider ${
-                          styleTheme === "smokehouse-dark" ? "text-[#FF7A00]" : "text-[#C2410C]"
-                        }`}
+                        className="text-[8.5px] font-black uppercase tracking-wider"
+                        style={{
+                          color:
+                            styleTheme === "smokehouse-dark"
+                              ? "#FB923C"
+                              : "#991B1B",
+                        }}
                       >
-                        PITMASTER MARION BOLDEN
+                        PITMASTER MARION BOLDEN • CHICAGO, IL
                       </div>
-                      <div className="space-y-0.5 pt-0.5 text-[9px] font-mono leading-tight">
+
+                      {/* Catering Pitch Box */}
+                      <div
+                        className="p-1 rounded text-[7.5px] font-bold leading-tight my-0.5"
+                        style={{
+                          background:
+                            styleTheme === "smokehouse-dark"
+                              ? "rgba(245, 158, 11, 0.1)"
+                              : "rgba(200, 169, 126, 0.28)",
+                          borderLeft:
+                            styleTheme === "smokehouse-dark"
+                              ? "2px solid #F59E0B"
+                              : "2px solid #991B1B",
+                          color:
+                            styleTheme === "smokehouse-dark"
+                              ? "#E2E8F0"
+                              : "#2D2115",
+                        }}
+                      >
+                        <div>• On-Site Mobile Smoker Trailer Catering</div>
+                        <div>• Weddings • Corporate Summits • Private Parties</div>
+                      </div>
+
+                      <div className="space-y-0.5 text-[8.5px] font-mono leading-tight">
                         <div className="font-bold flex items-center gap-1">
                           <span>📞</span>
-                          <span>(773) 707-9988</span>
+                          <span>Call / Text: (773) 707-9988</span>
                         </div>
                         <div
                           className={`truncate ${
-                            styleTheme === "smokehouse-dark" ? "text-zinc-300" : "text-stone-700"
+                            styleTheme === "smokehouse-dark"
+                              ? "text-zinc-300"
+                              : "text-stone-700 font-sans"
                           }`}
                         >
                           bbqcateringking83@gmail.com
                         </div>
                       </div>
                       <div
-                        className={`text-[9px] font-bold tracking-tight pt-0.5 ${
-                          styleTheme === "smokehouse-dark" ? "text-amber-400" : "text-[#C2410C]"
-                        }`}
+                        className="text-[8.5px] font-extrabold tracking-tight pt-0.5 font-display"
+                        style={{
+                          color:
+                            styleTheme === "smokehouse-dark"
+                              ? "#F59E0B"
+                              : "#991B1B",
+                        }}
                       >
                         allthesmokecatering.com
                       </div>
                     </div>
 
-                    {/* QR Code Block */}
-                    <div className="shrink-0 z-10 flex flex-col items-center">
-                      <div className="p-1.5 bg-white rounded-lg border border-stone-200 shadow-sm">
-                        <div
-                          className="w-16 h-16"
-                          dangerouslySetInnerHTML={{ __html: qrSvgPrimary }}
-                        />
-                      </div>
-                      <span className="text-[7px] font-extrabold uppercase tracking-tight text-zinc-400 mt-1">
-                        Scan For Quotes
+                    {/* QR Code "Pit Pass" Block */}
+                    <div
+                      className="shrink-0 z-10 flex flex-col items-center p-1.5 bg-white rounded-lg border shadow-md"
+                      style={{
+                        borderColor:
+                          styleTheme === "smokehouse-dark"
+                            ? "#F59E0B"
+                            : "#C8A97E",
+                      }}
+                    >
+                      <span className="text-[7px] font-black uppercase tracking-wider text-[#7C2D12] pb-0.5">
+                        ★ PIT PASS ★
+                      </span>
+                      <div
+                        className="w-16 h-16"
+                        dangerouslySetInnerHTML={{ __html: qrSvgPrimary }}
+                      />
+                      <span className="text-[6.5px] font-extrabold uppercase tracking-tight text-zinc-900 pt-0.5">
+                        Point Camera to Scan
                       </span>
                     </div>
                   </div>
