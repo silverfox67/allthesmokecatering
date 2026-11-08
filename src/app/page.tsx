@@ -15,6 +15,7 @@ import { ContactSection } from "@/components/home/ContactSection";
 import { FaqSection } from "@/components/home/FaqSection";
 import { SmokehouseOrderTray } from "@/components/tray/SmokehouseOrderTray";
 import { SmokehouseTrayButton } from "@/components/tray/SmokehouseTrayButton";
+import { CustomerPWAInstallPrompt } from "@/components/pwa/CustomerPWAInstallPrompt";
 
 export default function HomePage() {
   return (
@@ -58,6 +59,9 @@ export default function HomePage() {
 
         {/* Floating Quick Action Trigger for Active Tray */}
         <SmokehouseTrayButton />
+
+        {/* Public Customer PWA Install Prompt Banner */}
+        <CustomerPWAInstallPrompt />
       </main>
     </OrderTrayProvider>
   );

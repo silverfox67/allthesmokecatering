@@ -1,26 +1,25 @@
 {
-  "name": "All The Smoke | Pitmaster Operations Hub",
+  "name": "All The Smoke | Pitmaster Operations",
   "short_name": "ATS Ops",
   "description": "Executive Catering Operations, Leads Pipeline & Smoker Dispatch Hub for Marion Bolden.",
-  "start_url": "/admin",
-  "scope": "/admin",
+  "start_url": "/app",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0A0A0A",
   "theme_color": "#EA580C",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/brand/ats-monogram.png",
+      "src": "/brand/allthesmoke-master-crest.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/brand/ats-full-badge.png",
+      "src": "/brand/allthesmoke-master-crest.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
   ]
 }
-

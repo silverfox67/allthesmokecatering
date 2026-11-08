@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { SITE_CONFIG } from "@/config/site-config";
 
 export function Footer() {
@@ -97,6 +98,16 @@ export function Footer() {
             <p>
               Pitmaster / Operator:{" "}
               <span className="text-[#F4EFEA] font-semibold">Marion Bolden</span>
+            </p>
+            <p className="pt-0.5">
+              <Link
+                href="/app"
+                className="inline-flex items-center gap-1.5 text-[11px] text-[#C8A97E]/75 hover:text-[#EA580C] font-semibold transition-colors"
+                title="Pitmaster Operations App &amp; Console"
+              >
+                <span>🔒 Pitmaster Portal</span>
+                <span>&rarr;</span>
+              </Link>
             </p>
             <p className="pt-2 text-stone-400">
               Designed By:{" "}
