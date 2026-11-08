@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pitmaster Business Card Studio — All The Smoke BBQ &amp; Catering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Satisfy&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    @page {
+      size: letter portrait;
+      margin: 0;
+    }
+
+    :root {
+      --bg-dark: #0A0A0A;
+      --card-charcoal: #141210;
+      --amber-gold: #F59E0B;
+      --ember-orange: #EA580C;
+      --flame-red: #990000;
+      --cream: #FAF5EE;
+    }
+
+    body {
+      font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0D0C0A;
+      color: #E2E8F0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 60px;
+    }
+
+    /* TOP ACTION BAR (Hidden in Print) */
+    .action-bar {
+      width: 100%;
+      max-width: 980px;
+      background: #181512;
+      border: 1px solid #33251B;
+      color: #FFFFFF;
+      padding: 16px 24px;
+      border-radius: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .action-bar-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .action-bar-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-size {
+      background: rgba(234, 88, 12, 0.2);
+      color: #FB923C;
+      border: 1px solid rgba(234, 88, 12, 0.4);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .action-bar-subtitle {
+      font-size: 0.8rem;
+      color: #A8A29E;
+    }
+
+    .action-bar-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 9px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-back {
+      background: transparent;
+      color: #D6D3D1;
+      border: 1px solid #443428;
+    }
+    .btn-back:hover {
+      background: #261D16;
+      color: #FFFFFF;
+    }
+
+    .btn-action {
+      background: #2A2018;
+      color: #F8FAFC;
+      border: 1px solid #4D382A;
+    }
+    .btn-action:hover {
+      background: #3D2D20;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #EA580C, #C2410C);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(234, 88, 12, 0.4);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #FF7A00, #EA580C);
+      transform: translateY(-1px);
+    }
+
+    /* CONTROLS PANEL: THEME & DISPLAY MODE */
+    .controls-panel {
+      width: 100%;
+      max-width: 980px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .theme-switcher {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #181512;
+      padding: 4px 8px;
+      border-radius: 14px;
+      border: 1px solid #33251B;
+    }
+
+    .theme-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #A8A29E;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding-left: 6px;
+    }
+
+    .theme-btn-group {
+      display: flex;
+      gap: 4px;
+    }
+
+    .theme-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 9px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      background: transparent;
+      color: #A8A29E;
+      transition: all 0.2s ease;
+    }
+
+    .theme-btn.active {
+      background: #251B14;
+      color: #FFFFFF;
+      border: 1px solid #EA580C;
+      box-shadow: 0 2px 8px rgba(234, 88, 12, 0.25);
+    }
+
+    .theme-btn.active.theme-btn-light {
+      background: #FAF5EE;
+      color: #1C1917;
+      border: 1px solid #C8A97E;
+    }
+
+    .view-mode-tabs {
+      display: flex;
+      gap: 6px;
+      background: #181512;
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid #33251B;
+    }
+
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      background: transparent;
+      color: #A8A29E;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: #F8FAFC;
+    }
+
+    .tab-btn.active {
+      background: #EA580C;
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(234, 88, 12, 0.35);
+    }
+
+    /* QR DESTINATION SELECTOR BAR */
+    .destination-panel {
+      width: 100%;
+      max-width: 980px;
+      background: #14110E;
+      border: 1px solid #33251B;
+      border-radius: 14px;
+      padding: 12px 18px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.82rem;
+    }
+
+    .destination-panel select {
+      background: #221A14;
+      border: 1px solid #4D382A;
+      color: #FFFFFF;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      outline: none;
+    }
+    .destination-panel select:focus {
+      border-color: #EA580C;
+    }
+
+    /* CARD DISPLAY STAGE (SCREEN PREVIEW) */
+    .cards-stage {
+      width: 100%;
+      max-width: 980px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      margin-bottom: 40px;
+    }
+
+    .stage-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 32px;
+      width: 100%;
+    }
+
+    .card-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #A8A29E;
+    }
+
+    /* 
+      STANDARD 3.5" x 2" BUSINESS CARD IN PIXELS (at 96 DPI screen preview: 336px x 192px)
+      AT 300 DPI FOR PRINT: 1050px x 600px
+    */
+    .business-card {
+      width: 350px;
+      height: 200px;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .business-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 42px rgba(234, 88, 12, 0.2);
+    }
+
+    /* =========================================================================
+       THEME 1: SMOKEHOUSE DARK (HARDWOOD PIT FIRE EDITION)
+       ========================================================================= */
+    .theme-dark .card-front {
+      background: radial-gradient(circle at 50% 50%, #1A1612 0%, #0E0C0A 75%, #050505 100%);
+      border: 1.5px solid #4D382A;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      text-align: center;
+      position: relative;
+    }
+
+    .theme-dark .card-front::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('/images/textures/weathered-wood-char.png') repeat;
+      opacity: 0.15;
+      pointer-events-none;
+    }
+
+    .theme-dark .card-front-logo {
+      width: 140px;
+      height: 105px;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.8));
+      position: relative;
+      z-index: 2;
+    }
+
+    .theme-dark .card-front-tagline {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: #F59E0B;
+      text-transform: uppercase;
+      margin-top: 6px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .theme-dark .card-front-sub {
+      font-size: 0.58rem;
+      color: #A8A29E;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* BACK: SMOKEHOUSE DARK */
+    .theme-dark .card-back {
+      background: #120E0B;
+      border: 1.5px solid #4D382A;
+      display: flex;
+      position: relative;
+      padding: 14px 16px;
+      overflow: hidden;
+    }
+
+    /* Live Flames on Left Edge */
+    .flame-accent-strip {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 48px;
+      background: linear-gradient(135deg, rgba(234, 88, 12, 0.45), rgba(153, 0, 0, 0.7)),
+                  radial-gradient(circle at 0% 100%, #F59E0B 0%, #EA580C 50%, #7F1D1D 100%);
+      clip-path: polygon(0 0, 100% 0, 65% 100%, 0% 100%);
+      pointer-events-none;
+      z-index: 1;
+      opacity: 0.9;
+    }
+
+    .card-back-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+      padding-left: 36px; /* Offset for flame strip */
+    }
+
+    .card-back-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .card-back-title {
+      font-family: 'Satisfy', cursive;
+      font-size: 1.35rem;
+      color: #F59E0B;
+      line-height: 1;
+      border-bottom: 1.5px solid rgba(245, 158, 11, 0.4);
+      padding-bottom: 2px;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+
+    .card-back-role {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #FB923C;
+    }
+
+    .card-back-item {
+      font-size: 0.65rem;
+      color: #E2E8F0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 600;
+    }
+    .card-back-item strong {
+      color: #FFFFFF;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+    }
+
+    .card-back-web {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: #F59E0B;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    /* QR Code Display on Right */
+    .card-back-qr-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: #FFFFFF;
+      padding: 6px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      shrink-0: 0;
+    }
+
+    .qr-img {
+      width: 72px;
+      height: 72px;
+      display: block;
+    }
+
+    .qr-label-strip {
+      font-size: 0.45rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #120E0B;
+      text-align: center;
+      line-height: 1.1;
+      max-width: 75px;
+    }
+
+    /* =========================================================================
+       THEME 2: BUTCHER PAPER (INK-SAVER LIGHT LUXURY FOR HOME PRINTING)
+       ========================================================================= */
+    .theme-light .card-front {
+      background: #FAF5EE;
+      border: 1.5px solid #D6C7B2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      text-align: center;
+      position: relative;
+    }
+
+    .theme-light .card-front-logo {
+      width: 140px;
+      height: 105px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+    }
+
+    .theme-light .card-front-tagline {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: #C2410C;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    .theme-light .card-front-sub {
+      font-size: 0.58rem;
+      color: #57534E;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    /* BACK: BUTCHER PAPER LIGHT */
+    .theme-light .card-back {
+      background: #FFFDF9;
+      border: 1.5px solid #D6C7B2;
+      display: flex;
+      position: relative;
+      padding: 14px 16px;
+      overflow: hidden;
+    }
+
+    .theme-light .flame-accent-strip {
+      background: linear-gradient(135deg, rgba(234, 88, 12, 0.25), rgba(194, 65, 12, 0.4)),
+                  radial-gradient(circle at 0% 100%, #F59E0B 0%, #EA580C 70%, #990000 100%);
+      opacity: 0.45;
+    }
+
+    .theme-light .card-back-title {
+      color: #9A3412;
+      border-bottom: 1.5px solid rgba(154, 52, 18, 0.4);
+    }
+
+    .theme-light .card-back-role {
+      color: #C2410C;
+    }
+
+    .theme-light .card-back-item {
+      color: #292524;
+    }
+    .theme-light .card-back-item strong {
+      color: #1C1917;
+    }
+
+    .theme-light .card-back-web {
+      color: #C2410C;
+    }
+
+    .theme-light .card-back-qr-box {
+      background: #FFFFFF;
+      border: 1px solid #D6C7B2;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    /* =========================================================================
+       PRINT SHEET: AVERY 5371 / 5376 (10 CARDS PER 8.5" x 11" PAGE)
+       ========================================================================= */
+    .avery-sheet-container {
+      display: none; /* Only visible in Sheet Mode & Print */
+    }
+
+    .mode-sheet .cards-stage {
+      display: none;
+    }
+
+    .mode-sheet .avery-sheet-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .avery-page {
+      width: 8.5in;
+      height: 11in;
+      background: #FFFFFF;
+      padding-top: 0.5in;
+      padding-bottom: 0.5in;
+      padding-left: 0.75in;
+      padding-right: 0.75in;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .avery-grid {
+      display: grid;
+      grid-template-columns: 3.5in 3.5in;
+      grid-template-rows: repeat(5, 2in);
+      column-gap: 0;
+      row-gap: 0;
+      width: 7in;
+      height: 10in;
+      border: 1px dashed #CBD5E1;
+    }
+
+    .avery-card-slot {
+      width: 3.5in;
+      height: 2in;
+      border: 0.5px dashed #E2E8F0;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avery-card-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    /* PRINT STYLES */
+    @media print {
+      body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .action-bar,
+      .controls-panel,
+      .destination-panel,
+      .cards-stage,
+      .print-guidelines {
+        display: none !important;
+      }
+
+      .avery-sheet-container {
+        display: block !important;
+        margin: 0 !important;
+      }
+
+      .avery-page {
+        box-shadow: none !important;
+        margin: 0 !important;
+        page-break-after: always;
+      }
+
+      .avery-grid {
+        border: none !important;
+      }
+
+      .avery-card-slot {
+        border: none !important;
+      }
+    }
+
+    /* GUIDELINES BOX */
+    .print-guidelines {
+      width: 100%;
+      max-width: 980px;
+      background: #14110E;
+      border: 1px solid #33251B;
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 10px;
+    }
+
+    .print-guidelines h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .guidelines-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      font-size: 0.8rem;
+    }
+
+    .guideline-item strong {
+      color: #F59E0B;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.82rem;
+    }
+    .guideline-item p {
+      color: #A8A29E;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body class="theme-dark">
+
+  <!-- 1. TOP ACTION & NAVIGATION BAR -->
+  <header class="action-bar">
+    <div class="action-bar-left">
+      <div class="action-bar-title">
+        <span>🔥 Pitmaster Business Card Studio</span>
+        <span class="badge-size">3.5&quot; &times; 2&quot; US Standard</span>
+      </div>
+      <p class="action-bar-subtitle">
+        Executive double-sided contact cards with live-fire branding &amp; scannable camera quote QR code.
+      </p>
+    </div>
+
+    <div class="action-bar-buttons">
+      <a href="/admin?tab=qr-displays" class="btn btn-back">
+        <span>&larr; Back to Admin Hub</span>
+      </a>
+
+      <button type="button" class="btn btn-action" onclick="downloadCard('front')">
+        <span>📥 Download Front (300 DPI)</span>
+      </button>
+
+      <button type="button" class="btn btn-action" onclick="downloadCard('back')">
+        <span>📥 Download Back (300 DPI)</span>
+      </button>
+
+      <button type="button" class="btn btn-primary" onclick="triggerPrint()">
+        <span>🖨️ Print Avery 10-Card Sheet</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 2. CONTROLS PANEL: THEME & DISPLAY MODE -->
+  <div class="controls-panel">
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+      <span class="theme-label">Style:</span>
+      <div class="theme-btn-group">
+        <button type="button" class="theme-btn active" id="btn-theme-dark" onclick="setTheme('dark')">
+          <span>🪵 Smokehouse Dark</span>
+        </button>
+        <button type="button" class="theme-btn theme-btn-light" id="btn-theme-light" onclick="setTheme('light')">
+          <span>📜 Butcher Paper (Ink-Saver)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- View Mode Switcher -->
+    <div class="view-mode-tabs">
+      <button type="button" class="tab-btn active" id="btn-view-studio" onclick="setViewMode('studio')">
+        <span>👁️ Studio Preview</span>
+      </button>
+      <button type="button" class="tab-btn" id="btn-view-sheet" onclick="setViewMode('sheet')">
+        <span>📄 Avery 10-Card Sheet View</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. QR DESTINATION SWITCHER -->
+  <div class="destination-panel">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="color: #F59E0B; font-size: 1rem;">📱</span>
+      <strong style="color: #FFFFFF;">QR Scan Destination:</strong>
+      <span style="color: #A8A29E; font-size: 0.78rem;">Where customers land when scanning with camera</span>
+    </div>
+
+    <select id="qr-destination-select" onchange="updateQrDestination(this.value)">
+      <option value="https://allthesmokecatering.com/#contact">📋 Instant Catering Quote Form (Recommended)</option>
+      <option value="https://allthesmokecatering.com/#menu">🥩 Smoker Menu &amp; Quote Tray</option>
+      <option value="https://allthesmokecatering.com/specials">🍖 Saturday Dinner Drops &amp; Specials</option>
+      <option value="https://allthesmokecatering.com/review">⭐ Google 5-Star Reviews Intake</option>
+      <option value="tel:7737079988">📞 Direct Call to Pitmaster Marion</option>
+    </select>
+  </div>
+
+  <!-- 4. CARDS STAGE (STUDIO PREVIEW) -->
+  <main class="cards-stage" id="stage-studio">
+    <div class="stage-row">
+      
+      <!-- FRONT OF CARD -->
+      <div class="card-wrapper">
+        <span class="card-label">Front Side (Master Crest)</span>
+        <div class="business-card card-front" id="card-front-element">
+          <img 
+            src="/brand/allthesmoke-master-crest.png" 
+            alt="All The Smoke BBQ &amp; Catering Crest" 
+            class="card-front-logo"
+          />
+          <div class="card-front-tagline">Chicagoland&rsquo;s Premier Live-Fire Smokehouse</div>
+          <div class="card-front-sub">Authentic Hardwood Smoked • Weddings &amp; Events</div>
+        </div>
+      </div>
+
+      <!-- BACK OF CARD -->
+      <div class="card-wrapper">
+        <span class="card-label">Back Side (Mr. Smoke + Scannable QR)</span>
+        <div class="business-card card-back" id="card-back-element">
+          <!-- Live Fire Accent Strip -->
+          <div class="flame-accent-strip"></div>
+
+          <div class="card-back-content">
+            <div class="card-back-info">
+              <div class="card-back-title">Mr. Smoke</div>
+              <div class="card-back-role">Pitmaster Marion Bolden</div>
+              
+              <div class="card-back-item" style="margin-top: 4px;">
+                <span>📞</span>
+                <span>Phone: <strong>773 707 9988</strong></span>
+              </div>
+
+              <div class="card-back-item">
+                <span>✉️</span>
+                <span>bbqcateringking83@gmail.com</span>
+              </div>
+
+              <div class="card-back-web">
+                allthesmokecatering.com
+              </div>
+            </div>
+
+            <!-- Dynamic QR Code Container -->
+            <div class="card-back-qr-box">
+              <img 
+                src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fallthesmokecatering.com%2F%23contact&color=000000&bgcolor=FFFFFF&margin=0" 
+                alt="Scan to Book Catering" 
+                class="qr-img" 
+                id="active-qr-img"
+              />
+              <span class="qr-label-strip" id="qr-caption">Scan for Menu &amp; Quote</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- 5. AVERY 5371 / 5376 10-CARD SHEET (PRINT CONTAINER) -->
+  <div class="avery-sheet-container" id="stage-sheet">
+    <!-- PAGE 1: 10 BACK SIDES (Contact + QR Code) -->
+    <div class="avery-page" id="sheet-page-back">
+      <div class="avery-grid" id="avery-grid-back">
+        <!-- 10 Repeated Back Cards Generated by JS -->
+      </div>
+    </div>
+
+    <!-- PAGE 2: 10 FRONT SIDES (Crest Logo) -->
+    <div class="avery-page" id="sheet-page-front">
+      <div class="avery-grid" id="avery-grid-front">
+        <!-- 10 Repeated Front Cards Generated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. PRINTING & PAPER GUIDELINES -->
+  <section class="print-guidelines">
+    <h3>
+      <span>📋</span>
+      <span>Printing &amp; Stock Recommendations for Marion</span>
+    </h3>
+    <div class="guidelines-grid">
+      <div class="guideline-item">
+        <strong>Home Printing (Avery 5371 / 5376)</strong>
+        <p>Use Avery 10-card perforated sheets (3.5&quot; &times; 2&quot;). Select <strong>Butcher Paper (Ink-Saver)</strong> mode to conserve black ink and guarantee clean micro-perforations without smudging.</p>
+      </div>
+
+      <div class="guideline-item">
+        <strong>VistaPrint &amp; MOO Ordering</strong>
+        <p>Click &ldquo;Download Front&rdquo; and &ldquo;Download Back&rdquo; for full 300 DPI print-ready PNGs. Choose <strong>Soft-Touch Velvet</strong> or <strong>Matte Cardstock</strong> (16pt or 18pt) for a heavy, luxury feel.</p>
+      </div>
+
+      <div class="guideline-item">
+        <strong>Camera QR Reliability</strong>
+        <p>The high-contrast white QR container ensures instant auto-focus on any smartphone camera, even in low-lit wedding venues, bars, or outdoor smokehouse tents.</p>
+      </div>
+
+      <div class="guideline-item">
+        <strong>Direct Catering Conversion</strong>
+        <p>Hands out at pop-ups, farmers markets, and tailgates. Clients scan the QR and have their catering quote submitted into Marion&rsquo;s admin portal before leaving the conversation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HIDDEN CANVAS FOR 300 DPI EXPORTS -->
+  <canvas id="export-canvas" width="1050" height="600" style="display:none;"></canvas>
+
+  <script>
+    let currentTheme = 'dark';
+    let currentViewMode = 'studio';
+    let currentQrUrl = 'https://allthesmokecatering.com/#contact';
+
+    function setTheme(theme) {
+      currentTheme = theme;
+      document.body.className = theme === 'dark' ? 'theme-dark' : 'theme-light';
+      
+      document.getElementById('btn-theme-dark').className = 'theme-btn' + (theme === 'dark' ? ' active' : '');
+      document.getElementById('btn-theme-light').className = 'theme-btn theme-btn-light' + (theme === 'light' ? ' active' : '');
+      
+      populateAverySheets();
+    }
+
+    function setViewMode(mode) {
+      currentViewMode = mode;
+      if (mode === 'sheet') {
+        document.body.classList.add('mode-sheet');
+        document.getElementById('btn-view-studio').classList.remove('active');
+        document.getElementById('btn-view-sheet').classList.add('active');
+        populateAverySheets();
+      } else {
+        document.body.classList.remove('mode-sheet');
+        document.getElementById('btn-view-studio').classList.add('active');
+        document.getElementById('btn-view-sheet').classList.remove('active');
+      }
+    }
+
+    function updateQrDestination(url) {
+      currentQrUrl = url;
+      const encoded = encodeURIComponent(url);
+      const newSrc = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encoded}&color=000000&bgcolor=FFFFFF&margin=0`;
+      
+      const qrImg = document.getElementById('active-qr-img');
+      if (qrImg) qrImg.src = newSrc;
+
+      // Update caption based on selection
+      const captionEl = document.getElementById('qr-caption');
+      if (url.includes('#contact')) {
+        captionEl.textContent = 'Scan for Free Quote';
+      } else if (url.includes('#menu')) {
+        captionEl.textContent = 'Scan for Pit Menu';
+      } else if (url.includes('specials')) {
+        captionEl.textContent = 'Scan for Specials';
+      } else if (url.includes('review')) {
+        captionEl.textContent = 'Scan for 5★ Reviews';
+      } else {
+        captionEl.textContent = 'Scan with Camera';
+      }
+
+      populateAverySheets();
+    }
+
+    function triggerPrint() {
+      setViewMode('sheet');
+      setTimeout(() => {
+        window.print();
+      }, 300);
+    }
+
+    function populateAverySheets() {
+      const gridBack = document.getElementById('avery-grid-back');
+      const gridFront = document.getElementById('avery-grid-front');
+      const cardBackHTML = document.getElementById('card-back-element').outerHTML;
+      const cardFrontHTML = document.getElementById('card-front-element').outerHTML;
+
+      if (gridBack) {
+        gridBack.innerHTML = '';
+        for (let i = 0; i < 10; i++) {
+          const slot = document.createElement('div');
+          slot.className = 'avery-card-slot';
+          slot.innerHTML = cardBackHTML.replace('business-card', 'business-card avery-card-inner');
+          gridBack.appendChild(slot);
+        }
+      }
+
+      if (gridFront) {
+        gridFront.innerHTML = '';
+        for (let i = 0; i < 10; i++) {
+          const slot = document.createElement('div');
+          slot.className = 'avery-card-slot';
+          slot.innerHTML = cardFrontHTML.replace('business-card', 'business-card avery-card-inner');
+          gridFront.appendChild(slot);
+        }
+      }
+    }
+
+    // 300 DPI High-Resolution Canvas Exporter
+    function downloadCard(side) {
+      const canvas = document.getElementById('export-canvas');
+      const ctx = canvas.getContext('2d');
+      const width = 1050; // 3.5" at 300 DPI
+      const height = 600; // 2.0" at 300 DPI
+
+      ctx.clearRect(0, 0, width, height);
+
+      const isLight = currentTheme === 'light';
+
+      if (side === 'front') {
+        // BACKGROUND
+        if (isLight) {
+          ctx.fillStyle = '#FAF5EE';
+          ctx.fillRect(0, 0, width, height);
+          ctx.strokeStyle = '#D6C7B2';
+          ctx.lineWidth = 12;
+          ctx.strokeRect(10, 10, width - 20, height - 20);
+        } else {
+          ctx.fillStyle = '#100D0B';
+          ctx.fillRect(0, 0, width, height);
+          ctx.strokeStyle = '#4D382A';
+          ctx.lineWidth = 12;
+          ctx.strokeRect(10, 10, width - 20, height - 20);
+        }
+
+        // Draw Master Crest Logo
+        const logo = new Image();
+        logo.crossOrigin = 'anonymous';
+        logo.src = '/brand/allthesmoke-master-crest.png';
+        logo.onload = () => {
+          const logoW = 480;
+          const logoH = 360;
+          ctx.drawImage(logo, (width - logoW) / 2, 80, logoW, logoH);
+
+          // Tagline
+          ctx.fillStyle = isLight ? '#C2410C' : '#F59E0B';
+          ctx.font = 'bold 24px "Outfit", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.letterSpacing = '3px';
+          ctx.fillText("CHICAGOLAND'S PREMIER LIVE-FIRE SMOKEHOUSE", width / 2, 490);
+
+          ctx.fillStyle = isLight ? '#57534E' : '#A8A29E';
+          ctx.font = '600 20px "Work Sans", sans-serif';
+          ctx.fillText("Authentic Hardwood Smoked • Weddings & Events", width / 2, 530);
+
+          exportCanvasImage(`AllTheSmoke_Card_Front_300DPI_${currentTheme}.png`);
+        };
+      } else {
+        // BACK
+        if (isLight) {
+          ctx.fillStyle = '#FFFDF9';
+          ctx.fillRect(0, 0, width, height);
+          ctx.strokeStyle = '#D6C7B2';
+          ctx.lineWidth = 12;
+          ctx.strokeRect(10, 10, width - 20, height - 20);
+        } else {
+          ctx.fillStyle = '#120E0B';
+          ctx.fillRect(0, 0, width, height);
+          ctx.strokeStyle = '#4D382A';
+          ctx.lineWidth = 12;
+          ctx.strokeRect(10, 10, width - 20, height - 20);
+        }
+
+        // Left Flame Bar
+        const grad = ctx.createLinearGradient(0, 0, 120, height);
+        grad.addColorStop(0, '#F59E0B');
+        grad.addColorStop(0.5, '#EA580C');
+        grad.addColorStop(1, '#990000');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(130, 0);
+        ctx.lineTo(80, height);
+        ctx.lineTo(0, height);
+        ctx.closePath();
+        ctx.fill();
+
+        // Title: Mr. Smoke
+        ctx.textAlign = 'left';
+        ctx.fillStyle = isLight ? '#9A3412' : '#F59E0B';
+        ctx.font = 'bold 54px "Satisfy", cursive';
+        ctx.fillText("Mr. Smoke", 180, 130);
+
+        // Underline
+        ctx.strokeStyle = isLight ? '#9A3412' : '#F59E0B';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(180, 145);
+        ctx.lineTo(380, 145);
+        ctx.stroke();
+
+        ctx.fillStyle = isLight ? '#C2410C' : '#FB923C';
+        ctx.font = 'bold 22px "Outfit", sans-serif';
+        ctx.fillText("PITMASTER MARION BOLDEN", 180, 185);
+
+        ctx.fillStyle = isLight ? '#1C1917' : '#FFFFFF';
+        ctx.font = '600 24px "JetBrains Mono", monospace';
+        ctx.fillText("Phone: (773) 707-9988", 180, 260);
+
+        ctx.fillStyle = isLight ? '#292524' : '#E2E8F0';
+        ctx.font = '500 22px "Work Sans", sans-serif';
+        ctx.fillText("bbqcateringking83@gmail.com", 180, 315);
+
+        ctx.fillStyle = isLight ? '#C2410C' : '#F59E0B';
+        ctx.font = 'bold 24px "Outfit", sans-serif';
+        ctx.fillText("allthesmokecatering.com", 180, 385);
+
+        // Draw QR Code on Right
+        const qr = new Image();
+        qr.crossOrigin = 'anonymous';
+        qr.src = document.getElementById('active-qr-img').src;
+        qr.onload = () => {
+          const qrBoxX = 760;
+          const qrBoxY = 120;
+          const qrBoxW = 230;
+          const qrBoxH = 270;
+
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(qrBoxX, qrBoxY, qrBoxW, qrBoxH);
+          ctx.strokeStyle = '#D6C7B2';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(qrBoxX, qrBoxY, qrBoxW, qrBoxH);
+
+          ctx.drawImage(qr, qrBoxX + 15, qrBoxY + 15, 200, 200);
+
+          ctx.fillStyle = '#120E0B';
+          ctx.font = 'bold 15px "Outfit", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText("SCAN WITH CAMERA", qrBoxX + qrBoxW / 2, qrBoxY + 235);
+          ctx.font = '600 13px "Work Sans", sans-serif';
+          ctx.fillText("For Menu & Free Quote", qrBoxX + qrBoxW / 2, qrBoxY + 255);
+
+          exportCanvasImage(`AllTheSmoke_Card_Back_300DPI_${currentTheme}.png`);
+        };
+      }
+    }
+
+    function exportCanvasImage(filename) {
+      const canvas = document.getElementById('export-canvas');
+      const a = document.createElement('a');
+      a.download = filename;
+      a.href = canvas.toDataURL('image/png');
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // Initialize on page load
+    window.onload = function() {
+      populateAverySheets();
+    };
+  </script>
+</body>
+</html>
+

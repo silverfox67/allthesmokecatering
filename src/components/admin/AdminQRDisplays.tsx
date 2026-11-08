@@ -5,7 +5,7 @@ import Image from "next/image";
 import QRCode from "qrcode";
 import { AdminTheme } from "./AdminPortal";
 
-export type QRTemplateType = "table-tent" | "trailer-banner" | "reheating-card" | "sticker-sheet";
+export type QRTemplateType = "business-card" | "table-tent" | "trailer-banner" | "reheating-card" | "sticker-sheet";
 export type QRStyleTheme = "smokehouse-dark" | "butcher-paper" | "ink-saver-white";
 
 export interface QRDisplayPreset {
@@ -115,6 +115,11 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
   const [copySuccess, setCopySuccess] = useState<boolean>(false);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
 
+  // Business Card Studio State (Marion's Executive Cards)
+  const [cardTheme, setCardTheme] = useState<"dark" | "light">("dark");
+  const [cardViewMode, setCardViewMode] = useState<"modern" | "original">("modern");
+  const [cardCopied, setCardCopied] = useState<boolean>(false);
+
   const printAreaRef = useRef<HTMLDivElement>(null);
 
   // Generate QR Code SVGs whenever URL changes
@@ -187,6 +192,13 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
     navigator.clipboard.writeText(customUrl);
     setCopySuccess(true);
     setTimeout(() => setCopySuccess(false), 2500);
+  };
+
+  // Copy Card Link
+  const handleCardCopy = () => {
+    navigator.clipboard.writeText(customUrl);
+    setCardCopied(true);
+    setTimeout(() => setCardCopied(false), 2500);
   };
 
   // Trigger Print Dialog
@@ -272,6 +284,316 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
         </div>
       </div>
 
+      {/* =========================================================================
+          HERO SPOTLIGHT: PITMASTER EXECUTIVE BUSINESS CARD STUDIO (3.5" x 2")
+          Modeled on executive card studio with dual themes & authentic ATS brand tokens
+          ========================================================================= */}
+      <div
+        className={`p-5 sm:p-7 rounded-2xl border transition-all ${
+          isDay
+            ? "bg-white border-stone-300 shadow-md border-t-4 border-t-[#EA580C]"
+            : "bg-gradient-to-br from-[#181512] via-[#141210] to-[#0D0C0A] border-[#33251B] shadow-2xl border-t-4 border-t-[#EA580C]"
+        }`}
+      >
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-zinc-800/80">
+          <div>
+            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+              <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-[#EA580C]/20 border border-[#EA580C]/40 text-[#FF7A00]">
+                Standard US 3.5&quot; × 2&quot; • Pocket &amp; Wallet Size
+              </span>
+              <span className="text-[11px] px-2 py-0.5 rounded-full font-medium bg-amber-500/10 border border-amber-500/30 text-amber-400">
+                10-Card Avery 5371 / 5376 Ready
+              </span>
+            </div>
+            <h3 className={`font-display text-lg sm:text-xl font-bold tracking-tight ${isDay ? "text-stone-900" : "text-white"}`}>
+              Pitmaster Executive Business Card Kit
+            </h3>
+            <p className={`text-xs mt-1 ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
+              Double-sided pocket card for live-fire tastings, corporate event planners, wedding catering inquiries, and Saturday drop pickups.
+            </p>
+          </div>
+
+          {/* Theme & Mode Switchers */}
+          <div className="flex flex-wrap items-center gap-2">
+            {/* View Mode: Modern vs Original Scan */}
+            <div className={`p-1 rounded-xl border flex items-center gap-1 text-xs ${isDay ? "bg-stone-100 border-stone-300" : "bg-black/60 border-zinc-800"}`}>
+              <button
+                type="button"
+                onClick={() => setCardViewMode("modern")}
+                className={`px-3 py-1 rounded-lg font-bold text-xs transition-all cursor-pointer ${
+                  cardViewMode === "modern"
+                    ? "bg-[#EA580C] text-white shadow-sm"
+                    : isDay ? "text-stone-600 hover:text-stone-900" : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                ✨ 2026 Enhanced
+              </button>
+              <button
+                type="button"
+                onClick={() => setCardViewMode("original")}
+                className={`px-3 py-1 rounded-lg font-bold text-xs transition-all cursor-pointer ${
+                  cardViewMode === "original"
+                    ? "bg-[#EA580C] text-white shadow-sm"
+                    : isDay ? "text-stone-600 hover:text-stone-900" : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                📷 Original Card Scan
+              </button>
+            </div>
+
+            {/* Aesthetic Theme: Dark Pit vs Light Butcher Paper */}
+            {cardViewMode === "modern" && (
+              <div className={`p-1 rounded-xl border flex items-center gap-1 text-xs ${isDay ? "bg-stone-100 border-stone-300" : "bg-black/60 border-zinc-800"}`}>
+                <button
+                  type="button"
+                  onClick={() => setCardTheme("dark")}
+                  className={`px-3 py-1 rounded-lg font-bold text-xs transition-all cursor-pointer flex items-center gap-1 ${
+                    cardTheme === "dark"
+                      ? "bg-[#251B14] text-white border border-[#EA580C] shadow-sm"
+                      : isDay ? "text-stone-600 hover:text-stone-900" : "text-zinc-400 hover:text-white"
+                  }`}
+                >
+                  <span>🔥</span>
+                  <span>Smokehouse Dark</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCardTheme("light")}
+                  className={`px-3 py-1 rounded-lg font-bold text-xs transition-all cursor-pointer flex items-center gap-1 ${
+                    cardTheme === "light"
+                      ? "bg-[#FAF5EE] text-stone-900 border border-[#C8A97E] shadow-sm font-black"
+                      : isDay ? "text-stone-600 hover:text-stone-900" : "text-zinc-400 hover:text-white"
+                  }`}
+                >
+                  <span>📜</span>
+                  <span>Butcher Light (Ink-Saver)</span>
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Visual Card Showcase */}
+        {cardViewMode === "modern" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
+            {/* FRONT CARD PREVIEW */}
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+                Front Side • Distressed Master Crest
+              </span>
+              <div
+                className={`w-full max-w-[340px] aspect-[7/4] rounded-xl p-4 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-xl border transition-all ${
+                  cardTheme === "dark"
+                    ? "bg-[#100D0B] border-[#4D382A] text-white"
+                    : "bg-[#FAF5EE] border-[#D6C7B2] text-stone-900"
+                }`}
+              >
+                <div className="relative w-28 h-20 mb-1">
+                  <Image
+                    src="/brand/allthesmoke-master-crest.png"
+                    alt="All The Smoke Master Crest"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <div
+                  className={`font-display text-[10px] font-extrabold uppercase tracking-widest ${
+                    cardTheme === "dark" ? "text-amber-400" : "text-[#C2410C]"
+                  }`}
+                >
+                  CHICAGOLAND&apos;S PREMIER LIVE-FIRE SMOKEHOUSE
+                </div>
+                <div
+                  className={`text-[9px] mt-0.5 font-medium ${
+                    cardTheme === "dark" ? "text-zinc-400" : "text-stone-600"
+                  }`}
+                >
+                  Pitmaster Marion Bolden • Low &amp; Slow Hardwood Smoke
+                </div>
+              </div>
+            </div>
+
+            {/* BACK CARD PREVIEW */}
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+                Back Side • &quot;Mr. Smoke&quot; Live Fire + Camera QR
+              </span>
+              <div
+                className={`w-full max-w-[340px] aspect-[7/4] rounded-xl p-3.5 flex items-center justify-between relative overflow-hidden shadow-xl border transition-all ${
+                  cardTheme === "dark"
+                    ? "bg-[#120E0B] border-[#4D382A] text-white"
+                    : "bg-[#FFFDF9] border-[#D6C7B2] text-stone-900"
+                }`}
+              >
+                {/* Flame strip on left */}
+                <div
+                  className="absolute left-0 top-0 bottom-0 w-8 opacity-90 pointer-events-none"
+                  style={{
+                    background:
+                      cardTheme === "dark"
+                        ? "linear-gradient(180deg, #F59E0B 0%, #EA580C 50%, #990000 100%)"
+                        : "linear-gradient(180deg, rgba(245, 158, 11, 0.4) 0%, rgba(234, 88, 12, 0.4) 50%, rgba(153, 0, 0, 0.4) 100%)",
+                  }}
+                />
+
+                <div className="pl-6 flex-1 pr-2 space-y-1 text-left z-10">
+                  <div>
+                    <span
+                      className={`text-xl sm:text-2xl font-bold leading-none block ${
+                        cardTheme === "dark" ? "text-amber-400" : "text-[#9A3412]"
+                      }`}
+                      style={{ fontFamily: "'Satisfy', cursive" }}
+                    >
+                      Mr. Smoke
+                    </span>
+                    <div
+                      className={`w-20 h-0.5 mt-0.5 rounded-full ${
+                        cardTheme === "dark" ? "bg-amber-400" : "bg-[#9A3412]"
+                      }`}
+                    />
+                  </div>
+                  <div
+                    className={`text-[9px] font-black uppercase tracking-wider ${
+                      cardTheme === "dark" ? "text-[#FF7A00]" : "text-[#C2410C]"
+                    }`}
+                  >
+                    PITMASTER MARION BOLDEN
+                  </div>
+                  <div className="space-y-0.5 pt-0.5 text-[9px] font-mono leading-tight">
+                    <div className="font-bold flex items-center gap-1">
+                      <span>📞</span>
+                      <span>(773) 707-9988</span>
+                    </div>
+                    <div
+                      className={`truncate ${
+                        cardTheme === "dark" ? "text-zinc-300" : "text-stone-700"
+                      }`}
+                    >
+                      bbqcateringking83@gmail.com
+                    </div>
+                  </div>
+                  <div
+                    className={`text-[9px] font-bold tracking-tight pt-0.5 ${
+                      cardTheme === "dark" ? "text-amber-400" : "text-[#C2410C]"
+                    }`}
+                  >
+                    allthesmokecatering.com
+                  </div>
+                </div>
+
+                {/* QR Code Block */}
+                <div className="shrink-0 z-10 flex flex-col items-center">
+                  <div className="p-1.5 bg-white rounded-lg border border-stone-200 shadow-sm">
+                    <div
+                      className="w-16 h-16 sm:w-18 sm:h-18"
+                      dangerouslySetInnerHTML={{ __html: qrSvgPrimary }}
+                    />
+                  </div>
+                  <span className="text-[7px] font-extrabold uppercase tracking-tight text-zinc-400 mt-1">
+                    Scan For Quotes
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1">
+                <span>📷</span>
+                <span>Original Physical Card Scan (Front Side)</span>
+              </span>
+              <div className="w-full max-w-[340px] aspect-[7/4] rounded-xl overflow-hidden border border-zinc-700 shadow-xl relative bg-black">
+                <Image
+                  src="/brand/card-front-scan.jpg"
+                  alt="Original Business Card Front Scan"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1">
+                <span>📷</span>
+                <span>Original Physical Card Scan (Back Side)</span>
+              </span>
+              <div className="w-full max-w-[340px] aspect-[7/4] rounded-xl overflow-hidden border border-zinc-700 shadow-xl relative bg-black">
+                <Image
+                  src="/brand/card-back-scan.jpg"
+                  alt="Original Business Card Back Scan"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Feature Checklist */}
+        <div
+          className={`grid grid-cols-2 md:grid-cols-4 gap-3 p-4 rounded-xl border text-xs mb-5 ${
+            isDay ? "bg-stone-50 border-stone-200 text-stone-700" : "bg-black/40 border-zinc-800 text-zinc-300"
+          }`}
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-[#EA580C] font-bold">✓</span>
+            <span>Standard 3.5&quot; × 2&quot; US Specs</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[#EA580C] font-bold">✓</span>
+            <span>1-Click 300 DPI VistaPrint Export</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[#EA580C] font-bold">✓</span>
+            <span>Avery 5371 / 5376 10-Card Sheets</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[#EA580C] font-bold">✓</span>
+            <span>95% Ink-Saving Butcher Light</span>
+          </div>
+        </div>
+
+        {/* Action Buttons Bar */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+            <a
+              href="/business-card.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-gradient-to-r from-[#EA580C] to-[#C2410C] hover:from-[#FF7A00] hover:to-[#EA580C] text-white text-xs font-bold uppercase tracking-wider shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
+            >
+              <span>💳</span>
+              <span>Open Card Studio &amp; Print Sheets</span>
+            </a>
+
+            <button
+              type="button"
+              onClick={handleCardCopy}
+              className={`px-3.5 py-2 rounded-xl border text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                cardCopied
+                  ? "bg-emerald-500/20 border-emerald-500 text-emerald-400"
+                  : isDay
+                  ? "bg-white border-stone-300 text-stone-800 hover:border-[#EA580C]"
+                  : "bg-zinc-900 border-zinc-700 text-zinc-300 hover:text-white hover:border-amber-500/50"
+              }`}
+            >
+              <span>{cardCopied ? "✓ Link Copied!" : "📋 Copy Card QR Link"}</span>
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs text-zinc-400 font-mono">
+            <span>Scan Target:</span>
+            <span
+              className={`px-2 py-1 rounded border text-[11px] truncate max-w-[200px] sm:max-w-[260px] ${
+                isDay ? "bg-stone-100 border-stone-200 text-stone-800" : "bg-black/60 border-zinc-800 text-amber-400"
+              }`}
+            >
+              {customUrl}
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Template & Destination Selector Row */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Configuration Controls (5 cols) */}
@@ -291,6 +613,12 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
 
             <div className="grid grid-cols-2 gap-2">
               {[
+                {
+                  id: "business-card",
+                  label: "Executive Business Card",
+                  icon: "💳",
+                  desc: "3.5x2 double-sided pocket card & 10-up sheet",
+                },
                 {
                   id: "table-tent",
                   label: "Foldable Table Tent",
@@ -556,6 +884,154 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
                 : "bg-white text-stone-900 border-stone-300"
             }`}
           >
+            {/* TEMPLATE 0: EXECUTIVE BUSINESS CARD (3.5" x 2" & 10-UP SHEET) */}
+            {selectedTemplate === "business-card" && (
+              <div className="space-y-6">
+                <div className="text-center pb-2 border-b border-zinc-800">
+                  <h4 className="font-display text-sm font-bold uppercase tracking-wider text-[#FF7A00]">
+                    Executive Business Card • Standard US 3.5&quot; × 2&quot; Double-Sided
+                  </h4>
+                  <p className="text-[11px] text-zinc-400 mt-0.5">
+                    Front: Master Distressed Crest • Back: &quot;Mr. Smoke&quot; Live Fire, Direct Contacts &amp; Camera QR Code
+                  </p>
+                </div>
+
+                {/* Side-by-Side Preview in Printable Sheet */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* FRONT */}
+                  <div
+                    className={`aspect-[7/4] rounded-xl p-4 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-lg border ${
+                      styleTheme === "smokehouse-dark"
+                        ? "bg-[#100D0B] border-[#4D382A] text-white"
+                        : "bg-[#FAF5EE] border-[#D6C7B2] text-stone-900"
+                    }`}
+                  >
+                    <div className="relative w-32 h-20 mb-1">
+                      <Image
+                        src="/brand/allthesmoke-master-crest.png"
+                        alt="Master Crest Logo"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <div
+                      className={`font-display text-[11px] font-extrabold uppercase tracking-widest ${
+                        styleTheme === "smokehouse-dark" ? "text-amber-400" : "text-[#C2410C]"
+                      }`}
+                    >
+                      CHICAGOLAND&apos;S PREMIER LIVE-FIRE SMOKEHOUSE
+                    </div>
+                    <div
+                      className={`text-[9px] mt-0.5 font-medium ${
+                        styleTheme === "smokehouse-dark" ? "text-zinc-400" : "text-stone-600"
+                      }`}
+                    >
+                      Authentic Hardwood Smoked • Weddings &amp; Events
+                    </div>
+                  </div>
+
+                  {/* BACK */}
+                  <div
+                    className={`aspect-[7/4] rounded-xl p-3.5 flex items-center justify-between relative overflow-hidden shadow-lg border ${
+                      styleTheme === "smokehouse-dark"
+                        ? "bg-[#120E0B] border-[#4D382A] text-white"
+                        : "bg-[#FFFDF9] border-[#D6C7B2] text-stone-900"
+                    }`}
+                  >
+                    {/* Flame strip on left */}
+                    <div
+                      className="absolute left-0 top-0 bottom-0 w-8 opacity-90 pointer-events-none"
+                      style={{
+                        background:
+                          styleTheme === "smokehouse-dark"
+                            ? "linear-gradient(180deg, #F59E0B 0%, #EA580C 50%, #990000 100%)"
+                            : "linear-gradient(180deg, rgba(245, 158, 11, 0.4) 0%, rgba(234, 88, 12, 0.4) 50%, rgba(153, 0, 0, 0.4) 100%)",
+                      }}
+                    />
+
+                    <div className="pl-6 flex-1 pr-2 space-y-1 text-left z-10">
+                      <div>
+                        <span
+                          className={`text-xl font-bold leading-none block ${
+                            styleTheme === "smokehouse-dark" ? "text-amber-400" : "text-[#9A3412]"
+                          }`}
+                          style={{ fontFamily: "'Satisfy', cursive" }}
+                        >
+                          Mr. Smoke
+                        </span>
+                        <div
+                          className={`w-18 h-0.5 mt-0.5 rounded-full ${
+                            styleTheme === "smokehouse-dark" ? "bg-amber-400" : "bg-[#9A3412]"
+                          }`}
+                        />
+                      </div>
+                      <div
+                        className={`text-[9px] font-black uppercase tracking-wider ${
+                          styleTheme === "smokehouse-dark" ? "text-[#FF7A00]" : "text-[#C2410C]"
+                        }`}
+                      >
+                        PITMASTER MARION BOLDEN
+                      </div>
+                      <div className="space-y-0.5 pt-0.5 text-[9px] font-mono leading-tight">
+                        <div className="font-bold flex items-center gap-1">
+                          <span>📞</span>
+                          <span>(773) 707-9988</span>
+                        </div>
+                        <div
+                          className={`truncate ${
+                            styleTheme === "smokehouse-dark" ? "text-zinc-300" : "text-stone-700"
+                          }`}
+                        >
+                          bbqcateringking83@gmail.com
+                        </div>
+                      </div>
+                      <div
+                        className={`text-[9px] font-bold tracking-tight pt-0.5 ${
+                          styleTheme === "smokehouse-dark" ? "text-amber-400" : "text-[#C2410C]"
+                        }`}
+                      >
+                        allthesmokecatering.com
+                      </div>
+                    </div>
+
+                    {/* QR Code Block */}
+                    <div className="shrink-0 z-10 flex flex-col items-center">
+                      <div className="p-1.5 bg-white rounded-lg border border-stone-200 shadow-sm">
+                        <div
+                          className="w-16 h-16"
+                          dangerouslySetInnerHTML={{ __html: qrSvgPrimary }}
+                        />
+                      </div>
+                      <span className="text-[7px] font-extrabold uppercase tracking-tight text-zinc-400 mt-1">
+                        Scan For Quotes
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Studio Launch CTA */}
+                <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                  <div className="text-left space-y-0.5">
+                    <div className="font-bold text-amber-400 flex items-center gap-1.5">
+                      <span>🖨️</span>
+                      <span>Need Avery 5371 / 5376 10-Card Print Sheets?</span>
+                    </div>
+                    <p className="text-[11px] text-zinc-400">
+                      The dedicated Business Card Studio formats 10 cards per letter sheet with exact Avery perforation alignment and 300 DPI VistaPrint export.
+                    </p>
+                  </div>
+                  <a
+                    href="/business-card.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#EA580C] to-[#C2410C] hover:from-[#FF7A00] hover:to-[#EA580C] text-white text-xs font-bold uppercase tracking-wider shrink-0 transition-all hover:scale-105"
+                  >
+                    Open Card Studio ↗
+                  </a>
+                </div>
+              </div>
+            )}
+
             {/* TEMPLATE 1: FOLDABLE 2-SIDED TABLE TENT */}
             {selectedTemplate === "table-tent" && (
               <div className="space-y-6">
@@ -890,6 +1366,96 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* =========================================================================
+          PRINTING & DISPLAY GUIDELINES (4-PILLAR BEST PRACTICES)
+          Modeled on agency standards with authentic smokehouse specs
+          ========================================================================= */}
+      <div
+        className={`p-6 rounded-2xl border transition-all ${
+          isDay
+            ? "bg-white border-stone-300 shadow-sm"
+            : "bg-[#141210] border-zinc-800 shadow-md"
+        }`}
+      >
+        <div className="flex items-center justify-between pb-3 border-b border-zinc-800/80 mb-5">
+          <div className="flex items-center gap-2">
+            <span className="text-base">🖨️</span>
+            <h3 className={`font-display text-base font-bold ${isDay ? "text-stone-900" : "text-white"}`}>
+              Display Stand &amp; Business Card Printing Guidelines
+            </h3>
+          </div>
+          <span className="text-[11px] font-mono font-bold text-[#EA580C]">
+            Avery &amp; VistaPrint Calibrated
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 text-xs">
+          {/* Pillar 1: Home Printing */}
+          <div className={`p-4 rounded-xl border space-y-2 ${
+            isDay ? "bg-stone-50 border-stone-200" : "bg-black/30 border-zinc-800"
+          }`}>
+            <div className="flex items-center gap-1.5 font-bold text-amber-500">
+              <span>🏠</span>
+              <span>Home Printing (Avery 5371/5376)</span>
+            </div>
+            <p className={`leading-relaxed text-[11px] ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
+              Always select the <strong>Butcher Paper Light</strong> theme for home printers. The background is 100% transparent to save 95% of your black ink cartridge. Use Avery 5371 (Clean Edge White) or 5376 (Ivory) 8.5&quot; × 11&quot; sheets (10 cards per page).
+            </p>
+            <div className="text-[10px] font-mono text-emerald-400 font-semibold">
+              Tip: Set printer scale to 100% (disable &apos;Fit to Page&apos;).
+            </div>
+          </div>
+
+          {/* Pillar 2: Professional Printing */}
+          <div className={`p-4 rounded-xl border space-y-2 ${
+            isDay ? "bg-stone-50 border-stone-200" : "bg-black/30 border-zinc-800"
+          }`}>
+            <div className="flex items-center gap-1.5 font-bold text-[#EA580C]">
+              <span>🏭</span>
+              <span>VistaPrint / MOO / Local Shop</span>
+            </div>
+            <p className={`leading-relaxed text-[11px] ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
+              Open the <strong>Card Studio</strong> and click &quot;Export 300 DPI PNG&quot;. The generated images (1050 × 600 px) include standard 1/8&quot; bleed margins. We recommend <strong>16pt Heavy Matte</strong> or <strong>Uncoated Linen</strong> stock for an authentic smokehouse feel.
+            </p>
+            <div className="text-[10px] font-mono text-amber-400 font-semibold">
+              Smokehouse Dark looks stunning with spot-UV gloss on flames!
+            </div>
+          </div>
+
+          {/* Pillar 3: Tabletop Stands */}
+          <div className={`p-4 rounded-xl border space-y-2 ${
+            isDay ? "bg-stone-50 border-stone-200" : "bg-black/30 border-zinc-800"
+          }`}>
+            <div className="flex items-center gap-1.5 font-bold text-amber-400">
+              <span>⛺</span>
+              <span>Buffet Line Acrylic Table Stands</span>
+            </div>
+            <p className={`leading-relaxed text-[11px] ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
+              For wedding buffets and corporate catering lines, insert the 4&quot; × 6&quot; table tent into vertical L-shaped or T-shaped clear acrylic stands. Acrylic protects the QR code from barbecue sauce splatters, moisture, and outdoor tailgating wind.
+            </p>
+            <div className="text-[10px] font-mono text-zinc-400 font-semibold">
+              Place 1 stand next to brisket carving station &amp; 1 at bar.
+            </div>
+          </div>
+
+          {/* Pillar 4: Direct Zelle Line */}
+          <div className={`p-4 rounded-xl border space-y-2 ${
+            isDay ? "bg-stone-50 border-stone-200" : "bg-black/30 border-zinc-800"
+          }`}>
+            <div className="flex items-center gap-1.5 font-bold text-emerald-400">
+              <span>💳</span>
+              <span>Direct Phone &amp; Zelle Integration</span>
+            </div>
+            <p className={`leading-relaxed text-[11px] ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
+              Both the business cards and tabletop signs feature Marion&apos;s direct line <strong>(773) 707-9988</strong> and <strong>bbqcateringking83@gmail.com</strong>. This matches his registered Zelle account for instant consultation deposits and Saturday drop pre-orders.
+            </p>
+            <div className="text-[10px] font-mono text-emerald-400 font-semibold">
+              Instant quote form populates customer specs automatically.
+            </div>
           </div>
         </div>
       </div>
