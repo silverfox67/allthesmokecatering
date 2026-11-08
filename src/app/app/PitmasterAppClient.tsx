@@ -1,69 +1,72 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import QRCode from "qrcode";
 import { AdminLogin } from "@/components/admin/AdminLogin";
-import { AdminPitmasterApp } from "@/components/admin/AdminPitmasterApp";
-import { useWeekendDrop } from "@/utils/weekend-drop-store";
 import { SITE_CONFIG } from "@/config/site-config";
-
-type AppView = "biz-card" | "phone-intake" | "weekend-drop" | "rig-timers" | "calendar";
 
 export function PitmasterAppClient() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [activeView, setActiveView] = useState<AppView>("biz-card");
   const [isStandalone, setIsStandalone] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [installSuccess, setInstallSuccess] = useState(false);
-  const [showIOSTip, setShowIOSTip] = useState(false);
+  const [installNotice, setInstallNotice] = useState<string | null>(null);
 
-  // Digital Biz Card States
-  const [qrDestination, setQrDestination] = useState<"quote" | "drop" | "review">("quote");
+  // Live Digital Biz Card States
+  const [showBizCard, setShowBizCard] = useState(false);
+  const [qrDestination, setQrDestination] = useState<"quote" | "review">("quote");
   const [isSunlightMode, setIsSunlightMode] = useState(false);
-  const [isKioskMode, setIsKioskMode] = useState(false);
   const [qrDataUrl, setQrDataUrl] = useState<string>("");
 
-  // Phone Intake Form States
+  // Phone Call Intake Modal State
+  const [showIntakeModal, setShowIntakeModal] = useState(false);
   const [clientName, setClientName] = useState("");
   const [clientPhone, setClientPhone] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [guestCount, setGuestCount] = useState("");
   const [intakeNotes, setIntakeNotes] = useState("");
-  const [intakeSuccess, setIntakeSuccess] = useState(false);
+  const [intakeSaved, setIntakeSaved] = useState(false);
 
-  // Weekend Drop Data
-  const { drop, updateDrop } = useWeekendDrop();
-
-  // Auth & Standalone Detection
   useEffect(() => {
+    // 1. Verify Authentication
     if (typeof window !== "undefined") {
       const isAuth =
         localStorage.getItem("ats_admin_auth") === "true" ||
         sessionStorage.getItem("ats_admin_auth") === "true";
       setIsAuthenticated(isAuth);
 
+      // 2. Check if launched as standalone PWA
       const standalone =
         window.matchMedia("(display-mode: standalone)").matches ||
         (window.navigator as any).standalone === true;
       setIsStandalone(standalone);
 
+      // 3. Register Service Worker with scope / for true WebAPK support (No Chrome badge)
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch((err) => {
+          console.warn("ServiceWorker registration error:", err);
+        });
+      }
+
+      // 4. Capture native beforeinstallprompt event
       const handleBeforeInstall = (e: any) => {
         e.preventDefault();
         setDeferredPrompt(e);
       };
       window.addEventListener("beforeinstallprompt", handleBeforeInstall);
 
-      const handleInstalled = () => {
+      const handleAppInstalled = () => {
         setInstallSuccess(true);
+        setInstallNotice(null);
         setDeferredPrompt(null);
       };
-      window.addEventListener("appinstalled", handleInstalled);
+      window.addEventListener("appinstalled", handleAppInstalled);
 
       return () => {
         window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
-        window.removeEventListener("appinstalled", handleInstalled);
+        window.removeEventListener("appinstalled", handleAppInstalled);
       };
     }
   }, []);
@@ -71,11 +74,12 @@ export function PitmasterAppClient() {
   // Generate QR Code dynamically
   useEffect(() => {
     let targetUrl = "https://allthesmokecatering.com/#contact";
-    if (qrDestination === "drop") targetUrl = "https://allthesmokecatering.com/#weekend-drop";
-    if (qrDestination === "review") targetUrl = "https://allthesmokecatering.com/review";
+    if (qrDestination === "review") {
+      targetUrl = "https://allthesmokecatering.com/review";
+    }
 
     QRCode.toDataURL(targetUrl, {
-      width: 340,
+      width: 320,
       margin: 1,
       color: {
         dark: isSunlightMode ? "#000000" : "#1A0E08",
@@ -86,18 +90,54 @@ export function PitmasterAppClient() {
       .catch((err) => console.error("QR Code Error:", err));
   }, [qrDestination, isSunlightMode]);
 
-  // vCard Contact Card Download (.vcf)
+  // Handle Native PWA Install
+  const handleInstallClick = () => {
+    if (isStandalone || installSuccess) {
+      window.location.href = "/admin";
+      return;
+    }
+
+    if (deferredPrompt) {
+      try {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choice: any) => {
+          if (choice?.outcome === "accepted") {
+            setInstallSuccess(true);
+            setInstallNotice(null);
+          }
+          setDeferredPrompt(null);
+        });
+        return;
+      } catch (err) {
+        console.warn("Install prompt error:", err);
+      }
+    }
+
+    // Graceful guidance for iOS / unsupported browsers
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    if (isIOS) {
+      setInstallNotice(
+        "To add to iPhone: Tap Safari's Share button (square with arrow ↑) in bottom toolbar, then tap 'Add to Home Screen'."
+      );
+    } else {
+      setInstallNotice(
+        "Direct Home Screen Install: Tap your browser's menu (⋮ three dots at top-right) and select 'Install ATS Ops' or 'Add to Home screen'."
+      );
+    }
+  };
+
+  // vCard (.vcf) download
   const handleDownloadVCard = () => {
     const vcard = `BEGIN:VCARD
 VERSION:3.0
 N:Bolden;Marion;;;
 FN:Pitmaster Marion Bolden
 ORG:All The Smoke BBQ & Catering
-TITLE:Master Pitmaster & Executive Operator
+TITLE:Master Pitmaster & Founder
 TEL;TYPE=CELL,VOICE:(773) 707-9988
 EMAIL;TYPE=WORK,INTERNET:bbqcateringking83@gmail.com
 URL:https://allthesmokecatering.com
-NOTE:Chicagoland Premier Live-Fire Smoker Catering. Real Hardwood Low & Slow Barbecue.
+NOTE:Chicagoland Premier Live-Fire Smoker Catering. Low & Slow Hardwood Smoke.
 END:VCARD`;
 
     const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
@@ -111,28 +151,8 @@ END:VCARD`;
     URL.revokeObjectURL(url);
   };
 
-  // Chromium / iOS Install Handler
-  const handleInstallClick = async () => {
-    const isApple = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
-    if (isApple) {
-      setShowIOSTip(!showIOSTip);
-      return;
-    }
-
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
-      if (choice?.outcome === "accepted") {
-        setInstallSuccess(true);
-      }
-      setDeferredPrompt(null);
-    } else {
-      setShowIOSTip(true);
-    }
-  };
-
-  // Save Intake to ats_pitmaster_leads
-  const handleSaveIntake = (e: React.FormEvent) => {
+  // Save Lead to ats_pitmaster_leads
+  const handleSaveLead = (e: React.FormEvent) => {
     e.preventDefault();
     if (!clientName || !clientPhone) return;
 
@@ -154,19 +174,21 @@ END:VCARD`;
 
       leads.unshift(newLead);
       localStorage.setItem("ats_pitmaster_leads", JSON.stringify(leads));
-      setIntakeSuccess(true);
+      setIntakeSaved(true);
       setClientName("");
       setClientPhone("");
       setEventDate("");
       setGuestCount("");
       setIntakeNotes("");
-      setTimeout(() => setIntakeSuccess(false), 4000);
+      setTimeout(() => {
+        setIntakeSaved(false);
+        setShowIntakeModal(false);
+      }, 1500);
     } catch (err) {
-      console.error("Failed to save intake:", err);
+      console.error("Failed to save lead:", err);
     }
   };
 
-  // Sign Out
   const handleLogout = () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("ats_admin_auth");
@@ -177,212 +199,175 @@ END:VCARD`;
 
   if (isAuthenticated === null) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center text-amber-500 font-mono text-xs">
+      <div className="min-h-screen bg-[#120F10] flex items-center justify-center text-amber-500 font-mono text-xs">
         Authenticating Pitmaster Console...
       </div>
     );
   }
 
+  // If not authenticated, require identical password as dashboard
   if (!isAuthenticated) {
     return <AdminLogin onLogin={() => setIsAuthenticated(true)} />;
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-stone-100 flex flex-col font-sans pb-12 selection:bg-[#EA580C] selection:text-white">
+    <div className="min-h-screen bg-[#120F10] text-slate-100 flex flex-col items-center justify-center p-3 sm:p-4 selection:bg-[#EA580C] selection:text-white">
       
-      {/* 1. TOP EXECUTIVE HEADER */}
-      <header className="sticky top-0 z-40 bg-[#121214]/95 backdrop-blur-md border-b border-zinc-800 px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="relative w-9 h-9 shrink-0 rounded-full overflow-hidden border border-amber-500/60 shadow-md bg-black">
-            <Image
-              src="/brand/allthesmoke-master-crest.png"
-              alt="Official All The Smoke Crest"
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <h1 className="text-sm font-extrabold text-white tracking-tight">
-                ATS Ops Console
-              </h1>
+      {/* MASTER EXECUTIVE CARD (MATCHING BLIND COOK EXACT PROPORTIONS & AESTHETICS) */}
+      <div className="w-full max-w-md bg-[#181416]/95 border border-[#EA580C]/45 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-xl relative my-auto">
+        
+        {/* Top Flame Ember Gradient Accent Line */}
+        <div className="h-1 bg-gradient-to-r from-[#EA580C] via-[#FF9E2C] to-[#C8A97E]" />
+
+        <div className="p-5 sm:p-7 text-center space-y-4 sm:space-y-5">
+          
+          {/* Centered App Icon Box with Glowing Green Dot */}
+          <div className="relative w-20 h-20 sm:w-22 sm:h-22 mx-auto">
+            <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-2xl bg-gradient-to-br from-[#EA580C]/30 to-[#181416] border-2 border-amber-500/70 flex items-center justify-center shadow-lg shadow-[#EA580C]/25 overflow-hidden p-2">
+              <div className="relative w-full h-full">
+                <Image
+                  src="/brand/allthesmoke-master-crest.png"
+                  alt="Pitmaster Marion Bolden"
+                  fill
+                  className="object-contain"
+                />
+              </div>
             </div>
-            <p className="text-[10px] text-amber-400 font-mono">
+            {/* Glowing Live Green Pulsing Dot */}
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[#181416] shadow-[0_0_8px_#10B981]" />
+          </div>
+
+          {/* Title & Tag */}
+          <div>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] sm:text-[11px] font-black uppercase tracking-widest bg-[#EA580C]/15 text-[#FF7A00] border border-[#EA580C]/40 mb-2">
+              ★ Executive Mobile &amp; Desktop Portal
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
               Pitmaster Marion Bolden
+            </h1>
+            <p className="text-xs sm:text-sm font-bold text-amber-200/90 mt-0.5">
+              All The Smoke BBQ &amp; Catering
+            </p>
+            <p className="text-[11px] sm:text-xs text-slate-400 mt-1">
+              1-Tap Client Intake • Live Event Calendar • Inbound Leads
             </p>
           </div>
-        </div>
 
-        {/* PWA Install or Status Badge */}
-        <div className="flex items-center gap-2">
-          {!isStandalone && (
+          {/* 4 PROMINENT VERTICAL ACTION BUTTONS */}
+          <div className="flex flex-col gap-3 pt-1">
+            
+            {/* Button 1: Download & Install App (Flame Ember Gradient) */}
             <button
               type="button"
               onClick={handleInstallClick}
-              className="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-[10.5px] font-bold text-amber-300 flex items-center gap-1 transition"
+              className="w-full p-3.5 rounded-xl bg-gradient-to-r from-[#FF7A00] via-[#EA580C] to-[#C2410C] hover:brightness-105 text-white flex items-center justify-between shadow-lg shadow-[#EA580C]/35 border border-white/20 active:scale-[0.98] transition-all text-left font-bold cursor-pointer"
             >
-              <span>📲 Install App</span>
-            </button>
-          )}
-
-          <Link
-            href="/admin"
-            className="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-[10.5px] font-bold text-stone-300 transition"
-            title="Launch Full Desktop Dashboard"
-          >
-            Full Hub &rarr;
-          </Link>
-        </div>
-      </header>
-
-      {/* iOS Install Guide Drawer */}
-      {showIOSTip && (
-        <div className="mx-4 mt-3 p-3 rounded-xl bg-amber-950/40 border border-amber-500/50 text-xs text-amber-200 flex items-start justify-between gap-3 animate-in fade-in">
-          <div>
-            <strong className="text-white block mb-0.5">📱 Add ATS Ops to Home Screen:</strong>
-            Tap the Safari <strong>Share button (square with arrow ↑)</strong> and select <strong>&ldquo;Add to Home Screen&rdquo;</strong>. Uses the official master crest!
-          </div>
-          <button
-            type="button"
-            onClick={() => setShowIOSTip(false)}
-            className="text-stone-400 hover:text-white font-bold text-sm px-1.5"
-          >
-            ✕
-          </button>
-        </div>
-      )}
-
-      {/* 2. ERGONOMIC GLOVE-FRIENDLY SUB-NAV BAR (PINNED) */}
-      <nav className="sticky top-[57px] z-30 bg-[#0E0E10] border-b border-zinc-800/80 px-2 py-2 overflow-x-auto scrollbar-none">
-        <div className="flex items-center gap-1.5 min-w-max mx-auto max-w-lg">
-          {[
-            { id: "biz-card" as AppView, label: "🪪 Live Biz Card", badge: "Live QR" },
-            { id: "phone-intake" as AppView, label: "📞 New Call", badge: "+ Lead" },
-            { id: "weekend-drop" as AppView, label: "🔥 Saturday Drop", badge: drop.isActive ? "Open" : "Closed" },
-            { id: "rig-timers" as AppView, label: "⏱️ Meat Timers", badge: "Probes" },
-            { id: "calendar" as AppView, label: "📅 Calendar", badge: "Gigs" },
-          ].map((tab) => {
-            const isActive = activeView === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveView(tab.id)}
-                className={`py-2 px-3 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer select-none ${
-                  isActive
-                    ? "bg-gradient-to-r from-[#EA580C] to-[#C2410C] text-white shadow-md border border-amber-400/40"
-                    : "bg-[#18181B] text-stone-300 hover:text-white border border-zinc-800"
-                }`}
-              >
-                <span>{tab.label}</span>
-                <span
-                  className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
-                    isActive
-                      ? "bg-black/30 text-amber-200"
-                      : "bg-black/50 text-stone-400"
-                  }`}
-                >
-                  {tab.badge}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </nav>
-
-      {/* 3. MAIN CONTENT AREA */}
-      <main className="flex-1 max-w-lg w-full mx-auto p-4 space-y-5">
-        
-        {/* VIEW 1: 🪪 LIVE DIGITAL BIZ CARD & QR CODE */}
-        {activeView === "biz-card" && (
-          <div className="space-y-4 animate-in fade-in duration-200">
-            
-            {/* Quick Settings Bar */}
-            <div className="flex items-center justify-between gap-2 p-2 rounded-xl bg-zinc-900/90 border border-zinc-800 text-xs">
-              <div className="flex items-center gap-1.5">
-                <span className="text-stone-400 font-semibold text-[11px]">Mode:</span>
-                <button
-                  type="button"
-                  onClick={() => setIsSunlightMode(false)}
-                  className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition ${
-                    !isSunlightMode
-                      ? "bg-[#EA580C] text-white shadow-sm"
-                      : "text-stone-400 hover:text-white"
-                  }`}
-                >
-                  Obsidian
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsSunlightMode(true)}
-                  className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition ${
-                    isSunlightMode
-                      ? "bg-amber-200 text-amber-950 font-black shadow-sm"
-                      : "text-stone-400 hover:text-white"
-                  }`}
-                >
-                  ☀️ Sunlight
-                </button>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setIsKioskMode(!isKioskMode)}
-                className="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-stone-300 font-bold text-[11px] flex items-center gap-1 transition"
-              >
-                <span>{isKioskMode ? "Exit Fullscreen" : "🔍 Fullscreen"}</span>
-              </button>
-            </div>
-
-            {/* THE LIVE DIGITAL BUSINESS CARD CONTAINER */}
-            <div
-              className={`rounded-3xl border-2 transition-all duration-300 overflow-hidden shadow-2xl ${
-                isSunlightMode
-                  ? "bg-[#E8DEC8] border-[#9E7D46] text-black"
-                  : "bg-gradient-to-b from-[#1C1612] via-[#120F0D] to-[#0A0908] border-amber-500/50 text-white"
-              } ${isKioskMode ? "p-6" : "p-5"}`}
-            >
-              {/* Card Header */}
-              <div className="text-center space-y-2 border-b pb-4 border-amber-500/20">
-                <div className="relative w-16 h-16 mx-auto rounded-2xl overflow-hidden border-2 border-amber-500/60 shadow-lg bg-black">
-                  <Image
-                    src="/brand/allthesmoke-master-crest.png"
-                    alt="Master Crest"
-                    fill
-                    className="object-cover"
-                  />
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-black/25 flex items-center justify-center shrink-0 text-white text-lg">
+                  📲
                 </div>
-
                 <div>
-                  <h2
-                    className={`text-xl font-black tracking-tight ${
-                      isSunlightMode ? "text-stone-900" : "text-white"
-                    }`}
-                  >
-                    All The Smoke BBQ &amp; Catering
-                  </h2>
-                  <p
-                    className={`text-xs font-bold uppercase tracking-widest mt-0.5 ${
-                      isSunlightMode ? "text-[#874A00]" : "text-amber-400"
-                    }`}
-                  >
-                    Pitmaster Marion Bolden • &ldquo;Mr. Smoke&rdquo;
-                  </p>
-                  <p
-                    className={`text-[11px] font-medium mt-0.5 ${
-                      isSunlightMode ? "text-stone-700" : "text-stone-400"
-                    }`}
-                  >
-                    Chicagoland Premier Live-Fire Smoker Operations
-                  </p>
+                  <span className="block text-sm font-extrabold leading-tight text-white">
+                    {isStandalone || installSuccess ? "✓ App Installed" : "Download & Install App"}
+                  </span>
+                  <span className="block text-[11px] text-amber-100 font-semibold mt-0.5">
+                    {isStandalone || installSuccess
+                      ? "Running as Standalone Mobile PWA"
+                      : "Add ATS Ops to Phone Screen"}
+                  </span>
                 </div>
               </div>
+              <span className="text-white font-black text-sm opacity-90">&rarr;</span>
+            </button>
 
-              {/* LIVE CAMERA SCAN QR CODE */}
-              <div className="my-5 flex flex-col items-center justify-center">
+            {/* Install Notice Drawer (if guidance triggered) */}
+            {installNotice && (
+              <div className="p-3 bg-[#EA580C]/15 border border-[#EA580C]/45 rounded-xl text-xs text-amber-200 text-left leading-relaxed animate-in fade-in">
+                {installNotice}
+              </div>
+            )}
+
+            {/* Button 2: Launch Executive Dashboard (Desktop Hub) */}
+            <Link
+              href="/admin"
+              className="w-full p-3.5 rounded-xl bg-[#1A1510]/95 hover:bg-[#251E14] text-white flex items-center justify-between border border-amber-500/40 shadow-md active:scale-[0.98] transition-all text-left"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-amber-500/20 text-[#FF7A00] flex items-center justify-center shrink-0 text-lg">
+                  ✨
+                </div>
+                <div>
+                  <span className="block text-sm font-bold leading-tight">Launch Dashboard</span>
+                  <span className="block text-[11px] text-slate-400 mt-0.5">
+                    View Leads, Client Inquiries &amp; Notes
+                  </span>
+                </div>
+              </div>
+              <span className="text-amber-400 font-black text-sm opacity-90">&rarr;</span>
+            </Link>
+
+            {/* Button 3: Live Digital Business Card (Expands below) */}
+            <button
+              type="button"
+              onClick={() => setShowBizCard(!showBizCard)}
+              className={`w-full p-3.5 rounded-xl flex items-center justify-between border shadow-md active:scale-[0.98] transition-all text-left cursor-pointer ${
+                showBizCard
+                  ? "bg-[#2A1D13] border-[#FF7A00] text-white"
+                  : "bg-slate-900/90 hover:bg-slate-800 border-amber-500/30 text-white"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-[#EA580C]/20 text-[#FF7A00] flex items-center justify-center shrink-0 text-lg">
+                  🪪
+                </div>
+                <div>
+                  <span className="block text-sm font-bold leading-tight">
+                    Live Digital Business Card
+                  </span>
+                  <span className="block text-[11px] text-amber-200/80 mt-0.5">
+                    {showBizCard
+                      ? "Showing Live QR Code Below (Tap to Collapse)"
+                      : "Tap to Show Camera QR Code for Instant Client Scan"}
+                  </span>
+                </div>
+              </div>
+              <span className="text-amber-400 font-bold text-sm">
+                {showBizCard ? "▲" : "▼"}
+              </span>
+            </button>
+
+            {/* EXPANDABLE LIVE DIGITAL BUSINESS CARD BOX */}
+            {showBizCard && (
+              <div className="p-4 rounded-2xl border-2 transition-all duration-300 animate-in fade-in zoom-in-95 space-y-3.5 text-center shadow-2xl bg-gradient-to-b from-[#1C1612] via-[#120F0D] to-[#0A0908] border-amber-500/60">
+                
+                {/* Sunlight Toggle Pill */}
+                <div className="flex items-center justify-between text-xs pb-2 border-b border-zinc-800">
+                  <span className="text-stone-400 font-bold text-[11px]">Display Mode:</span>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setIsSunlightMode(false)}
+                      className={`px-2.5 py-0.5 rounded-md font-bold text-[10.5px] transition ${
+                        !isSunlightMode ? "bg-[#EA580C] text-white" : "text-stone-400"
+                      }`}
+                    >
+                      Obsidian
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsSunlightMode(true)}
+                      className={`px-2.5 py-0.5 rounded-md font-bold text-[10.5px] transition ${
+                        isSunlightMode ? "bg-amber-200 text-stone-950 font-black" : "text-stone-400"
+                      }`}
+                    >
+                      ☀️ Sunlight
+                    </button>
+                  </div>
+                </div>
+
+                {/* The QR Display */}
                 <div
-                  className={`p-3 rounded-2xl shadow-xl transition-all ${
+                  className={`p-3 rounded-2xl mx-auto inline-block shadow-xl ${
                     isSunlightMode
                       ? "bg-white border-2 border-black"
                       : "bg-[#FFF7ED] border-2 border-amber-500/80"
@@ -392,133 +377,168 @@ END:VCARD`;
                     <img
                       src={qrDataUrl}
                       alt="Scan to Book Marion Bolden"
-                      className={`mx-auto rounded-lg ${isKioskMode ? "w-64 h-64" : "w-52 h-52"}`}
+                      className="w-48 h-48 mx-auto rounded-lg"
                     />
                   ) : (
-                    <div className="w-52 h-52 flex items-center justify-center text-xs text-stone-500 font-mono">
-                      Generating Live QR...
+                    <div className="w-48 h-48 flex items-center justify-center text-xs text-stone-500">
+                      Loading QR...
                     </div>
                   )}
                 </div>
 
-                <div className="text-center mt-3 space-y-1">
-                  <span
-                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider ${
-                      isSunlightMode
-                        ? "bg-black text-amber-300"
-                        : "bg-amber-500/20 border border-amber-500/40 text-amber-300"
-                    }`}
-                  >
+                <div className="space-y-1">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">
                     📷 Point Phone Camera to Scan
                   </span>
-                  <p
-                    className={`text-[11px] font-medium ${
-                      isSunlightMode ? "text-stone-800" : "text-stone-400"
-                    }`}
-                  >
-                    {qrDestination === "quote" && "Opens Instant Catering Quote & Date Checker"}
-                    {qrDestination === "drop" && "Opens This Saturday's Smokehouse Drop"}
-                    {qrDestination === "review" && "Opens Google 5-Star Review Form"}
+                  <p className="text-[11px] text-stone-300 font-medium">
+                    {qrDestination === "quote"
+                      ? "Opens Instant Catering Quote & Date Form"
+                      : "Opens Google 5-Star Review Booster"}
                   </p>
                 </div>
-              </div>
 
-              {/* QR Destination Selector */}
-              <div className="pt-3 border-t border-amber-500/20">
-                <span
-                  className={`text-[10px] uppercase font-bold tracking-wider block mb-1.5 text-center ${
-                    isSunlightMode ? "text-stone-700" : "text-stone-400"
-                  }`}
-                >
-                  Target Scan Destination:
-                </span>
-                <div className="grid grid-cols-3 gap-1.5">
-                  {[
-                    { id: "quote", label: "📋 Quote Form" },
-                    { id: "drop", label: "🔥 Saturday Drop" },
-                    { id: "review", label: "⭐ 5-Star Review" },
-                  ].map((dest) => (
+                {/* Sub-Buttons Below the Biz Card (Quote & Reviews) */}
+                <div className="pt-2 border-t border-zinc-800">
+                  <span className="text-[10px] uppercase font-bold text-stone-400 tracking-wider block mb-1.5">
+                    QR Scan Destination:
+                  </span>
+                  <div className="grid grid-cols-2 gap-2">
                     <button
-                      key={dest.id}
                       type="button"
-                      onClick={() => setQrDestination(dest.id as any)}
-                      className={`py-1.5 px-2 rounded-lg text-[10.5px] font-bold text-center transition cursor-pointer truncate ${
-                        qrDestination === dest.id
+                      onClick={() => setQrDestination("quote")}
+                      className={`py-1.5 px-2 rounded-lg text-[11px] font-bold transition ${
+                        qrDestination === "quote"
                           ? "bg-[#EA580C] text-white shadow-sm"
-                          : isSunlightMode
-                          ? "bg-stone-300 text-stone-800"
                           : "bg-black/60 text-stone-300 hover:text-white border border-stone-800"
                       }`}
                     >
-                      {dest.label}
+                      📋 Quote Form
                     </button>
-                  ))}
+                    <button
+                      type="button"
+                      onClick={() => setQrDestination("review")}
+                      className={`py-1.5 px-2 rounded-lg text-[11px] font-bold transition ${
+                        qrDestination === "review"
+                          ? "bg-[#EA580C] text-white shadow-sm"
+                          : "bg-black/60 text-stone-300 hover:text-white border border-stone-800"
+                      }`}
+                    >
+                      ⭐ 5-Star Review
+                    </button>
+                  </div>
+                </div>
+
+                {/* 1-Tap Save to Phone Contacts (.vcf) */}
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={handleDownloadVCard}
+                    className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:brightness-105 text-stone-950 font-black text-xs uppercase tracking-wider shadow-md transition active:scale-98"
+                  >
+                    <span>📲 Save Marion to Contacts (.vcf)</span>
+                  </button>
                 </div>
               </div>
+            )}
 
-              {/* Direct Tap-to-Call / Email Links */}
-              <div
-                className={`mt-4 pt-3 border-t grid grid-cols-2 gap-2 text-center text-xs font-bold ${
-                  isSunlightMode ? "border-stone-400/50" : "border-stone-800"
-                }`}
-              >
-                <a
-                  href="tel:7737079988"
-                  className={`py-2 px-3 rounded-xl border flex items-center justify-center gap-1.5 transition ${
-                    isSunlightMode
-                      ? "bg-white/80 border-stone-400 text-stone-900"
-                      : "bg-black/50 border-stone-800 text-amber-300 hover:text-white"
-                  }`}
-                >
-                  <span>📞 Call Marion</span>
-                </a>
-                <a
-                  href={`mailto:${SITE_CONFIG.brandEmail}`}
-                  className={`py-2 px-3 rounded-xl border flex items-center justify-center gap-1.5 transition ${
-                    isSunlightMode
-                      ? "bg-white/80 border-stone-400 text-stone-900"
-                      : "bg-black/50 border-stone-800 text-stone-300 hover:text-white"
-                  }`}
-                >
-                  <span>✉️ Email Marion</span>
-                </a>
-              </div>
-
-              {/* 1-Tap Save to Phone Contacts (.vcf) */}
-              <div className="mt-3">
-                <button
-                  type="button"
-                  onClick={handleDownloadVCard}
-                  className="w-full min-h-[46px] py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:brightness-105 text-black font-extrabold text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 cursor-pointer transition active:scale-98"
-                >
-                  <span>📲 Save Marion to Phone Contacts (.vcf)</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* VIEW 2: 📞 + NEW PHONE CALL INTAKE FORM */}
-        {activeView === "phone-intake" && (
-          <div className="space-y-4 animate-in fade-in duration-200">
-            <div className="rounded-2xl bg-gradient-to-b from-[#181310] via-[#120F0D] to-[#0A0908] border border-amber-500/40 p-4 sm:p-5 shadow-xl">
-              <div className="flex items-center gap-2.5 mb-3 pb-3 border-b border-[#382618]">
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold">
+            {/* Button 4: + New Phone Call Intake (Like Blind Cook) */}
+            <button
+              type="button"
+              onClick={() => setShowIntakeModal(true)}
+              className="w-full p-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-white flex items-center justify-between border border-slate-700 shadow-md active:scale-[0.98] transition-all text-left cursor-pointer"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 text-lg">
                   📞
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Log Live Phone Call Intake</h3>
-                  <p className="text-[11px] text-stone-400">Instantly saves to your Master Leads Dashboard</p>
+                  <span className="block text-sm font-bold leading-tight">
+                    + New Phone Call Intake
+                  </span>
+                  <span className="block text-[11px] text-slate-400 mt-0.5">
+                    Log Live Client Booking While on Call
+                  </span>
                 </div>
               </div>
+              <span className="text-emerald-400 font-black text-sm opacity-90">&rarr;</span>
+            </button>
 
-              {intakeSuccess && (
-                <div className="p-3 mb-4 rounded-xl bg-emerald-950/60 border border-emerald-500 text-xs text-emerald-300 font-bold flex items-center gap-2 animate-in fade-in">
-                  <span>✓ Lead successfully logged &amp; synced to Master Leads!</span>
+          </div>
+
+          {/* Quick Secondary Links (Like Blind Cook) */}
+          <div className="flex items-center justify-center gap-4 pt-3 border-t border-[#EA580C]/20 text-xs">
+            <Link
+              href="/admin?tab=calendar"
+              className="text-[#FF7A00] hover:text-white font-semibold flex items-center gap-1.5 transition-colors"
+            >
+              <span>📅</span>
+              <span>Live Event Calendar</span>
+            </Link>
+            <span className="text-[#EA580C]/40">•</span>
+            <a
+              href="tel:7737079988"
+              className="text-[#FF7A00] hover:text-white font-semibold flex items-center gap-1.5 transition-colors"
+            >
+              <span>📞</span>
+              <span>(773) 707-9988</span>
+            </a>
+          </div>
+
+          {/* Executive VIP Portal Badge (Like Blind Cook) */}
+          <div className="mt-2 p-3 bg-[#EA580C]/10 border border-[#EA580C]/30 rounded-2xl text-[11.5px] text-slate-200 text-center leading-relaxed">
+            <span className="text-[#FF7A00] font-bold block mb-0.5">
+              ★ Executive Direct Access Portal
+            </span>
+            <span className="text-[11px] text-slate-400">
+              Private client intake &amp; live booking console for Pitmaster Marion Bolden.
+            </span>
+          </div>
+
+          {/* Persistent Login Indicator & Sign Out */}
+          <div className="flex items-center justify-between pt-1 text-[11px]">
+            <span className="text-emerald-400 font-semibold flex items-center gap-1">
+              <span>✓</span> Persistent mobile login active
+            </span>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="text-stone-400 hover:text-red-400 transition cursor-pointer"
+            >
+              Sign Out
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      {/* MODAL: + NEW PHONE CALL INTAKE */}
+      {showIntakeModal && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in">
+          <div className="relative w-full max-w-md bg-[#181416] border border-amber-500/50 rounded-3xl p-5 sm:p-6 shadow-2xl space-y-4">
+            
+            <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">📞</span>
+                <div>
+                  <h3 className="text-base font-bold text-white">Log Phone Call Intake</h3>
+                  <p className="text-[10.5px] text-stone-400">Syncs directly to Master Leads</p>
                 </div>
-              )}
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowIntakeModal(false)}
+                className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xs"
+              >
+                ✕
+              </button>
+            </div>
 
-              <form onSubmit={handleSaveIntake} className="space-y-3 text-xs">
+            {intakeSaved ? (
+              <div className="p-4 rounded-xl bg-emerald-950/80 border border-emerald-500 text-center text-xs font-bold text-emerald-300">
+                ✓ Lead successfully saved to Master Dashboard!
+              </div>
+            ) : (
+              <form onSubmit={handleSaveLead} className="space-y-3 text-xs">
                 <div>
                   <label className="block text-stone-300 font-semibold mb-1">
                     Client Full Name *
@@ -529,7 +549,7 @@ END:VCARD`;
                     value={clientName}
                     onChange={(e) => setClientName(e.target.value)}
                     placeholder="e.g. Marcus Johnson"
-                    className="w-full min-h-[44px] px-3 rounded-xl bg-black/60 border border-zinc-700 text-white focus:border-[#EA580C] focus:outline-none"
+                    className="w-full min-h-[44px] px-3 rounded-xl bg-black/70 border border-zinc-700 text-white focus:border-[#EA580C] focus:outline-none"
                   />
                 </div>
 
@@ -544,7 +564,7 @@ END:VCARD`;
                       value={clientPhone}
                       onChange={(e) => setClientPhone(e.target.value)}
                       placeholder="(312) 555-0199"
-                      className="w-full min-h-[44px] px-3 rounded-xl bg-black/60 border border-zinc-700 text-white focus:border-[#EA580C] focus:outline-none"
+                      className="w-full min-h-[44px] px-3 rounded-xl bg-black/70 border border-zinc-700 text-white focus:border-[#EA580C] focus:outline-none"
                     />
                   </div>
 
@@ -556,7 +576,7 @@ END:VCARD`;
                       type="date"
                       value={eventDate}
                       onChange={(e) => setEventDate(e.target.value)}
-                      className="w-full min-h-[44px] px-3 rounded-xl bg-black/60 border border-zinc-700 text-white focus:border-[#EA580C] focus:outline-none"
+                      className="w-full min-h-[44px] px-3 rounded-xl bg-black/70 border border-zinc-700 text-white focus:border-[#EA580C] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -570,173 +590,35 @@ END:VCARD`;
                     value={guestCount}
                     onChange={(e) => setGuestCount(e.target.value)}
                     placeholder="e.g. 50"
-                    className="w-full min-h-[44px] px-3 rounded-xl bg-black/60 border border-zinc-700 text-white focus:border-[#EA580C] focus:outline-none"
+                    className="w-full min-h-[44px] px-3 rounded-xl bg-black/70 border border-zinc-700 text-white focus:border-[#EA580C] focus:outline-none"
                   />
                 </div>
 
                 <div>
                   <label className="block text-stone-300 font-semibold mb-1">
-                    Call Notes (Meats requested, location, budget)
+                    Call Notes (Meats, Packages, Location)
                   </label>
                   <textarea
                     rows={3}
                     value={intakeNotes}
                     onChange={(e) => setIntakeNotes(e.target.value)}
-                    placeholder="e.g. Wants Southside Smoke package with Brisket & Ribs for backyard graduation..."
-                    className="w-full p-3 rounded-xl bg-black/60 border border-zinc-700 text-white focus:border-[#EA580C] focus:outline-none"
+                    placeholder="e.g. Wants Pitmaster Feast with Brisket & Ribs for backyard wedding reception..."
+                    className="w-full p-2.5 rounded-xl bg-black/70 border border-zinc-700 text-white focus:border-[#EA580C] focus:outline-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full min-h-[48px] py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-bold text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 cursor-pointer transition active:scale-98"
+                  className="w-full min-h-[46px] py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-bold text-xs uppercase tracking-wider shadow-lg transition"
                 >
-                  <span>✓ Save Client Lead &rarr;</span>
+                  Save Lead to Dashboard &rarr;
                 </button>
               </form>
-            </div>
-          </div>
-        )}
-
-        {/* VIEW 3: 🔥 WEEKEND DROP QUICK-TOGGLE */}
-        {activeView === "weekend-drop" && (
-          <div className="space-y-4 animate-in fade-in duration-200">
-            <div className="rounded-2xl bg-gradient-to-b from-[#181310] via-[#120F0D] to-[#0A0908] border border-amber-500/40 p-5 shadow-xl space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#382618]">
-                <div>
-                  <span className="text-[10px] uppercase font-bold text-amber-400 tracking-wider">
-                    Saturday Pit Drop Manager
-                  </span>
-                  <h3 className="text-lg font-black text-white">{drop.title}</h3>
-                  <p className="text-xs text-stone-400">{drop.eventDateLabel}</p>
-                </div>
-
-                <span
-                  className={`px-3 py-1 rounded-full text-xs font-black uppercase ${
-                    drop.isActive
-                      ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-                      : "bg-red-500/20 text-red-400 border border-red-500/40"
-                  }`}
-                >
-                  {drop.isActive ? "● Active / Open" : "● Offline / Closed"}
-                </span>
-              </div>
-
-              {/* 1-Tap Toggle Switch */}
-              <div className="p-4 rounded-xl bg-black/60 border border-zinc-800 flex items-center justify-between">
-                <div>
-                  <strong className="text-sm font-bold text-white block">Pre-Orders Status</strong>
-                  <p className="text-[11px] text-stone-400">
-                    {drop.isActive
-                      ? "Public can view and reserve Saturday dinner plates."
-                      : "Drop is hidden or marked sold-out."}
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => updateDrop({ ...drop, isActive: !drop.isActive })}
-                  className={`min-h-[44px] px-4 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wider transition cursor-pointer shadow-md ${
-                    drop.isActive
-                      ? "bg-red-600 hover:bg-red-500 text-white"
-                      : "bg-emerald-600 hover:bg-emerald-500 text-white"
-                  }`}
-                >
-                  {drop.isActive ? "Close Drop" : "Open Drop"}
-                </button>
-              </div>
-
-              {/* Current Plates Summary */}
-              <div className="space-y-2 pt-2">
-                <span className="text-xs font-bold text-stone-300 uppercase tracking-wider block">
-                  Active Batch Plates:
-                </span>
-                {drop.options.map((opt, idx) => (
-                  <div
-                    key={opt.id}
-                    className="p-3 rounded-xl bg-black/40 border border-zinc-800 flex items-center justify-between text-xs"
-                  >
-                    <div>
-                      <span className="text-amber-400 font-bold">Option #{idx + 1}: </span>
-                      <strong className="text-white">{opt.title}</strong>
-                    </div>
-                    <span className="font-mono text-sm font-black text-amber-300">
-                      ${opt.price}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="pt-2">
-                <Link
-                  href="/admin?tab=weekend-drop"
-                  className="block w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-center text-xs font-bold text-stone-300 transition"
-                >
-                  Edit Drop Title, Cutoff Date &amp; Plates &rarr;
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* VIEW 4: ⏱️ SMOKER RIG TIMERS & PROBES */}
-        {activeView === "rig-timers" && (
-          <div className="space-y-4 animate-in fade-in duration-200">
-            <AdminPitmasterApp theme="night" />
-          </div>
-        )}
-
-        {/* VIEW 5: 📅 SMOKER CALENDAR */}
-        {activeView === "calendar" && (
-          <div className="space-y-4 animate-in fade-in duration-200">
-            <div className="rounded-2xl bg-gradient-to-b from-[#181310] via-[#120F0D] to-[#0A0908] border border-amber-500/40 p-5 shadow-xl text-center space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-2xl mx-auto">
-                📅
-              </div>
-              <h3 className="text-lg font-bold text-white">Live Smoker Rig Calendar</h3>
-              <p className="text-xs text-stone-300 max-w-sm mx-auto">
-                Review your upcoming booked catering dates, wedding spreads, and Saturday pit drops in the interactive calendar.
-              </p>
-              <div className="pt-2">
-                <Link
-                  href="/admin?tab=calendar"
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#EA580C] hover:bg-[#FF7A00] text-white text-xs font-bold uppercase tracking-wider shadow-lg transition"
-                >
-                  <span>Open Interactive Event Calendar &rarr;</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 4. MASTER LAUNCHER & SIGNOUT FOOTER */}
-        <div className="pt-4 border-t border-zinc-800/80 space-y-2.5">
-          <Link
-            href="/admin"
-            className="w-full min-h-[48px] py-3 px-4 rounded-2xl bg-gradient-to-r from-zinc-800 to-zinc-900 hover:from-zinc-700 hover:to-zinc-800 border border-zinc-700 text-stone-200 font-bold text-xs uppercase tracking-wider shadow-md flex items-center justify-between transition"
-          >
-            <div className="flex items-center gap-2">
-              <span>💻</span>
-              <span>Launch Full Operations Hub (All 12 Modules)</span>
-            </div>
-            <span>&rarr;</span>
-          </Link>
-
-          <div className="flex items-center justify-between text-[11px] text-stone-500 px-1 pt-1">
-            <Link href="/" className="hover:text-amber-400 transition">
-              &larr; Return to Public Website
-            </Link>
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="hover:text-red-400 transition cursor-pointer"
-            >
-              Sign Out
-            </button>
+            )}
           </div>
         </div>
+      )}
 
-      </main>
     </div>
   );
 }

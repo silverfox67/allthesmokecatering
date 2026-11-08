@@ -1,10 +1,16 @@
-const CACHE_NAME = 'ats-ops-cache-v1';
+const CACHE_NAME = 'ats-ops-cache-v2';
 const OFFLINE_ASSETS = [
   '/',
   '/admin',
+  '/app',
+  '/portal-manifest.json',
+  '/manifest.json',
   '/favicon.ico',
   '/brand/ats-monogram.png',
-  '/brand/ats-full-badge.png'
+  '/brand/allthesmoke-master-crest.png',
+  '/icons/portal-icon-192.png',
+  '/icons/portal-icon-512.png',
+  '/icons/portal-touch-icon.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -36,4 +42,3 @@ self.addEventListener('fetch', (event) => {
     )
   );
 });
-
