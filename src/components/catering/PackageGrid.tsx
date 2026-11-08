@@ -161,9 +161,8 @@ export function PackageGrid() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span
-                  className={`text-xs uppercase font-extrabold tracking-widest ${
-                    isPopular ? "text-[#FF8C38]" : "text-[#C8A97E]"
-                  }`}
+                  className={`text-xs uppercase font-extrabold tracking-widest ${isPopular ? "text-[#FF8C38]" : "text-[#C8A97E]"
+                    }`}
                 >
                   {pkg.minimumGuests}+ Guests Minimum
                 </span>
@@ -183,9 +182,8 @@ export function PackageGrid() {
                   Starting at
                 </span>
                 <span
-                  className={`text-3xl sm:text-4xl font-black ${
-                    isPopular ? "text-[#FF8C38]" : "text-[#C8A97E]"
-                  }`}
+                  className={`text-3xl sm:text-4xl font-black ${isPopular ? "text-[#FF8C38]" : "text-[#C8A97E]"
+                    }`}
                 >
                   ${pkg.pricePerPerson.toFixed(2)}
                 </span>
@@ -221,11 +219,10 @@ export function PackageGrid() {
               <button
                 type="button"
                 onClick={() => handleBookPackage(pkg.id)}
-                className={`w-full min-h-[46px] px-5 py-3 rounded-xl font-display text-base font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center text-center ${
-                  isPopular
+                className={`w-full min-h-[46px] px-5 py-3 rounded-xl font-display text-base font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center text-center ${isPopular
                     ? "bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] text-white [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)]"
                     : "bg-black/60 border border-[#C8A97E] backdrop-blur-md text-[#C8A97E] hover:border-[#FF7A00] hover:text-white hover:bg-black/80"
-                }`}
+                  }`}
               >
                 Book {pkg.name} →
               </button>
@@ -243,9 +240,8 @@ export function PackageGrid() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span
-                  className={`text-xs uppercase font-extrabold tracking-wider ${
-                    isPopular ? "text-[#FF8C38]" : "text-[#C8A97E]"
-                  }`}
+                  className={`text-xs uppercase font-extrabold tracking-wider ${isPopular ? "text-[#FF8C38]" : "text-[#C8A97E]"
+                    }`}
                 >
                   {bundle.serves}
                 </span>
@@ -265,9 +261,8 @@ export function PackageGrid() {
                   Turnkey Bundle:
                 </span>
                 <span
-                  className={`text-3xl sm:text-4xl font-black ${
-                    isPopular ? "text-[#FF8C38]" : "text-[#C8A97E]"
-                  }`}
+                  className={`text-3xl sm:text-4xl font-black ${isPopular ? "text-[#FF8C38]" : "text-[#C8A97E]"
+                    }`}
                 >
                   ${bundle.price.toFixed(2)}
                 </span>
@@ -303,11 +298,10 @@ export function PackageGrid() {
               <button
                 type="button"
                 onClick={() => handleBookPackage(bundle.id)}
-                className={`w-full min-h-[46px] px-5 py-3 rounded-xl font-display text-base font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center text-center ${
-                  isPopular
+                className={`w-full min-h-[46px] px-5 py-3 rounded-xl font-display text-base font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center text-center ${isPopular
                     ? "bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] text-white [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)]"
                     : "bg-black/60 border border-[#C8A97E] backdrop-blur-md text-[#C8A97E] hover:border-[#FF7A00] hover:text-white hover:bg-black/80"
-                }`}
+                  }`}
               >
                 Reserve {bundle.name} →
               </button>
@@ -325,9 +319,8 @@ export function PackageGrid() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span
-                className={`text-xs font-bold uppercase tracking-wider ${
-                  isPopular ? "text-[#FF8C38]" : "text-[#C8A97E]"
-                }`}
+                className={`text-xs font-bold uppercase tracking-wider ${isPopular ? "text-[#FF8C38]" : "text-[#C8A97E]"
+                  }`}
               >
                 {tier.mealCount} Vacuum-Sealed Meals
               </span>
@@ -344,9 +337,8 @@ export function PackageGrid() {
 
             <div className="flex items-baseline gap-2">
               <span
-                className={`text-3xl sm:text-4xl font-black ${
-                  isPopular ? "text-[#FF8C38]" : "text-[#C8A97E]"
-                }`}
+                className={`text-3xl sm:text-4xl font-black ${isPopular ? "text-[#FF8C38]" : "text-[#C8A97E]"
+                  }`}
               >
                 ${tier.price.toFixed(2)}
               </span>
@@ -384,11 +376,10 @@ export function PackageGrid() {
             <button
               type="button"
               onClick={() => handleBookPackage(tier.id)}
-              className={`w-full min-h-[46px] px-5 py-3 rounded-xl font-display text-base font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center text-center ${
-                isPopular
+              className={`w-full min-h-[46px] px-5 py-3 rounded-xl font-display text-base font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center text-center ${isPopular
                   ? "bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] text-white [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)]"
                   : "bg-black/60 border border-[#C8A97E] backdrop-blur-md text-[#C8A97E] hover:border-[#FF7A00] hover:text-white hover:bg-black/80"
-              }`}
+                }`}
             >
               Order {tier.name} →
             </button>
@@ -401,7 +392,7 @@ export function PackageGrid() {
   return (
     <section
       id="packages"
-      className="py-16 sm:py-28 px-4 sm:px-8 bg-[#121214] border-y border-zinc-800/80 relative overflow-hidden"
+      className="pt-16 sm:pt-24 pb-8 sm:pb-12 px-4 sm:px-8 bg-[#121214] border-t border-zinc-800/80 relative overflow-hidden"
       aria-labelledby="packages-heading"
     >
       {/* Ambient Radial Ember Backlight to break dead space */}
@@ -448,11 +439,10 @@ export function PackageGrid() {
                   aria-selected={isActive}
                   aria-controls={`panel-desktop-${cat.key}`}
                   onClick={() => setActiveTab(cat.key)}
-                  className={`p-5 rounded-2xl text-left transition-all duration-200 relative overflow-hidden flex flex-col justify-between group cursor-pointer ${
-                    isActive
+                  className={`p-5 rounded-2xl text-left transition-all duration-200 relative overflow-hidden flex flex-col justify-between group cursor-pointer ${isActive
                       ? "bg-[#1A1816] border-2 border-[#EA580C] shadow-[0_0_24px_rgba(234,88,12,0.3)] ring-1 ring-[#EA580C]/50"
                       : "bg-[#151518]/90 border border-zinc-800 hover:border-zinc-700 hover:bg-[#1A1A1E]"
-                  }`}
+                    }`}
                 >
                   {isActive && (
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#EA580C] via-[#FF8C38] to-[#C8A97E]" />
@@ -462,20 +452,18 @@ export function PackageGrid() {
                     <div className="flex items-center justify-between">
                       <span className="text-xl" aria-hidden="true">{cat.icon}</span>
                       <span
-                        className={`text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
-                          isActive
+                        className={`text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${isActive
                             ? "bg-[#EA580C]/20 border-[#EA580C]/60 text-[#FF8C38]"
                             : "bg-zinc-900 border-zinc-800 text-zinc-400"
-                        }`}
+                          }`}
                       >
                         {cat.countBadge}
                       </span>
                     </div>
 
                     <h3
-                      className={`font-display text-xl sm:text-2xl font-bold tracking-wide transition-colors ${
-                        isActive ? "text-white" : "text-zinc-200 group-hover:text-white"
-                      }`}
+                      className={`font-display text-xl sm:text-2xl font-bold tracking-wide transition-colors ${isActive ? "text-white" : "text-zinc-200 group-hover:text-white"
+                        }`}
                     >
                       {cat.title}
                     </h3>
@@ -487,17 +475,15 @@ export function PackageGrid() {
 
                   <div className="pt-4 mt-3 border-t border-zinc-800/80 flex items-center justify-between">
                     <span
-                      className={`text-xs font-black tracking-wide ${
-                        isActive ? "text-[#FF8C38]" : "text-[#C8A97E]"
-                      }`}
+                      className={`text-xs font-black tracking-wide ${isActive ? "text-[#FF8C38]" : "text-[#C8A97E]"
+                        }`}
                     >
                       {cat.priceAnchor}
                     </span>
 
                     <span
-                      className={`text-[11px] font-bold inline-flex items-center gap-1 ${
-                        isActive ? "text-[#FF8C38]" : "text-zinc-400 group-hover:text-zinc-200"
-                      }`}
+                      className={`text-[11px] font-bold inline-flex items-center gap-1 ${isActive ? "text-[#FF8C38]" : "text-zinc-400 group-hover:text-zinc-200"
+                        }`}
                     >
                       {isActive ? "● Viewing" : "Select →"}
                     </span>
