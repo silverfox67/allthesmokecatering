@@ -5,6 +5,7 @@ import { OrderTrayProvider } from "@/context/OrderTrayContext";
 import { Hero } from "@/components/home/Hero";
 import { AboutSection } from "@/components/home/AboutSection";
 import { PackageGrid } from "@/components/catering/PackageGrid";
+import { WeekendDropCard } from "@/components/home/WeekendDropCard";
 import { ButcherBlockMenu } from "@/components/home/ButcherBlockMenu";
 import { TikTokReels } from "@/components/social/TikTokReels";
 import { TestimonialSection } from "@/components/home/TestimonialSection";
@@ -27,6 +28,9 @@ export default function HomePage() {
 
         {/* 3. Spotlight 3x3 Packages: Rich Charcoal (#121214) with Glowing Orange Active State */}
         <PackageGrid />
+
+        {/* 3.5. Weekend Smokehouse Drop: Limited Saturday Plate Pre-Orders & Zelle Reservations */}
+        <WeekendDropCard />
 
         {/* 4. Pitmaster Menu: Warm Butcher Paper (#FAF8F5) with Sticky Category Pills, Weekly Chalkboard & Inline ZIP Calculator */}
         <ButcherBlockMenu />

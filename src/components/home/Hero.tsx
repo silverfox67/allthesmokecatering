@@ -154,6 +154,15 @@ export function Hero() {
             </svg>
             <span>{SITE_CONFIG.brandEmail}</span>
           </a>
+
+          {/* Saturday Drop Highlight Pill */}
+          <a
+            href="#weekend-drop"
+            className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#EA580C]/20 border border-[#EA580C]/40 text-[#FF7A00] hover:bg-[#EA580C]/30 transition text-xs font-bold"
+          >
+            <span>🔥 Sat Nov 14 Smokehouse Drop</span>
+            <span className="text-[10px] text-amber-200 underline font-semibold">Pre-Order &rarr;</span>
+          </a>
         </div>
       </aside>
 

@@ -10,6 +10,7 @@ import { useWeeklyChalkboard } from "@/utils/chalkboard-specials";
 import { SmokehouseOrderTray } from "@/components/tray/SmokehouseOrderTray";
 import { SmokehouseTrayButton } from "@/components/tray/SmokehouseTrayButton";
 import { QuoteModal } from "@/components/forms/QuoteModal";
+import { WeekendDropCard } from "@/components/home/WeekendDropCard";
 import { Footer } from "@/components/layout/Footer";
 
 function ChalkboardContent() {
@@ -66,6 +67,9 @@ function ChalkboardContent() {
           </button>
         )}
       </div>
+
+      {/* Exclusive Weekend Dinner Drop Pop-Up */}
+      <WeekendDropCard />
 
       {/* 4-PIECE MITERED WEATHERED BARNWOOD TIMBER FRAME */}
       <div className="mitered-wood-frame-container shadow-2xl">
