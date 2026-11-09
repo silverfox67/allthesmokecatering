@@ -37,11 +37,11 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/brand/ats-monogram.png", type: "image/png" },
+      { url: "/icons/customer-icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/customer-icon-512.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-      { url: "/brand/ats-full-badge.png", sizes: "740x740", type: "image/png" },
+      { url: "/icons/customer-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
     shortcut: "/favicon.ico",
   },
@@ -158,6 +158,17 @@ export default function RootLayout({
           as="font"
           type="font/woff2"
           crossOrigin="anonymous"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.deferredPwaPrompt = null;
+              window.addEventListener('beforeinstallprompt', function(e) {
+                e.preventDefault();
+                window.deferredPwaPrompt = e;
+              });
+            `,
+          }}
         />
         <script
           type="application/ld+json"

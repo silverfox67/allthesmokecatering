@@ -16,7 +16,6 @@ export function PitmasterAppClient() {
 
   // Live Digital Biz Card States
   const [showBizCard, setShowBizCard] = useState(false);
-  const [qrDestination, setQrDestination] = useState<"quote" | "review">("quote");
   const [isSunlightMode, setIsSunlightMode] = useState(false);
   const [qrDataUrl, setQrDataUrl] = useState<string>("");
 
@@ -50,9 +49,14 @@ export function PitmasterAppClient() {
         });
       }
 
-      // 4. Capture native beforeinstallprompt event
+      // 4. Capture native beforeinstallprompt event (check early head capture first)
+      if ((window as any).deferredPwaPrompt) {
+        setDeferredPrompt((window as any).deferredPwaPrompt);
+      }
+
       const handleBeforeInstall = (e: any) => {
         e.preventDefault();
+        (window as any).deferredPwaPrompt = e;
         setDeferredPrompt(e);
       };
       window.addEventListener("beforeinstallprompt", handleBeforeInstall);
@@ -61,6 +65,7 @@ export function PitmasterAppClient() {
         setInstallSuccess(true);
         setInstallNotice(null);
         setDeferredPrompt(null);
+        (window as any).deferredPwaPrompt = null;
       };
       window.addEventListener("appinstalled", handleAppInstalled);
 
@@ -71,12 +76,9 @@ export function PitmasterAppClient() {
     }
   }, []);
 
-  // Generate QR Code dynamically
+  // Generate QR Code pointing directly to official website
   useEffect(() => {
-    let targetUrl = "https://allthesmokecatering.com/#contact";
-    if (qrDestination === "review") {
-      targetUrl = "https://allthesmokecatering.com/review";
-    }
+    const targetUrl = "https://allthesmokecatering.com";
 
     QRCode.toDataURL(targetUrl, {
       width: 320,
@@ -88,7 +90,7 @@ export function PitmasterAppClient() {
     })
       .then((url) => setQrDataUrl(url))
       .catch((err) => console.error("QR Code Error:", err));
-  }, [qrDestination, isSunlightMode]);
+  }, [isSunlightMode]);
 
   // Handle Native PWA Install
   const handleInstallClick = () => {
@@ -97,15 +99,17 @@ export function PitmasterAppClient() {
       return;
     }
 
-    if (deferredPrompt) {
+    const promptToUse = deferredPrompt || (window as any).deferredPwaPrompt;
+    if (promptToUse) {
       try {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choice: any) => {
+        promptToUse.prompt();
+        promptToUse.userChoice.then((choice: any) => {
           if (choice?.outcome === "accepted") {
             setInstallSuccess(true);
             setInstallNotice(null);
           }
           setDeferredPrompt(null);
+          (window as any).deferredPwaPrompt = null;
         });
         return;
       } catch (err) {
@@ -386,45 +390,40 @@ END:VCARD`;
                   )}
                 </div>
 
-                <div className="space-y-1">
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                <div className="space-y-1.5">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">
                     📷 Point Phone Camera to Scan
                   </span>
-                  <p className="text-[11px] text-stone-300 font-medium">
-                    {qrDestination === "quote"
-                      ? "Opens Instant Catering Quote & Date Form"
-                      : "Opens Google 5-Star Review Booster"}
+                  <p className={`text-xs font-semibold ${isSunlightMode ? "text-stone-800" : "text-stone-300"}`}>
+                    Scans directly to <strong>allthesmokecatering.com</strong>
                   </p>
                 </div>
 
-                {/* Sub-Buttons Below the Biz Card (Quote & Reviews) */}
-                <div className="pt-2 border-t border-zinc-800">
-                  <span className="text-[10px] uppercase font-bold text-stone-400 tracking-wider block mb-1.5">
-                    QR Scan Destination:
-                  </span>
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setQrDestination("quote")}
-                      className={`py-1.5 px-2 rounded-lg text-[11px] font-bold transition ${
-                        qrDestination === "quote"
-                          ? "bg-[#EA580C] text-white shadow-sm"
-                          : "bg-black/60 text-stone-300 hover:text-white border border-stone-800"
-                      }`}
-                    >
-                      📋 Quote Form
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setQrDestination("review")}
-                      className={`py-1.5 px-2 rounded-lg text-[11px] font-bold transition ${
-                        qrDestination === "review"
-                          ? "bg-[#EA580C] text-white shadow-sm"
-                          : "bg-black/60 text-stone-300 hover:text-white border border-stone-800"
-                      }`}
-                    >
-                      ⭐ 5-Star Review
-                    </button>
+                {/* Authentic Card Contact Details */}
+                <div
+                  className={`p-3 rounded-xl border text-xs text-left space-y-1.5 ${
+                    isSunlightMode
+                      ? "bg-white/70 border-stone-300 text-stone-900"
+                      : "bg-black/60 border-zinc-800 text-stone-300"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-amber-400 font-mono text-[11px]">“MR. SMOKE”</span>
+                    <span className={`text-[10.5px] font-bold ${isSunlightMode ? "text-stone-700" : "text-stone-400"}`}>
+                      Live-Fire Pitmaster
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between pt-1 border-t border-zinc-800/60">
+                    <span className="text-[11px] text-stone-400">Phone:</span>
+                    <a href="tel:7737079988" className="text-amber-300 font-bold hover:underline">
+                      (773) 707-9988
+                    </a>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] text-stone-400">Email:</span>
+                    <a href="mailto:bbqcateringking83@gmail.com" className="text-stone-200 hover:underline text-[11px]">
+                      bbqcateringking83@gmail.com
+                    </a>
                   </div>
                 </div>
 
@@ -433,9 +432,9 @@ END:VCARD`;
                   <button
                     type="button"
                     onClick={handleDownloadVCard}
-                    className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:brightness-105 text-stone-950 font-black text-xs uppercase tracking-wider shadow-md transition active:scale-98"
+                    className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#EA580C] hover:brightness-105 text-white font-extrabold text-xs uppercase tracking-wider shadow-md transition active:scale-98 cursor-pointer flex items-center justify-center gap-2"
                   >
-                    <span>📲 Save Marion to Contacts (.vcf)</span>
+                    <span>📲 Save Marion to Phone Contacts (.vcf)</span>
                   </button>
                 </div>
               </div>

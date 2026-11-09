@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ats-ops-cache-v2';
+const CACHE_NAME = 'ats-ops-cache-v3';
 const OFFLINE_ASSETS = [
   '/',
   '/admin',
@@ -10,7 +10,10 @@ const OFFLINE_ASSETS = [
   '/brand/allthesmoke-master-crest.png',
   '/icons/portal-icon-192.png',
   '/icons/portal-icon-512.png',
-  '/icons/portal-touch-icon.png'
+  '/icons/portal-touch-icon.png',
+  '/icons/customer-icon-192.png',
+  '/icons/customer-icon-512.png',
+  '/icons/customer-touch-icon.png'
 ];
 
 self.addEventListener('install', (event) => {
