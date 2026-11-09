@@ -1,9 +1,10 @@
-const CACHE_NAME = 'ats-ops-cache-v4';
+const CACHE_NAME = 'ats-ops-cache-v5';
 const OFFLINE_ASSETS = [
   '/',
   '/admin',
   '/chef',
   '/app',
+  '/card',
   '/portal-manifest.json',
   '/manifest.json',
   '/favicon.ico',

@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { PitmasterAppClient } from "./PitmasterAppClient";
+import { PublicCustomerAppClient } from "./PublicCustomerAppClient";
 
 export const viewport: Viewport = {
-  themeColor: "#EA580C",
+  themeColor: "#0A0A0A",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -11,29 +11,25 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "ATS Ops | Pitmaster Marion Bolden",
-  description: "Executive catering operations console & live digital business card for Pitmaster Marion Bolden.",
-  manifest: "/portal-manifest.json",
+  title: "All The Smoke BBQ | Official Customer App",
+  description: "Official mobile ordering, Saturday Smokehouse drops & catering quote calculator for All The Smoke BBQ Chicago.",
+  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "ATS Ops",
+    title: "All The Smoke",
   },
   icons: {
     icon: [
-      { url: "/icons/portal-icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icons/portal-icon-512.png", sizes: "512x512", type: "image/png" },
+      { url: "/icons/customer-icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/customer-icon-512.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [
-      { url: "/icons/portal-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/icons/customer-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
-  },
-  robots: {
-    index: false,
-    follow: false,
   },
 };
 
-export default function PitmasterAppPage() {
-  return <PitmasterAppClient />;
+export default function PublicAppPage() {
+  return <PublicCustomerAppClient />;
 }

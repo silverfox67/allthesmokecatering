@@ -76,9 +76,9 @@ export function PitmasterAppClient() {
     }
   }, []);
 
-  // Generate QR Code pointing directly to official website
+  // Generate QR Code pointing directly to official digital card landing page
   useEffect(() => {
-    const targetUrl = "https://allthesmokecatering.com";
+    const targetUrl = "https://allthesmokecatering.com/card";
 
     QRCode.toDataURL(targetUrl, {
       width: 320,
@@ -391,7 +391,7 @@ END:VCARD`;
                     📷 Point Phone Camera to Scan
                   </span>
                   <p className={`text-xs font-semibold ${isSunlightMode ? "text-stone-800" : "text-stone-300"}`}>
-                    Scans directly to <strong>allthesmokecatering.com</strong>
+                    Client scans with phone camera to receive your digital card
                   </p>
                 </div>
 
@@ -416,21 +416,22 @@ END:VCARD`;
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] text-stone-400">Email:</span>
-                    <a href="mailto:bbqcateringking83@gmail.com" className="text-stone-200 hover:underline text-[11px]">
-                      bbqcateringking83@gmail.com
+                    <a href="mailto:info@allthesmokecatering.com" className="text-stone-200 hover:underline text-[11px]">
+                      info@allthesmokecatering.com
                     </a>
                   </div>
                 </div>
 
-                {/* 1-Tap Save to Phone Contacts (.vcf) */}
+                {/* Preview Client Card Landing Page Link */}
                 <div className="pt-1">
-                  <button
-                    type="button"
-                    onClick={handleDownloadVCard}
-                    className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#EA580C] hover:brightness-105 text-white font-extrabold text-xs uppercase tracking-wider shadow-md transition active:scale-98 cursor-pointer flex items-center justify-center gap-2"
+                  <a
+                    href="/card"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 text-amber-300 font-extrabold text-xs uppercase tracking-wider border border-amber-500/40 shadow-sm transition active:scale-98 cursor-pointer flex items-center justify-center gap-2"
                   >
-                    <span>📲 Save Marion to Phone Contacts (.vcf)</span>
-                  </button>
+                    <span>👁️ Preview Client Card Landing Page ↗</span>
+                  </a>
                 </div>
               </div>
             )}

@@ -37,3 +37,4 @@ export const metadata: Metadata = {
 export default function PitmasterAliasPage() {
   return <PitmasterAppClient />;
 }
+
