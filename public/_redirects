@@ -1,3 +1,4 @@
-/portal /app 302
-/crew /app 302
-/admin-app /app 302
+/portal /chef 302
+/crew /chef 302
+/pitmaster /chef 302
+/admin-app /chef 302

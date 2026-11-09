@@ -216,15 +216,15 @@ END:VCARD`;
 
   return (
     <div className="min-h-screen bg-[#120F10] text-slate-100 flex flex-col items-center justify-center p-3 sm:p-4 selection:bg-[#EA580C] selection:text-white">
-      
+
       {/* MASTER EXECUTIVE CARD (MATCHING BLIND COOK EXACT PROPORTIONS & AESTHETICS) */}
       <div className="w-full max-w-md bg-[#181416]/95 border border-[#EA580C]/45 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-xl relative my-auto">
-        
+
         {/* Top Flame Ember Gradient Accent Line */}
         <div className="h-1 bg-gradient-to-r from-[#EA580C] via-[#FF9E2C] to-[#C8A97E]" />
 
         <div className="p-5 sm:p-7 text-center space-y-4 sm:space-y-5">
-          
+
           {/* Centered App Icon Box with Glowing Green Dot */}
           <div className="relative w-20 h-20 sm:w-22 sm:h-22 mx-auto">
             <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-2xl bg-gradient-to-br from-[#EA580C]/30 to-[#181416] border-2 border-amber-500/70 flex items-center justify-center shadow-lg shadow-[#EA580C]/25 overflow-hidden p-2">
@@ -259,7 +259,7 @@ END:VCARD`;
 
           {/* 4 PROMINENT VERTICAL ACTION BUTTONS */}
           <div className="flex flex-col gap-3 pt-1">
-            
+
             {/* Button 1: Download & Install App (Flame Ember Gradient) */}
             <button
               type="button"
@@ -314,11 +314,10 @@ END:VCARD`;
             <button
               type="button"
               onClick={() => setShowBizCard(!showBizCard)}
-              className={`w-full p-3.5 rounded-xl flex items-center justify-between border shadow-md active:scale-[0.98] transition-all text-left cursor-pointer ${
-                showBizCard
+              className={`w-full p-3.5 rounded-xl flex items-center justify-between border shadow-md active:scale-[0.98] transition-all text-left cursor-pointer ${showBizCard
                   ? "bg-[#2A1D13] border-[#FF7A00] text-white"
                   : "bg-slate-900/90 hover:bg-slate-800 border-amber-500/30 text-white"
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg bg-[#EA580C]/20 text-[#FF7A00] flex items-center justify-center shrink-0 text-lg">
@@ -343,7 +342,7 @@ END:VCARD`;
             {/* EXPANDABLE LIVE DIGITAL BUSINESS CARD BOX */}
             {showBizCard && (
               <div className="p-4 rounded-2xl border-2 transition-all duration-300 animate-in fade-in zoom-in-95 space-y-3.5 text-center shadow-2xl bg-gradient-to-b from-[#1C1612] via-[#120F0D] to-[#0A0908] border-amber-500/60">
-                
+
                 {/* Sunlight Toggle Pill */}
                 <div className="flex items-center justify-between text-xs pb-2 border-b border-zinc-800">
                   <span className="text-stone-400 font-bold text-[11px]">Display Mode:</span>
@@ -351,18 +350,16 @@ END:VCARD`;
                     <button
                       type="button"
                       onClick={() => setIsSunlightMode(false)}
-                      className={`px-2.5 py-0.5 rounded-md font-bold text-[10.5px] transition ${
-                        !isSunlightMode ? "bg-[#EA580C] text-white" : "text-stone-400"
-                      }`}
+                      className={`px-2.5 py-0.5 rounded-md font-bold text-[10.5px] transition ${!isSunlightMode ? "bg-[#EA580C] text-white" : "text-stone-400"
+                        }`}
                     >
                       Obsidian
                     </button>
                     <button
                       type="button"
                       onClick={() => setIsSunlightMode(true)}
-                      className={`px-2.5 py-0.5 rounded-md font-bold text-[10.5px] transition ${
-                        isSunlightMode ? "bg-amber-200 text-stone-950 font-black" : "text-stone-400"
-                      }`}
+                      className={`px-2.5 py-0.5 rounded-md font-bold text-[10.5px] transition ${isSunlightMode ? "bg-amber-200 text-stone-950 font-black" : "text-stone-400"
+                        }`}
                     >
                       ☀️ Sunlight
                     </button>
@@ -371,11 +368,10 @@ END:VCARD`;
 
                 {/* The QR Display */}
                 <div
-                  className={`p-3 rounded-2xl mx-auto inline-block shadow-xl ${
-                    isSunlightMode
+                  className={`p-3 rounded-2xl mx-auto inline-block shadow-xl ${isSunlightMode
                       ? "bg-white border-2 border-black"
                       : "bg-[#FFF7ED] border-2 border-amber-500/80"
-                  }`}
+                    }`}
                 >
                   {qrDataUrl ? (
                     <img
@@ -401,11 +397,10 @@ END:VCARD`;
 
                 {/* Authentic Card Contact Details */}
                 <div
-                  className={`p-3 rounded-xl border text-xs text-left space-y-1.5 ${
-                    isSunlightMode
+                  className={`p-3 rounded-xl border text-xs text-left space-y-1.5 ${isSunlightMode
                       ? "bg-white/70 border-stone-300 text-stone-900"
                       : "bg-black/60 border-zinc-800 text-stone-300"
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-amber-400 font-mono text-[11px]">“MR. SMOKE”</span>
@@ -514,7 +509,7 @@ END:VCARD`;
       {showIntakeModal && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in">
           <div className="relative w-full max-w-md bg-[#181416] border border-amber-500/50 rounded-3xl p-5 sm:p-6 shadow-2xl space-y-4">
-            
+
             <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
               <div className="flex items-center gap-2">
                 <span className="text-xl">📞</span>

@@ -87,12 +87,12 @@ export function CustomerPWAInstallPrompt() {
       <div className="relative rounded-2xl bg-gradient-to-b from-[#181310]/95 via-[#120F0D]/95 to-[#0A0908]/95 border-2 border-amber-500/40 p-3.5 sm:p-4 shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-xl">
         <div className="flex items-center gap-3">
           {/* ATS Monogram Icon */}
-          <div className="relative w-12 h-12 shrink-0 rounded-xl overflow-hidden border border-amber-500/50 shadow-md bg-black">
+          <div className="relative w-12 h-12 shrink-0 rounded-xl overflow-hidden border border-amber-500/50 shadow-md bg-black p-1 flex items-center justify-center">
             <Image
-              src="/brand/ats-monogram.png"
+              src="/icons/customer-icon-192.png"
               alt="All The Smoke App"
               fill
-              className="object-cover"
+              className="object-contain"
             />
           </div>
 

@@ -100,14 +100,14 @@ export function Footer() {
               <span className="text-[#F4EFEA] font-semibold">Marion Bolden</span>
             </p>
             <p className="pt-0.5">
-              <Link
-                href="/app"
-                className="inline-flex items-center gap-1.5 text-[11px] text-[#C8A97E]/75 hover:text-[#EA580C] font-semibold transition-colors"
-                title="Pitmaster Operations App &amp; Console"
+              <a
+                href="/#contact"
+                className="inline-flex items-center gap-1.5 text-[11px] text-amber-400/90 hover:text-amber-300 font-semibold transition-colors"
+                title="All The Smoke Customer Mobile App"
               >
-                <span>🔒 Pitmaster Portal</span>
+                <span>📱 Smokehouse Mobile App</span>
                 <span>&rarr;</span>
-              </Link>
+              </a>
             </p>
             <p className="pt-2 text-stone-400">
               Designed By:{" "}

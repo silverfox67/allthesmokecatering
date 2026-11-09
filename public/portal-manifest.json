@@ -1,10 +1,10 @@
 {
   "name": "ATS Ops | Pitmaster Marion Bolden",
   "short_name": "ATS Ops",
-  "id": "ats-ops-pitmaster-pwa",
+  "id": "ats-chef-pitmaster-pwa",
   "description": "Executive Catering & Booking Portal for Pitmaster Marion Bolden — All The Smoke BBQ & Catering",
-  "start_url": "/app",
-  "scope": "/app",
+  "start_url": "/chef",
+  "scope": "/chef",
   "display": "standalone",
   "background_color": "#120F10",
   "theme_color": "#EA580C",
