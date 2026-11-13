@@ -12,10 +12,14 @@ export const metadata: Metadata = {
   title: "Live Smokehouse & Catering Gallery | All The Smoke Catering Chicago",
   description:
     "Explore authentic photos and live-fire pit videos from All The Smoke Catering in Chicagoland. Prime brisket, St. Louis ribs, custom mobile trailer smoker, and full banquet spreads.",
+  alternates: {
+    canonical: "https://allthesmokecatering.com/gallery/",
+  },
   openGraph: {
     title: "All The Smoke Catering | Smokehouse Photo & Video Gallery",
     description:
       "Real hardwood smoke, live mobile trailer smoker operations, and handcrafted BBQ catering throughout Chicagoland.",
+    url: "https://allthesmokecatering.com/gallery",
     images: [{ url: "/images/about/pitmaster-brisket-carve.webp" }],
   },
 };

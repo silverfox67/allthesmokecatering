@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Explore our 3 signature per-person BBQ catering packages starting at $24.95/person. Hardwood-smoked Texas brisket, ribs, scratch sides, and complete buffet setup across Chicagoland.",
   alternates: {
-    canonical: "https://allthesmokecatering.com/catering/per-person",
+    canonical: "https://allthesmokecatering.com/catering/per-person/",
   },
   openGraph: {
     title: "Per-Person Smokehouse Buffet Packages | All The Smoke Catering",

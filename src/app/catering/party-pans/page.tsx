@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Ready-to-serve smokehouse party pans delivered steaming hot for game days, tailgates, and office parties. Packages from $285 flat serving 12 to 35 guests in Chicago.",
   alternates: {
-    canonical: "https://allthesmokecatering.com/catering/party-pans",
+    canonical: "https://allthesmokecatering.com/catering/party-pans/",
   },
   openGraph: {
     title: "Turnkey BBQ Party Pans & Drop-Off Bundles | All The Smoke Catering",

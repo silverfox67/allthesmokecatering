@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Vacuum-sealed, hardwood-smoked lean meats and wholesome clean sides. 5-pack, 10-pack, and bulk smokehouse tiers from $15.62/meal in Chicagoland.",
   alternates: {
-    canonical: "https://allthesmokecatering.com/catering/meal-prep",
+    canonical: "https://allthesmokecatering.com/catering/meal-prep/",
   },
   openGraph: {
     title: "Weekly Smoked BBQ Meal Prep Tiers | All The Smoke Catering",

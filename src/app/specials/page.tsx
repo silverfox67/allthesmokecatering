@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   alternates: {
-    canonical: "/specials",
+    canonical: "https://allthesmokecatering.com/specials/",
   },
 };
 

@@ -13,6 +13,13 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "Pitmaster Marion Bolden | Live Digital Business Card",
   description: "Official digital business card & direct contact save for Pitmaster Marion Bolden — All The Smoke BBQ & Catering Chicago.",
+  alternates: {
+    canonical: "https://allthesmokecatering.com/card/",
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
   openGraph: {
     title: "Pitmaster Marion Bolden | All The Smoke BBQ",
     description: "Save Marion to contacts, order Saturday smokehouse drops, or book live-fire BBQ catering.",

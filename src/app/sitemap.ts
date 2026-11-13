@@ -7,6 +7,7 @@ import { SITE_CONFIG } from "@/config/site-config";
  * - "Live fire catering Chicago"
  * - "Wedding BBQ catering 60634"
  * - "Slow smoked brisket Chicago"
+ * Note: Trailing slashes match next.config.js (`trailingSlash: true`) to avoid 308 redirects in GSC.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = `https://${SITE_CONFIG.primaryDomain}`;
@@ -14,52 +15,52 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     {
-      url: baseUrl,
+      url: `${baseUrl}/`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 1.0,
     },
     {
-      url: `${baseUrl}#packages`,
+      url: `${baseUrl}/catering/per-person/`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/catering/per-person`,
+      url: `${baseUrl}/catering/party-pans/`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/catering/party-pans`,
+      url: `${baseUrl}/catering/meal-prep/`,
       lastModified: now,
       changeFrequency: "weekly",
-      priority: 0.9,
+      priority: 0.85,
     },
     {
-      url: `${baseUrl}/catering/meal-prep`,
+      url: `${baseUrl}/specials/`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/gallery/`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: `${baseUrl}#delivery`,
+      url: `${baseUrl}/app/`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.75,
     },
     {
-      url: `${baseUrl}#reels`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}#quote`,
+      url: `${baseUrl}/review/`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.9,
+      priority: 0.6,
     },
   ];
 }

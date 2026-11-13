@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   title: "All The Smoke BBQ | Official Customer App",
   description: "Official mobile ordering, Saturday Smokehouse drops & catering quote calculator for All The Smoke BBQ Chicago.",
   manifest: "/manifest.json",
+  alternates: {
+    canonical: "https://allthesmokecatering.com/app/",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",

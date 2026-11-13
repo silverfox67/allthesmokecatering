@@ -9,10 +9,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.CF_PAGES_URL ? `https://${process.env.CF_PAGES_URL}` : undefined) ||
-  `https://${SITE_CONFIG.primaryDomain}`;
+const siteUrl = `https://${SITE_CONFIG.primaryDomain}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -117,6 +114,22 @@ const localBusinessSchema = {
   servesCuisine: ["Barbecue", "American", "Soul Food", "Southern"],
   priceRange: "$$",
   areaServed: SITE_CONFIG.serviceArea,
+  sameAs: [SITE_CONFIG.socials.tiktok],
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      opens: "10:00",
+      closes: "20:00",
+    },
+  ],
   founder: {
     "@type": "Person",
     name: SITE_CONFIG.legalName,
