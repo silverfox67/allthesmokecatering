@@ -162,6 +162,7 @@ export async function onRequestPost(context) {
     const dbRes = await supabaseRequest(env, "notes", {
       method: "POST",
       body: {
+        id: data.id ? String(data.id) : crypto.randomUUID(),
         title,
         category,
         priority: priorityLower,

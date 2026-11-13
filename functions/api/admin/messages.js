@@ -152,6 +152,7 @@ export async function onRequestPost(context) {
     const dbRes = await supabaseRequest(env, "email_logs", {
       method: "POST",
       body: {
+        id: crypto.randomUUID(),
         lead_id: leadId ? String(leadId) : null,
         recipient_email: recipientEmail,
         client_name: clientName || recipientEmail,

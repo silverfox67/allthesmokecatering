@@ -103,6 +103,7 @@ export async function onRequestPost(context) {
       await supabaseRequest(env, 'orders', {
         method: 'POST',
         body: {
+          id: crypto.randomUUID(),
           client_name: customerName,
           client_email: email || '',
           client_phone: phone,
