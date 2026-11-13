@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 export function HomepageLeadForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [websiteUrl, setWebsiteUrl] = useState("");
+  const formLoadedAtRef = useRef<number>(Date.now());
   const [successData, setSuccessData] = useState<{
     ticketId: string;
     message: string;
@@ -30,6 +32,15 @@ export function HomepageLeadForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (websiteUrl) {
+      setSuccessData({
+        ticketId: "ATS-QUOTE-9912",
+        message: "Catering inquiry received.",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     setErrorMessage("");
 
@@ -45,7 +56,8 @@ export function HomepageLeadForm() {
           notes: formData.message,
           packageName: "The Pitmaster Feast",
           serviceStyle: "Heated Drop-Off Delivery",
-          formLoadedAt: (Date.now() - 5000).toString(),
+          website_url: websiteUrl,
+          formLoadedAt: formLoadedAtRef.current.toString(),
         }),
       });
 
@@ -155,6 +167,17 @@ export function HomepageLeadForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+      {/* Invisible Anti-Spam Ghost Field */}
+      <input
+        type="text"
+        name="website_url"
+        value={websiteUrl}
+        onChange={(e) => setWebsiteUrl(e.target.value)}
+        className="hidden"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+      />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="space-y-2">
           <label htmlFor="lead-name" className="text-xs font-bold text-stone-300 uppercase tracking-wider block">

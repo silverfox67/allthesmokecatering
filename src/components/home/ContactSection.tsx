@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { SITE_CONFIG } from "@/config/site-config";
 import { CalendarDatePicker } from "@/components/forms/CalendarDatePicker";
 
 export function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [honeypot, setHoneypot] = useState("");
+  const formLoadedAtRef = useRef<number>(Date.now());
   const [successData, setSuccessData] = useState<{
     ticketId: string;
     message: string;
@@ -60,7 +61,8 @@ export function ContactSection() {
           packageName: formData.budgetOrPackage,
           notes: formData.message,
           serviceStyle: "Heated Drop-Off or On-Site Rig",
-          formLoadedAt: (Date.now() - 5000).toString(),
+          website_url: honeypot,
+          formLoadedAt: formLoadedAtRef.current.toString(),
         }),
       });
 
@@ -224,15 +226,16 @@ export function ContactSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5 relative z-10 text-xs sm:text-sm">
-                {/* Honeypot */}
+                {/* Invisible Anti-Spam Ghost Field */}
                 <input
                   type="text"
-                  name="honeypot"
+                  name="website_url"
                   value={honeypot}
                   onChange={(e) => setHoneypot(e.target.value)}
                   className="hidden"
                   tabIndex={-1}
                   autoComplete="off"
+                  aria-hidden="true"
                 />
 
                 {/* 1. First Name & Last Name */}
