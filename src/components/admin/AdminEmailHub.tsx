@@ -152,9 +152,15 @@ const getStatusBadge = (status: LeadStatus, isDay: boolean) => {
 
 export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminEmailHubProps) {
   const isDay = theme === "day" || theme === "butcher-paper";
-  // "inbox" (lead list + conversation) | "compose" (templates + reply composer).
-  // Defaults to "inbox", or "compose" when a lead was handed over to reply to.
-  const activeTab = subTab === "compose" || subTab === "inbox" ? subTab : prefilledLead ? "compose" : "inbox";
+  const [localTabOverride, setLocalTabOverride] = useState<"inbox" | "sent" | "compose" | null>(null);
+  const activeTab: "inbox" | "sent" | "compose" =
+    subTab === "compose" || subTab === "inbox" || subTab === "sent"
+      ? (localTabOverride || subTab)
+      : localTabOverride || (prefilledLead ? "compose" : "inbox");
+
+  useEffect(() => {
+    setLocalTabOverride(null);
+  }, [subTab]);
 
   const [leads, setLeads] = useState<PitmasterLead[]>([]);
   const [messages, setMessages] = useState<SentMessage[]>([]);
@@ -165,7 +171,10 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
   const [searchQuery, setSearchQuery] = useState("");
   const [filterTab, setFilterTab] = useState<"all" | "needs-reply" | "replied">("all");
 
-  // Reply Composer State
+  // Reply / Standalone Compose State
+  const [customRecipientEmail, setCustomRecipientEmail] = useState("");
+  const [customRecipientName, setCustomRecipientName] = useState("");
+  const [senderAlias, setSenderAlias] = useState<"info@allthesmokecatering.com" | "marion@allthesmokecatering.com">("info@allthesmokecatering.com");
   const [replySubject, setReplySubject] = useState("");
   const [replyBody, setReplyBody] = useState(""); // Starts empty so Marion can type his own response!
   const [isSending, setIsSending] = useState(false);
@@ -239,14 +248,16 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
 
   const handleSendReply = async () => {
     const currentLead = leads.find((l) => l.id === selectedLeadId) || prefilledLead;
-    if (!currentLead || !replyBody.trim()) return;
+    const targetEmail = (customRecipientEmail.trim() || currentLead?.email || "").trim();
+    const targetName = (customRecipientName.trim() || currentLead?.name || targetEmail).trim();
+    if (!targetEmail || !replyBody.trim()) return;
 
     setIsSending(true);
     setErrorAlert(null);
     setSuccessAlert(null);
 
     const subjectToSend =
-      replySubject.trim() || `Re: Catering Inquiry for ${currentLead.name} — All The Smoke BBQ`;
+      replySubject.trim() || `Message from All The Smoke BBQ & Catering`;
     const bodyToSend = replyBody.trim();
 
     try {
@@ -254,12 +265,12 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          leadId: currentLead.id,
-          recipientEmail: currentLead.email,
-          clientName: currentLead.name,
+          leadId: customRecipientEmail.trim() ? "" : (currentLead?.id || ""),
+          recipientEmail: targetEmail,
+          clientName: targetName,
           subject: subjectToSend,
           messageContent: bodyToSend,
-          senderEmail: "info@allthesmokecatering.com",
+          senderEmail: senderAlias,
         }),
       });
 
@@ -270,9 +281,9 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
 
       const newMsg: SentMessage = data.message || {
         id: "msg-" + Date.now(),
-        leadId: currentLead.id,
-        sender: "info@allthesmokecatering.com",
-        recipient: currentLead.email,
+        leadId: customRecipientEmail.trim() ? "" : (currentLead?.id || ""),
+        sender: senderAlias,
+        recipient: targetEmail,
         subject: subjectToSend,
         body: bodyToSend,
         status: "sent",
@@ -282,9 +293,9 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
       const updatedMsgs = [newMsg, ...messages];
       setMessages(updatedMsgs);
 
-      // Auto update lead status to "quoted" or "contacted" if previously "new"
+      // Auto update lead status to "quoted" if replying to an existing lead
       const updatedLeads = leads.map((l) => {
-        if (l.id === currentLead.id && l.status === "new") {
+        if (!customRecipientEmail.trim() && currentLead && l.id === currentLead.id && l.status === "new") {
           return { ...l, status: "quoted" as LeadStatus };
         }
         return l;
@@ -297,8 +308,12 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
         window.dispatchEvent(new Event("storage"));
       }
 
-      setSuccessAlert(`Reply sent to ${currentLead.name} (${currentLead.email})! BCC delivered to Marion & Todd.`);
+      setSuccessAlert(`Email sent to ${targetName} (${targetEmail}) from ${senderAlias}!`);
       setReplyBody(""); // Reset composer after sending
+      if (customRecipientEmail.trim()) {
+        setCustomRecipientEmail("");
+        setCustomRecipientName("");
+      }
     } catch (err: any) {
       setErrorAlert(err.message || "Failed to send email. Check Brevo API status.");
     } finally {
@@ -372,8 +387,11 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
       setLeads((prev) => [tempLead, ...prev]);
       setSelectedLeadId(tempLead.id);
     }
+    setCustomRecipientEmail(inb.senderEmail);
+    setCustomRecipientName(inb.senderName || inb.senderEmail);
     setReplySubject(inb.subject.startsWith("Re:") ? inb.subject : `Re: ${inb.subject}`);
     setReplyBody("");
+    setLocalTabOverride("compose");
     if (!inb.isRead) {
       handleMarkInboundRead(inb.id, true);
     }
@@ -558,7 +576,64 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
         </div>
       )}
 
+      {/* SENT EMAILS VIEW */}
+      {activeTab === "sent" && (
+        <div
+          className={`p-4 sm:p-5 rounded-2xl border space-y-3 ${
+            isDay
+              ? "bg-white border-stone-300 text-black shadow-2xs"
+              : "bg-zinc-900 border-zinc-800 text-stone-100"
+          }`}
+        >
+          <div className="flex items-center justify-between border-b pb-3 border-stone-200 dark:border-zinc-800">
+            <div>
+              <h3 className="text-sm font-black">📤 Sent Emails ({messages.length})</h3>
+              <p className={`text-[11px] font-bold ${isDay ? "text-stone-600" : "text-stone-400"}`}>
+                Every outbound email sent from your Pitmaster Dashboard
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setLocalTabOverride("compose")}
+              className="px-3 py-1.5 rounded-lg text-xs font-black bg-[#EA580C] hover:bg-[#C84A0A] text-white cursor-pointer"
+            >
+              + New Email
+            </button>
+          </div>
+          {messages.length === 0 ? (
+            <p className={`text-xs py-8 text-center font-bold ${isDay ? "text-stone-500" : "text-stone-400"}`}>
+              No sent emails logged yet. Click &ldquo;+ New Email&rdquo; to send your first message.
+            </p>
+          ) : (
+            <div className="space-y-2.5 max-h-[560px] overflow-y-auto">
+              {messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`p-3.5 rounded-xl border text-xs space-y-1.5 ${
+                    isDay ? "bg-stone-50 border-stone-200" : "bg-zinc-950/70 border-zinc-800"
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <span className="font-black">To: {msg.recipient}</span>
+                    <span className={`text-[10px] font-bold ${isDay ? "text-stone-600" : "text-stone-400"}`}>
+                      From {msg.sender} • {new Date(msg.createdAt).toLocaleString()}
+                    </span>
+                  </div>
+                  <p className={`font-black text-[11px] ${isDay ? "text-[#C84A0A]" : "text-[#FF8C38]"}`}>
+                    {msg.subject}
+                  </p>
+                  <p className={`whitespace-pre-wrap text-[11px] leading-relaxed ${isDay ? "text-stone-800" : "text-stone-300"}`}>
+                    {msg.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* 2-COLUMN EMAIL CONSOLE (MATCHING BLIND COOK EXACT LAYOUT) */}
+      {activeTab !== "sent" && (
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         
         {/* LEFT COLUMN: CLIENT ROSTER & FILTER TABS (lg:col-span-5) */}
@@ -729,7 +804,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
               </select>
             </div>
           )}
-          {!currentLead ? (
+          {!currentLead && activeTab !== "compose" ? (
             <div
               className={`p-12 text-center rounded-2xl border ${
                 isDay ? "bg-white border-stone-300" : "bg-[#141210] border-zinc-800"
@@ -757,6 +832,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
                   isDay ? "bg-stone-50 border-stone-200" : "bg-[#181512] border-zinc-800"
                 }`}
               >
+                {currentLead ? (
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className={`text-base font-black ${isDay ? "text-black" : "text-white"}`}>
@@ -786,7 +862,18 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
                     )}
                   </div>
                 </div>
+                ) : (
+                <div>
+                  <h3 className={`text-base font-black ${isDay ? "text-black" : "text-white"}`}>
+                    ✉️ Compose New Email
+                  </h3>
+                  <p className={`text-xs mt-0.5 font-bold ${isDay ? "text-stone-600" : "text-stone-400"}`}>
+                    Send directly from info@allthesmokecatering.com or marion@allthesmokecatering.com
+                  </p>
+                </div>
+                )}
 
+                {currentLead && (
                 <div className="flex items-center gap-2 shrink-0">
                   <button
                     type="button"
@@ -803,13 +890,14 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
                     <span>View Full Lead</span>
                   </button>
                 </div>
+                )}
               </div>
 
               {/* Main Body: Conversation Thread Container & Composer */}
               <div className="p-4 sm:p-5 space-y-4">
                 
                 {/* Scrollable Conversation Thread Container */}
-                {activeTab === "inbox" && (
+                {activeTab === "inbox" && currentLead && (
                 <div
                   className={`p-4 rounded-xl border space-y-3.5 max-h-[300px] overflow-y-auto ${
                     isDay ? "bg-stone-50 border-stone-200" : "bg-zinc-900/60 border-zinc-800"
@@ -928,6 +1016,59 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
 
                 {activeTab === "compose" && (
                 <>
+                {/* Free-Form Recipient + Sender Selector (send to any email or current lead) */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                  <div>
+                    <label className={`text-[11px] font-black block mb-1 ${isDay ? "text-black" : "text-stone-200"}`}>
+                      From Address:
+                    </label>
+                    <select
+                      value={senderAlias}
+                      onChange={(e) => setSenderAlias(e.target.value as any)}
+                      className={`w-full text-xs h-8 px-2.5 rounded-lg border font-bold focus:outline-none ${
+                        isDay
+                          ? "bg-white border-stone-400 text-black focus:border-[#FF7A00]"
+                          : "bg-zinc-900 border-zinc-700 text-white focus:border-[#FF7A00]"
+                      }`}
+                    >
+                      <option value="info@allthesmokecatering.com">info@allthesmokecatering.com</option>
+                      <option value="marion@allthesmokecatering.com">marion@allthesmokecatering.com</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className={`text-[11px] font-black block mb-1 ${isDay ? "text-black" : "text-stone-200"}`}>
+                      To (Email Address):
+                    </label>
+                    <input
+                      type="email"
+                      value={customRecipientEmail}
+                      onChange={(e) => setCustomRecipientEmail(e.target.value)}
+                      placeholder={currentLead?.email || "customer@example.com"}
+                      className={`w-full text-xs h-8 px-3 rounded-lg border font-bold focus:outline-none ${
+                        isDay
+                          ? "bg-white border-stone-400 text-black placeholder:text-stone-500 focus:border-[#FF7A00]"
+                          : "bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-[#FF7A00]"
+                      }`}
+                    />
+                  </div>
+                  <div>
+                    <label className={`text-[11px] font-black block mb-1 ${isDay ? "text-black" : "text-stone-200"}`}>
+                      Recipient Name (Optional):
+                    </label>
+                    <input
+                      type="text"
+                      value={customRecipientName}
+                      onChange={(e) => setCustomRecipientName(e.target.value)}
+                      placeholder={currentLead?.name || "Client or Vendor Name"}
+                      className={`w-full text-xs h-8 px-3 rounded-lg border font-bold focus:outline-none ${
+                        isDay
+                          ? "bg-white border-stone-400 text-black placeholder:text-stone-500 focus:border-[#FF7A00]"
+                          : "bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-[#FF7A00]"
+                      }`}
+                    />
+                  </div>
+                </div>
+
                 {/* 1-Tap Catering Reply Templates */}
                 <div className="space-y-1.5">
                   <label className={`text-[11px] font-black block ${isDay ? "text-black" : "text-stone-200"}`}>
@@ -939,8 +1080,26 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
                         key={tmpl.id}
                         type="button"
                         onClick={() => {
-                          setReplyBody(tmpl.generateBody(currentLead));
-                          setReplySubject(tmpl.generateSubject(currentLead));
+                          const targetLead: PitmasterLead = currentLead || {
+                            id: "",
+                            ticketId: "",
+                            name: customRecipientName || "there",
+                            email: customRecipientEmail,
+                            phone: "",
+                            eventType: "Catering",
+                            guestCount: 0,
+                            eventDate: "",
+                            packageName: "",
+                            serviceStyle: "",
+                            deliveryAddress: "",
+                            notes: "",
+                            status: "new",
+                            createdAt: "",
+                            source: "",
+                            estimatedTotal: 0,
+                          };
+                          setReplyBody(tmpl.generateBody(targetLead));
+                          setReplySubject(tmpl.generateSubject(targetLead));
                         }}
                         className={`h-auto py-2 px-2 rounded-xl border text-[11px] flex flex-col items-center justify-center text-center font-bold leading-tight transition-all cursor-pointer ${
                           isDay
@@ -967,7 +1126,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
                       type="text"
                       value={replySubject}
                       onChange={(e) => setReplySubject(e.target.value)}
-                      placeholder={`Re: Catering Inquiry for ${currentLead.name}`}
+                      placeholder={`Re: Catering Inquiry for ${customRecipientName || currentLead?.name || "Client"}`}
                       className={`w-full text-xs h-8 px-3 rounded-lg border font-bold focus:outline-none transition-colors ${
                         isDay
                           ? "bg-white border-stone-400 text-black placeholder:text-stone-600 focus:border-[#FF7A00]"
@@ -985,7 +1144,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
                       rows={5}
                       value={replyBody}
                       onChange={(e) => setReplyBody(e.target.value)}
-                      placeholder={`Type your personalized reply to ${currentLead.name} here...`}
+                      placeholder={`Type your personalized email to ${customRecipientName || currentLead?.name || "recipient"} here...`}
                       className={`w-full p-3 rounded-xl border text-xs sm:text-sm font-sans font-semibold leading-relaxed focus:outline-none transition-colors ${
                         isDay
                           ? "bg-white border-stone-400 text-black placeholder:text-stone-600 focus:border-[#FF7A00]"
@@ -1055,6 +1214,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
         </div>
 
       </div>
+      )}
 
       {/* FULL LEAD BLOW-UP POPUP MODAL */}
       {fullLeadModalOpen && currentLead && (

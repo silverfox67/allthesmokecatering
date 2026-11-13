@@ -51,6 +51,7 @@ const SUB_TABS: Partial<Record<AdminTab, SubTabDef[]>> = {
   ],
   emails: [
     { key: "inbox", label: "Inbox" },
+    { key: "sent", label: "Sent" },
     { key: "compose", label: "Compose" },
   ],
   calendar: [
