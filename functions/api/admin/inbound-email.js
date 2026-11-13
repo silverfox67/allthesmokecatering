@@ -92,7 +92,23 @@ export async function onRequestPost(context) {
       }
     }
 
-    const payload = await request.json();
+    const rawBody = await request.text();
+    if (!rawBody || !rawBody.trim()) {
+      return new Response(
+        JSON.stringify({ success: true, verified: true, message: "Webhook endpoint verified" }),
+        { status: 200, headers: { "Content-Type": "application/json", ...cors } }
+      );
+    }
+
+    let payload = {};
+    try {
+      payload = JSON.parse(rawBody);
+    } catch {
+      return new Response(
+        JSON.stringify({ success: true, verified: true, message: "Webhook ping acknowledged" }),
+        { status: 200, headers: { "Content-Type": "application/json", ...cors } }
+      );
+    }
 
     // Support Zoho Mail Outgoing Webhook fields + generic JSON webhook fields
     const rawFrom =
@@ -116,9 +132,10 @@ export async function onRequestPost(context) {
     const bodyText = String(rawText || "").trim();
 
     if (!senderEmail) {
+      // Zoho Mail sends an initial verification POST without sender fields on Save and requires HTTP 200
       return new Response(
-        JSON.stringify({ success: false, error: "Sender email is required" }),
-        { status: 400, headers: { "Content-Type": "application/json", ...cors } }
+        JSON.stringify({ success: true, verified: true, message: "Webhook endpoint verified" }),
+        { status: 200, headers: { "Content-Type": "application/json", ...cors } }
       );
     }
 
