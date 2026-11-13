@@ -98,9 +98,9 @@ export const SITE_CONFIG: SiteConfig = {
       name: 'Local Northwest Side & O\'Hare Corridor',
       minMiles: 0,
       maxMiles: 10,
-      fee: 35.00,
+      fee: 25.00,
       minOrder: 150.00,
-      description: 'Dunning, Portage Park, Rosemont, Elmwood Park, Norridge, Park Ridge',
+      description: 'Dunning, Portage Park, Rosemont, Elmwood Park, Norridge, Park Ridge (FREE delivery on $350+)',
       coverageAreas: ['Dunning', 'Portage Park', 'Rosemont', 'Elmwood Park', 'Norridge', 'Park Ridge', 'Harwood Heights', 'Schorsch Forest View']
     },
     {
@@ -108,7 +108,7 @@ export const SITE_CONFIG: SiteConfig = {
       name: 'Downtown Core, North Shore & West Suburbs',
       minMiles: 10.1,
       maxMiles: 20,
-      fee: 65.00,
+      fee: 55.00,
       minOrder: 300.00,
       description: 'The Loop, West Loop, Evanston, Skokie, Schaumburg, Lombard, Oak Park',
       coverageAreas: ['The Loop', 'West Loop', 'River North', 'Lincoln Park', 'Evanston', 'Skokie', 'Oak Park', 'Schaumburg', 'Lombard', 'Des Plaines']
@@ -118,7 +118,7 @@ export const SITE_CONFIG: SiteConfig = {
       name: 'South Side & Outer Chicagoland Ring',
       minMiles: 20.1,
       maxMiles: 35,
-      fee: 95.00,
+      fee: 85.00,
       minOrder: 500.00,
       description: 'Bronzeville, Beverly, Naperville, Aurora, Highland Park, Orland Park',
       coverageAreas: ['Bronzeville', 'Hyde Park', 'Beverly', 'Naperville', 'Aurora', 'Highland Park', 'Orland Park', 'Tinley Park', 'Bolingbrook']

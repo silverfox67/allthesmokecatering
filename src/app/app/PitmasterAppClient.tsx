@@ -30,6 +30,67 @@ export function PitmasterAppClient() {
   const [guestCount, setGuestCount] = useState("");
   const [intakeNotes, setIntakeNotes] = useState("");
   const [intakeSaved, setIntakeSaved] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewQrDataUrl, setReviewQrDataUrl] = useState<string>("");
+  const [reviewCopied, setReviewCopied] = useState(false);
+
+  const reviewUrl = "https://allthesmokecatering.com/review";
+
+  const handleCopyReviewLink = () => {
+    const markCopied = () => {
+      setReviewCopied(true);
+      setTimeout(() => setReviewCopied(false), 2000);
+    };
+
+    if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+      navigator.clipboard
+        .writeText(reviewUrl)
+        .then(markCopied)
+        .catch(() => {
+          const el = document.createElement("textarea");
+          el.value = reviewUrl;
+          el.style.position = "fixed";
+          el.style.opacity = "0";
+          document.body.appendChild(el);
+          el.select();
+          try {
+            document.execCommand("copy");
+            markCopied();
+          } catch {}
+          document.body.removeChild(el);
+        });
+      return;
+    }
+
+    if (typeof document !== "undefined") {
+      const el = document.createElement("textarea");
+      el.value = reviewUrl;
+      el.style.position = "fixed";
+      el.style.opacity = "0";
+      document.body.appendChild(el);
+      el.select();
+      try {
+        document.execCommand("copy");
+        markCopied();
+      } catch {}
+      document.body.removeChild(el);
+    }
+  };
+
+  const handleShareReviewLink = () => {
+    const shareText = `Thanks for letting All The Smoke BBQ & Catering serve you! Mind leaving us a quick 15-second review? ${reviewUrl}`;
+    if (typeof navigator !== "undefined" && navigator.share) {
+      navigator
+        .share({
+          title: "Leave All The Smoke BBQ a Review",
+          text: "Thanks for letting All The Smoke BBQ & Catering serve you! Mind leaving us a quick review?",
+          url: reviewUrl,
+        })
+        .catch(() => {});
+      return;
+    }
+    window.location.href = `sms:?body=${encodeURIComponent(shareText)}`;
+  };
 
   useEffect(() => {
     // 1. Verify Authentication
@@ -98,6 +159,17 @@ export function PitmasterAppClient() {
     })
       .then((url) => setQrDataUrl(url))
       .catch((err) => console.error("QR Code Error:", err));
+
+    QRCode.toDataURL(reviewUrl, {
+      width: 280,
+      margin: 1,
+      color: {
+        dark: "#1A0E08",
+        light: "#FFF7ED",
+      },
+    })
+      .then((url) => setReviewQrDataUrl(url))
+      .catch((err) => console.error("Review QR Code Error:", err));
   }, [isSunlightMode]);
 
   // Handle Native PWA Install
@@ -258,42 +330,65 @@ END:VCARD`;
               All The Smoke BBQ &amp; Catering
             </p>
             <p className="text-[11px] sm:text-xs text-slate-400 mt-1">
-              1-Tap Client Intake • Live Event Calendar • Inbound Leads
+              1-Tap Intake • Live Calendar • Inbound Leads
             </p>
+            {(isStandalone || installSuccess) && (
+              <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-[10.5px] font-bold text-emerald-400">
+                <span>●</span>
+                <span>App Installed • Standalone Mode</span>
+              </div>
+            )}
           </div>
 
-          {/* 4 PROMINENT VERTICAL ACTION BUTTONS */}
+          {/* PRIMARY VERTICAL ACTION BUTTONS */}
           <div className="flex flex-col gap-3 pt-1">
 
-            {/* Button 1: Download & Install App (Flame Ember Gradient) */}
-            <button
-              type="button"
-              onClick={handleInstallClick}
-              className="w-full p-3.5 rounded-xl bg-gradient-to-r from-[#FF7A00] via-[#EA580C] to-[#C2410C] hover:brightness-105 text-white flex items-center justify-between shadow-lg shadow-[#EA580C]/35 border border-white/20 active:scale-[0.98] transition-all text-left font-bold cursor-pointer"
+            {/* Button 1: Launch Executive Dashboard (Primary Bright Orange CTA) */}
+            <Link
+              href="/admin"
+              className="w-full min-h-[48px] p-3.5 rounded-xl bg-gradient-to-r from-[#FF7A00] via-[#EA580C] to-[#C2410C] hover:brightness-105 text-white flex items-center justify-between shadow-lg shadow-[#EA580C]/35 border border-white/20 active:scale-[0.98] transition-all text-left font-bold"
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg bg-black/25 flex items-center justify-center shrink-0 text-white text-lg">
-                  📲
+                  ✨
                 </div>
                 <div>
                   <span className="block text-sm font-extrabold leading-tight text-white">
-                    {isStandalone || installSuccess
-                      ? "✓ App Installed"
-                      : isIOS
-                      ? "📲 Add ATS Ops to iPhone"
-                      : "Download & Install App"}
+                    Launch Dashboard
                   </span>
                   <span className="block text-[11px] text-amber-100 font-semibold mt-0.5">
-                    {isStandalone || installSuccess
-                      ? "Running as Standalone Mobile PWA"
-                      : isIOS
-                      ? "Tap for visual 3-step home screen guide"
-                      : "Add ATS Ops to Phone Screen"}
+                    View Leads, Client Inquiries &amp; Notes
                   </span>
                 </div>
               </div>
               <span className="text-white font-black text-sm opacity-90">&rarr;</span>
-            </button>
+            </Link>
+
+            {/* Install App Prompt (Only shown when running in browser, hidden once installed) */}
+            {!(isStandalone || installSuccess) && (
+              <button
+                type="button"
+                onClick={handleInstallClick}
+                className="w-full min-h-[48px] p-3.5 rounded-xl bg-[#1A1510]/95 hover:bg-[#251E14] text-white flex items-center justify-between border border-amber-500/40 shadow-md active:scale-[0.98] transition-all text-left cursor-pointer"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-amber-500/20 text-[#FF7A00] flex items-center justify-center shrink-0 text-lg">
+                    📲
+                  </div>
+                  <div>
+                    <span className="block text-sm font-bold leading-tight">
+                      {isIOS ? "Add ATS Ops to iPhone" : "Download & Install App"}
+                    </span>
+                    <span className="block text-[11px] text-slate-400 mt-0.5">
+                      {isIOS
+                        ? "Tap for visual 3-step home screen guide"
+                        : "Add ATS Ops to Phone Screen"}
+                    </span>
+                  </div>
+                </div>
+                <span className="text-amber-400 font-black text-sm opacity-90">&rarr;</span>
+              </button>
+            )}
 
             {/* Install Notice Drawer (if guidance triggered) */}
             {installNotice && (
@@ -301,25 +396,6 @@ END:VCARD`;
                 {installNotice}
               </div>
             )}
-
-            {/* Button 2: Launch Executive Dashboard (Desktop Hub) */}
-            <Link
-              href="/admin"
-              className="w-full p-3.5 rounded-xl bg-[#1A1510]/95 hover:bg-[#251E14] text-white flex items-center justify-between border border-amber-500/40 shadow-md active:scale-[0.98] transition-all text-left"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-amber-500/20 text-[#FF7A00] flex items-center justify-center shrink-0 text-lg">
-                  ✨
-                </div>
-                <div>
-                  <span className="block text-sm font-bold leading-tight">Launch Dashboard</span>
-                  <span className="block text-[11px] text-slate-400 mt-0.5">
-                    View Leads, Client Inquiries &amp; Notes
-                  </span>
-                </div>
-              </div>
-              <span className="text-amber-400 font-black text-sm opacity-90">&rarr;</span>
-            </Link>
 
             {/* Button 3: Live Digital Business Card (Expands below) */}
             <button
@@ -490,14 +566,23 @@ END:VCARD`;
             </a>
           </div>
 
-          {/* Executive VIP Portal Badge (Like Blind Cook) */}
-          <div className="mt-2 p-3 bg-[#EA580C]/10 border border-[#EA580C]/30 rounded-2xl text-[11.5px] text-slate-200 text-center leading-relaxed">
-            <span className="text-[#FF7A00] font-bold block mb-0.5">
-              ★ Executive Direct Access Portal
-            </span>
-            <span className="text-[11px] text-slate-400">
-              Private client intake &amp; live booking console for Pitmaster Marion Bolden.
-            </span>
+          {/* Pitmaster Pocket Shortcuts (Menu Flipper & 1-Tap Review Link) */}
+          <div className="grid grid-cols-2 gap-2.5 pt-1">
+            <Link
+              href="/admin?tab=pitmaster-app&sub=status-flipper"
+              className="min-h-[48px] px-3 py-2.5 rounded-xl bg-[#1F1813] hover:bg-[#2A2019] border border-[#EA580C]/35 text-xs font-bold text-amber-200 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98]"
+            >
+              <span>🔥</span>
+              <span>Menu Flipper</span>
+            </Link>
+            <button
+              type="button"
+              onClick={() => setShowReviewModal(true)}
+              className="min-h-[48px] px-3 py-2.5 rounded-xl bg-[#1F1813] hover:bg-[#2A2019] border border-amber-500/35 text-xs font-bold text-amber-200 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer"
+            >
+              <span>⭐</span>
+              <span>Review Link</span>
+            </button>
           </div>
 
           {/* Persistent Login Indicator & Sign Out */}
@@ -621,6 +706,76 @@ END:VCARD`;
                 </button>
               </form>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: 1-TAP CLIENT REVIEW LINK */}
+      {showReviewModal && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in">
+          <div className="relative w-full max-w-md bg-[#181416] border border-amber-500/50 rounded-3xl p-5 sm:p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">⭐</span>
+                <div>
+                  <h3 className="text-base font-bold text-white">Client Review Link</h3>
+                  <p className="text-[10.5px] text-stone-400">Text, scan, or copy in 1 tap</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowReviewModal(false)}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xs cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {reviewQrDataUrl && (
+              <div className="flex flex-col items-center gap-2 py-2">
+                <div className="p-2.5 rounded-2xl bg-[#FFF7ED] border-2 border-amber-500/40 shadow-lg">
+                  <img src={reviewQrDataUrl} alt="Review QR Code" className="w-40 h-40 rounded-lg" />
+                </div>
+                <p className="text-[11px] text-stone-400 text-center">
+                  Have a happy customer scan this on the spot
+                </p>
+              </div>
+            )}
+
+            <div className="p-2.5 rounded-xl bg-black/60 border border-zinc-800 text-[11px] font-mono text-amber-300 text-center truncate">
+              {reviewUrl}
+            </div>
+
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={handleShareReviewLink}
+                className="w-full min-h-[48px] py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#EA580C] to-[#D97706] hover:from-[#F97316] hover:to-[#EA580C] text-white font-bold text-xs uppercase tracking-wider shadow-lg transition cursor-pointer flex items-center justify-center gap-2"
+              >
+                <span>📱</span>
+                <span>Text / Share Review Link</span>
+              </button>
+
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={handleCopyReviewLink}
+                  className="min-h-[48px] px-3 rounded-xl bg-[#1F1813] hover:bg-[#2A2019] border border-amber-500/35 text-xs font-bold text-amber-200 flex items-center justify-center gap-1.5 transition cursor-pointer"
+                >
+                  <span>{reviewCopied ? "✓" : "📋"}</span>
+                  <span>{reviewCopied ? "Copied!" : "Copy Link"}</span>
+                </button>
+                <a
+                  href="/review"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="min-h-[48px] px-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 flex items-center justify-center gap-1.5 transition"
+                >
+                  <span>↗</span>
+                  <span>Open Page</span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       )}

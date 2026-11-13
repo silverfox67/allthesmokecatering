@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { AdminTheme } from "./AdminPortal";
+import { AdminGuide } from "./AdminGuide";
 import {
   SmokerItemStatus,
   LiveSmokerItemOverride,
@@ -11,8 +12,56 @@ import {
   syncLiveSmokeToCalendar,
 } from "@/utils/smoker-live-status";
 
+type RigTab = "timers" | "status-flipper" | "cheat-sheet" | "fuel-log";
+const RIG_TABS: RigTab[] = ["timers", "status-flipper", "cheat-sheet", "fuel-log"];
+
+const RIG_GUIDE: Record<
+  RigTab,
+  { title: string; summary: string; steps: { title: string; desc: string }[]; tip?: string }
+> = {
+  timers: {
+    title: "How the Smoke Timers work",
+    summary: "Start a timer when meat goes on the pit.",
+    steps: [
+      { title: "Start the clock", desc: "Tap Start on the cut you just put on. The timer keeps running even if you leave the page." },
+      { title: "Follow the phases", desc: "Each card lists what to do and the temp to hit at each stage, like the wrap on brisket." },
+      { title: "Check it off", desc: "Tap a phase when you finish it so you always know where each rack stands." },
+    ],
+  },
+  "status-flipper": {
+    title: "How the Menu Flipper works",
+    summary: "Tell customers what's ready right now.",
+    steps: [
+      { title: "Pick a ready time", desc: "Choose the time the next batch comes off, like ~5:00 PM." },
+      { title: "Flip an item", desc: "Tap an item to mark it Ready, Coming Up, or Sold Out." },
+      { title: "It updates your site", desc: "Your public menu changes right away. No need to save." },
+    ],
+    tip: "Flip items to Sold Out as the trailer line moves so customers never wait for food that's gone.",
+  },
+  "cheat-sheet": {
+    title: "How the Temp Targets work",
+    summary: "Quick reference for every cut: pit temp, pull temp, rest.",
+    steps: [
+      { title: "Find your cut", desc: "Each row is one meat from your menu." },
+      { title: "Read the targets", desc: "You'll see pit temp, the temp to pull it, and how to tell it's done by feel." },
+      { title: "Don't skip the rest", desc: "Resting time keeps the juices in. It's listed for every cut." },
+    ],
+  },
+  "fuel-log": {
+    title: "How the Wood & Pit Log works",
+    summary: "Track splits of wood and pit temp through the day.",
+    steps: [
+      { title: "Tap +1 Split", desc: "Each time you add a split of wood to the firebox, tap once." },
+      { title: "Note the pit temp", desc: "Set the pit temp when you log it so you can see how the fire held." },
+      { title: "Review the day", desc: "The log shows what you burned and when, so you can plan wood for next cook." },
+    ],
+  },
+};
+
 interface AdminPitmasterAppProps {
   theme: AdminTheme;
+  /** Driven by the sidebar: timers | status-flipper | cheat-sheet | fuel-log */
+  subTab?: string;
 }
 
 interface SmokeTimerSession {
@@ -207,7 +256,7 @@ const PIT_CHEATS: PitCheatItem[] = [
   },
 ];
 
-export function AdminPitmasterApp({ theme }: AdminPitmasterAppProps) {
+export function AdminPitmasterApp({ theme, subTab }: AdminPitmasterAppProps) {
   const isDay = theme === "day";
 
   // Pit Environment & Fuel State
@@ -223,7 +272,7 @@ export function AdminPitmasterApp({ theme }: AdminPitmasterAppProps) {
 
   // Timers & Active Cook Sessions
   const [sessions, setSessions] = useState<SmokeTimerSession[]>(INITIAL_SESSIONS);
-  const [activeTab, setActiveTab] = useState<"timers" | "status-flipper" | "cheat-sheet" | "fuel-log">("timers");
+  const activeTab: RigTab = (RIG_TABS as string[]).includes(subTab ?? "") ? (subTab as RigTab) : "timers";
   const [notificationMsg, setNotificationMsg] = useState<string | null>(null);
 
   // Live Smoker Status Overrides (Synced with public menu & price configurator)
@@ -510,34 +559,15 @@ export function AdminPitmasterApp({ theme }: AdminPitmasterAppProps) {
         )}
       </div>
 
-      {/* 2. SUB-NAVIGATION TABS (Mobile Friendly Pinned Bar) */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
-        {[
-          { key: "timers", label: "Active Smoke Timers", icon: "⏱️" },
-          { key: "status-flipper", label: "Trailer Menu Flipper", icon: "⚡" },
-          { key: "cheat-sheet", label: "Internal Temp Targets", icon: "🎯" },
-          { key: "fuel-log", label: "Wood Fuel & Pit Log", icon: "🪵" },
-        ].map((tab) => {
-          const isActive = activeTab === tab.key;
-          return (
-            <button
-              key={tab.key}
-              type="button"
-              onClick={() => setActiveTab(tab.key as any)}
-              className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 whitespace-nowrap transition-all min-h-[44px] ${
-                isActive
-                  ? "bg-[#FF7A00] text-white shadow-md shadow-orange-950/20"
-                  : isDay
-                  ? "bg-stone-200/80 hover:bg-stone-300 text-stone-700"
-                  : "bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300"
-              }`}
-            >
-              <span>{tab.icon}</span>
-              <span>{tab.label}</span>
-            </button>
-          );
-        })}
-      </div>
+      {/* 2. Plain-English guide (sidebar drives the sub-tab) */}
+      <AdminGuide
+        guideId={`rig-${activeTab}`}
+        theme={theme}
+        title={RIG_GUIDE[activeTab].title}
+        summary={RIG_GUIDE[activeTab].summary}
+        steps={RIG_GUIDE[activeTab].steps}
+        tip={RIG_GUIDE[activeTab].tip}
+      />
 
       {/* 3. TAB CONTENT */}
 

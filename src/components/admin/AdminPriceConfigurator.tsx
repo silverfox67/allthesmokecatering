@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { AdminTheme } from "./AdminPortal";
+import { AdminGuide } from "./AdminGuide";
 import { AdminChalkboardManager } from "./AdminChalkboardManager";
 import { PER_PERSON_PACKAGES } from "@/data/catering-packages";
 import { PITMASTER_MENU_ITEMS, MENU_CATEGORIES, MenuCategory } from "@/data/pitmaster-menu";
@@ -147,30 +148,82 @@ const DEFAULT_PARTY_PANS: PartyPanPricingItem[] = [
   },
 ];
 
-interface AdminPriceConfiguratorProps {
-  theme: AdminTheme;
+type MainTab = "packages" | "menu" | "pans" | "delivery" | "chalkboard";
+const MAIN_TABS: MainTab[] = ["packages", "menu", "pans", "delivery", "chalkboard"];
+function isMainTab(v: string | undefined): v is MainTab {
+  return !!v && (MAIN_TABS as string[]).includes(v);
 }
 
-export function AdminPriceConfigurator({ theme }: AdminPriceConfiguratorProps) {
+interface GuideCopy {
+  title: string;
+  summary: string;
+  steps: { title: string; desc: string }[];
+  tip?: string;
+}
+
+const GUIDE_COPY: Record<MainTab, GuideCopy> = {
+  menu: {
+    title: "How the Smoker Menu works",
+    summary: "Turn items on or off and set what's ready today.",
+    steps: [
+      { title: "Check what's smoking", desc: "Flip an item to Available or Sold Out so customers only see what you can actually serve." },
+      { title: "Update a price", desc: "Tap a price, type the new number, and it changes everywhere on your site." },
+      { title: "Save", desc: "Hit Save Menu Changes at the top. Nothing goes live until you save." },
+    ],
+    tip: "Use Copy Client Price Sheet to text a customer your current prices in one tap.",
+  },
+  packages: {
+    title: "How Per-Person Packages work",
+    summary: "Set the price per guest for each catering package.",
+    steps: [
+      { title: "Pick a package", desc: "Each card is a package a customer can book for a party or event." },
+      { title: "Change the per-person price", desc: "Type the new price. The quote calculator uses it right away." },
+      { title: "Save", desc: "Press Save Menu Changes so the new price goes live." },
+    ],
+  },
+  pans: {
+    title: "How Party Pans work",
+    summary: "Half-pan and full-pan prices for bulk sides and meats.",
+    steps: [
+      { title: "Find the pan", desc: "Each row shows the half pan and full pan price and how many people it feeds." },
+      { title: "Edit the price", desc: "Tap a price, type the new number." },
+      { title: "Save", desc: "Press Save Menu Changes when you're done." },
+    ],
+  },
+  delivery: {
+    title: "How Delivery & Booking Rules work",
+    summary: "Delivery minimum, lead time, and deposit percent.",
+    steps: [
+      { title: "Set your minimum", desc: "The smallest order you'll deliver. Customers under it are asked to add more." },
+      { title: "Set lead time", desc: "How many hours of notice you need before an event." },
+      { title: "Set the deposit", desc: "The percent a customer pays up front to hold the date." },
+    ],
+    tip: "Change these before a big weekend so the quote form matches what you can handle.",
+  },
+  chalkboard: {
+    title: "How the Weekly Chalkboard works",
+    summary: "Post this week's specials for your customers.",
+    steps: [
+      { title: "Add a special", desc: "Name it, set a price, and write one short line about it." },
+      { title: "Turn it on", desc: "Only items switched on show on your public chalkboard." },
+      { title: "Save", desc: "Press save so customers see it right away." },
+    ],
+  },
+};
+
+interface AdminPriceConfiguratorProps {
+  theme: AdminTheme;
+  /** Driven by the sidebar: menu | packages | pans | delivery | chalkboard */
+  subTab?: string;
+}
+
+export function AdminPriceConfigurator({ theme, subTab }: AdminPriceConfiguratorProps) {
   const isDay = theme === "day";
-  const [activeMainTab, setActiveMainTab] = useState<
-    "packages" | "menu" | "pans" | "delivery" | "chalkboard"
-  >("menu");
+  const activeMainTab: MainTab = isMainTab(subTab) ? subTab : "menu";
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [copySuccess, setCopySuccess] = useState(false);
   const [saveToast, setSaveToast] = useState(false);
-
-  // Check URL params for direct subtab linking (e.g. ?tab=services&sub=chalkboard)
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const sub = params.get("sub");
-      if (sub === "chalkboard") {
-        setActiveMainTab("chalkboard");
-      }
-    }
-  }, []);
 
   // Initial State from Master Menu & Catering Packages
   const [config, setConfig] = useState<SmokerConfigState>(() => ({
@@ -538,90 +591,15 @@ ${config.partyPans
         </div>
       )}
 
-      {/* Main Section Navigation Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-thin">
-        <button
-          type="button"
-          onClick={() => setActiveMainTab("menu")}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-2 ${
-            activeMainTab === "menu"
-              ? "bg-[#EA580C] text-white shadow-sm"
-              : isDay
-              ? "bg-stone-200 text-stone-700 hover:bg-stone-300"
-              : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white"
-          }`}
-        >
-          <span>🔥 Smoker Menu &amp; Live Availability</span>
-          <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 text-white font-extrabold">
-            {config.menuItems.length}
-          </span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveMainTab("packages")}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-2 ${
-            activeMainTab === "packages"
-              ? "bg-[#EA580C] text-white shadow-sm"
-              : isDay
-              ? "bg-stone-200 text-stone-700 hover:bg-stone-300"
-              : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white"
-          }`}
-        >
-          <span>🥩 Per-Person Packages</span>
-          <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 text-white font-extrabold">
-            {config.packages.length}
-          </span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveMainTab("pans")}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-2 ${
-            activeMainTab === "pans"
-              ? "bg-[#EA580C] text-white shadow-sm"
-              : isDay
-              ? "bg-stone-200 text-stone-700 hover:bg-stone-300"
-              : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white"
-          }`}
-        >
-          <span>🥘 Party Pans &amp; Bulk Sides</span>
-          <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 text-white font-extrabold">
-            {config.partyPans.length}
-          </span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveMainTab("delivery")}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-            activeMainTab === "delivery"
-              ? "bg-[#EA580C] text-white shadow-sm"
-              : isDay
-              ? "bg-stone-200 text-stone-700 hover:bg-stone-300"
-              : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white"
-          }`}
-        >
-          🚚 Delivery &amp; Booking Rules
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveMainTab("chalkboard")}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-2 ${
-            activeMainTab === "chalkboard"
-              ? "bg-[#EA580C] text-white shadow-sm"
-              : isDay
-              ? "bg-stone-200 text-stone-700 hover:bg-stone-300"
-              : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white"
-          }`}
-        >
-          <span>📋 Weekly Chalkboard Specials</span>
-          <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-extrabold border border-amber-500/30">
-            8 Specials
-          </span>
-        </button>
-      </div>
+      {/* Sidebar drives the sub-tab; plain-English guide per section */}
+      <AdminGuide
+        guideId={`services-${activeMainTab}`}
+        theme={theme}
+        title={GUIDE_COPY[activeMainTab].title}
+        summary={GUIDE_COPY[activeMainTab].summary}
+        steps={GUIDE_COPY[activeMainTab].steps}
+        tip={GUIDE_COPY[activeMainTab].tip}
+      />
 
       {/* SECTION 1: SMOKER MENU & LIVE AVAILABILITY (ALL 32 ITEMS) */}
       {activeMainTab === "menu" && (

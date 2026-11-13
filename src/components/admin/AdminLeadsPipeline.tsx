@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { AdminInvoiceGenerator } from "./AdminInvoiceGenerator";
 import { AdminQuickMessageModal } from "./AdminQuickMessageModal";
+import { AdminGuide } from "./AdminGuide";
 
 export type LeadStatus = "new" | "contacted" | "quoted" | "booked" | "completed" | "ghosted";
 
@@ -151,10 +152,13 @@ const STATUS_CONFIG: Record<
 interface AdminLeadsPipelineProps {
   theme?: "dark" | "butcher-paper" | "day" | "night";
   onSelectLeadForEmail?: (lead: PitmasterLead) => void;
+  /** "pipeline" | "messages" | "promo" (defaults to "pipeline") */
+  subTab?: string;
 }
 
-export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: AdminLeadsPipelineProps) {
+export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail, subTab }: AdminLeadsPipelineProps) {
   const isDay = theme === "day" || theme === "butcher-paper";
+  const tab = subTab === "messages" || subTab === "promo" ? subTab : "pipeline";
 
   const [leads, setLeads] = useState<PitmasterLead[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -387,6 +391,21 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
 
   return (
     <div className="space-y-4 w-full">
+      {tab === "pipeline" && (
+      <>
+      <AdminGuide
+        guideId="leads-pipeline"
+        theme={isDay ? "day" : "night"}
+        title="How the quote request list works"
+        summary="Every catering request lands here. Tap one to read it and answer."
+        steps={[
+          { title: "Check the new ones first", desc: "Tap \"New Only\" to see requests nobody has answered yet." },
+          { title: "Open the request", desc: "Tap a name to read what they asked for: date, guest count and package." },
+          { title: "Reply and send a quote", desc: "Use the text/email button to answer, or make an invoice when they are ready." },
+          { title: "Move it along", desc: "Mark it Contacted, Quoted, then Booked so you always know where each one stands." },
+        ]}
+        tip="Answer within a few hours. Folks usually book the caterer who writes back first."
+      />
       {/* 1. TOP TOOLBAR: TITLE, SEARCH, INTAKE & PROMO LAUNCHERS */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
@@ -1033,6 +1052,83 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
           })}
         </div>
       )}
+      </>
+      )}
+
+      {tab === "messages" && (
+        <>
+          <AdminGuide
+            guideId="leads-messages"
+            theme={isDay ? "day" : "night"}
+            title="How quick messages work"
+            summary="Pick a customer and send a ready-made text or email in one tap."
+            steps={[
+              { title: "Find the customer", desc: "Type their name or phone number in the search box." },
+              { title: "Tap Text / Email", desc: "A window opens with ready-made messages like \"Got your request\" or \"Your quote is ready\"." },
+              { title: "Look it over", desc: "Change a word or two so it sounds like you, then send." },
+            ]}
+            tip="Quick messages save your typing time on busy cook days."
+          />
+          <input
+            type="text"
+            placeholder="Search name, phone, ticket..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={`w-full h-12 px-4 rounded-xl text-sm focus:outline-none border ${
+              isDay
+                ? "bg-[#FAF8F5] border-[#D8CEC1] text-stone-900 placeholder:text-stone-400 focus:border-[#EA580C]"
+                : "bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-[#EA580C]"
+            }`}
+          />
+          <div
+            className={`rounded-2xl border divide-y ${
+              isDay ? "bg-white border-[#E2DACF] divide-stone-100" : "bg-[#141417] border-zinc-800 divide-zinc-800/80"
+            }`}
+          >
+            {filteredLeads.length === 0 && (
+              <p className={`p-6 text-center text-sm ${isDay ? "text-stone-500" : "text-zinc-400"}`}>
+                No customers match your search.
+              </p>
+            )}
+            {filteredLeads.map((lead) => (
+              <div key={lead.id} className="flex items-center justify-between gap-3 p-3">
+                <div className="min-w-0">
+                  <p className={`text-sm font-bold truncate ${isDay ? "text-[#1C1917]" : "text-white"}`}>{lead.name}</p>
+                  <p className={`text-xs truncate ${isDay ? "text-stone-600" : "text-zinc-400"}`}>
+                    {lead.phone || lead.email}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuickMessageLead(lead);
+                    setShowQuickMessageModal(true);
+                  }}
+                  className="min-h-[48px] px-4 rounded-xl bg-[#EA580C] hover:bg-[#C84A0A] text-white text-xs font-bold cursor-pointer shrink-0"
+                >
+                  📲 Text / Email
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {tab === "promo" && (
+        <AdminGuide
+          guideId="leads-promo"
+          theme={isDay ? "day" : "night"}
+          title="How the seasonal special works"
+          summary="Send one offer to everyone on your list, like a slow-season deal."
+          steps={[
+            { title: "Write a short subject", desc: "Something plain like \"Open dates for spring cookouts\"." },
+            { title: "Write the offer", desc: "Say what you are offering and when it ends." },
+            { title: "Check who gets it", desc: "The box shows how many people with an email will receive it." },
+            { title: "Tap Dispatch", desc: "It goes out right away and Marion gets a copy." },
+          ]}
+          tip="Keep it to one offer with one deadline. Short notes get more replies."
+        />
+      )}
 
       {/* 5. BLOW UP TO POPUP PAGE (EXACT REPLICA OF USER SCREENSHOT 3 - LARGE READABLE MODAL FOR MARION) */}
       {blowUpLead && (
@@ -1662,8 +1758,8 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail }: Ad
       )}
 
       {/* 9. PROMOTIONAL SPECIAL BLAST MODAL */}
-      {showPromoModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+      {(showPromoModal || tab === "promo") && (
+        <div className={tab === "promo" ? "flex justify-center" : "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in"}>
           <div
             className={`w-full max-w-lg rounded-3xl p-6 sm:p-8 border shadow-2xl space-y-4 ${
               isDay ? "bg-[#FFFFFF] border-[#E2DACF] text-stone-900" : "bg-[#141417] border-zinc-800 text-white"

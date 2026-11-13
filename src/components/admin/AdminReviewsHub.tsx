@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { AdminGuide } from "./AdminGuide";
 import { CustomerReview } from "@/types/reviews";
 import {
   useCustomerReviews,
@@ -66,6 +67,18 @@ export function AdminReviewsHub({ theme = "night" }: AdminReviewsHubProps) {
 
   return (
     <div className="space-y-6">
+      <AdminGuide
+        guideId="reviews"
+        theme={isDay ? "day" : "night"}
+        title="How reviews work"
+        summary="See what customers say and share the good ones."
+        steps={[
+          { title: "Read what came in", desc: "New reviews from happy customers show up in the list." },
+          { title: "Approve the good ones", desc: "Only reviews you approve appear on your website." },
+          { title: "Share your review link", desc: "Send customers the link after an event so it's easy for them to leave a few words." },
+        ]}
+        tip="Ask right after a great event. That's when folks are happiest and most likely to write one."
+      />
       {/* HEADER SECTION */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-stone-200 dark:border-zinc-800">
         <div>

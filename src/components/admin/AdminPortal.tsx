@@ -15,6 +15,8 @@ import { AdminPitmasterApp } from "./AdminPitmasterApp";
 import { AdminAnalytics } from "./AdminAnalytics";
 import { AdminReviewsHub } from "./AdminReviewsHub";
 import { AdminWeekendDropManager } from "./AdminWeekendDropManager";
+import { AdminInventory } from "./AdminInventory";
+import { AdminGuide } from "./AdminGuide";
 import { SITE_CONFIG } from "@/config/site-config";
 
 export type AdminTheme = "day" | "night";
@@ -31,15 +33,104 @@ export type AdminTab =
   | "services"
   | "directories"
   | "notes"
-  | "pitmaster-app";
+  | "workspace"
+  | "pitmaster-app"
+  | "inventory";
+
+interface SubTabDef {
+  key: string;
+  label: string;
+}
+
+/** Sub-tabs shown indented under their parent in the sidebar. */
+const SUB_TABS: Partial<Record<AdminTab, SubTabDef[]>> = {
+  leads: [
+    { key: "pipeline", label: "Pipeline" },
+    { key: "messages", label: "Quick Messages" },
+    { key: "promo", label: "Seasonal Promo" },
+  ],
+  emails: [
+    { key: "inbox", label: "Inbox" },
+    { key: "compose", label: "Compose" },
+  ],
+  calendar: [
+    { key: "month", label: "Month View" },
+    { key: "day", label: "Day Detail" },
+  ],
+  "pitmaster-app": [
+    { key: "timers", label: "Smoke Timers" },
+    { key: "status-flipper", label: "Menu Flipper" },
+    { key: "cheat-sheet", label: "Temp Targets" },
+    { key: "fuel-log", label: "Wood & Pit Log" },
+  ],
+  inventory: [
+    { key: "wood", label: "Wood & Fuel" },
+    { key: "menu-stock", label: "Menu & Meat Stock" },
+    { key: "supplies", label: "Supplies & Restock" },
+  ],
+  "weekend-drop": [
+    { key: "current", label: "Current Drop" },
+    { key: "popups", label: "Pop-Ups" },
+  ],
+  services: [
+    { key: "menu", label: "Smoker Menu" },
+    { key: "packages", label: "Packages" },
+    { key: "pans", label: "Party Pans" },
+    { key: "delivery", label: "Delivery Rules" },
+    { key: "chalkboard", label: "Chalkboard" },
+  ],
+  "qr-displays": [
+    { key: "templates", label: "Templates" },
+    { key: "review-card", label: "Review Card" },
+    { key: "print", label: "Print Preview" },
+  ],
+  workspace: [
+    { key: "todos", label: "To-Do & Roadmap" },
+    { key: "notes", label: "Pitmaster Notes" },
+  ],
+};
+
+const WORKSPACE_GUIDES: Record<
+  string,
+  { title: string; summary: string; steps: { title: string; desc: string }[]; tip?: string }
+> = {
+  todos: {
+    title: "How the To-Do & Roadmap works",
+    summary: "Your running list of what needs doing.",
+    steps: [
+      { title: "Add a task", desc: "Type it in and tap Add. Keep each one short and clear." },
+      { title: "Check it off", desc: "Tap the box when it's done. Finished items move out of the way." },
+      { title: "Plan ahead", desc: "Use the roadmap items to see what we're building next for your site." },
+    ],
+  },
+  notes: {
+    title: "How Pitmaster Notes work",
+    summary: "Leave notes for Todd and see his replies.",
+    steps: [
+      { title: "Write a note", desc: "Type what you need, like a menu change or a question, and send it." },
+      { title: "Pick a category", desc: "Choose a category so notes are easy to find later." },
+      { title: "Check replies", desc: "Todd's answers show up in the same thread." },
+    ],
+  },
+};
 
 export function AdminPortal() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [activeTab, setActiveTab] = useState<AdminTab>("leads");
+  const [subTabs, setSubTabs] = useState<Partial<Record<AdminTab, string>>>({});
   const [theme, setTheme] = useState<AdminTheme>("night");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [selectedLeadForEmail, setSelectedLeadForEmail] = useState<PitmasterLead | null>(null);
+
+  const currentSubTab: string | undefined =
+    subTabs[activeTab] ?? SUB_TABS[activeTab]?.[0]?.key;
+
+  /** Go to a tab (and optionally a specific sub-tab). Parent click remembers the last sub-tab. */
+  const goTo = (tab: AdminTab, sub?: string) => {
+    setActiveTab(tab);
+    if (sub) setSubTabs((prev) => ({ ...prev, [tab]: sub }));
+  };
 
   // Check auth, saved theme preference, & URL tab on mount
   useEffect(() => {
@@ -57,9 +148,15 @@ export function AdminPortal() {
       }
 
       const params = new URLSearchParams(window.location.search);
-      const urlTab = params.get("tab") as AdminTab;
-      if (urlTab) {
-        setActiveTab(urlTab);
+      const urlTab = params.get("tab");
+      const urlSub = params.get("sub") ?? undefined;
+      if (urlTab === "todos" || urlTab === "notes") {
+        // Old deep links: To-Do and Notes now live under Workspace
+        setActiveTab("workspace");
+        setSubTabs({ workspace: urlTab });
+      } else if (urlTab) {
+        setActiveTab(urlTab as AdminTab);
+        if (urlSub) setSubTabs({ [urlTab]: urlSub } as Partial<Record<AdminTab, string>>);
       }
     }
   }, []);
@@ -164,6 +261,17 @@ export function AdminPortal() {
             </svg>
           ),
         },
+        {
+          key: "inventory" as AdminTab,
+          label: "Inventory & Wood",
+          status: "Live",
+          badgeColor: "emerald",
+          icon: (
+            <svg className="w-4 h-4 shrink-0 text-[#FF7A00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+          ),
+        },
       ],
     },
     {
@@ -232,24 +340,13 @@ export function AdminPortal() {
       groupTitle: "Admin & Tools",
       items: [
         {
-          key: "todos" as AdminTab,
-          label: "To-Do & Roadmap",
-          status: "Live",
-          badgeColor: "amber",
-          icon: (
-            <svg className="w-4 h-4 shrink-0 text-[#FF7A00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-            </svg>
-          ),
-        },
-        {
-          key: "notes" as AdminTab,
-          label: "Pitmaster Notes",
+          key: "workspace" as AdminTab,
+          label: "Workspace",
           status: "Live",
           badgeColor: "emerald",
           icon: (
-            <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            <svg className="w-4 h-4 shrink-0 text-[#FF7A00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
             </svg>
           ),
         },
@@ -432,11 +529,12 @@ export function AdminPortal() {
 
                 {group.items.map((item) => {
                   const isActive = activeTab === item.key;
+                  const children = SUB_TABS[item.key];
                   return (
+                    <div key={item.key}>
                     <button
-                      key={item.key}
                       type="button"
-                      onClick={() => setActiveTab(item.key)}
+                      onClick={() => goTo(item.key)}
                       className={`w-full text-left rounded-xl transition-all flex items-center gap-2.5 cursor-pointer ${
                         sidebarOpen ? "px-3 py-2" : "px-2 py-2 justify-center"
                       } ${
@@ -475,6 +573,39 @@ export function AdminPortal() {
                         </div>
                       )}
                     </button>
+
+                    {/* Indented sub-tabs: only the active parent is expanded */}
+                    {sidebarOpen && isActive && children && (
+                      <div
+                        className={`mt-1 mb-1.5 ml-5 pl-3 border-l-2 space-y-0.5 ${
+                          isDay ? "border-[#EA580C]/50" : "border-[#EA580C]/40"
+                        }`}
+                      >
+                        {children.map((sub) => {
+                          const subActive = currentSubTab === sub.key;
+                          return (
+                            <button
+                              key={sub.key}
+                              type="button"
+                              onClick={() => goTo(item.key, sub.key)}
+                              aria-current={subActive ? "page" : undefined}
+                              className={`w-full text-left min-h-[40px] px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer flex items-center ${
+                                subActive
+                                  ? isDay
+                                    ? "bg-[#FFE9D6] text-[#8B3A14] font-black"
+                                    : "bg-[#EA580C]/20 text-[#FF8C38] font-bold"
+                                  : isDay
+                                  ? "text-black hover:bg-[#F0EAE1] font-bold"
+                                  : "text-zinc-400 hover:bg-zinc-800/80 hover:text-white"
+                              }`}
+                            >
+                              {sub.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                    </div>
                   );
                 })}
               </div>
@@ -564,15 +695,16 @@ export function AdminPortal() {
 
                     {group.items.map((item) => {
                       const isActive = activeTab === item.key;
+                      const children = SUB_TABS[item.key];
                       return (
+                        <div key={item.key}>
                         <button
-                          key={item.key}
                           type="button"
                           onClick={() => {
-                            setActiveTab(item.key);
-                            setMobileDrawerOpen(false);
+                            goTo(item.key);
+                            if (!children) setMobileDrawerOpen(false);
                           }}
-                          className={`w-full text-left px-3 py-2.5 rounded-xl text-xs flex items-center justify-between font-bold transition-all ${
+                          className={`w-full text-left px-3 py-2.5 min-h-[48px] rounded-xl text-xs flex items-center justify-between font-bold transition-all ${
                             isActive
                               ? "bg-[#EA580C] text-white shadow-md font-black"
                               : isDay
@@ -588,6 +720,36 @@ export function AdminPortal() {
                             {item.status}
                           </span>
                         </button>
+
+                        {isActive && children && (
+                          <div className="mt-1 mb-1.5 ml-5 pl-3 border-l-2 border-[#EA580C]/50 space-y-0.5">
+                            {children.map((sub) => {
+                              const subActive = currentSubTab === sub.key;
+                              return (
+                                <button
+                                  key={sub.key}
+                                  type="button"
+                                  onClick={() => {
+                                    goTo(item.key, sub.key);
+                                    setMobileDrawerOpen(false);
+                                  }}
+                                  className={`w-full text-left min-h-[48px] px-3 py-2 rounded-lg text-xs flex items-center ${
+                                    subActive
+                                      ? isDay
+                                        ? "bg-[#FFE9D6] text-[#8B3A14] font-black"
+                                        : "bg-[#EA580C]/20 text-[#FF8C38] font-bold"
+                                      : isDay
+                                      ? "text-black font-bold"
+                                      : "text-zinc-300"
+                                  }`}
+                                >
+                                  {sub.label}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                        </div>
                       );
                     })}
                   </div>
@@ -623,9 +785,10 @@ export function AdminPortal() {
             {activeTab === "leads" && (
               <AdminLeadsPipeline
                 theme={theme}
+                subTab={currentSubTab}
                 onSelectLeadForEmail={(lead) => {
                   setSelectedLeadForEmail(lead);
-                  setActiveTab("emails");
+                  goTo("emails", "compose");
                 }}
               />
             )}
@@ -634,33 +797,60 @@ export function AdminPortal() {
             {activeTab === "emails" && (
               <AdminEmailHub
                 theme={theme}
+                subTab={currentSubTab}
                 prefilledLead={selectedLeadForEmail || undefined}
               />
             )}
 
             {/* TAB 3: SMOKE CALENDAR (LIVE) */}
-            {activeTab === "calendar" && <AdminCalendar theme={theme} />}
+            {activeTab === "calendar" && <AdminCalendar theme={theme} subTab={currentSubTab} />}
 
-            {/* TAB: TO-DO & PRODUCTION ROADMAP (LIVE) */}
-            {activeTab === "todos" && <AdminTodoList theme={theme} />}
+            {/* TAB: WORKSPACE = TO-DO & ROADMAP + PITMASTER NOTES (LIVE) */}
+            {(activeTab === "workspace" || activeTab === "todos" || activeTab === "notes") && (
+              <>
+                {(() => {
+                  const wsSub =
+                    activeTab === "workspace" ? currentSubTab ?? "todos" : activeTab;
+                  const g = WORKSPACE_GUIDES[wsSub] ?? WORKSPACE_GUIDES.todos;
+                  return (
+                    <>
+                      <AdminGuide
+                        guideId={`workspace-${wsSub}`}
+                        theme={theme}
+                        title={g.title}
+                        summary={g.summary}
+                        steps={g.steps}
+                        tip={g.tip}
+                      />
+                      {wsSub === "notes" ? (
+                        <AdminNotes theme={theme} />
+                      ) : (
+                        <AdminTodoList theme={theme} />
+                      )}
+                    </>
+                  );
+                })()}
+              </>
+            )}
 
-            {/* TAB 4: NOTES & COLLABORATION (LIVE) */}
-            {activeTab === "notes" && <AdminNotes theme={theme} />}
-
-            {/* TAB 5-10: COMING SOON MODULES (ALL THE SMOKE TAILORED) */}
+            {/* TAB 5-10: ANALYTICS */}
             {activeTab === "analytics" && <AdminAnalytics theme={theme} />}
 
             {/* TAB: QR DISPLAYS & PRINT MARKETING ENGINE (LIVE) */}
-            {activeTab === "qr-displays" && <AdminQRDisplays theme={theme} />}
+            {activeTab === "qr-displays" && <AdminQRDisplays theme={theme} subTab={currentSubTab} />}
 
             {/* TAB: GOOGLE BUSINESS PROFILE & CUSTOMER REVIEWS (LIVE) */}
             {activeTab === "google" && <AdminReviewsHub theme={theme} />}
 
             {/* TAB: WEEKEND DROPS & POP-UP SPECIALS (LIVE) */}
-            {activeTab === "weekend-drop" && <AdminWeekendDropManager theme={theme} />}
+            {activeTab === "weekend-drop" && (
+              <AdminWeekendDropManager theme={theme} subTab={currentSubTab} />
+            )}
 
             {/* TAB: SMOKER MENU & PRICE CONFIGURATOR (LIVE) */}
-            {activeTab === "services" && <AdminPriceConfigurator theme={theme} />}
+            {activeTab === "services" && (
+              <AdminPriceConfigurator theme={theme} subTab={currentSubTab} />
+            )}
 
             {activeTab === "directories" && (
               <ComingSoonModule
@@ -674,13 +864,19 @@ export function AdminPortal() {
                   "Corporate vendor credential verification (licensed, insured, food handler certifications)",
                   "Direct traffic and lead attribution reports per external directory",
                 ]}
-                actionTab="notes"
+                actionTab="workspace"
                 actionLabel="Open Collaborator Notes →"
-                onAction={() => setActiveTab("notes")}
+                onAction={() => goTo("workspace", "notes")}
               />
             )}
 
-            {activeTab === "pitmaster-app" && <AdminPitmasterApp theme={theme} />}
+            {activeTab === "pitmaster-app" && (
+              <AdminPitmasterApp theme={theme} subTab={currentSubTab} />
+            )}
+
+            {activeTab === "inventory" && (
+              <AdminInventory theme={theme} subTab={currentSubTab} />
+            )}
           </div>
         </main>
       </div>

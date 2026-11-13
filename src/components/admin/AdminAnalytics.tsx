@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { AdminTheme } from "./AdminPortal";
 import { PitmasterLead } from "./AdminLeadsPipeline";
+import { AdminGuide } from "./AdminGuide";
 
 interface AdminAnalyticsProps {
   theme: AdminTheme;
@@ -305,6 +306,19 @@ export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
+      <AdminGuide
+        guideId="analytics"
+        theme={isDay ? "day" : "night"}
+        title="How to read your numbers"
+        summary="A simple look at how the business is doing."
+        steps={[
+          { title: "Pick a time range", desc: "Use the controls at the top to look at a week, a month, or longer." },
+          { title: "Look at the big numbers", desc: "These show how many inquiries came in and how many turned into booked events." },
+          { title: "See where customers come from", desc: "The charts show which parties and event types bring in the most business." },
+          { title: "Spot what's working", desc: "Lean into the kinds of events you book most, and follow up on the ones slipping away." },
+        ]}
+        tip="You don't need to check this daily. Once a week is plenty."
+      />
       {/* 1. HEADER & CONTROLS */}
       <div
         className={`rounded-2xl p-4 sm:p-6 transition-all border shadow-lg ${

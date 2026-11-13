@@ -8,12 +8,16 @@ import {
   getStoredDropOrders,
 } from "@/utils/weekend-drop-store";
 import { WeekendDrop } from "@/types/weekend-drop";
+import { AdminGuide } from "./AdminGuide";
 
 export interface AdminWeekendDropManagerProps {
   theme?: "day" | "night" | "dark" | "butcher-paper";
+  /** "current" (drop editor) | "popups" (live preview + pre-orders). Defaults to "current". */
+  subTab?: string;
 }
 
-export function AdminWeekendDropManager({ theme = "night" }: AdminWeekendDropManagerProps) {
+export function AdminWeekendDropManager({ theme = "night", subTab }: AdminWeekendDropManagerProps) {
+  const activeTab = subTab === "popups" ? "popups" : "current";
   const isDay = theme === "day" || theme === "butcher-paper";
   const { drop, isCutoffPassed } = useWeekendDrop();
   const [formData, setFormData] = useState<WeekendDrop>({ ...drop });
@@ -59,8 +63,37 @@ Notes: ${formData.notice}`;
 
   return (
     <div className="space-y-8 animate-fade-in">
-      
+      {activeTab === "current" ? (
+        <AdminGuide
+          guideId="weekend-current"
+          theme={isDay ? "day" : "night"}
+          title="How to post a weekend dinner drop"
+          summary="Set up this Saturday's plates, then flip it live."
+          steps={[
+            { title: "Fill in the basics", desc: "Give the drop a headline, the date, when orders close, and where and when folks pick up." },
+            { title: "Set your plates and prices", desc: "Name each dinner option, write what comes with it, and set the price." },
+            { title: "Add your Zelle info", desc: "Put in the phone and email customers should send payment to." },
+            { title: "Save and go live", desc: "Hit Save & Publish, and make sure the Live switch at the top is on so customers can see it." },
+          ]}
+          tip="Not ready yet? Leave the switch on Draft and nothing shows on the website."
+        />
+      ) : (
+        <AdminGuide
+          guideId="weekend-popups"
+          theme={isDay ? "day" : "night"}
+          title="Checking your pop-up dinner preview and orders"
+          summary="See what customers see, and who has ordered."
+          steps={[
+            { title: "Look at the preview card", desc: "This is how your drop looks on the website. Check the headline, date and prices read right." },
+            { title: "Check the published tag", desc: "PUBLISHED means customers can order. DRAFT means it is hidden." },
+            { title: "Read the pre-orders", desc: "Each order shows the name, phone, pickup or delivery, and what they ordered." },
+          ]}
+          tip="Use the pre-order list as your prep sheet before Saturday's cook."
+        />
+      )}
+
       {/* HEADER SECTION */}
+      {activeTab === "current" && (
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-stone-200 dark:border-zinc-800">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold uppercase tracking-wider border border-amber-500/30 mb-1">
@@ -94,12 +127,14 @@ Notes: ${formData.notice}`;
           </button>
         </div>
       </div>
+      )}
 
       {/* TWO COLUMN GRID: EDITOR ON LEFT, LIVE PREVIEW ON RIGHT */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         {/* LEFT COLUMN: EDITOR FORM (7 Cols) */}
-        <form onSubmit={handleSave} className="lg:col-span-7 space-y-6">
+        {activeTab === "current" && (
+        <form onSubmit={handleSave} className="lg:col-span-12 space-y-6">
           
           {/* 1. DROP BASICS */}
           <div className={`p-5 rounded-2xl border ${isDay ? "bg-white border-stone-300" : "bg-[#141210] border-zinc-800"} space-y-4`}>
@@ -299,9 +334,11 @@ Notes: ${formData.notice}`;
           </div>
 
         </form>
+        )}
 
-        {/* RIGHT COLUMN: LIVE CARD PREVIEW (5 Cols) */}
-        <div className="lg:col-span-5 space-y-4">
+        {/* RIGHT COLUMN: LIVE CARD PREVIEW */}
+        {activeTab === "popups" && (
+        <div className="lg:col-span-12 space-y-4 max-w-2xl">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-black uppercase tracking-wider text-stone-400">
               Live Card Preview
@@ -396,6 +433,7 @@ Notes: ${formData.notice}`;
           </div>
 
         </div>
+        )}
 
       </div>
 

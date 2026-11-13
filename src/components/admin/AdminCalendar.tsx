@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { PitmasterLead } from "./AdminLeadsPipeline";
+import { AdminGuide } from "./AdminGuide";
 
 export type CalendarEventType = "gig" | "prep" | "logistics" | "consultation" | "other";
 
@@ -106,10 +107,13 @@ const SEED_CALENDAR_EVENTS: CalendarEvent[] = [
 
 interface AdminCalendarProps {
   theme?: "day" | "night" | "dark" | "butcher-paper";
+  /** "month" (month grid + metrics) | "day" (selected day schedule). Defaults to "month". */
+  subTab?: string;
 }
 
-export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
+export function AdminCalendar({ theme = "night", subTab }: AdminCalendarProps) {
   const isDay = theme === "day" || theme === "butcher-paper";
+  const activeTab = subTab === "day" ? "day" : "month";
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDateStr, setSelectedDateStr] = useState<string>(
@@ -285,6 +289,35 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
 
   return (
     <div className="space-y-6">
+      {activeTab === "month" ? (
+        <AdminGuide
+          guideId="calendar-month"
+          theme={isDay ? "day" : "night"}
+          title="How to read your calendar"
+          summary="See every cook, delivery and prep day at a glance."
+          steps={[
+            { title: "Look at the month", desc: "Each day shows little tags for gigs, meat prep, wood deliveries and consultations." },
+            { title: "Tap a day", desc: "Tap any date to pick it, then open the Day tab on the left to see everything planned for it." },
+            { title: "Add something new", desc: "Hit Schedule Event to put a gig, prep day or delivery on the calendar." },
+            { title: "Check the numbers", desc: "The cards at the top count what's coming up and how many bookings you have." },
+          ]}
+          tip="Booked customers land here on their own, so you don't have to type them in twice."
+        />
+      ) : (
+        <AdminGuide
+          guideId="calendar-day"
+          theme={isDay ? "day" : "night"}
+          title="Working a single day"
+          summary="Everything planned for the day you picked."
+          steps={[
+            { title: "Check the day", desc: "The list shows each event with its time, place, and any notes for the cook." },
+            { title: "Open the details", desc: "Tap the expand button on an event for the full screen view with customer info and prep notes." },
+            { title: "Change or finish it", desc: "Use Edit to fix a time or note, and Mark Done once the job is finished." },
+            { title: "Pick another day", desc: "Go back to the Month tab and tap a different date." },
+          ]}
+          tip="Use Schedule Event up top to add something right onto the day you're looking at."
+        />
+      )}
       {/* 1. TOP HEADER & SCHEDULE ACTIONS */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -323,6 +356,8 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
         </button>
       </div>
 
+      {activeTab === "month" && (
+      <>
       {/* 2. QUICK METRICS SUMMARY (4 Cards) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div
@@ -518,7 +553,11 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
         </div>
       </div>
 
+      </>
+      )}
+
       {/* 4. SELECTED DAY DETAILED SCHEDULE ROSTER */}
+      {activeTab === "day" && (
       <div
         className={`rounded-3xl border p-5 sm:p-7 space-y-4 shadow-xl ${
           isDay ? "bg-[#FFFFFF] border-[#E2DACF]" : "bg-[#141210] border-zinc-800"
@@ -670,6 +709,7 @@ export function AdminCalendar({ theme = "night" }: AdminCalendarProps) {
           </div>
         )}
       </div>
+      )}
 
       {/* 5. ADD EVENT MODAL */}
       {showAddModal && (

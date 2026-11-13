@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { PitmasterLead, LeadStatus } from "./AdminLeadsPipeline";
+import { AdminGuide } from "./AdminGuide";
 
 export interface SentMessage {
   id: string;
@@ -17,6 +18,7 @@ export interface SentMessage {
 export interface AdminEmailHubProps {
   theme?: "day" | "night" | "dark" | "butcher-paper";
   prefilledLead?: PitmasterLead;
+  subTab?: string;
 }
 
 // 5 1-Tap Quick-Reply Catering Lifecycle Templates for Live-Fire Texas BBQ
@@ -137,8 +139,11 @@ const getStatusBadge = (status: LeadStatus, isDay: boolean) => {
   }
 };
 
-export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubProps) {
+export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminEmailHubProps) {
   const isDay = theme === "day" || theme === "butcher-paper";
+  // "inbox" (lead list + conversation) | "compose" (templates + reply composer).
+  // Defaults to "inbox", or "compose" when a lead was handed over to reply to.
+  const activeTab = subTab === "compose" || subTab === "inbox" ? subTab : prefilledLead ? "compose" : "inbox";
 
   const [leads, setLeads] = useState<PitmasterLead[]>([]);
   const [messages, setMessages] = useState<SentMessage[]>([]);
@@ -306,6 +311,35 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
 
   return (
     <div className="space-y-4">
+      {activeTab === "inbox" ? (
+        <AdminGuide
+          guideId="email-inbox"
+          theme={isDay ? "day" : "night"}
+          title="How your customer inbox works"
+          summary="Every catering inquiry and what you've already said back."
+          steps={[
+            { title: "Find the customer", desc: "Scroll the list or search by name. Use the filters to see who still needs a reply." },
+            { title: "Tap their name", desc: "Their original request and any replies you've sent show up on the right." },
+            { title: "Need the whole picture?", desc: "Tap View Full Lead to see the date, guest count and their notes." },
+            { title: "Ready to answer", desc: "Open the Compose tab on the left to write back to the same person." },
+          ]}
+          tip="Needs Reply shows everyone you haven't written back to yet."
+        />
+      ) : (
+        <AdminGuide
+          guideId="email-compose"
+          theme={isDay ? "day" : "night"}
+          title="Writing a reply"
+          summary="Pick a quick template or write your own."
+          steps={[
+            { title: "Pick the customer", desc: "Make sure the right name is showing at the top of the composer." },
+            { title: "Start with a template", desc: "Tap one of the 1-tap buttons for a ready-made reply, then change anything you like." },
+            { title: "Check the subject and message", desc: "Read it over once. Add a personal line about their event." },
+            { title: "Send it", desc: "Tap Send Direct Reply. It goes out from your business email and replies come right back to you." },
+          ]}
+          tip="A quick reply, even just a hello, is the best way to lock in a booking."
+        />
+      )}
       {/* SUCCESS & ERROR ALERTS */}
       {successAlert && (
         <div className="p-3.5 rounded-xl bg-emerald-950/80 border border-emerald-600/70 text-emerald-200 text-xs flex items-center justify-between shadow-lg">
@@ -347,6 +381,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         
         {/* LEFT COLUMN: CLIENT ROSTER & FILTER TABS (lg:col-span-5) */}
+        {activeTab === "inbox" && (
         <div className="lg:col-span-5 space-y-3">
           {/* Search Box */}
           <div className="relative">
@@ -483,9 +518,36 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
             )}
           </div>
         </div>
+        )}
 
-        {/* RIGHT COLUMN: ACTIVE THREAD & EMAIL COMPOSER (lg:col-span-7) */}
-        <div className="lg:col-span-7">
+        {/* RIGHT COLUMN: ACTIVE THREAD & EMAIL COMPOSER */}
+        <div className={activeTab === "inbox" ? "lg:col-span-7" : "lg:col-span-12"}>
+          {activeTab === "compose" && leads.length > 0 && (
+            <div className="mb-3">
+              <label className={`text-[11px] font-black block mb-1 ${isDay ? "text-black" : "text-stone-200"}`}>
+                Replying to:
+              </label>
+              <select
+                value={currentLead?.id ?? ""}
+                onChange={(e) => {
+                  const picked = leads.find((l) => l.id === e.target.value);
+                  if (picked) handleSelectLead(picked);
+                }}
+                className={`w-full text-sm h-12 px-3 rounded-xl border font-bold focus:outline-none ${
+                  isDay
+                    ? "bg-white border-stone-400 text-black focus:border-[#FF7A00]"
+                    : "bg-zinc-900 border-zinc-700 text-white focus:border-[#FF7A00]"
+                }`}
+              >
+                {!currentLead && <option value="">Choose a customer…</option>}
+                {leads.map((l) => (
+                  <option key={l.id} value={l.id}>
+                    {l.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           {!currentLead ? (
             <div
               className={`p-12 text-center rounded-2xl border ${
@@ -566,6 +628,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
               <div className="p-4 sm:p-5 space-y-4">
                 
                 {/* Scrollable Conversation Thread Container */}
+                {activeTab === "inbox" && (
                 <div
                   className={`p-4 rounded-xl border space-y-3.5 max-h-[300px] overflow-y-auto ${
                     isDay ? "bg-stone-50 border-stone-200" : "bg-zinc-900/60 border-zinc-800"
@@ -653,7 +716,10 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                     </p>
                   )}
                 </div>
+                )}
 
+                {activeTab === "compose" && (
+                <>
                 {/* 1-Tap Catering Reply Templates */}
                 <div className="space-y-1.5">
                   <label className={`text-[11px] font-black block ${isDay ? "text-black" : "text-stone-200"}`}>
@@ -771,6 +837,8 @@ export function AdminEmailHub({ theme = "night", prefilledLead }: AdminEmailHubP
                   </div>
 
                 </div>
+                </>
+                )}
 
               </div>
 

@@ -81,14 +81,19 @@ export function SmokehouseOrderTray() {
     const clean = zip.trim();
     if (clean.length === 5) {
       if (TIER_1_ZIPS.has(clean)) {
-        setDeliveryFee(35);
-        setDeliveryZoneLabel("Zone 1: Local Drop-Off (+$35)");
+        if (subtotal >= 350) {
+          setDeliveryFee(0);
+          setDeliveryZoneLabel("Zone 1: FREE Local Delivery ($350+ Order)");
+        } else {
+          setDeliveryFee(25);
+          setDeliveryZoneLabel("Zone 1: Local Drop-Off (+$25 • Free at $350+)");
+        }
       } else if (TIER_2_ZIPS.has(clean)) {
-        setDeliveryFee(65);
-        setDeliveryZoneLabel("Zone 2: Extended Metro (+$65)");
+        setDeliveryFee(55);
+        setDeliveryZoneLabel("Zone 2: Extended Metro (+$55)");
       } else if (clean.startsWith("60") || clean.startsWith("61") || clean.startsWith("46")) {
-        setDeliveryFee(115);
-        setDeliveryZoneLabel("Zone 3: Outer Metro / Long-Haul (+$115)");
+        setDeliveryFee(85);
+        setDeliveryZoneLabel("Zone 3: Outer Metro / Long-Haul (+$85)");
       } else {
         setDeliveryFee(150);
         setDeliveryZoneLabel("Custom Destination Delivery (+$150)");
@@ -99,7 +104,9 @@ export function SmokehouseOrderTray() {
     }
   };
 
-  const finalTotal = subtotal + deliveryFee;
+  const isZone1Free = TIER_1_ZIPS.has(deliveryZip.trim()) && subtotal >= 350;
+  const effectiveDeliveryFee = isZone1Free ? 0 : deliveryFee;
+  const finalTotal = subtotal + effectiveDeliveryFee;
   const remainingForMin = Math.max(0, MIN_DELIVERY_SUBTOTAL - subtotal);
   const isMinMet = subtotal >= MIN_DELIVERY_SUBTOTAL;
 
@@ -153,7 +160,7 @@ export function SmokehouseOrderTray() {
         orderNotes: orderNotes.trim(),
         items: trayItems,
         subtotal,
-        deliveryFee,
+        deliveryFee: effectiveDeliveryFee,
         finalTotal,
       };
 
@@ -644,8 +651,12 @@ export function SmokehouseOrderTray() {
                 </div>
                 <div className="flex justify-between text-neutral-400">
                   <span>Heated Drop-Off Delivery</span>
-                  <span className="font-mono font-bold text-[#F59E0B]">
-                    {deliveryFee > 0 ? `+$${deliveryFee}.00` : "Enter ZIP above"}
+                  <span className={`font-mono font-bold ${isZone1Free ? "text-emerald-400" : "text-[#F59E0B]"}`}>
+                    {isZone1Free
+                      ? "FREE ($350+)"
+                      : effectiveDeliveryFee > 0
+                      ? `+$${effectiveDeliveryFee}.00`
+                      : "Enter ZIP above"}
                   </span>
                 </div>
                 <div className="pt-2 border-t border-white/10 flex justify-between items-baseline">

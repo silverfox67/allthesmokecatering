@@ -275,21 +275,22 @@ export function DeliveryChecker() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
               <div className="group rounded-xl border border-[#C8A97E]/30 bg-[#0D0B0A] hover:bg-[#161311] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-[#EA580C]/90 hover:shadow-[0_8px_25px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
                 <span className="text-stone-200 font-bold text-sm block group-hover:text-[#F4EFEA] transition-colors">Zone 1 (0–10 mi)</span>
-                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#FF8C38] group-hover:scale-105 transition-all">$35 Fee</span>
+                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#FF8C38] group-hover:scale-105 transition-all">$25 Fee</span>
+                <span className="text-emerald-400 text-[11px] font-bold block">FREE on $350+ Orders</span>
                 <span className="text-stone-300 text-xs block font-medium">$150 Min Order</span>
                 <span className="text-stone-400 text-xs block group-hover:text-stone-300 transition-colors">NW Side, O’Hare, Portage Park</span>
               </div>
 
               <div className="group rounded-xl border border-[#C8A97E]/30 bg-[#0D0B0A] hover:bg-[#161311] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-[#EA580C]/90 hover:shadow-[0_8px_25px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
                 <span className="text-stone-200 font-bold text-sm block group-hover:text-[#F4EFEA] transition-colors">Zone 2 (10–20 mi)</span>
-                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#FF8C38] group-hover:scale-105 transition-all">$65 Fee</span>
+                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#FF8C38] group-hover:scale-105 transition-all">$55 Fee</span>
                 <span className="text-stone-300 text-xs block font-medium">$300 Min Order</span>
                 <span className="text-stone-400 text-xs block group-hover:text-stone-300 transition-colors">The Loop, West Loop, Evanston</span>
               </div>
 
               <div className="group rounded-xl border border-[#C8A97E]/30 bg-[#0D0B0A] hover:bg-[#161311] p-4 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-[#EA580C]/90 hover:shadow-[0_8px_25px_rgba(234,88,12,0.3)] space-y-1 cursor-default">
                 <span className="text-stone-200 font-bold text-sm block group-hover:text-[#F4EFEA] transition-colors">Zone 3 (20–35 mi)</span>
-                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#FF8C38] group-hover:scale-105 transition-all">$95 Fee</span>
+                <span className="text-[#C8A97E] font-black text-xl block group-hover:text-[#FF8C38] group-hover:scale-105 transition-all">$85 Fee</span>
                 <span className="text-stone-300 text-xs block font-medium">$500 Min Order</span>
                 <span className="text-stone-400 text-xs block group-hover:text-stone-300 transition-colors">Naperville, Aurora, South Side</span>
               </div>

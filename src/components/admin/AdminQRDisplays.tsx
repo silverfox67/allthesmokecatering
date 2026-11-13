@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import QRCode from "qrcode";
 import { AdminTheme } from "./AdminPortal";
+import { AdminGuide } from "./AdminGuide";
 
 export type QRTemplateType = "business-card" | "table-tent" | "trailer-banner" | "reheating-card" | "sticker-sheet";
 export type QRStyleTheme = "smokehouse-dark" | "butcher-paper" | "ink-saver-white";
@@ -78,10 +79,13 @@ const QR_DESTINATION_PRESETS: QRDisplayPreset[] = [
 
 interface AdminQRDisplaysProps {
   theme: AdminTheme;
+  /** "templates" | "review-card" | "print" (defaults to "templates") */
+  subTab?: string;
 }
 
-export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
+export function AdminQRDisplays({ theme, subTab }: AdminQRDisplaysProps) {
   const isDay = theme === "day";
+  const tab = subTab === "review-card" || subTab === "print" ? subTab : "templates";
 
   // Template State
   const [selectedTemplate, setSelectedTemplate] = useState<QRTemplateType>("table-tent");
@@ -219,7 +223,49 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
 
   return (
     <div className="space-y-6">
-      {/* Top Header Bar */}
+      {tab === "templates" && (
+        <AdminGuide
+          guideId="qr-templates"
+          theme={isDay ? "day" : "night"}
+          title="How to make a table sign or banner"
+          summary="Pick a style, pick where the QR code goes, and watch the preview."
+          steps={[
+            { title: "Pick the kind of sign", desc: "Table tent, trailer banner, take-home card or stickers." },
+            { title: "Pick where the code sends people", desc: "Your menu, the quote form or the review page." },
+            { title: "Change the words", desc: "Edit the headline and note so it sounds like All The Smoke." },
+            { title: "Check the preview", desc: "What you see on the right is what comes out of the printer." },
+          ]}
+          tip="Test the code with your own phone before you print a whole stack."
+        />
+      )}
+      {tab === "review-card" && (
+        <AdminGuide
+          guideId="qr-review-card"
+          theme={isDay ? "day" : "night"}
+          title="How the pocket card works"
+          summary="The little card you hand out so happy guests can find you and leave a review."
+          steps={[
+            { title: "Choose the look", desc: "Dark smokehouse style or light butcher-paper style." },
+            { title: "Flip front and back", desc: "Check both sides. The back has the QR code." },
+            { title: "Download or print", desc: "Use the buttons at the bottom of the card to print a full sheet of 10." },
+          ]}
+          tip="Hand one to every guest as the food goes out. Reviews come easiest while they are full and happy."
+        />
+      )}
+      {tab === "print" && (
+        <AdminGuide
+          guideId="qr-print"
+          theme={isDay ? "day" : "night"}
+          title="How to print your signs"
+          summary="Tips for getting a clean print at home or at the print shop."
+          steps={[
+            { title: "Use the buttons up top", desc: "Print Active Sheet makes a PDF you can print or save." },
+            { title: "Pick the right paper", desc: "Heavy card stock holds up on a table and around grease and sauce." },
+            { title: "Print at full size", desc: "Turn off \"fit to page\" so the QR code stays sharp and scannable." },
+          ]}
+          tip="Use the white ink-saver style when you are printing a lot of copies."
+        />
+      )}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-zinc-800">
         <div>
           <div className="flex items-center gap-2">
@@ -284,10 +330,7 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
         </div>
       </div>
 
-      {/* =========================================================================
-          HERO SPOTLIGHT: PITMASTER EXECUTIVE BUSINESS CARD STUDIO (3.5" x 2")
-          Modeled on executive card studio with dual themes & authentic ATS brand tokens
-          ========================================================================= */}
+      {tab === "review-card" && (
       <div
         className={`p-5 sm:p-7 rounded-2xl border transition-all ${
           isDay
@@ -699,7 +742,10 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
           </div>
         </div>
       </div>
+      )}
 
+      {tab === "templates" && (
+      <>
       {/* Template & Destination Selector Row */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Configuration Controls (5 cols) */}
@@ -1604,7 +1650,11 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
           </div>
         </div>
       </div>
+      </>
+      )}
 
+      {tab === "print" && (
+      <>
       {/* =========================================================================
           PRINTING & DISPLAY GUIDELINES (4-PILLAR BEST PRACTICES)
           Modeled on agency standards with authentic smokehouse specs
@@ -1694,6 +1744,8 @@ export function AdminQRDisplays({ theme }: AdminQRDisplaysProps) {
           </div>
         </div>
       </div>
+      </>
+      )}
 
       {/* PRINT-SPECIFIC CSS (Auto-applied during window.print()) */}
       <style jsx global>{`
