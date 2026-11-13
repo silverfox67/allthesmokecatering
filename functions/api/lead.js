@@ -25,14 +25,43 @@ export async function onRequestPost(context) {
     }
 
     // 1. Anti-spam honeypot & speed gate
-    if (rawData.honey) {
-      return new Response(JSON.stringify({ success: true, message: 'Inquiry received' }), {
+    if (
+      rawData.honey ||
+      rawData.website_url ||
+      rawData.honeypot ||
+      rawData.address_company ||
+      rawData.business_title ||
+      rawData.fax
+    ) {
+      return new Response(JSON.stringify({ success: true, spam_filtered: true, message: 'Inquiry received' }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       });
     }
     if (rawData.formLoadedAt && Date.now() - Number(rawData.formLoadedAt) < 2000) {
-      return new Response(JSON.stringify({ success: true, message: 'Inquiry received' }), {
+      return new Response(JSON.stringify({ success: true, spam_filtered: true, message: 'Inquiry received' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // 1b. Anti-Spam Shield 2: Phishing / scam link detection
+    const textToCheck = `${rawData.name || ''} ${rawData.notes || ''} ${rawData.deliveryAddress || ''} ${rawData.packageName || ''} ${rawData.email || ''}`;
+    const spamLinkRegex = /(https?:\/\/|www\.|\.xyz|\.ru|\.top|\.cn|\.vip|\.cc|\.work|\.fit|bit\.ly|tinyurl|telegram|t\.me|whatsapp)/i;
+    if (spamLinkRegex.test(textToCheck)) {
+      console.warn('[ANTI-SPAM] Dropped phishing/link submission:', rawData.email || rawData.name);
+      return new Response(JSON.stringify({ success: true, spam_filtered: true, message: 'Inquiry received' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // 1c. Anti-Spam Shield 3: SEO, AI-search, website redesign, and marketing solicitation filter
+    const spamKeywordsRegex = /\b(seo\b|search engine optimization|ai-powered search|visibility in ai|visibility on google|rank(ing)? (on|in) google|first page of google|page 1 of google|backlinks?|guest post(ing)?|domain authority|domain rating|website design|web design|web development|redesign your website|noticed about your website|suggestions (specifically )?for your business|completely free to review|free (seo )?audit|digital marketing|marketing agency|marketing services|increase (your )?traffic|lead generation|crypto|bitcoin|forex)\b/i;
+    const spamEmailRegex = /([a-z0-9._%+-]*(mkt|seo|outreach|backlink|agency)[0-9]*@|@(tempmail|mailinator|throwaway|guerrillamail)\.)/i;
+    if (spamKeywordsRegex.test(textToCheck) || spamEmailRegex.test(rawData.email || '')) {
+      console.warn('[ANTI-SPAM] Dropped marketing/SEO solicitation:', rawData.email || rawData.name);
+      return new Response(JSON.stringify({ success: true, spam_filtered: true, message: 'Inquiry received' }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       });
