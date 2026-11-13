@@ -15,6 +15,17 @@ export interface SentMessage {
   createdAt: string;
 }
 
+export interface InboundEmail {
+  id: string;
+  senderEmail: string;
+  senderName: string;
+  recipientEmail: string;
+  subject: string;
+  body: string;
+  isRead: boolean;
+  createdAt: string;
+}
+
 export interface AdminEmailHubProps {
   theme?: "day" | "night" | "dark" | "butcher-paper";
   prefilledLead?: PitmasterLead;
@@ -147,6 +158,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
 
   const [leads, setLeads] = useState<PitmasterLead[]>([]);
   const [messages, setMessages] = useState<SentMessage[]>([]);
+  const [inboundEmails, setInboundEmails] = useState<InboundEmail[]>([]);
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
 
   // Filters & Search
@@ -203,6 +215,17 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
         })
         .catch((err) => {
           console.warn("Supabase messages sync fallback to localStorage:", err);
+        });
+
+      fetch("/api/admin/inbound-email")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (data && data.success && Array.isArray(data.inboundEmails)) {
+            setInboundEmails(data.inboundEmails);
+          }
+        })
+        .catch((err) => {
+          console.warn("Inbound email sync warning:", err);
         });
     }
   }, [prefilledLead]);
@@ -298,6 +321,64 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
     ? messages.filter((m) => m.leadId === currentLead.id || m.recipient === currentLead.email)
     : [];
 
+  const currentLeadInbound = currentLead
+    ? inboundEmails.filter(
+        (inb) => inb.senderEmail.toLowerCase() === (currentLead.email || "").toLowerCase()
+      )
+    : [];
+
+  const unreadInboundCount = inboundEmails.filter((inb) => !inb.isRead).length;
+
+  const handleMarkInboundRead = async (emailId: string, isRead = true) => {
+    setInboundEmails((prev) =>
+      prev.map((item) => (item.id === emailId ? { ...item, isRead } : item))
+    );
+    try {
+      await fetch("/api/admin/inbound-email", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: emailId, isRead }),
+      });
+    } catch (err) {
+      console.warn("Mark inbound read failed:", err);
+    }
+  };
+
+  const handleReplyToInbound = (inb: InboundEmail) => {
+    const matched = leads.find(
+      (l) => (l.email || "").toLowerCase() === inb.senderEmail.toLowerCase()
+    );
+    if (matched) {
+      setSelectedLeadId(matched.id);
+    } else {
+      const tempLead: PitmasterLead = {
+        id: `inb-${inb.id}`,
+        ticketId: "INBOX-REPLY",
+        name: inb.senderName || inb.senderEmail,
+        email: inb.senderEmail,
+        phone: "",
+        eventType: "Email Inquiry",
+        guestCount: 0,
+        eventDate: "Pending",
+        packageName: "Direct Email Reply",
+        serviceStyle: "Direct Email",
+        deliveryAddress: "",
+        notes: inb.body,
+        status: "new",
+        createdAt: inb.createdAt,
+        source: "Inbound Email",
+        estimatedTotal: 0,
+      };
+      setLeads((prev) => [tempLead, ...prev]);
+      setSelectedLeadId(tempLead.id);
+    }
+    setReplySubject(inb.subject.startsWith("Re:") ? inb.subject : `Re: ${inb.subject}`);
+    setReplyBody("");
+    if (!inb.isRead) {
+      handleMarkInboundRead(inb.id, true);
+    }
+  };
+
   // Filtered Leads
   const filteredLeads = leads.filter((l) => {
     const q = searchQuery.toLowerCase();
@@ -356,6 +437,90 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
           tip="A quick reply, even just a hello, is the best way to lock in a booking."
         />
       )}
+      {/* INBOUND CUSTOMER REPLIES BANNER (Live Zoho/Webhook Inbox) */}
+      {inboundEmails.length > 0 && (
+        <div
+          className={`p-3.5 rounded-2xl border space-y-2.5 ${
+            isDay
+              ? "bg-amber-50/80 border-amber-300 text-black"
+              : "bg-zinc-900/90 border-[#FF7A00]/40 text-stone-100"
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-black">📩 Incoming Customer Replies</span>
+              {unreadInboundCount > 0 && (
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-[#EA580C] text-white">
+                  {unreadInboundCount} Unread
+                </span>
+              )}
+            </div>
+            <span className={`text-[11px] font-bold ${isDay ? "text-stone-600" : "text-stone-400"}`}>
+              Synced via Supabase Inbox
+            </span>
+          </div>
+          <div className="space-y-2 max-h-60 overflow-y-auto">
+            {inboundEmails.slice(0, 8).map((inb) => (
+              <div
+                key={inb.id}
+                className={`p-2.5 rounded-xl border text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
+                  !inb.isRead
+                    ? isDay
+                      ? "bg-white border-amber-400 shadow-2xs"
+                      : "bg-zinc-800/90 border-[#FF7A00]/60"
+                    : isDay
+                    ? "bg-stone-50 border-stone-200 opacity-85"
+                    : "bg-zinc-950/60 border-zinc-800 opacity-85"
+                }`}
+              >
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {!inb.isRead && (
+                      <span className="w-2 h-2 rounded-full bg-[#EA580C] shrink-0" />
+                    )}
+                    <span className="font-black truncate">{inb.senderName}</span>
+                    <span className={`text-[10px] truncate ${isDay ? "text-stone-600" : "text-stone-400"}`}>
+                      &lt;{inb.senderEmail}&gt;
+                    </span>
+                    <span className={`text-[10px] font-bold ${isDay ? "text-stone-500" : "text-stone-500"}`}>
+                      • {new Date(inb.createdAt).toLocaleString()}
+                    </span>
+                  </div>
+                  <p className={`font-bold text-[11px] mt-0.5 truncate ${isDay ? "text-[#C84A0A]" : "text-[#FF8C38]"}`}>
+                    {inb.subject}
+                  </p>
+                  <p className={`text-[11px] line-clamp-2 mt-0.5 ${isDay ? "text-stone-700" : "text-stone-300"}`}>
+                    {inb.body}
+                  </p>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  {!inb.isRead && (
+                    <button
+                      type="button"
+                      onClick={() => handleMarkInboundRead(inb.id, true)}
+                      className={`px-2.5 py-1.5 rounded-lg text-[10px] font-bold border cursor-pointer ${
+                        isDay
+                          ? "bg-stone-100 border-stone-300 text-black hover:bg-stone-200"
+                          : "bg-zinc-800 border-zinc-700 text-stone-200 hover:bg-zinc-700"
+                      }`}
+                    >
+                      Mark Read
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => handleReplyToInbound(inb)}
+                    className="px-2.5 py-1.5 rounded-lg text-[10px] font-black bg-[#EA580C] hover:bg-[#C84A0A] text-white cursor-pointer"
+                  >
+                    Reply
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* SUCCESS & ERROR ALERTS */}
       {successAlert && (
         <div className="p-3.5 rounded-xl bg-emerald-950/80 border border-emerald-600/70 text-emerald-200 text-xs flex items-center justify-between shadow-lg">
@@ -690,7 +855,34 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
                     </div>
                   </div>
 
-                  {/* 2. Outbound Pitmaster Marion Bolden Replies */}
+                  {/* 2. Inbound Customer Replies for This Lead */}
+                  {currentLeadInbound.map((inb) => (
+                    <div
+                      key={`inb-${inb.id}`}
+                      className={`p-3.5 rounded-xl border text-xs space-y-2 mr-4 sm:mr-8 ${
+                        isDay
+                          ? "bg-emerald-50/90 border-emerald-300 text-black shadow-2xs"
+                          : "bg-emerald-950/30 border-emerald-500/40 text-stone-200"
+                      }`}
+                    >
+                      <div className={`flex items-center justify-between border-b pb-2 ${isDay ? "border-emerald-200" : "border-zinc-800"}`}>
+                        <span className={`font-black flex items-center gap-1.5 ${isDay ? "text-emerald-800" : "text-emerald-400"}`}>
+                          📩 {inb.senderName} ({inb.senderEmail})
+                        </span>
+                        <span className={`text-[10px] font-black ${isDay ? "text-black" : "text-stone-400"}`}>
+                          {new Date(inb.createdAt).toLocaleString()}
+                        </span>
+                      </div>
+                      <p className={`font-black text-[11px] ${isDay ? "text-emerald-900" : "text-emerald-300"}`}>
+                        Subject: {inb.subject}
+                      </p>
+                      <div className={`whitespace-pre-wrap leading-relaxed text-[11px] font-bold ${isDay ? "text-black" : "text-stone-200"}`}>
+                        {inb.body}
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* 3. Outbound Pitmaster Marion Bolden Replies */}
                   {currentLeadMessages.map((msg) => (
                     <div
                       key={msg.id}
