@@ -5,11 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { QuoteModal } from "@/components/forms/QuoteModal";
 import { SITE_CONFIG } from "@/config/site-config";
+import { IOSInstallModal } from "@/components/pwa/IOSInstallModal";
 
 export function PublicCustomerAppClient() {
   const [isStandalone, setIsStandalone] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [installSuccess, setInstallSuccess] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+  const [showIOSModal, setShowIOSModal] = useState(false);
   const [installNotice, setInstallNotice] = useState<string | null>(null);
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
 
@@ -20,6 +23,11 @@ export function PublicCustomerAppClient() {
         window.matchMedia("(display-mode: standalone)").matches ||
         (window.navigator as any).standalone === true;
       setIsStandalone(standalone);
+
+      // Detect iOS
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      const isAppleDevice = /iphone|ipad|ipod/.test(userAgent) && !(window as any).MSStream;
+      setIsIOS(isAppleDevice);
 
       // 2. Check early captured prompt in head
       if ((window as any).deferredPwaPrompt) {
@@ -49,6 +57,12 @@ export function PublicCustomerAppClient() {
   }, []);
 
   const handleInstallClick = () => {
+    // If iOS, open the step-by-step visual guidance modal
+    if (isIOS) {
+      setShowIOSModal(true);
+      return;
+    }
+
     const promptToUse = deferredPrompt || (window as any).deferredPwaPrompt;
     if (promptToUse) {
       try {
@@ -67,17 +81,8 @@ export function PublicCustomerAppClient() {
       }
     }
 
-    // Guidance for iOS or browsers that suppress auto prompt
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-    if (isIOS) {
-      setInstallNotice(
-        "📲 To install on iPhone: Tap Safari's Share button (square with arrow ↑) in the bottom toolbar, then tap 'Add to Home Screen'."
-      );
-    } else {
-      setInstallNotice(
-        "📲 To install: Tap your browser's menu (⋮ three dots at top-right) and select 'Install app' or 'Add to Home screen'."
-      );
-    }
+    // Fallback if no native prompt is available
+    setShowIOSModal(true);
   };
 
   return (
@@ -144,10 +149,18 @@ export function PublicCustomerAppClient() {
                   </div>
                   <div>
                     <span className="block text-xs sm:text-sm font-extrabold leading-tight text-white">
-                      {installSuccess ? "✓ App Installed on Phone" : "Install Free Smokehouse App"}
+                      {installSuccess
+                        ? "✓ App Installed on Phone"
+                        : isIOS
+                        ? "📲 Add to iPhone Home Screen"
+                        : "Install Free Smokehouse App"}
                     </span>
                     <span className="block text-[10.5px] text-amber-100 font-semibold mt-0.5">
-                      {installSuccess ? "Open from your home screen" : "1-Tap Saturday drops & quote calculator"}
+                      {installSuccess
+                        ? "Open from your home screen"
+                        : isIOS
+                        ? "Tap for 3-step visual iPhone guide"
+                        : "1-Tap Saturday drops & quote calculator"}
                     </span>
                   </div>
                 </div>
@@ -295,6 +308,15 @@ export function PublicCustomerAppClient() {
 
       {/* Quote Modal */}
       {isQuoteOpen && <QuoteModal isOpen={isQuoteOpen} onClose={() => setIsQuoteOpen(false)} />}
+
+      {/* Visual iOS Install Guidance Modal */}
+      <IOSInstallModal
+        isOpen={showIOSModal}
+        onClose={() => setShowIOSModal(false)}
+        appName="All The Smoke BBQ"
+        appIcon="/icons/customer-touch-icon.png"
+        appSubtitle="Official Smokehouse Mobile App"
+      />
     </div>
   );
 }

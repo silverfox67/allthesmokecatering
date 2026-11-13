@@ -5,13 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { QuoteModal } from "@/components/forms/QuoteModal";
 import { SITE_CONFIG } from "@/config/site-config";
+import { IOSInstallModal } from "@/components/pwa/IOSInstallModal";
 
 export function DigitalCardClient() {
   const [contactSaved, setContactSaved] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isStandalone, setIsStandalone] = useState(false);
   const [installSuccess, setInstallSuccess] = useState(false);
-  const [showIOSTip, setShowIOSTip] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+  const [showIOSModal, setShowIOSModal] = useState(false);
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
 
   useEffect(() => {
@@ -21,6 +23,11 @@ export function DigitalCardClient() {
         window.matchMedia("(display-mode: standalone)").matches ||
         (window.navigator as any).standalone === true;
       setIsStandalone(standalone);
+
+      // Detect iOS
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      const isAppleDevice = /iphone|ipad|ipod/.test(userAgent) && !(window as any).MSStream;
+      setIsIOS(isAppleDevice);
 
       // 2. Check early captured install prompt
       if ((window as any).deferredPwaPrompt) {
@@ -36,7 +43,7 @@ export function DigitalCardClient() {
 
       const handleAppInstalled = () => {
         setInstallSuccess(true);
-        setShowIOSTip(false);
+        setShowIOSModal(false);
         setDeferredPrompt(null);
         (window as any).deferredPwaPrompt = null;
       };
@@ -78,6 +85,11 @@ END:VCARD`;
 
   // 1-Tap Install Public Customer PWA
   const handleInstallClick = () => {
+    if (isIOS) {
+      setShowIOSModal(true);
+      return;
+    }
+
     const promptToUse = deferredPrompt || (window as any).deferredPwaPrompt;
     if (promptToUse) {
       try {
@@ -85,7 +97,6 @@ END:VCARD`;
         promptToUse.userChoice.then((choice: any) => {
           if (choice?.outcome === "accepted") {
             setInstallSuccess(true);
-            setShowIOSTip(false);
           }
           setDeferredPrompt(null);
           (window as any).deferredPwaPrompt = null;
@@ -96,12 +107,7 @@ END:VCARD`;
       }
     }
 
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-    if (isIOS) {
-      setShowIOSTip(!showIOSTip);
-    } else {
-      setShowIOSTip(!showIOSTip);
-    }
+    setShowIOSModal(true);
   };
 
   return (
@@ -224,16 +230,9 @@ END:VCARD`;
                   onClick={handleInstallClick}
                   className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#EA580C] to-[#C2410C] hover:brightness-105 text-white font-extrabold text-xs uppercase tracking-wider shadow-md transition active:scale-95 cursor-pointer shrink-0"
                 >
-                  {installSuccess ? "✓ Installed" : "Add App →"}
+                  {installSuccess ? "✓ Installed" : isIOS ? "Add to iPhone" : "Add App →"}
                 </button>
               </div>
-
-              {showIOSTip && (
-                <div className="p-2.5 rounded-xl bg-black/80 border border-amber-500/30 text-[11px] text-amber-200 leading-relaxed animate-in fade-in">
-                  <span className="font-bold text-white block mb-0.5">📱 Direct Home Screen Install:</span>
-                  Tap your browser menu or Safari <strong>Share</strong> (box with arrow ↑) ➔ select <strong>&ldquo;Add to Home Screen&rdquo;</strong>.
-                </div>
-              )}
             </div>
           )}
 
@@ -289,6 +288,15 @@ END:VCARD`;
 
       {/* Quote Modal */}
       {isQuoteOpen && <QuoteModal isOpen={isQuoteOpen} onClose={() => setIsQuoteOpen(false)} />}
+
+      {/* Visual iOS Install Guidance Modal */}
+      <IOSInstallModal
+        isOpen={showIOSModal}
+        onClose={() => setShowIOSModal(false)}
+        appName="All The Smoke BBQ"
+        appIcon="/icons/customer-touch-icon.png"
+        appSubtitle="Official Smokehouse Mobile App"
+      />
     </div>
   );
 }

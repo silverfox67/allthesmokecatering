@@ -45,6 +45,11 @@ export const metadata: Metadata = {
     ],
     shortcut: "/favicon.ico",
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "All The Smoke",
+  },
   robots: {
     index: true,
     follow: true,
@@ -138,7 +143,7 @@ export default function RootLayout({
           rel="preload"
           href="/fonts/inter-latin.woff2"
         />
-                <link
+        <link
           rel="preload"
           href="/fonts/satisfy-regular.woff2"
           as="font"
@@ -159,6 +164,13 @@ export default function RootLayout({
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="All The Smoke" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/customer-touch-icon.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="180x180" href="/icons/customer-touch-icon.png" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -167,6 +179,13 @@ export default function RootLayout({
                 e.preventDefault();
                 window.deferredPwaPrompt = e;
               });
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function(err) {
+                    console.warn('SW registration error:', err);
+                  });
+                });
+              }
             `,
           }}
         />

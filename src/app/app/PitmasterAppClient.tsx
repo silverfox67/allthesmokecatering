@@ -6,12 +6,15 @@ import Link from "next/link";
 import QRCode from "qrcode";
 import { AdminLogin } from "@/components/admin/AdminLogin";
 import { SITE_CONFIG } from "@/config/site-config";
+import { IOSInstallModal } from "@/components/pwa/IOSInstallModal";
 
 export function PitmasterAppClient() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [isStandalone, setIsStandalone] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [installSuccess, setInstallSuccess] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+  const [showIOSModal, setShowIOSModal] = useState(false);
   const [installNotice, setInstallNotice] = useState<string | null>(null);
 
   // Live Digital Biz Card States
@@ -41,6 +44,11 @@ export function PitmasterAppClient() {
         window.matchMedia("(display-mode: standalone)").matches ||
         (window.navigator as any).standalone === true;
       setIsStandalone(standalone);
+
+      // Detect iOS device
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      const isAppleDevice = /iphone|ipad|ipod/.test(userAgent) && !(window as any).MSStream;
+      setIsIOS(isAppleDevice);
 
       // 3. Register Service Worker with scope / for true WebAPK support (No Chrome badge)
       if ("serviceWorker" in navigator) {
@@ -99,6 +107,12 @@ export function PitmasterAppClient() {
       return;
     }
 
+    // On iOS devices, open the step-by-step visual guidance modal
+    if (isIOS) {
+      setShowIOSModal(true);
+      return;
+    }
+
     const promptToUse = deferredPrompt || (window as any).deferredPwaPrompt;
     if (promptToUse) {
       try {
@@ -117,17 +131,8 @@ export function PitmasterAppClient() {
       }
     }
 
-    // Graceful guidance for iOS / unsupported browsers
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-    if (isIOS) {
-      setInstallNotice(
-        "To add to iPhone: Tap Safari's Share button (square with arrow ↑) in bottom toolbar, then tap 'Add to Home Screen'."
-      );
-    } else {
-      setInstallNotice(
-        "Direct Home Screen Install: Tap your browser's menu (⋮ three dots at top-right) and select 'Install ATS Ops' or 'Add to Home screen'."
-      );
-    }
+    // Fallback if browser doesn't support auto-prompt
+    setShowIOSModal(true);
   };
 
   // vCard (.vcf) download
@@ -272,11 +277,17 @@ END:VCARD`;
                 </div>
                 <div>
                   <span className="block text-sm font-extrabold leading-tight text-white">
-                    {isStandalone || installSuccess ? "✓ App Installed" : "Download & Install App"}
+                    {isStandalone || installSuccess
+                      ? "✓ App Installed"
+                      : isIOS
+                      ? "📲 Add ATS Ops to iPhone"
+                      : "Download & Install App"}
                   </span>
                   <span className="block text-[11px] text-amber-100 font-semibold mt-0.5">
                     {isStandalone || installSuccess
                       ? "Running as Standalone Mobile PWA"
+                      : isIOS
+                      ? "Tap for visual 3-step home screen guide"
                       : "Add ATS Ops to Phone Screen"}
                   </span>
                 </div>
@@ -614,6 +625,14 @@ END:VCARD`;
         </div>
       )}
 
+      {/* Visual iOS Install Guidance Modal */}
+      <IOSInstallModal
+        isOpen={showIOSModal}
+        onClose={() => setShowIOSModal(false)}
+        appName="ATS Ops"
+        appIcon="/icons/portal-touch-icon.png"
+        appSubtitle="Executive Pitmaster Operations Console"
+      />
     </div>
   );
 }
