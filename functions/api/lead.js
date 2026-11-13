@@ -1,4 +1,6 @@
 // Cloudflare Pages Function: /api/lead
+import { supabaseRequest } from './_supabase.js';
+
 export async function onRequestPost(context) {
   try {
     const req = context.request;
@@ -149,6 +151,43 @@ export async function onRequestPost(context) {
       } catch (e) {
         console.warn('Brevo dispatch error:', e);
       }
+    }
+
+    // 4. Persist lead to Supabase `allthesmoke.leads` (non-blocking)
+    try {
+      const zipMatch = String(deliveryAddress || '').match(/\b\d{5}\b/);
+      const notesLines = [
+        `Ticket: #${ticketId}`,
+        `Service Style: ${serviceStyle}`,
+        `Venue/Address: ${deliveryAddress}`,
+        selectedProteins.length ? `Proteins: ${selectedProteins.join(', ')}` : '',
+        rawData.selectedSides && Array.isArray(rawData.selectedSides) && rawData.selectedSides.length
+          ? `Sides: ${rawData.selectedSides.join(', ')}`
+          : '',
+        notes ? `Client Notes: ${notes}` : '',
+      ]
+        .filter(Boolean)
+        .join('\n');
+
+      await supabaseRequest(env, 'leads', {
+        method: 'POST',
+        body: {
+          client_name: name,
+          client_email: email,
+          client_phone: phone,
+          event_date: eventDate,
+          event_type: rawData.eventType || serviceStyle,
+          guest_count: guestCount,
+          package_interest: packageName,
+          zip_code: rawData.zipCode || (zipMatch ? zipMatch[0] : ''),
+          estimated_total: rawData.estimatedTotal ? String(rawData.estimatedTotal) : '',
+          notes: notesLines,
+          status: 'new',
+          source: rawData.source || 'catering_quote_form',
+        },
+      });
+    } catch (dbErr) {
+      console.warn('Supabase lead insert error:', dbErr);
     }
 
     return new Response(

@@ -1,6 +1,6 @@
 // Cloudflare Pages Function: /api/admin/messages
-// Dispatches outbound email replies via Brevo REST API using authenticated domain senders:
-// info@allthesmokecatering.com, marion@allthesmokecatering.com, or support@allthesmokecatering.com
+// Dispatches outbound email replies via Brevo REST API and syncs email logs to Supabase `allthesmoke.email_logs`
+import { supabaseRequest } from "../_supabase.js";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -8,12 +8,66 @@ const cors = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
+function mapRowToMessage(row) {
+  return {
+    id: String(row.id),
+    leadId: row.lead_id || "",
+    sender: row.sender_email || "info@allthesmokecatering.com",
+    recipient: row.recipient_email || "",
+    clientName: row.client_name || "",
+    subject: row.subject || "",
+    body: row.body || "",
+    sentBy: row.sent_by || "Admin",
+    status: "sent",
+    createdAt: row.created_at || new Date().toISOString(),
+    error: null,
+  };
+}
+
+export async function onRequestOptions() {
+  return new Response(null, { status: 204, headers: cors });
+}
+
+export async function onRequestGet(context) {
+  const { env = {} } = context;
+  const res = await supabaseRequest(env, "email_logs", {
+    method: "GET",
+    query: "select=*&order=created_at.desc",
+  });
+
+  if (!res.ok) {
+    return new Response(
+      JSON.stringify({
+        success: false,
+        messages: [],
+        error: res.error,
+        code: res.code,
+      }),
+      { status: res.status || 500, headers: { "Content-Type": "application/json", ...cors } }
+    );
+  }
+
+  const messages = Array.isArray(res.data) ? res.data.map(mapRowToMessage) : [];
+  return new Response(
+    JSON.stringify({ success: true, messages }),
+    { status: 200, headers: { "Content-Type": "application/json", ...cors } }
+  );
+}
+
 export async function onRequestPost(context) {
   const { request, env = {} } = context;
 
   try {
     const data = await request.json();
-    const { leadId, recipientEmail, subject, messageContent, clientName, senderEmail = "info@allthesmokecatering.com" } = data;
+    const {
+      leadId,
+      recipientEmail,
+      subject,
+      messageContent,
+      clientName,
+      sentBy = "Admin",
+      senderEmail = "info@allthesmokecatering.com",
+    } = data;
 
     if (!recipientEmail || !messageContent) {
       return new Response(
@@ -24,7 +78,7 @@ export async function onRequestPost(context) {
 
     const cleanSenderEmail = senderEmail.includes("@allthesmokecatering.com")
       ? senderEmail
-      : (env.BREVO_SENDER_EMAIL || "info@allthesmokecatering.com");
+      : env.BREVO_SENDER_EMAIL || "info@allthesmokecatering.com";
 
     const senderName = cleanSenderEmail.startsWith("marion")
       ? "Pitmaster Marion Bolden | All The Smoke"
@@ -95,20 +149,46 @@ export async function onRequestPost(context) {
       emailSent = true;
     }
 
-    const messageRecord = {
+    const dbRes = await supabaseRequest(env, "email_logs", {
+      method: "POST",
+      body: {
+        lead_id: leadId ? String(leadId) : null,
+        recipient_email: recipientEmail,
+        client_name: clientName || recipientEmail,
+        sender_email: cleanSenderEmail,
+        subject: emailSubject,
+        body: messageContent,
+        sent_by: sentBy,
+      },
+    });
+
+    const savedRow =
+      dbRes.ok && Array.isArray(dbRes.data) && dbRes.data[0]
+        ? mapRowToMessage(dbRes.data[0])
+        : null;
+
+    const messageRecord = savedRow || {
       id: "msg-" + Date.now(),
       leadId: String(leadId || ""),
       sender: cleanSenderEmail,
       recipient: recipientEmail,
+      clientName: clientName || recipientEmail,
       subject: emailSubject,
       body: messageContent,
+      sentBy,
       status: emailSent ? "sent" : "queued",
       createdAt: new Date().toISOString(),
       error: dispatchError,
     };
 
     return new Response(
-      JSON.stringify({ success: true, emailSent, message: messageRecord }),
+      JSON.stringify({
+        success: true,
+        emailSent,
+        dbSaved: dbRes.ok,
+        dbError: dbRes.ok ? null : dbRes.error,
+        message: messageRecord,
+      }),
       { status: 200, headers: { "Content-Type": "application/json", ...cors } }
     );
   } catch (err) {
@@ -117,8 +197,4 @@ export async function onRequestPost(context) {
       { status: 500, headers: { "Content-Type": "application/json", ...cors } }
     );
   }
-}
-
-export async function onRequestOptions() {
-  return new Response(null, { headers: cors });
 }

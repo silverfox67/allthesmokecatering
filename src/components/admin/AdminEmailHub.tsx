@@ -188,6 +188,22 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
       } catch (err) {
         console.error("Failed to load email hub data:", err);
       }
+
+      fetch("/api/admin/messages")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (data && data.success && Array.isArray(data.messages) && data.messages.length > 0) {
+            setMessages(data.messages);
+            try {
+              localStorage.setItem("ats_admin_sent_messages", JSON.stringify(data.messages));
+            } catch {
+              // ignore storage quota errors
+            }
+          }
+        })
+        .catch((err) => {
+          console.warn("Supabase messages sync fallback to localStorage:", err);
+        });
     }
   }, [prefilledLead]);
 

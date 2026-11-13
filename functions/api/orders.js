@@ -1,4 +1,6 @@
 // Cloudflare Pages Function: /api/orders
+import { supabaseRequest } from './_supabase.js';
+
 export async function onRequestPost(context) {
   try {
     const req = context.request;
@@ -85,6 +87,35 @@ export async function onRequestPost(context) {
       } catch (err) {
         console.warn('Brevo order alert failed:', err);
       }
+    }
+
+    // Persist order to Supabase `allthesmoke.orders` (non-blocking)
+    try {
+      const orderNotes = [
+        `Order #: ${orderNumber}`,
+        `Target Date: ${targetDate} (${timeSlot})`,
+        deliveryAddress ? `Delivery Address: ${deliveryAddress}` : '',
+        rawData.notes ? `Customer Notes: ${rawData.notes}` : '',
+      ]
+        .filter(Boolean)
+        .join('\n');
+
+      await supabaseRequest(env, 'orders', {
+        method: 'POST',
+        body: {
+          client_name: customerName,
+          client_email: email || '',
+          client_phone: phone,
+          pickup_or_delivery: fulfillmentType,
+          items,
+          total_amount: `$${total.toFixed(2)}`,
+          payment_method: rawData.paymentMethod || 'zelle_or_stripe',
+          payment_status: 'pending',
+          notes: orderNotes,
+        },
+      });
+    } catch (dbErr) {
+      console.warn('Supabase order insert error:', dbErr);
     }
 
     return new Response(

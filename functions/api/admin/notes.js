@@ -1,4 +1,58 @@
 // Cloudflare Pages Function: /api/admin/notes
+// Supports GET, POST, PATCH, DELETE synced to Supabase schema `allthesmoke.notes` + Brevo dispatch
+import { supabaseRequest } from "../_supabase.js";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+function mapRowToNote(row) {
+  return {
+    id: String(row.id),
+    title: row.title || "Untitled Smokehouse Note",
+    category: row.category || "general",
+    priority: (row.priority || "normal").toLowerCase(),
+    author: row.author || "Todd",
+    whatAndWhy: row.what_and_why || "",
+    attachments: Array.isArray(row.attachments) ? row.attachments : [],
+    isCompleted: Boolean(row.is_completed),
+    emailNotified: Boolean(row.email_notified),
+    createdAt: row.created_at || new Date().toISOString(),
+  };
+}
+
+export async function onRequestOptions() {
+  return new Response(null, { status: 204, headers: corsHeaders });
+}
+
+export async function onRequestGet(context) {
+  const env = context.env || {};
+  const res = await supabaseRequest(env, "notes", {
+    method: "GET",
+    query: "select=*&order=created_at.desc",
+  });
+
+  if (!res.ok) {
+    return new Response(
+      JSON.stringify({
+        success: false,
+        notes: [],
+        error: res.error,
+        code: res.code,
+      }),
+      { status: res.status || 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
+  }
+
+  const notes = Array.isArray(res.data) ? res.data.map(mapRowToNote) : [];
+  return new Response(
+    JSON.stringify({ success: true, notes }),
+    { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+  );
+}
+
 export async function onRequestPost(context) {
   try {
     const req = context.request;
@@ -9,22 +63,25 @@ export async function onRequestPost(context) {
     const author = (data.author || "Todd").trim();
     const category = data.category || "general";
     const categoryLabel = data.categoryLabel || "General Note";
-    const priority = (data.priority || "normal").toUpperCase();
+    const priorityLower = (data.priority || "normal").toLowerCase();
+    const priority = priorityLower.toUpperCase();
     const whatAndWhy = data.whatAndWhy || "";
-    const attachmentCount = Number(data.attachmentCount) || 0;
+    const attachments = Array.isArray(data.attachments) ? data.attachments : [];
+    const attachmentCount = Number(data.attachmentCount) || attachments.length || 0;
     const createdAt = data.createdAt || new Date().toISOString();
+    const sendEmail = data.sendEmail !== false;
 
-    // Bidirectional routing:
-    // If Todd wrote the note, notify Marion. If Marion wrote it, notify Todd!
-    const isTodd = author.toLowerCase().includes("todd");
-    const recipient = isTodd
-      ? { email: "boldenmarion83@gmail.com", name: "Marion Bolden" }
-      : { email: "todddavis923@gmail.com", name: "Todd Davis" };
+    const recipient =
+      author.toLowerCase().includes("todd")
+        ? { email: "boldenmarion83@gmail.com", name: "Marion Bolden" }
+        : { email: "todddavis923@gmail.com", name: "Todd Davis" };
 
     const brevoApiKey =
       env.BREVO_API_KEY || env.BREVO_KEY || env.BREVO_TOKEN || env.SENDINBLUE_API_KEY;
 
-    if (brevoApiKey) {
+    let emailNotified = false;
+
+    if (sendEmail && brevoApiKey) {
       const formattedDate = new Date(createdAt).toLocaleString("en-US", {
         timeZone: "America/Chicago",
         dateStyle: "full",
@@ -81,7 +138,7 @@ export async function onRequestPost(context) {
         </div>
       `;
 
-      await fetch("https://api.brevo.com/v3/smtp/email", {
+      const brevoRes = await fetch("https://api.brevo.com/v3/smtp/email", {
         method: "POST",
         headers: {
           "api-key": brevoApiKey,
@@ -99,17 +156,135 @@ export async function onRequestPost(context) {
           htmlContent: noteHtml,
         }),
       });
+      emailNotified = brevoRes.ok;
     }
 
-    return new Response(JSON.stringify({ success: true, message: "Note processed" }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
+    const dbRes = await supabaseRequest(env, "notes", {
+      method: "POST",
+      body: {
+        title,
+        category,
+        priority: priorityLower,
+        author,
+        what_and_why: whatAndWhy,
+        attachments,
+        is_completed: Boolean(data.isCompleted),
+        email_notified: emailNotified || Boolean(data.emailNotified),
+      },
     });
+
+    const savedNote =
+      dbRes.ok && Array.isArray(dbRes.data) && dbRes.data[0]
+        ? mapRowToNote(dbRes.data[0])
+        : null;
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        message: "Note processed",
+        dbSaved: dbRes.ok,
+        dbError: dbRes.ok ? null : dbRes.error,
+        note: savedNote,
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      }
+    );
   } catch (err) {
     console.error("Error in /api/admin/notes:", err);
-    return new Response(JSON.stringify({ error: err.message }), {
+    return new Response(JSON.stringify({ success: false, error: err.message }), {
       status: 500,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...corsHeaders },
     });
+  }
+}
+
+export async function onRequestPatch(context) {
+  try {
+    const env = context.env || {};
+    const data = await context.request.json();
+    const id = data.id ? String(data.id).trim() : "";
+
+    if (!id) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Note id is required" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    const updates = {};
+    if (typeof data.isCompleted === "boolean") {
+      updates.is_completed = data.isCompleted;
+    }
+    if (typeof data.title === "string") {
+      updates.title = data.title.trim();
+    }
+    if (typeof data.whatAndWhy === "string") {
+      updates.what_and_why = data.whatAndWhy;
+    }
+
+    const dbRes = await supabaseRequest(env, "notes", {
+      method: "PATCH",
+      query: `id=eq.${encodeURIComponent(id)}`,
+      body: updates,
+    });
+
+    if (!dbRes.ok) {
+      return new Response(
+        JSON.stringify({ success: false, error: dbRes.error, code: dbRes.code }),
+        { status: dbRes.status || 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    const updatedNote =
+      Array.isArray(dbRes.data) && dbRes.data[0] ? mapRowToNote(dbRes.data[0]) : null;
+
+    return new Response(
+      JSON.stringify({ success: true, note: updatedNote }),
+      { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
+  } catch (err) {
+    return new Response(
+      JSON.stringify({ success: false, error: err.message }),
+      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
+  }
+}
+
+export async function onRequestDelete(context) {
+  try {
+    const env = context.env || {};
+    const url = new URL(context.request.url);
+    const id = (url.searchParams.get("id") || "").trim();
+
+    if (!id) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Note id query parameter is required" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    const dbRes = await supabaseRequest(env, "notes", {
+      method: "DELETE",
+      query: `id=eq.${encodeURIComponent(id)}`,
+    });
+
+    if (!dbRes.ok) {
+      return new Response(
+        JSON.stringify({ success: false, error: dbRes.error, code: dbRes.code }),
+        { status: dbRes.status || 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    return new Response(
+      JSON.stringify({ success: true, id }),
+      { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
+  } catch (err) {
+    return new Response(
+      JSON.stringify({ success: false, error: err.message }),
+      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
   }
 }

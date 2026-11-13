@@ -191,7 +191,7 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Load notes & sticky author preference from localStorage on mount
+  // Load notes & sticky author preference from localStorage on mount, then sync from Supabase API
   useEffect(() => {
     if (typeof window !== "undefined") {
       try {
@@ -212,6 +212,22 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
         setNotes(SEED_NOTES);
       }
       setIsLoaded(true);
+
+      fetch("/api/admin/notes")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (data && data.success && Array.isArray(data.notes) && data.notes.length > 0) {
+            setNotes(data.notes);
+            try {
+              localStorage.setItem("ats_admin_notes", JSON.stringify(data.notes));
+            } catch {
+              // ignore storage quota errors
+            }
+          }
+        })
+        .catch((err) => {
+          console.warn("Supabase notes sync fallback to localStorage:", err);
+        });
     }
   }, []);
 
@@ -293,33 +309,42 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
       emailNotified: sendBrevoEmail,
     };
 
-    // If Brevo notification is checked, dispatch to backend API
+    // Persist to Supabase & optionally dispatch Brevo notification email
     const targetRecipientEmail =
       author === "Todd" ? "boldenmarion83@gmail.com" : "todddavis923@gmail.com";
 
-    if (sendBrevoEmail) {
-      try {
-        await fetch("/api/admin/notes", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: newNote.title,
-            author: newNote.author,
-            category: newNote.category,
-            categoryLabel: CATEGORY_META[newNote.category].label,
-            priority: newNote.priority,
-            whatAndWhy: newNote.whatAndWhy,
-            attachmentCount: attachments.length,
-            recipientEmail: targetRecipientEmail,
-            createdAt: newNote.createdAt,
-          }),
-        });
-      } catch (err) {
-        console.warn("Brevo email dispatch non-blocking notice:", err);
+    let persistedNote = newNote;
+    try {
+      const res = await fetch("/api/admin/notes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: newNote.title,
+          author: newNote.author,
+          category: newNote.category,
+          categoryLabel: CATEGORY_META[newNote.category].label,
+          priority: newNote.priority,
+          whatAndWhy: newNote.whatAndWhy,
+          attachments: newNote.attachments,
+          attachmentCount: attachments.length,
+          recipientEmail: targetRecipientEmail,
+          createdAt: newNote.createdAt,
+          sendEmail: sendBrevoEmail,
+          emailNotified: sendBrevoEmail,
+          isCompleted: false,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.note) {
+          persistedNote = data.note;
+        }
       }
+    } catch (err) {
+      console.warn("Notes API sync non-blocking notice:", err);
     }
 
-    const updated = [newNote, ...notes];
+    const updated = [persistedNote, ...notes];
     saveNotes(updated);
 
     // Reset Form
@@ -340,10 +365,18 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
 
   // Toggle Completion
   const toggleComplete = (noteId: string) => {
+    const target = notes.find((n) => n.id === noteId);
+    const nextCompleted = target ? !target.isCompleted : true;
     const updated = notes.map((n) =>
-      n.id === noteId ? { ...n, isCompleted: !n.isCompleted } : n
+      n.id === noteId ? { ...n, isCompleted: nextCompleted } : n
     );
     saveNotes(updated);
+
+    fetch("/api/admin/notes", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: noteId, isCompleted: nextCompleted }),
+    }).catch((err) => console.warn("Note toggle sync failed:", err));
   };
 
   // Delete Note
@@ -351,6 +384,10 @@ export function AdminNotes({ theme = "night" }: AdminNotesProps) {
     if (confirm("Are you sure you want to delete this note and its attachments?")) {
       const updated = notes.filter((n) => n.id !== noteId);
       saveNotes(updated);
+
+      fetch(`/api/admin/notes?id=${encodeURIComponent(noteId)}`, {
+        method: "DELETE",
+      }).catch((err) => console.warn("Note delete sync failed:", err));
     }
   };
 
