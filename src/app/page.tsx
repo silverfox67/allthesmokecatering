@@ -8,6 +8,7 @@ import { PackageGrid } from "@/components/catering/PackageGrid";
 import { WeekendDropCard } from "@/components/home/WeekendDropCard";
 import { ButcherBlockMenu } from "@/components/home/ButcherBlockMenu";
 import { DeliveryChecker } from "@/components/delivery/DeliveryChecker";
+import { GoogleBusinessMap } from "@/components/home/GoogleBusinessMap";
 import { TikTokReels } from "@/components/social/TikTokReels";
 import { TestimonialSection } from "@/components/home/TestimonialSection";
 import { Footer } from "@/components/layout/Footer";
@@ -37,8 +38,11 @@ export default function HomePage() {
         {/* 4. Pitmaster Menu: Warm Butcher Paper (#FAF8F5) with Sticky Category Pills, Weekly Chalkboard & Inline ZIP Calculator */}
         <ButcherBlockMenu />
 
-        {/* 4.5. Chicagoland 3-Ring Delivery Coverage Map & ZIP Calculator */}
+        {/* 4.5. Chicagoland Delivery Radius Calculator & Zone Matrix */}
         <DeliveryChecker />
+
+        {/* 4.6. Real Google Business Profile Map Embed */}
+        <GoogleBusinessMap />
 
         {/* 5. TikTok Pitmaster Reels: Authentic Live-Fire Proof & Video Demonstrations (#0A0A0A) */}
         <TikTokReels />

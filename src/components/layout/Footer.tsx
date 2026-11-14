@@ -102,8 +102,6 @@ export function Footer() {
               Pitmaster / Operator:{" "}
               <span className="text-[#F4EFEA] font-semibold">Marion Bolden</span>
             </p>
-            <p>Est. March 2024 • Chicago, IL</p>
-            <p>Tue–Sun 8 AM–8 PM • Closed Mon &amp; Major Holidays</p>
             <p className="pt-0.5">
               <Link
                 href="/app"
