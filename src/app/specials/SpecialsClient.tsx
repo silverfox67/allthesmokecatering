@@ -292,14 +292,14 @@ export function SpecialsClient() {
             <ChalkboardContent />
           </div>
 
-          {/* Bottom Back Link */}
+          {/* Bottom Full Menu CTA */}
           <div className="text-center mt-12 relative z-10">
             <Link
               href="/#menu"
-              className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors border border-white/10 px-5 py-2.5 rounded-full bg-zinc-900/60"
+              className="inline-flex items-center justify-center gap-2.5 min-h-[48px] px-7 py-3 rounded-full bg-gradient-to-r from-[#EA580C] to-[#C84A0A] hover:from-[#FF7A00] hover:to-[#EA580C] text-white text-sm font-black tracking-wide border border-[#FF7A00]/60 shadow-[0_0_24px_rgba(234,88,12,0.4)] hover:shadow-[0_0_32px_rgba(255,122,0,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
-              <span>←</span>
-              <span>Back to Full Catering Menu &amp; Party Pans</span>
+              <span>Explore Full Catering Menu &amp; Party Pans</span>
+              <span>→</span>
             </Link>
           </div>
         </div>
