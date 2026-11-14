@@ -118,13 +118,13 @@ export const CATERING_TEMPLATES: QuickMessageTemplate[] = [
     sms: (lead) =>
       `Hey ${lead.name || "there"}! Thank you so much for having All The Smoke out for your ${
         lead.eventType || "event"
-      }! Hope everyone loved the BBQ. If you have 30 seconds, could you leave Marion a 5-star Google review? It helps our local smokehouse immensely: https://g.page/r/allthesmokecatering/review Thank you! 🔥`,
+      }! Hope everyone loved the BBQ. If you have 30 seconds, could you leave Marion a 5-star Google review? It helps our local smokehouse immensely: https://g.page/r/CfFd-sBgX_THECE/review Thank you! 🔥`,
     emailSubject: (lead) =>
       `Thank You from All The Smoke BBQ (+ A Quick 30-Sec Favor) | Pitmaster Marion`,
     emailBody: (lead) =>
       `Hi ${lead.name || "there"},\n\nOn behalf of the entire crew at All The Smoke BBQ & Catering, thank you so much for trusting us to feed your guests at your ${
         lead.eventType || "event"
-      }!\n\nSmoking authentic, live-fire craft barbecue for Chicago events is our passion, and we hope every guest left full and happy.\n\nIf you enjoyed the barbecue and our service, would you take 30 seconds to leave us a quick 5-star Google review?\n\n👉 https://g.page/r/allthesmokecatering/review\n\nAs an independent Chicago smokehouse, word of mouth and Google reviews mean the world to us.\n\nThank you again for your business, and we hope to see you at your next celebration!\n\nWarmly,\nMarion Bolden | Pitmaster & Owner\nAll The Smoke BBQ & Catering\n(773) 707-9988 | allthesmokecatering.com`,
+      }!\n\nSmoking authentic, live-fire craft barbecue for Chicago events is our passion, and we hope every guest left full and happy.\n\nIf you enjoyed the barbecue and our service, would you take 30 seconds to leave us a quick 5-star Google review?\n\n👉 https://g.page/r/CfFd-sBgX_THECE/review\n\nAs an independent Chicago smokehouse, word of mouth and Google reviews mean the world to us.\n\nThank you again for your business, and we hope to see you at your next celebration!\n\nWarmly,\nMarion Bolden | Pitmaster & Owner\nAll The Smoke BBQ & Catering\n(773) 707-9988 | allthesmokecatering.com`,
   },
 ];
 

@@ -5,7 +5,7 @@ import { CustomerReview } from "@/types/reviews";
 
 export const STORAGE_KEY_REVIEWS = "ats_customer_reviews_v1";
 export const EVENT_REVIEWS_UPDATED = "ats-reviews-updated";
-export const GOOGLE_REVIEW_URL = "https://g.page/r/allthesmokecatering/review";
+export const GOOGLE_REVIEW_URL = "https://g.page/r/CfFd-sBgX_THECE/review";
 
 export const SEED_REVIEWS: CustomerReview[] = [];
 

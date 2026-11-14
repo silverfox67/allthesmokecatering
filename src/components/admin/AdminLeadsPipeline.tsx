@@ -359,7 +359,7 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail, subT
   };
 
   const handleAskReview = (lead: PitmasterLead) => {
-    const reviewUrl = "https://g.page/r/allthesmokecatering/review";
+    const reviewUrl = "https://g.page/r/CfFd-sBgX_THECE/review";
     const msg = `Hi ${lead.name}, thank you for choosing All The Smoke Live-Fire Catering! Would you take 30 seconds to leave us a 5-star Google review? ${reviewUrl}`;
     if (confirm(`Send review request to ${lead.name} (${lead.phone || lead.email})?\n\n"${msg}"`)) {
       alert(`Review request dispatched to ${lead.name}!`);
