@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { SITE_CONFIG, DeliveryZone } from "@/config/site-config";
+import { ServiceAreaMap } from "@/components/delivery/ServiceAreaMap";
 
 // Chicagoland Zip Code Lookup Map
 const ZONE_1_ZIPS = new Set([
@@ -265,6 +266,14 @@ export function DeliveryChecker() {
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Interactive 3-Ring Chicagoland Service Area Map */}
+          <div className="relative z-10">
+            <ServiceAreaMap
+              activeZone={result ? result.zone.zone : null}
+              onSelectZip={handleQuickZip}
+            />
           </div>
 
           {/* Static Zone Overview Matrix */}

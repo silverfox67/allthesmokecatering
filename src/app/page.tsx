@@ -7,6 +7,7 @@ import { AboutSection } from "@/components/home/AboutSection";
 import { PackageGrid } from "@/components/catering/PackageGrid";
 import { WeekendDropCard } from "@/components/home/WeekendDropCard";
 import { ButcherBlockMenu } from "@/components/home/ButcherBlockMenu";
+import { DeliveryChecker } from "@/components/delivery/DeliveryChecker";
 import { TikTokReels } from "@/components/social/TikTokReels";
 import { TestimonialSection } from "@/components/home/TestimonialSection";
 import { Footer } from "@/components/layout/Footer";
@@ -35,6 +36,9 @@ export default function HomePage() {
 
         {/* 4. Pitmaster Menu: Warm Butcher Paper (#FAF8F5) with Sticky Category Pills, Weekly Chalkboard & Inline ZIP Calculator */}
         <ButcherBlockMenu />
+
+        {/* 4.5. Chicagoland 3-Ring Delivery Coverage Map & ZIP Calculator */}
+        <DeliveryChecker />
 
         {/* 5. TikTok Pitmaster Reels: Authentic Live-Fire Proof & Video Demonstrations (#0A0A0A) */}
         <TikTokReels />
