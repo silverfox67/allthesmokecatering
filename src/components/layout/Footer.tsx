@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SITE_CONFIG } from "@/config/site-config";
+import { GOOGLE_REVIEW_URL } from "@/utils/reviews-store";
 
 export function Footer() {
   return (
@@ -40,11 +41,13 @@ export function Footer() {
             </p>
             <div className="pt-3">
               <a
-                href="/review"
+                href={GOOGLE_REVIEW_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-xs text-amber-400 hover:text-amber-300 font-bold transition-colors"
               >
-                <span>⭐ Rate Your Feast &amp; Leave a Review</span>
-                <span>→</span>
+                <span>⭐ Leave Us a Google Review</span>
+                <span>↗</span>
               </a>
             </div>
           </div>
