@@ -113,6 +113,7 @@ const localBusinessSchema = {
   },
   servesCuisine: ["Barbecue", "American", "Soul Food", "Southern"],
   priceRange: "$$",
+  foundingDate: "2024-03",
   areaServed: SITE_CONFIG.serviceArea,
   sameAs: [SITE_CONFIG.socials.tiktok],
   openingHoursSpecification: [
@@ -128,6 +129,27 @@ const localBusinessSchema = {
       ],
       opens: "08:00",
       closes: "20:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      validFrom: "2026-11-26",
+      validThrough: "2026-11-26",
+      opens: "00:00",
+      closes: "00:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      validFrom: "2026-12-25",
+      validThrough: "2026-12-25",
+      opens: "00:00",
+      closes: "00:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      validFrom: "2027-01-01",
+      validThrough: "2027-01-01",
+      opens: "00:00",
+      closes: "00:00",
     },
   ],
   founder: {
