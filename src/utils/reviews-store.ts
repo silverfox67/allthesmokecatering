@@ -9,6 +9,57 @@ export const GOOGLE_REVIEW_URL = "https://g.page/r/CfFd-sBgX_THECE/review";
 
 export const SEED_REVIEWS: CustomerReview[] = [
   {
+    id: "gbp-marcus-fuller-2026-11-15",
+    clientName: "Marcus Fuller",
+    eventType: "Google Review",
+    reviewerBadge: "Local Guide",
+    displayDate: "Nov 15, 2026",
+    rating: 5,
+    reviewText: "Food was delicious well seasoned and fresh",
+    favoriteHighlights: ["🔥 Fresh & Well Seasoned"],
+    permissionToFeature: true,
+    isFeatured: true,
+    submittedAt: "2026-11-15T21:14:00.000Z",
+    source: "google",
+    status: "published",
+    adminResponse:
+      "Appreciate the 5 stars, Marcus! Keeping everything fresh off the pit and seasoned right is what we care about most. Glad you enjoyed it. — Marion",
+  },
+  {
+    id: "gbp-chris-hackett-2026-11-15",
+    clientName: "Chris Hackett",
+    eventType: "Google Review",
+    displayDate: "Nov 15, 2026",
+    rating: 5,
+    reviewText:
+      "All The Smoke is all the rage baby! Everything that I've tried has been tender, juicy, well seasoned and delicious!",
+    favoriteHighlights: ["🍖 Tender & Juicy"],
+    permissionToFeature: true,
+    isFeatured: true,
+    submittedAt: "2026-11-15T21:11:00.000Z",
+    source: "google",
+    status: "published",
+    adminResponse:
+      "Love that energy, Chris! Making sure every cut comes off tender and juicy is the whole goal around here. Good looking out on the support! – Marion",
+  },
+  {
+    id: "gbp-nel-c-2026-11-15",
+    clientName: "Nel C",
+    eventType: "Google Review",
+    displayDate: "Nov 15, 2026",
+    rating: 5,
+    reviewText:
+      "Always flavorful, mouth-watering options each week. You can taste the tender loving care the chef puts in these meals!",
+    favoriteHighlights: ["👨‍🍳 Weekly Favorites"],
+    permissionToFeature: true,
+    isFeatured: true,
+    submittedAt: "2026-11-15T21:04:00.000Z",
+    source: "google",
+    status: "published",
+    adminResponse:
+      "Nel, hearing that you notice the care in every weekly menu really makes my day. Thanks for rocking with us week after week! – Chef Marion",
+  },
+  {
     id: "gbp-justin-raglin-2026-11-15",
     clientName: "Justin Raglin",
     eventType: "Google Review",
