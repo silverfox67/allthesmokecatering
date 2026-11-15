@@ -46,7 +46,7 @@ export function GoogleBusinessMap() {
               href={GOOGLE_REVIEW_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="min-h-[48px] px-5 py-3 rounded-[14px] bg-[#1C1814] border border-[#C8A97E]/40 hover:border-[#FF7A00] text-amber-300 hover:text-white text-sm font-bold inline-flex items-center justify-center gap-2 whitespace-nowrap transition-colors"
+              className="min-h-[48px] px-5 py-3 rounded-[14px] bg-[#FAF8F5] hover:bg-white border-2 border-[#C8A97E] shadow-lg text-[#1C1917] font-display font-bold text-sm tracking-wider uppercase inline-flex items-center justify-center gap-2 whitespace-nowrap transition-transform hover:scale-[1.02] active:scale-[0.98]"
             >
               <span>⭐ Google Reviews</span>
               <span aria-hidden="true">↗</span>
@@ -54,7 +54,7 @@ export function GoogleBusinessMap() {
           </div>
         </div>
 
-        <div className="rounded-2xl overflow-hidden border border-stone-800 shadow-2xl bg-[#141210]">
+        <div className="rounded-2xl overflow-hidden border-2 border-[#C8A97E]/40 shadow-2xl bg-[#FAF8F5]">
           <iframe
             title="All The Smoke BBQ & Catering on Google Maps"
             src={GOOGLE_MAPS_EMBED_URL}
@@ -67,38 +67,38 @@ export function GoogleBusinessMap() {
 
         {/* 3-Column Operating Hours, Holiday Schedule & Advance Booking Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="rounded-2xl bg-[#141210] border border-[#C8A97E]/25 p-5 space-y-2">
-            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#C8A97E] block">
+          <div className="rounded-2xl bg-[#FAF8F5] border border-[#C8A97E]/60 shadow-xl p-5 space-y-1.5 border-t-4 border-t-[#EA580C]">
+            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#C84A0A] block">
               Operating Hours
             </span>
-            <p className="text-base font-bold text-white">
+            <p className="text-base font-bold text-[#1C1917]">
               Tue – Sun: 8:00 AM – 8:00 PM
             </p>
-            <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-stone-700 leading-relaxed">
               Monday: Closed • Est. March 2024
             </p>
           </div>
 
-          <div className="rounded-2xl bg-[#141210] border border-[#C8A97E]/25 p-5 space-y-2">
-            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#C8A97E] block">
+          <div className="rounded-2xl bg-[#FAF8F5] border border-[#C8A97E]/60 shadow-xl p-5 space-y-1.5 border-t-4 border-t-[#C8A97E]">
+            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#9A6B2F] block">
               Holiday Hours
             </span>
-            <p className="text-base font-bold text-white">
+            <p className="text-base font-bold text-[#1C1917]">
               Closed Major Holidays
             </p>
-            <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-stone-700 leading-relaxed">
               Thanksgiving (Nov 26), Christmas (Dec 25) &amp; New Year’s Day (Jan 1) — special orders by inquiry.
             </p>
           </div>
 
-          <div className="rounded-2xl bg-[#141210] border border-[#C8A97E]/25 p-5 space-y-2">
-            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#C8A97E] block">
+          <div className="rounded-2xl bg-[#FAF8F5] border border-[#C8A97E]/60 shadow-xl p-5 space-y-1.5 border-t-4 border-t-[#EA580C]">
+            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#C84A0A] block">
               Advance Booking
             </span>
-            <p className="text-base font-bold text-white">
+            <p className="text-base font-bold text-[#1C1917]">
               48–72 Hours Notice
             </p>
-            <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-stone-700 leading-relaxed">
               Required for live-fire catering &amp; whole meats. Dispatched from NW Side Chicago (60634).
             </p>
           </div>
