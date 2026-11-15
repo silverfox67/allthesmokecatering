@@ -2,10 +2,10 @@ import React from "react";
 import { GOOGLE_REVIEW_URL } from "@/utils/reviews-store";
 
 const GOOGLE_MAPS_LINK =
-  "https://www.google.com/maps/search/?api=1&query=All+The+Smoke+BBQ+%26+Catering+Chicago+IL";
+  "https://www.google.com/maps/place//data=!4m3!3m2!1s0x2678ec651ad7958d:0xc7f45f60c0fa5df1";
 
 const GOOGLE_MAPS_EMBED_URL =
-  "https://maps.google.com/maps?q=Chicago,+IL+60634&t=&z=11&ie=UTF8&iwloc=&output=embed";
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d380513.7160580949!2d-87.7985!3d41.9462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2678ec651ad7958d%3A0xc7f45f60c0fa5df1!2sAll%20The%20Smoke%20BBQ%20%26%20Catering!5e0!3m2!1sen!2sus!4v1794701800000!5m2!1sen!2sus";
 
 export function GoogleBusinessMap() {
   return (
