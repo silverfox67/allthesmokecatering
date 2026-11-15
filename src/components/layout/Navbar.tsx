@@ -30,41 +30,47 @@ export function Navbar() {
         {/* Desktop Navigation Links (Ordered Top-to-Bottom with Page Flow) */}
         <nav
           aria-label="Main Navigation"
-          className="hidden lg:flex items-center gap-7 pl-48 lg:pl-56 overflow-visible"
+          className="hidden lg:flex items-center gap-5 xl:gap-7 pl-48 lg:pl-56 overflow-visible"
         >
           <Link
             href="/#about"
-            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
+            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors whitespace-nowrap"
           >
             About
           </Link>
           <Link
             href="/#packages"
-            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
+            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors whitespace-nowrap"
           >
             Packages
           </Link>
           <Link
             href="/#menu"
-            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
+            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors whitespace-nowrap"
           >
             Menu
           </Link>
           <Link
             href="/gallery"
-            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
+            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors whitespace-nowrap"
           >
             Gallery
           </Link>
           <Link
+            href="/reviews"
+            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors whitespace-nowrap"
+          >
+            Reviews
+          </Link>
+          <Link
             href="/#faq"
-            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
+            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors whitespace-nowrap"
           >
             FAQ
           </Link>
           <Link
             href="/#contact"
-            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
+            className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors whitespace-nowrap"
           >
             Contact
           </Link>
@@ -127,6 +133,13 @@ export function Navbar() {
             className="min-h-[48px] flex items-center text-[#C8A97E] hover:text-[#FF7A00] transition-colors"
           >
             Gallery
+          </Link>
+          <Link
+            href="/reviews"
+            onClick={() => setMobileMenuOpen(false)}
+            className="min-h-[48px] flex items-center text-[#C8A97E] hover:text-[#FF7A00] transition-colors"
+          >
+            Reviews
           </Link>
           <Link
             href="/#faq"

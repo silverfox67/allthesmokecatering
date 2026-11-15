@@ -1,5 +1,16 @@
 # AGENTS.md — All The Smoke BBQ & Catering Operating Blueprint
 
+## 0. Mandatory Pre-Flight & Execution Gate (READ FIRST)
+- **Global Law**: Read & obey **Rule 0** in `~/AntigravityArmory/skills/continuous-learning/PLAYBOOK.md` before writing any code.
+- **GBP Maps & Reviews (NEVER Guess or Use ZIP Embeds)**:
+  - Maps CID: `14408245977024191985` (`0x2678ec651ad7958d:0xc7f45f60c0fa5df1`) — real GBP `<iframe>` only, **never** fake SVG maps.
+  - Reviews: `https://search.google.com/local/writereview?placeid=ChIJjZXXGmXseCYR8V36wGBf9Mc` (`https://g.page/r/CfFd-sBgX_THECE/review`)
+- **Design Tokens (NEVER Improvise)**:
+  - Light Surface / Secondary Buttons & Cards on Dark: Warm **Butcher Paper (`#FAF8F5`)** with dark high-contrast text (NEVER `#181512` dark buttons on dark sections, NEVER dim low-contrast gray text).
+  - Primary CTA: **Burnt-Orange Ember** styling matching `DeliveryChecker` & `ButcherBlockMenu`.
+  - Section Eyebrows: `★ ... ★` pill badge style.
+- **Apply-to-ALL & Playwright Gate**: Fix **ALL** matching elements in a section/file (never stop after the first one), then verify **Desktop (`1280x900`) + Mobile (`390x844`)** in Playwright before replying Done.
+
 ## 1. Project Overview & Identity
 - **Client Legal Name:** Marion Bolden
 - **Brand Entity:** All The Smoke BBQ & Catering[cite: 2]

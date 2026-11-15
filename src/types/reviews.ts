@@ -13,8 +13,10 @@ export interface CustomerReview {
   permissionToFeature: boolean;
   isFeatured: boolean;
   submittedAt: string;
-  source: "web-direct" | "sms-link" | "email-link" | "qr-card";
+  source: "web-direct" | "sms-link" | "email-link" | "qr-card" | "google";
   status: "published" | "pending" | "private-feedback";
+  reviewerBadge?: string;
+  displayDate?: string;
   copiedToGoogle?: boolean;
   adminResponse?: string;
 }

@@ -7,9 +7,60 @@ export const STORAGE_KEY_REVIEWS = "ats_customer_reviews_v1";
 export const EVENT_REVIEWS_UPDATED = "ats-reviews-updated";
 export const GOOGLE_REVIEW_URL = "https://g.page/r/CfFd-sBgX_THECE/review";
 
-export const SEED_REVIEWS: CustomerReview[] = [];
+export const SEED_REVIEWS: CustomerReview[] = [
+  {
+    id: "gbp-justin-raglin-2026-11-15",
+    clientName: "Justin Raglin",
+    eventType: "Google Review",
+    reviewerBadge: "Local Guide",
+    displayDate: "Nov 15, 2026",
+    rating: 5,
+    reviewText: "Great service and great food",
+    favoriteHighlights: [],
+    permissionToFeature: true,
+    isFeatured: true,
+    submittedAt: "2026-11-15T20:20:00.000Z",
+    source: "google",
+    status: "published",
+    adminResponse:
+      "Thank you so much for the 5 stars, Justin! We appreciate you supporting All The Smoke BBQ & Catering and are glad both the food and service hit the mark. Hope to smoke for you again soon! — Marion, All The Smoke BBQ & Catering",
+  },
+  {
+    id: "gbp-adrienne-bolden-2026-11-15",
+    clientName: "Adrienne Bolden",
+    eventType: "Google Review",
+    displayDate: "Nov 15, 2026",
+    rating: 5,
+    reviewText:
+      "Some of the most amazing and consistent cuisine around. The brisket was to die for. Anyone looking for GOOD BBQ.... Give him a try. You won’t be disappointed 😊",
+    favoriteHighlights: ["🔥 Slow-Smoked Brisket"],
+    permissionToFeature: true,
+    isFeatured: true,
+    submittedAt: "2026-11-15T19:40:00.000Z",
+    source: "google",
+    status: "published",
+    adminResponse:
+      "Thank you for the kind words, Adrienne! That brisket gets a lot of love on the post-oak pit, so hearing it hit the spot every time means a lot to our team. We appreciate your support and look forward to serving you again in Chicago! — Marion, All The Smoke BBQ & Catering",
+  },
+  {
+    id: "gbp-latrina-harrington-2026-11-15",
+    clientName: "Latrina Harrington",
+    eventType: "Google Review",
+    displayDate: "Nov 15, 2026",
+    rating: 5,
+    reviewText: "Good Food with Generous portions.",
+    favoriteHighlights: ["🍖 Generous Portions"],
+    permissionToFeature: true,
+    isFeatured: true,
+    submittedAt: "2026-11-15T17:40:00.000Z",
+    source: "google",
+    status: "published",
+    adminResponse:
+      "Thank you, Latrina! We always want everyone leaving full and happy, so we’re glad you enjoyed the food and portions. Appreciate you choosing All The Smoke BBQ & Catering! — Marion, All The Smoke BBQ & Catering",
+  },
+];
 
-// Load all stored reviews safely from localStorage
+// Load all stored reviews safely from localStorage, merging verified seed reviews
 export function getStoredReviews(): CustomerReview[] {
   if (typeof window === "undefined") return SEED_REVIEWS;
 
@@ -18,7 +69,9 @@ export function getStoredReviews(): CustomerReview[] {
     if (raw) {
       const parsed: CustomerReview[] = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
+        const existingIds = new Set(parsed.map((r) => r.id));
+        const missingSeeds = SEED_REVIEWS.filter((s) => !existingIds.has(s.id));
+        return missingSeeds.length > 0 ? [...missingSeeds, ...parsed] : parsed;
       }
     }
   } catch (err) {
