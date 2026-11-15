@@ -138,7 +138,7 @@ export function AboutSection() {
                         </span>
                         <Link
                           href="/gallery"
-                          className="shrink-0 text-[11px] text-[#FB923C] hover:text-white uppercase font-bold tracking-wider transition"
+                          className="shrink-0 min-h-[48px] inline-flex items-center text-[11px] text-[#FB923C] hover:text-white uppercase font-bold tracking-wider transition"
                         >
                           See Gallery &rarr;
                         </Link>

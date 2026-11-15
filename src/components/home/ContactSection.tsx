@@ -127,7 +127,7 @@ export function ContactSection() {
       {/* Ambient Live-Fire Radial Glow */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-to-b from-amber-600/10 via-orange-600/5 to-transparent blur-[120px]"
+        className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[min(700px,100%)] h-[500px] bg-gradient-to-b from-amber-600/10 via-orange-600/5 to-transparent blur-[120px]"
       />
 
       <div className="max-w-7xl mx-auto space-y-12 relative z-10">
@@ -157,7 +157,7 @@ export function ContactSection() {
             {/* Ambient Corner Glow */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -top-20 -right-20 h-48 w-48 rounded-full bg-[#EA580C]/10 blur-[60px]"
+              className="pointer-events-none absolute top-0 right-0 h-48 w-48 rounded-full bg-[#EA580C]/10 blur-[60px]"
             />
 
             {successData ? (
@@ -251,7 +251,7 @@ export function ContactSection() {
                       value={formData.firstName}
                       onChange={(e) => handleInputChange("firstName", e.target.value)}
                       placeholder="e.g. Todd"
-                      className="w-full h-11 px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium"
+                      className="w-full min-h-[48px] px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -265,7 +265,7 @@ export function ContactSection() {
                       value={formData.lastName}
                       onChange={(e) => handleInputChange("lastName", e.target.value)}
                       placeholder="e.g. Davis"
-                      className="w-full h-11 px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium"
+                      className="w-full min-h-[48px] px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium"
                     />
                   </div>
                 </div>
@@ -283,7 +283,7 @@ export function ContactSection() {
                       value={formData.email}
                       onChange={(e) => handleInputChange("email", e.target.value)}
                       placeholder="todd@example.com"
-                      className="w-full h-11 px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium"
+                      className="w-full min-h-[48px] px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -297,7 +297,7 @@ export function ContactSection() {
                       value={formData.phone}
                       onChange={(e) => handleInputChange("phone", e.target.value)}
                       placeholder="(773) 555-0199"
-                      className="w-full h-11 px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium"
+                      className="w-full min-h-[48px] px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium"
                     />
                   </div>
                 </div>
@@ -312,7 +312,7 @@ export function ContactSection() {
                       id="contact-eventType"
                       value={formData.eventType}
                       onChange={(e) => handleInputChange("eventType", e.target.value)}
-                      className="w-full h-11 px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium cursor-pointer"
+                      className="w-full min-h-[48px] px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium cursor-pointer"
                     >
                       <option value="wedding">Wedding / Reception</option>
                       <option value="corporate">Corporate Summit / Gala</option>
@@ -333,7 +333,7 @@ export function ContactSection() {
                       required
                       value={formData.guestCount}
                       onChange={(e) => handleInputChange("guestCount", e.target.value)}
-                      className="w-full h-11 px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium"
+                      className="w-full min-h-[48px] px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium"
                     />
                   </div>
                 </div>
@@ -362,7 +362,7 @@ export function ContactSection() {
                       id="contact-package"
                       value={formData.budgetOrPackage}
                       onChange={(e) => handleInputChange("budgetOrPackage", e.target.value)}
-                      className="w-full h-11 px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium cursor-pointer"
+                      className="w-full min-h-[48px] px-3.5 rounded-xl bg-[#FAF8F5] border border-stone-300 text-stone-900 focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-all font-medium cursor-pointer"
                     >
                       <option value="The Pitmaster Feast ($30/pp)">The Pitmaster Feast ($30/pp)</option>
                       <option value="Prime Brisket Experience ($35/pp)">Prime Brisket Experience ($35/pp)</option>
@@ -404,7 +404,7 @@ export function ContactSection() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-13 mt-2 inline-flex items-center justify-center gap-3 rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-lg sm:text-xl font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                  className="w-full min-h-[52px] mt-2 inline-flex items-center justify-center gap-3 rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-lg sm:text-xl font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {isSubmitting ? (
                     <span className="inline-flex items-center gap-2.5">
@@ -466,7 +466,7 @@ export function ContactSection() {
                     <h4 className="font-bold text-stone-100 uppercase tracking-wider text-xs">Direct Pitmaster Line</h4>
                     <a
                       href={`tel:${SITE_CONFIG.phoneFormatted}`}
-                      className="text-[#FF7A00] hover:text-[#EA580C] font-display text-base sm:text-lg font-bold transition-colors inline-block mt-0.5"
+                      className="min-h-[48px] inline-flex items-center text-[#FF7A00] hover:text-[#EA580C] font-display text-base sm:text-lg font-bold transition-colors"
                     >
                       {SITE_CONFIG.phone}
                     </a>
@@ -485,7 +485,7 @@ export function ContactSection() {
                     <h4 className="font-bold text-stone-100 uppercase tracking-wider text-xs">Direct Email</h4>
                     <a
                       href={`mailto:${SITE_CONFIG.brandEmail}`}
-                      className="text-stone-200 hover:text-[#FF7A00] font-semibold transition-colors inline-block mt-0.5 truncate max-w-[220px]"
+                      className="min-h-[48px] inline-flex items-center text-stone-200 hover:text-[#FF7A00] font-semibold transition-colors truncate max-w-[220px]"
                     >
                       {SITE_CONFIG.brandEmail}
                     </a>

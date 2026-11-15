@@ -74,7 +74,7 @@ export function Navbar() {
         <div className="ml-auto lg:ml-0 flex items-center gap-2 sm:gap-3">
           <a
             href="/#contact"
-            className="inline-flex h-9 sm:h-11 px-3 sm:px-6 items-center justify-center rounded-[12px] sm:rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-xs sm:text-base lg:text-lg font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer whitespace-nowrap"
+            className="inline-flex min-h-[48px] px-3 sm:px-6 items-center justify-center rounded-[12px] sm:rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-xs sm:text-base lg:text-lg font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer whitespace-nowrap"
           >
             GET A FREE QUOTE
           </a>
@@ -83,7 +83,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 border border-zinc-800 transition-colors"
+            className="lg:hidden min-h-[48px] min-w-[48px] flex items-center justify-center rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 border border-zinc-800 transition-colors"
             aria-label="Toggle mobile menu"
           >
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -99,46 +99,46 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-zinc-950/95 border-b border-zinc-800 px-6 py-4 space-y-3 text-sm font-semibold backdrop-blur-md">
+        <div className="lg:hidden bg-zinc-950/95 border-b border-zinc-800 px-6 py-4 space-y-1 text-sm font-semibold backdrop-blur-md">
           <Link
             href="/#about"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-[#C8A97E] hover:text-[#FF7A00] transition-colors py-1"
+            className="min-h-[48px] flex items-center text-[#C8A97E] hover:text-[#FF7A00] transition-colors"
           >
             About
           </Link>
           <Link
             href="/#packages"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-[#C8A97E] hover:text-[#FF7A00] transition-colors py-1"
+            className="min-h-[48px] flex items-center text-[#C8A97E] hover:text-[#FF7A00] transition-colors"
           >
             Packages
           </Link>
           <Link
             href="/#menu"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-[#C8A97E] hover:text-[#FF7A00] transition-colors py-1"
+            className="min-h-[48px] flex items-center text-[#C8A97E] hover:text-[#FF7A00] transition-colors"
           >
             Menu
           </Link>
           <Link
             href="/gallery"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-[#C8A97E] hover:text-[#FF7A00] transition-colors py-1"
+            className="min-h-[48px] flex items-center text-[#C8A97E] hover:text-[#FF7A00] transition-colors"
           >
             Gallery
           </Link>
           <Link
             href="/#faq"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-[#C8A97E] hover:text-[#FF7A00] transition-colors py-1"
+            className="min-h-[48px] flex items-center text-[#C8A97E] hover:text-[#FF7A00] transition-colors"
           >
             FAQ
           </Link>
           <Link
             href="/#contact"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-[#C8A97E] hover:text-[#FF7A00] transition-colors py-1"
+            className="min-h-[48px] flex items-center text-[#C8A97E] hover:text-[#FF7A00] transition-colors"
           >
             Contact
           </Link>

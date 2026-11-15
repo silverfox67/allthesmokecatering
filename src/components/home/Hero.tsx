@@ -91,7 +91,7 @@ export function Hero() {
           {/* Phone */}
           <a
             href={`tel:${SITE_CONFIG.phoneFormatted}`}
-            className="inline-flex items-center gap-2 text-[#C8A97E] hover:text-[#FF7A00] transition-colors font-medium"
+            className="min-h-[48px] inline-flex items-center gap-2 text-[#C8A97E] hover:text-[#FF7A00] transition-colors font-medium"
             aria-label={`Call Marion Bolden at ${SITE_CONFIG.phone}`}
           >
             <svg
@@ -136,7 +136,7 @@ export function Hero() {
           {/* Email */}
           <a
             href={`mailto:${SITE_CONFIG.brandEmail}`}
-            className="inline-flex items-center gap-2 text-[#C8A97E] hover:text-[#FF7A00] transition-colors font-medium"
+            className="min-h-[48px] inline-flex items-center gap-2 text-[#C8A97E] hover:text-[#FF7A00] transition-colors font-medium"
             aria-label={`Email All The Smoke Catering at ${SITE_CONFIG.brandEmail}`}
           >
             <svg
@@ -158,7 +158,7 @@ export function Hero() {
           {/* Saturday Drop Highlight Pill */}
           <a
             href="#weekend-drop"
-            className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#EA580C]/20 border border-[#EA580C]/40 text-[#FF7A00] hover:bg-[#EA580C]/30 transition text-xs font-bold"
+            className="min-h-[48px] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#EA580C]/20 border border-[#EA580C]/40 text-[#FF7A00] hover:bg-[#EA580C]/30 transition text-xs font-bold"
           >
             <span>🔥 Sat Nov 14 Smokehouse Drop</span>
             <span className="text-[10px] text-amber-200 underline font-semibold">Pre-Order &rarr;</span>
@@ -232,7 +232,7 @@ export function Hero() {
           <div className="ml-auto lg:ml-0 flex items-center gap-2 sm:gap-3">
             <a
               href="#contact"
-              className="inline-flex h-9 sm:h-11 px-3 sm:px-6 items-center justify-center rounded-[12px] sm:rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-xs sm:text-base lg:text-lg font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer whitespace-nowrap"
+              className="inline-flex min-h-[48px] px-3 sm:px-6 items-center justify-center rounded-[12px] sm:rounded-[14px] bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] font-display text-xs sm:text-base lg:text-lg font-bold tracking-wider text-white uppercase [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)] transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer whitespace-nowrap"
             >
               GET A FREE QUOTE
             </a>
@@ -241,7 +241,7 @@ export function Hero() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 border border-zinc-800"
+              className="lg:hidden min-h-[48px] min-w-[48px] flex items-center justify-center rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 border border-zinc-800"
               aria-label="Toggle mobile menu"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -356,7 +356,7 @@ export function Hero() {
             </div>
 
             {/* Mobile 3 Indicator Dashes directly beneath image */}
-            <div className="flex items-center justify-center gap-2 pt-3">
+            <div className="flex items-center justify-center gap-1 pt-1">
               {HERO_SLIDES.map((slide, idx) => {
                 const isActive = idx === activeSlide;
                 return (
@@ -365,12 +365,16 @@ export function Hero() {
                     type="button"
                     onClick={() => setActiveSlide(idx)}
                     aria-label={`View ${slide.label}`}
-                    className={`h-1.5 rounded-full transition-all duration-500 ${
-                      isActive
-                        ? "w-10 bg-gradient-to-r from-[#FF7A00] to-[#E5A967] shadow-[0_0_8px_rgba(255,122,0,0.6)]"
-                        : "w-4 bg-white/25 hover:bg-white/50"
-                    }`}
-                  />
+                    className="min-h-[48px] min-w-[48px] inline-flex items-center justify-center cursor-pointer"
+                  >
+                    <span
+                      className={`h-1.5 rounded-full transition-all duration-500 ${
+                        isActive
+                          ? "w-10 bg-gradient-to-r from-[#FF7A00] to-[#E5A967] shadow-[0_0_8px_rgba(255,122,0,0.6)]"
+                          : "w-4 bg-white/25 hover:bg-white/50"
+                      }`}
+                    />
+                  </button>
                 );
               })}
             </div>
@@ -406,7 +410,7 @@ export function Hero() {
           </div>
 
           {/* DESKTOP 3 INDICATOR DASHES (No words, pure sleek dashes) */}
-          <div className="hidden lg:flex items-center gap-2.5 pt-6 border-t border-white/10 mt-6">
+          <div className="hidden lg:flex items-center gap-1 pt-4 border-t border-white/10 mt-6">
             {HERO_SLIDES.map((slide, idx) => {
               const isActive = idx === activeSlide;
               return (
@@ -415,12 +419,16 @@ export function Hero() {
                   type="button"
                   onClick={() => setActiveSlide(idx)}
                   aria-label={`View slide ${idx + 1}`}
-                  className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
-                    isActive
-                      ? "w-14 bg-gradient-to-r from-[#FF7A00] to-[#E5A967] shadow-[0_0_10px_rgba(255,122,0,0.6)]"
-                      : "w-5 bg-white/25 hover:bg-white/50"
-                  }`}
-                />
+                  className="min-h-[48px] min-w-[48px] inline-flex items-center justify-center cursor-pointer"
+                >
+                  <span
+                    className={`h-1.5 rounded-full transition-all duration-500 ${
+                      isActive
+                        ? "w-14 bg-gradient-to-r from-[#FF7A00] to-[#E5A967] shadow-[0_0_10px_rgba(255,122,0,0.6)]"
+                        : "w-5 bg-white/25 hover:bg-white/50"
+                    }`}
+                  />
+                </button>
               );
             })}
           </div>

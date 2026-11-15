@@ -25,26 +25,16 @@ export function WeekendDropCard() {
       >
         <div className="max-w-4xl mx-auto">
           
-          {/* MAIN CONTAINER WITH ANIMATED ROTATING EMBER BEAM BORDER */}
-          <div className="relative p-[2px] sm:p-[2.5px] rounded-2xl sm:rounded-3xl overflow-hidden group shadow-[0_0_60px_-15px_rgba(234,88,12,0.4)]">
+          {/* MAIN CONTAINER WITH BOUNDED EMBER BORDER GLOW */}
+          <div className="relative p-[2px] sm:p-[2.5px] rounded-2xl sm:rounded-3xl overflow-hidden group shadow-[0_0_60px_-15px_rgba(234,88,12,0.4)] bg-gradient-to-br from-[#EA580C] via-[#F59E0B]/70 to-[#990000]">
             
-            {/* Rotating Conic Ember Light Beam */}
+            {/* Bounded Ember Light Shimmer */}
             <div
               aria-hidden="true"
-              className="absolute -inset-[150%] animate-border-beam pointer-events-none"
+              className="absolute inset-0 pointer-events-none opacity-80 animate-pulse"
               style={{
                 background:
-                  "conic-gradient(from 0deg at 50% 50%, transparent 0deg, transparent 65deg, #EA580C 115deg, #FF9E2C 135deg, #F59E0B 155deg, #990000 185deg, transparent 245deg, transparent 360deg)",
-              }}
-            />
-
-            {/* Ambient Blurred Ember Halo */}
-            <div
-              aria-hidden="true"
-              className="absolute -inset-[150%] animate-border-beam blur-xl opacity-60 pointer-events-none"
-              style={{
-                background:
-                  "conic-gradient(from 0deg at 50% 50%, transparent 0deg, transparent 75deg, #EA580C 120deg, #FF7A00 145deg, #F59E0B 165deg, transparent 210deg, transparent 360deg)",
+                  "linear-gradient(135deg, rgba(234,88,12,0.9) 0%, rgba(255,158,44,0.8) 45%, rgba(153,0,0,0.85) 100%)",
               }}
             />
 
@@ -115,7 +105,7 @@ export function WeekendDropCard() {
                         key={opt.id}
                         type="button"
                         onClick={() => setActiveOptionTab(idx)}
-                        className={`flex-1 py-2 px-2 rounded-lg text-[11.5px] font-bold tracking-tight transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                        className={`flex-1 min-h-[48px] py-2.5 px-2 rounded-lg text-[11.5px] font-bold tracking-tight transition flex items-center justify-center gap-1.5 cursor-pointer ${
                           isActive
                             ? "bg-gradient-to-r from-[#EA580C] to-[#C2410C] text-white shadow-md border border-amber-400/40"
                             : "text-stone-300 hover:text-white bg-transparent"
@@ -217,7 +207,7 @@ export function WeekendDropCard() {
                   <button
                     type="button"
                     onClick={() => handleOpenModal()}
-                    className="w-full sm:w-auto min-h-[44px] px-4 py-2 rounded-xl bg-[#0F172A] hover:bg-stone-900 border border-stone-700 text-white font-bold text-xs uppercase tracking-wider transition cursor-pointer shadow-sm text-center flex items-center justify-center"
+                    className="w-full sm:w-auto min-h-[48px] px-4 py-2.5 rounded-xl bg-[#0F172A] hover:bg-stone-900 border border-stone-700 text-white font-bold text-xs uppercase tracking-wider transition cursor-pointer shadow-sm text-center flex items-center justify-center"
                   >
                     View Details &rarr;
                   </button>

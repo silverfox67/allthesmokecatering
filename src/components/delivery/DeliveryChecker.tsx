@@ -119,7 +119,7 @@ export function DeliveryChecker() {
         {/* Calculator Card: Cast-Iron Charcoal Card on Butcher Paper */}
         <div className="bg-[#141210] rounded-2xl sm:rounded-3xl shadow-2xl shadow-stone-900/40 border border-stone-800/80 p-6 sm:p-8 max-w-3xl mx-auto space-y-8 relative overflow-hidden">
           {/* Subtle Ambient Amber Glow inside the dark card */}
-          <div className="pointer-events-none absolute -top-16 -right-16 h-48 w-48 rounded-full bg-amber-500/10 blur-[60px]" />
+          <div className="pointer-events-none absolute top-0 right-0 h-48 w-48 rounded-full bg-amber-500/10 blur-[60px]" />
 
           <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
             <label
@@ -160,28 +160,28 @@ export function DeliveryChecker() {
               <button
                 type="button"
                 onClick={() => handleQuickZip("60634")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-[#C8A97E]/30 hover:border-[#FF7A00] hover:bg-gradient-to-r hover:from-[#EA580C]/20 hover:to-[#C84A0A]/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
+                className="min-h-[48px] px-3.5 py-2 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-[#C8A97E]/30 hover:border-[#FF7A00] hover:bg-gradient-to-r hover:from-[#EA580C]/20 hover:to-[#C84A0A]/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
               >
                 60634 (Hub)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60607")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-[#C8A97E]/30 hover:border-[#FF7A00] hover:bg-gradient-to-r hover:from-[#EA580C]/20 hover:to-[#C84A0A]/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
+                className="min-h-[48px] px-3.5 py-2 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-[#C8A97E]/30 hover:border-[#FF7A00] hover:bg-gradient-to-r hover:from-[#EA580C]/20 hover:to-[#C84A0A]/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
               >
                 60607 (West Loop)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60201")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-[#C8A97E]/30 hover:border-[#FF7A00] hover:bg-gradient-to-r hover:from-[#EA580C]/20 hover:to-[#C84A0A]/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
+                className="min-h-[48px] px-3.5 py-2 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-[#C8A97E]/30 hover:border-[#FF7A00] hover:bg-gradient-to-r hover:from-[#EA580C]/20 hover:to-[#C84A0A]/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
               >
                 60201 (Evanston)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickZip("60540")}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-[#C8A97E]/30 hover:border-[#FF7A00] hover:bg-gradient-to-r hover:from-[#EA580C]/20 hover:to-[#C84A0A]/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
+                className="min-h-[48px] px-3.5 py-2 rounded-lg text-xs font-semibold bg-[#1C1814] text-stone-200 border border-[#C8A97E]/30 hover:border-[#FF7A00] hover:bg-gradient-to-r hover:from-[#EA580C]/20 hover:to-[#C84A0A]/20 hover:text-white hover:scale-105 hover:shadow-[0_0_12px_rgba(234,88,12,0.35)] transition-all duration-200 active:scale-95"
               >
                 60540 (Naperville)
               </button>

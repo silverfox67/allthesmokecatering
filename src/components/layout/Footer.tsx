@@ -42,12 +42,12 @@ export function Footer() {
             <p className="text-stone-500 text-xs mt-1">
               (By booked dispatch only; exclusive commercial kitchen commissary)
             </p>
-            <div className="pt-3">
+            <div className="pt-1">
               <a
                 href={GOOGLE_REVIEW_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs text-amber-400 hover:text-amber-300 font-bold transition-colors"
+                className="min-h-[48px] inline-flex items-center gap-1.5 text-xs text-amber-400 hover:text-amber-300 font-bold transition-colors"
               >
                 <span>⭐ Leave Us a Google Review</span>
                 <span>↗</span>
@@ -58,35 +58,35 @@ export function Footer() {
 
         {/* Column 3: Direct Dispatch */}
         <div>
-          <h3 className="font-display text-lg font-bold tracking-tight text-[#F4EFEA] mb-4">
+          <h3 className="font-display text-lg font-bold tracking-tight text-[#F4EFEA] mb-2">
             Direct Dispatch
           </h3>
-          <div className="text-stone-300 leading-relaxed space-y-2">
-            <p>
+          <div className="text-stone-300 leading-relaxed space-y-0.5">
+            <p className="flex items-center gap-1.5">
               <span className="text-stone-400">Direct: </span>
               <a
                 href="tel:7737079988"
-                className="text-[#C8A97E] hover:text-[#EA580C] font-semibold transition-colors"
+                className="min-h-[48px] inline-flex items-center text-[#C8A97E] hover:text-[#EA580C] font-semibold transition-colors"
               >
                 (773) 707-9988
               </a>
             </p>
-            <p>
+            <p className="flex items-center gap-1.5">
               <span className="text-stone-400">Inquiries: </span>
               <a
                 href={`mailto:${SITE_CONFIG.brandEmail}`}
-                className="text-stone-300 hover:text-white transition-colors"
+                className="min-h-[48px] inline-flex items-center text-stone-300 hover:text-white transition-colors"
               >
                 {SITE_CONFIG.brandEmail}
               </a>
             </p>
-            <p>
+            <p className="flex items-center gap-1.5">
               <span className="text-stone-400">TikTok: </span>
               <a
                 href="https://www.tiktok.com/@allthesmokebbq_catering"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#C8A97E] hover:text-[#EA580C] font-semibold transition-colors"
+                className="min-h-[48px] inline-flex items-center text-[#C8A97E] hover:text-[#EA580C] font-semibold transition-colors"
               >
                 @allthesmokebbq_catering
               </a>
@@ -96,32 +96,32 @@ export function Footer() {
 
         {/* Column 4: Authentic Credentials & Agency Credit */}
         <div>
-          <h3 className="font-display text-lg font-bold tracking-tight text-[#F4EFEA] mb-4">
+          <h3 className="font-display text-lg font-bold tracking-tight text-[#F4EFEA] mb-2">
             Authentic Credentials
           </h3>
-          <div className="space-y-2 text-xs text-stone-400">
+          <div className="space-y-1 text-xs text-stone-400">
             <p>© 2026 All The Smoke BBQ &amp; Catering. All rights reserved.</p>
             <p>
               Pitmaster / Operator:{" "}
               <span className="text-[#F4EFEA] font-semibold">Marion Bolden</span>
             </p>
-            <p className="pt-0.5">
+            <p>
               <Link
                 href="/app"
-                className="inline-flex items-center gap-1.5 text-[11px] text-amber-400/90 hover:text-amber-300 font-semibold transition-colors"
+                className="min-h-[48px] inline-flex items-center gap-1.5 text-[11px] text-amber-400/90 hover:text-amber-300 font-semibold transition-colors"
                 title="All The Smoke Customer Mobile App"
               >
                 <span>📱 Smokehouse Mobile App</span>
                 <span>&rarr;</span>
               </Link>
             </p>
-            <p className="pt-2 text-stone-400">
-              Designed By:{" "}
+            <p className="text-stone-400 flex items-center gap-1.5">
+              <span>Designed By:</span>
               <a
                 href="https://tridentwebsitedesign.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#C8A97E] hover:text-[#EA580C] font-bold tracking-wide transition-colors"
+                className="min-h-[48px] inline-flex items-center text-[#C8A97E] hover:text-[#EA580C] font-bold tracking-wide transition-colors"
               >
                 Trident Website Design
               </a>

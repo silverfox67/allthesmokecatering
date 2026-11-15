@@ -178,14 +178,14 @@ export function FaqSection() {
             Have a custom event question? Call Marion directly at{" "}
             <a
               href={`tel:${SITE_CONFIG.phoneFormatted}`}
-              className="font-bold text-[#B45309] hover:underline"
+              className="min-h-[48px] inline-flex items-center font-bold text-[#B45309] hover:underline"
             >
               {SITE_CONFIG.phone}
             </a>
           </span>
           <a
             href="#contact"
-            className="inline-flex h-8 px-3.5 items-center justify-center rounded-lg bg-[#141210] hover:bg-black text-[#C8A97E] hover:text-white font-display text-[11px] font-bold tracking-wider uppercase transition-colors shrink-0"
+            className="inline-flex min-h-[48px] px-4 items-center justify-center rounded-lg bg-[#141210] hover:bg-black text-[#C8A97E] hover:text-white font-display text-[11px] font-bold tracking-wider uppercase transition-colors shrink-0"
           >
             Ask In Quote Form ↑
           </a>

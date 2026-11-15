@@ -289,7 +289,7 @@ export function ButcherBlockMenu() {
                             <button
                               type="button"
                               onClick={() => handleJumpToMenuItem(special)}
-                              className="font-sans text-[11px] font-semibold text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-2.5 py-1 min-h-11 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border border-white/15 transition flex items-center gap-1"
+                              className="font-sans text-[11px] font-semibold text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-3 py-2 min-h-[48px] flex-1 sm:flex-none justify-center rounded border border-white/15 transition flex items-center gap-1"
                               title="View photo and description in menu below"
                             >
                               <span>Menu</span>
@@ -305,7 +305,7 @@ export function ButcherBlockMenu() {
                               <button
                                 type="button"
                                 onClick={() => handleAddChalkboardSpecial(special)}
-                                className="font-sans text-xs font-bold text-[#FB923C] bg-[#FB923C]/10 hover:bg-[#FB923C]/25 px-2.5 py-1 min-h-11 sm:min-h-0 flex-1 sm:flex-none justify-center rounded border border-[#FB923C]/40 transition flex items-center gap-1 shadow-sm active:scale-95"
+                                className="font-sans text-xs font-bold text-[#FB923C] bg-[#FB923C]/10 hover:bg-[#FB923C]/25 px-3 py-2 min-h-[48px] flex-1 sm:flex-none justify-center rounded border border-[#FB923C]/40 transition flex items-center gap-1 shadow-sm active:scale-95"
                               >
                                 <span>+ Add</span>
                               </button>
@@ -329,7 +329,7 @@ export function ButcherBlockMenu() {
                 </div>
                 <Link
                   href="/specials"
-                  className="w-full sm:w-auto font-chalk text-center bg-[#FB923C] hover:bg-[#F97316] text-[#0F172A] font-black text-sm px-6 py-2.5 rounded-lg shadow-lg hover:shadow-orange-500/25 active:scale-95 transition-all flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto min-h-[48px] font-chalk text-center bg-[#FB923C] hover:bg-[#F97316] text-[#0F172A] font-black text-sm px-6 py-3 rounded-lg shadow-lg hover:shadow-orange-500/25 active:scale-95 transition-all flex items-center justify-center gap-2"
                 >
                   <span>See All Weekly Specials</span>
                   <span className="text-base font-bold">→</span>
@@ -353,7 +353,7 @@ export function ButcherBlockMenu() {
                   onClick={() => setActiveTab(cat.id)}
                   type="button"
                   className={`${isLastOdd ? "col-span-2 sm:col-span-1" : ""
-                    } px-3.5 lg:px-4 py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer ${isActive
+                    } min-h-[48px] px-3.5 lg:px-4 py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer ${isActive
                       ? "bg-[#0F172A] text-white shadow-md ring-2 ring-[#EA580C]"
                       : "bg-[#EDE7DE] text-slate-700 hover:bg-[#E2D8CC] hover:text-[#0F172A]"
                     }`}
@@ -390,7 +390,7 @@ export function ButcherBlockMenu() {
                 <button
                   type="button"
                   onClick={() => setZipDrawerOpen((prev) => !prev)}
-                  className={`px-2.5 py-1 rounded-lg border font-bold text-[11px] transition cursor-pointer shrink-0 flex items-center gap-1 ${zipDrawerOpen
+                  className={`min-h-[48px] px-3.5 py-2 rounded-lg border font-bold text-xs transition cursor-pointer shrink-0 flex items-center gap-1.5 ${zipDrawerOpen
                       ? "bg-[#EA580C] border-[#FF7A00] text-white"
                       : "bg-slate-800/90 hover:bg-slate-800 border-[#C8A97E]/40 text-[#C8A97E] hover:text-white"
                     }`}
@@ -404,7 +404,7 @@ export function ButcherBlockMenu() {
                   <button
                     type="button"
                     onClick={openTray}
-                    className="px-2.5 py-1 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white font-bold text-[11px] uppercase tracking-wider transition cursor-pointer shrink-0"
+                    className="min-h-[48px] px-3.5 py-2 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white font-bold text-xs uppercase tracking-wider transition cursor-pointer shrink-0 inline-flex items-center"
                   >
                     Quote Tray ({totalItemCount}) &rarr;
                   </button>
@@ -705,7 +705,7 @@ export function ButcherBlockMenu() {
                           <button
                             type="button"
                             onClick={() => handleAddOption(item, "Half Pan", priceInfo.half!)}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#0F172A] hover:bg-[#EA580C] text-white text-xs font-bold transition shadow-sm cursor-pointer"
+                            className="inline-flex min-h-[48px] items-center gap-1 px-3.5 py-2 rounded-lg bg-[#0F172A] hover:bg-[#EA580C] text-white text-xs font-bold transition shadow-sm cursor-pointer"
                           >
                             <span>+ Half Pan</span>
                             <span className="text-[#F59E0B]">(${priceInfo.half})</span>
@@ -713,7 +713,7 @@ export function ButcherBlockMenu() {
                           <button
                             type="button"
                             onClick={() => handleAddOption(item, "Full Pan", priceInfo.full!)}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white text-xs font-bold transition shadow-sm cursor-pointer"
+                            className="inline-flex min-h-[48px] items-center gap-1 px-3.5 py-2 rounded-lg bg-[#EA580C] hover:bg-[#C2410C] text-white text-xs font-bold transition shadow-sm cursor-pointer"
                           >
                             <span>+ Full Pan</span>
                             <span>(${priceInfo.full})</span>
@@ -723,7 +723,7 @@ export function ButcherBlockMenu() {
                         <button
                           type="button"
                           onClick={() => handleAddSingle(item, priceInfo.single || 50)}
-                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-stone-800 hover:bg-[#EA580C] text-stone-200 hover:text-white text-xs font-semibold transition shadow-sm cursor-pointer"
+                          className="inline-flex min-h-[48px] items-center gap-1.5 px-4 py-2 rounded-lg bg-stone-800 hover:bg-[#EA580C] text-stone-200 hover:text-white text-xs font-semibold transition shadow-sm cursor-pointer"
                           title="Pre-order this cut for Marion's next scheduled smoker cook"
                         >
                           <span>Pre-Order Next Smoke</span>
@@ -733,7 +733,7 @@ export function ButcherBlockMenu() {
                         <button
                           type="button"
                           onClick={() => handleAddSingle(item, priceInfo.single || 50)}
-                          className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-white text-xs font-bold transition shadow-sm cursor-pointer ${isSmokingLive
+                          className={`inline-flex min-h-[48px] items-center gap-1.5 px-4 py-2 rounded-lg text-white text-xs font-bold transition shadow-sm cursor-pointer ${isSmokingLive
                               ? "bg-gradient-to-r from-[#EA580C] to-[#C2410C] hover:from-[#FF7A00] hover:to-[#EA580C] shadow-md"
                               : "bg-[#0F172A] hover:bg-[#EA580C]"
                             }`}

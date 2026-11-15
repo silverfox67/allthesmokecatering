@@ -35,29 +35,55 @@ export function CustomerPWAInstallPrompt() {
     setIsIOS(isAppleDevice);
 
     // Capture Chromium install prompt (check early head capture first)
+    let scrollEligible = window.scrollY > 450;
+    let promptReady = false;
+
+    const tryReveal = () => {
+      if (promptReady && scrollEligible) {
+        setShowPrompt(true);
+      }
+    };
+
+    const handleScroll = () => {
+      if (window.scrollY > 450) {
+        scrollEligible = true;
+        tryReveal();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
     if ((window as any).deferredPwaPrompt) {
       setDeferredPrompt((window as any).deferredPwaPrompt);
-      setTimeout(() => setShowPrompt(true), 3500);
+      setTimeout(() => {
+        promptReady = true;
+        tryReveal();
+      }, 2500);
     }
 
     const handleBeforeInstall = (e: any) => {
       e.preventDefault();
       (window as any).deferredPwaPrompt = e;
       setDeferredPrompt(e);
-      setTimeout(() => setShowPrompt(true), 3500);
+      setTimeout(() => {
+        promptReady = true;
+        tryReveal();
+      }, 2500);
     };
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstall);
 
-    // If on iOS and not dismissed, show banner after 3.5s
+    // If on iOS and not dismissed, show banner once scrolled past Hero
     let iosTimer: NodeJS.Timeout | null = null;
     if (isAppleDevice) {
       iosTimer = setTimeout(() => {
-        setShowPrompt(true);
-      }, 3500);
+        promptReady = true;
+        tryReveal();
+      }, 2500);
     }
 
     return () => {
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
       if (iosTimer) clearTimeout(iosTimer);
     };
@@ -110,7 +136,7 @@ export function CustomerPWAInstallPrompt() {
 
   return (
     <>
-      <div className="fixed bottom-4 left-4 right-4 z-50 max-w-md mx-auto animate-in fade-in slide-in-from-bottom-5 duration-300">
+      <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:bottom-6 z-50 max-w-md md:w-[380px] mx-auto md:mx-0 animate-in fade-in slide-in-from-bottom-5 duration-300">
         <div className="relative rounded-2xl bg-gradient-to-b from-[#181310]/95 via-[#120F0D]/95 to-[#0A0908]/95 border-2 border-amber-500/50 p-3.5 sm:p-4 shadow-[0_10px_40px_rgba(0,0,0,0.85)] backdrop-blur-xl">
           <div className="flex items-center gap-3">
             {/* ATS Monogram Icon */}
@@ -124,7 +150,7 @@ export function CustomerPWAInstallPrompt() {
             </div>
 
             {/* Text Info */}
-            <div className="flex-1 min-w-0 pr-6">
+            <div className="flex-1 min-w-0 pr-12">
               <div className="flex items-center gap-1.5">
                 <span className="text-[10px] font-black uppercase tracking-wider text-amber-400">
                   Official Smokehouse App
@@ -142,7 +168,7 @@ export function CustomerPWAInstallPrompt() {
             <button
               type="button"
               onClick={handleDismiss}
-              className="absolute top-2.5 right-2.5 w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-stone-300 hover:text-white flex items-center justify-center text-xs transition cursor-pointer"
+              className="absolute top-1.5 right-1.5 min-w-[48px] min-h-[48px] rounded-full bg-white/10 hover:bg-white/20 text-stone-300 hover:text-white flex items-center justify-center text-sm transition cursor-pointer"
               aria-label="Dismiss app prompt"
             >
               ✕
@@ -157,7 +183,7 @@ export function CustomerPWAInstallPrompt() {
             <button
               type="button"
               onClick={handleInstallClick}
-              className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#EA580C] to-[#C2410C] hover:from-[#FF7A00] hover:to-[#EA580C] text-white text-xs font-bold uppercase tracking-wider shadow-md transition active:scale-95 cursor-pointer shrink-0"
+              className="min-h-[48px] px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#EA580C] to-[#C2410C] hover:from-[#FF7A00] hover:to-[#EA580C] text-white text-xs font-bold uppercase tracking-wider shadow-md transition active:scale-95 cursor-pointer shrink-0 inline-flex items-center justify-center"
             >
               {isIOS ? "📲 Add to iPhone" : "Install App →"}
             </button>

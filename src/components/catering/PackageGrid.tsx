@@ -211,7 +211,7 @@ export function PackageGrid() {
               <button
                 type="button"
                 onClick={() => handleOpenModal({ type: "per-person", pkg })}
-                className="w-full min-h-[44px] px-4 py-2.5 rounded-xl border border-zinc-700 hover:border-amber-500/80 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 hover:text-white text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full min-h-[48px] px-4 py-2.5 rounded-xl border border-zinc-700 hover:border-amber-500/80 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 hover:text-white text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>🔍</span> View Full Spread &amp; Options
               </button>
@@ -219,7 +219,7 @@ export function PackageGrid() {
               <button
                 type="button"
                 onClick={() => handleBookPackage(pkg.id)}
-                className={`w-full min-h-[46px] px-5 py-3 rounded-xl font-display text-base font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center text-center ${isPopular
+                className={`w-full min-h-[48px] px-5 py-3 rounded-xl font-display text-base font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center text-center ${isPopular
                     ? "bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] text-white [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)]"
                     : "bg-black/60 border border-[#C8A97E] backdrop-blur-md text-[#C8A97E] hover:border-[#FF7A00] hover:text-white hover:bg-black/80"
                   }`}
@@ -290,7 +290,7 @@ export function PackageGrid() {
               <button
                 type="button"
                 onClick={() => handleOpenModal({ type: "turnkey", pkg: bundle })}
-                className="w-full min-h-[44px] px-4 py-2.5 rounded-xl border border-zinc-700 hover:border-amber-500/80 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 hover:text-white text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full min-h-[48px] px-4 py-2.5 rounded-xl border border-zinc-700 hover:border-amber-500/80 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 hover:text-white text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>🔍</span> View Full Spread &amp; Options
               </button>
@@ -298,7 +298,7 @@ export function PackageGrid() {
               <button
                 type="button"
                 onClick={() => handleBookPackage(bundle.id)}
-                className={`w-full min-h-[46px] px-5 py-3 rounded-xl font-display text-base font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center text-center ${isPopular
+                className={`w-full min-h-[48px] px-5 py-3 rounded-xl font-display text-base font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center text-center ${isPopular
                     ? "bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] text-white [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)]"
                     : "bg-black/60 border border-[#C8A97E] backdrop-blur-md text-[#C8A97E] hover:border-[#FF7A00] hover:text-white hover:bg-black/80"
                   }`}
@@ -368,7 +368,7 @@ export function PackageGrid() {
             <button
               type="button"
               onClick={() => handleOpenModal({ type: "meal-prep", pkg: tier })}
-              className="w-full min-h-[44px] px-4 py-2.5 rounded-xl border border-zinc-700 hover:border-amber-500/80 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 hover:text-white text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full min-h-[48px] px-4 py-2.5 rounded-xl border border-zinc-700 hover:border-amber-500/80 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 hover:text-white text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>🔍</span> View Full Spread &amp; Options
             </button>
@@ -376,7 +376,7 @@ export function PackageGrid() {
             <button
               type="button"
               onClick={() => handleBookPackage(tier.id)}
-              className={`w-full min-h-[46px] px-5 py-3 rounded-xl font-display text-base font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center text-center ${isPopular
+              className={`w-full min-h-[48px] px-5 py-3 rounded-xl font-display text-base font-bold tracking-wider uppercase transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center text-center ${isPopular
                   ? "bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] shadow-[0_0_18px_rgba(255,122,0,0.5),_inset_0_0_8px_rgba(255,122,0,0.25)] text-white [text-shadow:_0_1px_2px_rgba(0,0,0,0.9)]"
                   : "bg-black/60 border border-[#C8A97E] backdrop-blur-md text-[#C8A97E] hover:border-[#FF7A00] hover:text-white hover:bg-black/80"
                 }`}
@@ -398,7 +398,7 @@ export function PackageGrid() {
       {/* Ambient Radial Ember Backlight to break dead space */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[800px] rounded-full bg-amber-600/5 blur-[160px]"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[min(800px,100%)] rounded-full bg-amber-600/5 blur-[160px]"
       />
 
       <div className="max-w-7xl mx-auto space-y-10 sm:space-y-12 relative z-10">
@@ -579,7 +579,7 @@ export function PackageGrid() {
           <div className="flex flex-wrap items-center gap-3 shrink-0 w-full lg:w-auto">
             <a
               href="#contact"
-              className="w-full sm:w-auto inline-flex h-11 px-5 items-center justify-center rounded-xl bg-gradient-to-r from-[#EA580C] to-[#C2410C] hover:from-[#FF7A00] hover:to-[#EA580C] text-white font-display text-xs sm:text-sm font-bold tracking-wider uppercase shadow-md transition-all"
+              className="w-full sm:w-auto inline-flex min-h-[48px] px-5 items-center justify-center rounded-xl bg-gradient-to-r from-[#EA580C] to-[#C2410C] hover:from-[#FF7A00] hover:to-[#EA580C] text-white font-display text-xs sm:text-sm font-bold tracking-wider uppercase shadow-md transition-all"
             >
               Get A Free Quote &rarr;
             </a>

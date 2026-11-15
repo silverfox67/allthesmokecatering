@@ -58,11 +58,11 @@ export function TikTokReels() {
       {/* Ambient Hickory Ember Glows */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/4 right-0 h-[450px] w-[450px] rounded-full bg-orange-700/10 blur-[140px]"
+        className="pointer-events-none absolute top-1/4 right-0 h-[450px] w-[min(450px,100%)] rounded-full bg-orange-700/10 blur-[140px]"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-1/4 left-0 h-[400px] w-[400px] rounded-full bg-amber-600/10 blur-[130px]"
+        className="pointer-events-none absolute bottom-1/4 left-0 h-[400px] w-[min(400px,100%)] rounded-full bg-amber-600/10 blur-[130px]"
       />
 
       <div className="max-w-7xl mx-auto space-y-12 relative z-10">
@@ -145,7 +145,7 @@ export function TikTokReels() {
           <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
             <Link
               href="/gallery"
-              className="inline-flex h-11 px-5 items-center justify-center rounded-xl bg-gradient-to-r from-[#EA580C] to-[#C2410C] hover:from-[#FF7A00] hover:to-[#EA580C] text-white font-display text-xs sm:text-sm font-bold tracking-wider uppercase shadow-[0_0_18px_rgba(234,88,12,0.35)] transition-all hover:scale-105 active:scale-95"
+              className="inline-flex min-h-[48px] px-5 items-center justify-center rounded-xl bg-gradient-to-r from-[#EA580C] to-[#C2410C] hover:from-[#FF7A00] hover:to-[#EA580C] text-white font-display text-xs sm:text-sm font-bold tracking-wider uppercase shadow-[0_0_18px_rgba(234,88,12,0.35)] transition-all hover:scale-105 active:scale-95"
             >
               View Full Gallery &amp; Videos →
             </Link>
@@ -154,7 +154,7 @@ export function TikTokReels() {
               href={SITE_CONFIG.socials.tiktok}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex h-11 px-4 items-center justify-center rounded-xl bg-black/70 hover:bg-black border border-[#C8A97E]/40 text-[#C8A97E] hover:text-white font-display text-xs font-bold tracking-wider uppercase transition-colors"
+              className="inline-flex min-h-[48px] px-4 items-center justify-center rounded-xl bg-black/70 hover:bg-black border border-[#C8A97E]/40 text-[#C8A97E] hover:text-white font-display text-xs font-bold tracking-wider uppercase transition-colors"
             >
               TikTok @allthesmokebbq_catering ↗
             </a>

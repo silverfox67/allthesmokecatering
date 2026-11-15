@@ -197,7 +197,7 @@ export function CalendarDatePicker({
         type="button"
         id={`${id}-trigger`}
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full h-11 px-3.5 rounded-xl border flex items-center justify-between transition-all cursor-pointer select-none font-medium text-sm text-left ${
+        className={`w-full min-h-[48px] px-3.5 rounded-xl border flex items-center justify-between transition-all cursor-pointer select-none font-medium text-sm text-left ${
           isLight
             ? "bg-[#FAF8F5] border-stone-300 text-stone-900 hover:border-stone-400 focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C]"
             : "bg-[#191614] border-[#3A312A] text-[#F4EFEA] hover:border-[#52443A] focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C]"
