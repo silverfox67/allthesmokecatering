@@ -654,7 +654,7 @@ export function AdminQRDisplays({ theme, subTab }: AdminQRDisplaysProps) {
               </span>
               <div className="w-full max-w-[340px] aspect-[7/4] rounded-xl overflow-hidden border border-zinc-700 shadow-xl relative bg-black">
                 <Image
-                  src="/brand/card-front-scan.jpg"
+                  src="/brand/card-front-scan.webp"
                   alt="Original Business Card Front Scan"
                   fill
                   className="object-cover"
@@ -668,7 +668,7 @@ export function AdminQRDisplays({ theme, subTab }: AdminQRDisplaysProps) {
               </span>
               <div className="w-full max-w-[340px] aspect-[7/4] rounded-xl overflow-hidden border border-zinc-700 shadow-xl relative bg-black">
                 <Image
-                  src="/brand/card-back-scan.jpg"
+                  src="/brand/card-back-scan.webp"
                   alt="Original Business Card Back Scan"
                   fill
                   className="object-cover"

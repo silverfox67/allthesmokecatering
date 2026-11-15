@@ -410,7 +410,7 @@ export function SmokehouseOrderTray() {
                       shortLabel: "+ Cornbread Half Pan ($35)",
                       selectedOption: "Half Pan (15 squares)",
                       price: 35,
-                      image: "/images/menu/habanero-cheddar-cornbread.jpg",
+                      image: "/images/menu/habanero-cheddar-cornbread.webp",
                       category: "specialties",
                     },
                     {
@@ -420,7 +420,7 @@ export function SmokehouseOrderTray() {
                       shortLabel: "+ Baked Beans Half Pan ($55)",
                       selectedOption: "Half Pan (15–20)",
                       price: 55,
-                      image: "/images/menu/smokehouse-baked-beans.jpg",
+                      image: "/images/menu/smokehouse-baked-beans.webp",
                       category: "sides",
                     },
                     {
@@ -430,7 +430,7 @@ export function SmokehouseOrderTray() {
                       shortLabel: "+ 4-Cheese Mac Half Pan ($75)",
                       selectedOption: "Half Pan (12–15)",
                       price: 75,
-                      image: "/images/menu/pitmaster-mac-and-cheese.jpg",
+                      image: "/images/menu/pitmaster-mac-and-cheese.webp",
                       category: "sides",
                     },
                   ];

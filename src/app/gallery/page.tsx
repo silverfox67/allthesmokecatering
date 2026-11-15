@@ -59,7 +59,7 @@ const GALLERY_PHOTOS: GalleryPhoto[] = [
     categoryLabel: "Mobile Trailer Rig",
     title: "Custom Single-Axle Smoker Rig",
     description: "Heavy-gauge single-axle offset trailer smoker rolling live oak and hickory smoke on-site at your venue.",
-    src: "/images/about/marion-mobile-smoker-rig.jpg",
+    src: "/images/about/marion-mobile-smoker-rig.webp",
     alt: "Marion's custom black single-axle trailer smoker rolling live hardwood smoke at an outdoor venue",
   },
   {
@@ -68,7 +68,7 @@ const GALLERY_PHOTOS: GalleryPhoto[] = [
     categoryLabel: "Night Pit Session",
     title: "Late-Night Hardwood Smoking",
     description: "Marion Bolden checking coals and slow-rendering ribs under the evening sky on his custom offset trailer rig.",
-    src: "/reels/smoker-night-sharp.jpg",
+    src: "/reels/smoker-night-sharp.webp",
     alt: "Pitmaster Marion Bolden tending the hardwood coals on his custom mobile trailer smoker at night",
   },
   {

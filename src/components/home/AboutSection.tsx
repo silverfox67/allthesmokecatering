@@ -107,7 +107,7 @@ export function AboutSection() {
               <div className="relative rounded-[24px] overflow-hidden border border-stone-300/90 bg-zinc-950 shadow-2xl shadow-stone-900/25 group">
                 <div className="relative aspect-[4/4.5] sm:aspect-[4/4.6] w-full overflow-hidden bg-zinc-900">
                   <Image
-                    src="/images/about/marion-mobile-smoker-rig.jpg"
+                    src="/images/about/marion-mobile-smoker-rig.webp"
                     alt="Marion Bolden's custom single-axle offset trailer smoker rolling live hardwood smoke on-site at a Chicagoland park venue"
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 480px"

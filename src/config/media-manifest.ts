@@ -162,7 +162,7 @@ export const MEDIA_MANIFEST: MediaManifest = {
   heroes: {
     desktopHero: {
       id: 'ats-hero-live-fire-brisket',
-      src: '/hero/atsc-hero-desktop-concept.jpg',
+      src: '/hero/atsc-hero-desktop-concept.webp',
       alt: 'Artisan Pitmaster Slicing Smoked Brisket over Live Fire',
       title: 'Live-Fire Smokehouse Craft',
       width: 2400,
@@ -183,7 +183,7 @@ export const MEDIA_MANIFEST: MediaManifest = {
     },
     atmosphereHero: {
       id: 'ats-hero-buffet-spread',
-      src: '/hero/atsc-hero-atmosphere-concept.jpg',
+      src: '/hero/atsc-hero-atmosphere-concept.webp',
       alt: 'Warm Outdoor Banquet Table with Sliced Brisket and Cast Iron Sides',
       title: 'Bespoke Smokehouse Hospitality',
       width: 2752,

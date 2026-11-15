@@ -7,19 +7,19 @@ import { SITE_CONFIG } from "@/config/site-config";
 const HERO_SLIDES = [
   {
     id: "brisket",
-    src: "/images/hero/hero-platter-brisket-feast.jpg",
+    src: "/images/hero/hero-platter-brisket-feast.webp",
     alt: "Hand-carved Texas prime smoked brisket catering platter with house rubs and sausages",
     label: "Prime Brisket Feast",
   },
   {
     id: "ribs",
-    src: "/images/hero/hero-platter-ribs-wings.jpg",
+    src: "/images/hero/hero-platter-ribs-wings.webp",
     alt: "St. Louis cut glazed spare ribs and hardwood smoked wings catering spread",
     label: "Glazed Ribs & Wings",
   },
   {
     id: "banquet",
-    src: "/images/hero/hero-platter-banquet-spread.jpg",
+    src: "/images/hero/hero-platter-banquet-spread.webp",
     alt: "Full smokehouse banquet catering spread with smoked chickens, salmon, and southern sides",
     label: "Banquet Feast",
   },

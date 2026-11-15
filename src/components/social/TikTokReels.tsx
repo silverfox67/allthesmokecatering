@@ -31,7 +31,7 @@ const SPOTLIGHT_ITEMS: GallerySpotlightItem[] = [
     tagIcon: "🚚",
     title: "Custom Mobile Trailer Smoker",
     subtitle: "Our heavy-gauge single-axle offset rig rolling hardwood smoke live at private estates, weddings, and corporate lots.",
-    image: "/reels/smoker-open-chamber.jpg",
+    image: "/reels/smoker-open-chamber.webp",
     alt: "Live hardwood smoke rolling over seasoned ribs inside Marion's custom offset trailer smoker chamber",
   },
   {

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     siteName: "All The Smoke BBQ & Catering",
     images: [
       {
-        url: "/images/menu/smoked-burnt-ends.jpg",
+        url: "/images/menu/smoked-burnt-ends.webp",
         width: 1200,
         height: 630,
         alt: "Double-Smoked Brisket Burnt Ends tossed in caramelized pit glaze",
