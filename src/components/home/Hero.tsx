@@ -188,41 +188,47 @@ export function Hero() {
           {/* Desktop Navigation Links (Ordered Top-to-Bottom with Page Flow) */}
           <nav
             aria-label="Main Navigation"
-            className="hidden lg:flex items-center gap-7 pl-48 lg:pl-56 overflow-visible"
+            className="hidden lg:flex items-center gap-5 xl:gap-7 pl-48 lg:pl-56 overflow-visible"
           >
             <a
               href="#about"
-              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
+              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors whitespace-nowrap"
             >
               About
             </a>
             <a
               href="#packages"
-              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
+              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors whitespace-nowrap"
             >
               Packages
             </a>
             <a
               href="#menu"
-              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
+              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors whitespace-nowrap"
             >
               Menu
             </a>
             <a
               href="/gallery"
-              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
+              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors whitespace-nowrap"
             >
               Gallery
             </a>
             <a
+              href="/reviews"
+              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors whitespace-nowrap"
+            >
+              Reviews
+            </a>
+            <a
               href="#faq"
-              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
+              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors whitespace-nowrap"
             >
               FAQ
             </a>
             <a
               href="#contact"
-              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors"
+              className="text-[#C8A97E] hover:text-[#FF7A00] text-sm font-medium tracking-wide transition-colors whitespace-nowrap"
             >
               Contact
             </a>
@@ -283,9 +289,16 @@ export function Hero() {
           <a
             href="/gallery"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-[#C8A97E] hover:text-[#FF7A00]"
+            className="min-h-[48px] flex items-center text-[#C8A97E] hover:text-[#FF7A00]"
           >
             Gallery
+          </a>
+          <a
+            href="/reviews"
+            onClick={() => setMobileMenuOpen(false)}
+            className="min-h-[48px] flex items-center text-[#C8A97E] hover:text-[#FF7A00]"
+          >
+            Reviews
           </a>
           <a
             href="#faq"
