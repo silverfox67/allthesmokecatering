@@ -137,7 +137,7 @@ export function TestimonialSection() {
         </div>
 
         {/* CTA Bar */}
-        <div className="pt-2 text-center flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="pt-2 text-center flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
           <a
             href={GOOGLE_REVIEW_URL}
             target="_blank"
@@ -147,6 +147,14 @@ export function TestimonialSection() {
             <span>★ Leave a Google Review</span>
             <span aria-hidden="true">↗</span>
           </a>
+
+          <Link
+            href="/reviews"
+            className="w-full sm:w-auto min-h-[48px] px-6 py-3 rounded-[14px] bg-[#FAF8F5] hover:bg-white border-2 border-[#C8A97E] shadow-lg text-[#1C1917] font-display font-bold text-sm tracking-wider uppercase inline-flex items-center justify-center gap-2 whitespace-nowrap transition-transform hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <span>See All Reviews</span>
+            <span aria-hidden="true">→</span>
+          </Link>
 
           <Link
             href="/review"
