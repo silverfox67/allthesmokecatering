@@ -64,6 +64,45 @@ export function GoogleBusinessMap() {
             allowFullScreen
           />
         </div>
+
+        {/* 3-Column Operating Hours, Holiday Schedule & Advance Booking Row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="rounded-2xl bg-[#141210] border border-stone-800/90 p-5 space-y-2">
+            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#C8A97E] block">
+              Operating Hours
+            </span>
+            <p className="text-sm font-bold text-white">
+              Tue – Sun: 8:00 AM – 8:00 PM
+            </p>
+            <p className="text-xs text-stone-400">
+              Monday: Closed • Est. March 2024
+            </p>
+          </div>
+
+          <div className="rounded-2xl bg-[#141210] border border-stone-800/90 p-5 space-y-2">
+            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#C8A97E] block">
+              Holiday Hours
+            </span>
+            <p className="text-sm font-bold text-white">
+              Closed Major Holidays
+            </p>
+            <p className="text-xs text-stone-400">
+              Thanksgiving (Nov 26), Christmas (Dec 25) &amp; New Year’s Day (Jan 1) — special orders by inquiry.
+            </p>
+          </div>
+
+          <div className="rounded-2xl bg-[#141210] border border-stone-800/90 p-5 space-y-2">
+            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#C8A97E] block">
+              Advance Booking
+            </span>
+            <p className="text-sm font-bold text-white">
+              48–72 Hours Notice
+            </p>
+            <p className="text-xs text-stone-400">
+              Required for live-fire catering &amp; whole meats. Dispatched from NW Side Chicago (60634).
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );
