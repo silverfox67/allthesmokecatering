@@ -384,12 +384,16 @@ export function AdminDirectoriesHub({ theme = "night" }: AdminDirectoriesHubProp
                   </p>
                 </div>
                 <a
-                  href={dir.claimUrl}
+                  href={dir.status === "Live" && dir.liveUrl ? dir.liveUrl : dir.claimUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="min-h-[48px] px-4 rounded-xl bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border border-[#FF7A00] text-white text-xs font-bold uppercase tracking-wider inline-flex items-center justify-center shrink-0 whitespace-nowrap"
+                  className={
+                    dir.status === "Live"
+                      ? "min-h-[48px] px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 border border-emerald-400 text-white text-xs font-bold uppercase tracking-wider inline-flex items-center justify-center shrink-0 whitespace-nowrap"
+                      : "min-h-[48px] px-4 rounded-xl bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border border-[#FF7A00] text-white text-xs font-bold uppercase tracking-wider inline-flex items-center justify-center shrink-0 whitespace-nowrap"
+                  }
                 >
-                  Claim ↗
+                  {dir.status === "Live" ? "✓ Complete ↗" : "Claim ↗"}
                 </a>
               </div>
 
