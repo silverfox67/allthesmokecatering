@@ -32,7 +32,7 @@ interface AdminInventoryProps {
   subTab?: string;
 }
 
-const INVENTORY_STORAGE_KEY = "ats_pitmaster_inventory_v1";
+const INVENTORY_STORAGE_KEY = "ats_pitmaster_inventory_v2";
 const SUPPLIER_STORAGE_KEY = "ats_wood_supplier_v1";
 
 const DEFAULT_SUPPLIER: WoodSupplierInfo = {
@@ -42,12 +42,12 @@ const DEFAULT_SUPPLIER: WoodSupplierInfo = {
 };
 
 const STARTER_INVENTORY: InventoryItem[] = [
-  // Wood & Fuel
+  // Wood & Fuel (All zeroed out for Marion's real starting count)
   {
     id: "wood-oak",
     category: "wood",
     name: "Seasoned Post Oak Splits",
-    qty: 1.25,
+    qty: 0,
     par: 0.5,
     unit: "cords",
     unitCost: 340,
@@ -59,7 +59,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "wood-hickory",
     category: "wood",
     name: "Hickory Splits",
-    qty: 0.5,
+    qty: 0,
     par: 0.5,
     unit: "cords",
     unitCost: 360,
@@ -71,7 +71,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "wood-cherry",
     category: "wood",
     name: "Cherry / Apple Fruitwood",
-    qty: 8,
+    qty: 0,
     par: 5,
     unit: "bags",
     unitCost: 22,
@@ -83,7 +83,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "wood-charcoal",
     category: "wood",
     name: "Hardwood Lump Charcoal (20 lb)",
-    qty: 6,
+    qty: 0,
     par: 4,
     unit: "bags",
     unitCost: 24,
@@ -95,7 +95,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "wood-propane",
     category: "wood",
     name: "Propane Tanks (Burner / Warmer)",
-    qty: 3,
+    qty: 0,
     par: 2,
     unit: "tanks",
     unitCost: 25,
@@ -108,7 +108,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "meat-brisket",
     category: "menu-stock",
     name: "Whole Packer Brisket (Prime/Choice)",
-    qty: 6,
+    qty: 0,
     par: 4,
     unit: "briskets",
     unitCost: 68,
@@ -120,7 +120,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "meat-ribs",
     category: "menu-stock",
     name: "St. Louis Spare Ribs",
-    qty: 12,
+    qty: 0,
     par: 8,
     unit: "racks",
     unitCost: 16,
@@ -131,7 +131,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "meat-porkbutt",
     category: "menu-stock",
     name: "Bone-In Pork Butts",
-    qty: 8,
+    qty: 0,
     par: 4,
     unit: "butts",
     unitCost: 22,
@@ -142,7 +142,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "meat-chicken",
     category: "menu-stock",
     name: "Chicken Leg Quarters / Wings",
-    qty: 40,
+    qty: 0,
     par: 25,
     unit: "lbs",
     unitCost: 1.9,
@@ -153,7 +153,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "meat-links",
     category: "menu-stock",
     name: "Smoked Beef & Polish Links",
-    qty: 15,
+    qty: 0,
     par: 10,
     unit: "lbs",
     unitCost: 4.5,
@@ -164,7 +164,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "side-mac",
     category: "menu-stock",
     name: "Smoked Mac & Cheese Prep",
-    qty: 4,
+    qty: 0,
     par: 3,
     unit: "full pans",
     unitCost: 24,
@@ -177,7 +177,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "sup-butcher",
     category: "supplies",
     name: '24" Pink Butcher Paper Roll',
-    qty: 2,
+    qty: 0,
     par: 1,
     unit: "rolls",
     unitCost: 38,
@@ -188,7 +188,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "sup-foilpans",
     category: "supplies",
     name: "Full-Size Deep Foil Catering Pans",
-    qty: 25,
+    qty: 0,
     par: 15,
     unit: "pans",
     unitCost: 1.4,
@@ -199,7 +199,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "sup-halfpans",
     category: "supplies",
     name: "Half-Size Foil Pans + Lids",
-    qty: 30,
+    qty: 0,
     par: 15,
     unit: "pans",
     unitCost: 0.95,
@@ -210,7 +210,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "sup-gloves",
     category: "supplies",
     name: "Black Nitrile Gloves (Box of 100)",
-    qty: 2,
+    qty: 0,
     par: 2,
     unit: "boxes",
     unitCost: 14,
@@ -221,7 +221,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "sup-rub",
     category: "supplies",
     name: "House SPG & BBQ Rub Batch",
-    qty: 8,
+    qty: 0,
     par: 4,
     unit: "lbs",
     unitCost: 5.5,
@@ -232,7 +232,7 @@ const STARTER_INVENTORY: InventoryItem[] = [
     id: "sup-sauce",
     category: "supplies",
     name: "Signature BBQ Sauce (Gallon)",
-    qty: 3,
+    qty: 0,
     par: 2,
     unit: "gallons",
     unitCost: 18,
@@ -246,32 +246,34 @@ const INVENTORY_GUIDES: Record<
   { title: string; summary: string; steps: { title: string; desc: string }[]; tip?: string }
 > = {
   wood: {
-    title: "How Wood & Fuel Stock works",
-    summary: "Keep track of your woodpile, charcoal, and propane so you never run dry mid-cook.",
+    title: "How Wood & Fuel Stock works (Starts at 0)",
+    summary: "Why use this: Everything starts at 0 so you can enter your real woodpile, charcoal, and propane counts—giving you an accurate value on hand and automatic low-stock warnings before a big cook.",
     steps: [
-      { title: "Tap + or - anytime", desc: "Use the + and - buttons on any wood or fuel card as you burn or unload." },
-      { title: "Add, edit, or delete", desc: "Tap + Add Item to add a new wood or fuel, or Edit on any row to update cost and low-stock alerts." },
-      { title: "1-Tap text your wood guy", desc: "Save your supplier's number below to text them a pre-filled wood order in one tap." },
+      { title: "1. Enter your real starting count", desc: "Tap + or Edit on each row to set how many cords, bags, or tanks you actually have right now (plus your real cost per unit)." },
+      { title: "2. Set your Low Alert (Par) number", desc: "Any item at or below its Low Alert automatically turns red and gets added to your Restock List so you never run out mid-smoke." },
+      { title: "3. Text your wood guy in 1 tap", desc: "Save your hardwood supplier's name and phone number in the card below—tapping Text Wood Guy opens your phone's Messages with your wood order pre-filled." },
     ],
-    tip: "Any item at or below its Low Alert number turns orange/red and jumps onto your Restock List automatically.",
+    tip: "As you burn wood on a Saturday cook, tap - to keep your count accurate. Add custom woods anytime with + Add Item.",
   },
   "menu-stock": {
-    title: "How Menu & Meat Stock works",
-    summary: "Count what's in the walk-in, freezer, or prepped for the weekend.",
+    title: "How Menu & Meat Stock works (Starts at 0)",
+    summary: "Why use this: Track the exact briskets, ribs, pork butts, chicken, and sides in your freezer or walk-in so you know what you can book this weekend without guessing.",
     steps: [
-      { title: "Check weekend par", desc: "Each meat and side shows how much you have on hand vs. your weekend minimum (Low Alert)." },
-      { title: "Quick count with + / -", desc: "Adjust briskets, rib racks, butts, or pans with one tap after prep or a pop-up." },
-      { title: "Customize your list", desc: "Add new menu items, change units (lbs, racks, pans), or delete items you aren't running." },
+      { title: "1. Count what you actually have", desc: "Everything starts at 0. Tap + or Edit on each meat to enter your real on-hand count and cost per brisket/rack/lb." },
+      { title: "2. Watch the Low Alert badge", desc: "When your count drops to or below the Low Alert number, it flags red and appears on your Restaurant Depot / Sam's Club shopping list." },
+      { title: "3. Add or remove items anytime", desc: "Use + Add Item for seasonal meats (turkey, oxtails, salmon) or Edit/Delete items you aren't stocking right now." },
     ],
+    tip: "Updating counts right after a prep day or weekend catering gig keeps your food cost and shopping list dead-on.",
   },
   supplies: {
-    title: "How Supplies & Restock List works",
-    summary: "Track butcher paper, foil pans, gloves, rubs, and see everything you need to buy in one place.",
+    title: "How Supplies & Restock List works (Starts at 0)",
+    summary: "Why use this: Never show up to a catering gig short on foil pans, butcher paper, gloves, or rub. This tab tracks supplies AND builds your combined Restock List across wood, meat, and disposables.",
     steps: [
-      { title: "Review Needs Reorder", desc: "The top box automatically lists every wood, meat, and supply running low across all tabs." },
-      { title: "Copy or text your run", desc: "Tap Copy Order List before heading to Restaurant Depot or Sam's Club." },
-      { title: "Keep counts fresh", desc: "Add, edit, or delete any supply item anytime — everything saves automatically." },
+      { title: "1. Enter your starting supply counts", desc: "Tap + or Edit to enter how many rolls, pans, boxes of gloves, and gallons of sauce you actually have on hand." },
+      { title: "2. Check the Needs Reorder box", desc: "Any wood, meat, or supply at or below its Low Alert automatically shows up in the Needs Reorder shopping list." },
+      { title: "3. Tap Copy Order List before shopping", desc: "Copies every low-stock item into a clean checklist you can paste into Notes or text yourself before hitting Restaurant Depot or Sam's." },
     ],
+    tip: "Everything saves automatically as you tap + / - or Edit.",
   },
 };
 
