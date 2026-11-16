@@ -264,7 +264,7 @@ export function WeekendDropModal({
                 </div>
 
                 <div className="pt-2 text-[11px] text-stone-400 leading-relaxed">
-                  📍 <strong>Pickup Info:</strong> Ready at {drop.pickupTime} on Mason Ave (Chicago). Marion will text exact pickup coordination to <strong>{customerPhone}</strong> once Zelle is recorded.
+                  🚚 <strong>Dispatch Info:</strong> Service starts at {drop.pickupTime} across Chicagoland. Marion will text delivery coordination to <strong>{customerPhone}</strong> once Zelle is recorded.
                 </div>
               </div>
 
@@ -378,12 +378,12 @@ export function WeekendDropModal({
                         : "bg-black/40 border-stone-800 text-stone-400 hover:text-white"
                     }`}
                   >
-                    <span className="text-lg block mb-1">📍</span>
+                    <span className="text-lg block mb-1">🔥</span>
                     <strong className="text-xs sm:text-sm block text-white font-bold">
-                      Pickup @ 4:00 PM
+                      Event / Curbside Meetup
                     </strong>
                     <span className="text-[11px] text-emerald-400 font-semibold block">
-                      Free (Mason Ave Hub)
+                      Scheduled Window ({drop.pickupTime})
                     </span>
                   </button>
 

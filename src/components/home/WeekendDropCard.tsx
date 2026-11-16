@@ -194,9 +194,9 @@ export function WeekendDropCard() {
               <div className="rounded-xl sm:rounded-2xl bg-[#1A140F]/90 border border-amber-500/25 p-3.5 sm:p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-300">
                 <div className="space-y-0.5 text-center sm:text-left w-full sm:w-auto">
                   <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-2.5 gap-y-1 text-white font-semibold text-[11.5px] sm:text-xs">
-                    <span>📍 Pickup: <strong>{drop.pickupTime} on Mason Ave</strong></span>
+                    <span>🔥 Service Starts: <strong>{drop.pickupTime}</strong></span>
                     <span className="text-amber-500/60">•</span>
-                    <span>🚚 Delivery: <strong>After {drop.deliveryStartTime} for fee</strong></span>
+                    <span>🚚 Chicagoland Delivery: <strong>After {drop.deliveryStartTime} for fee</strong></span>
                   </div>
                   <p className="text-[10px] sm:text-[10.5px] text-amber-200/85">
                     ⚡ Pre-paid customers receive 1st priority. Once the pit hits capacity, orders close immediately.
