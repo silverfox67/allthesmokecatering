@@ -71,13 +71,13 @@ export function ReviewsPageClient() {
 
       {/* Reviews Grid */}
       <section className="py-14 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           {publishedReviews.map((rev) => (
             <article
               key={rev.id}
               className="h-full p-6 sm:p-7 rounded-2xl bg-[#FAF8F5] border border-[#C8A97E]/60 border-t-4 border-t-[#EA580C] shadow-xl flex flex-col justify-between"
             >
-              <div className="space-y-4">
+              <div className="space-y-4 pb-5">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center text-[#EA580C] text-base tracking-wider" aria-label={`${rev.rating} stars`}>
                     {"★".repeat(rev.rating)}
@@ -105,7 +105,7 @@ export function ReviewsPageClient() {
                 )}
               </div>
 
-              <div className="pt-4 mt-5 border-t border-[#C8A97E]/40 space-y-3">
+              <div className="mt-auto pt-4 border-t border-[#C8A97E]/40 space-y-3">
                 <div className="flex items-center justify-between gap-2">
                   <div>
                     <h2 className="font-display font-bold text-base text-[#1C1917]">
@@ -127,7 +127,7 @@ export function ReviewsPageClient() {
                 </div>
 
                 {rev.adminResponse && (
-                  <div className="rounded-xl bg-white/90 border border-[#C8A97E]/50 border-l-4 border-l-[#EA580C] p-3 text-xs text-stone-800 leading-relaxed">
+                  <div className="md:min-h-[128px] rounded-xl bg-white/90 border border-[#C8A97E]/50 border-l-4 border-l-[#EA580C] p-3 text-xs text-stone-800 leading-relaxed">
                     <span className="block font-extrabold uppercase tracking-wider text-[10px] text-[#C84A0A] mb-1">
                       Owner Reply
                     </span>
