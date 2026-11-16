@@ -17,6 +17,9 @@ export interface ReviewSequenceContact {
 const STORAGE_KEY_SEQUENCE = "ats_review_sequence_contacts_v1";
 
 const INITIAL_CONTACTS: ReviewSequenceContact[] = [
+  { id: "gbp-cordel", clientName: "Cordel Summers", clientEmail: "", eventType: "Google Review (Nov 15)", reviewStatus: "completed", lastUpdated: "Nov 15, 2026" },
+  { id: "gbp-jeanette", clientName: "Jeanette Allen", clientEmail: "", eventType: "Google Review (Nov 15)", reviewStatus: "completed", lastUpdated: "Nov 15, 2026" },
+  { id: "gbp-drobinson", clientName: "D. Robinson", clientEmail: "", eventType: "Google Review (Nov 15)", reviewStatus: "completed", lastUpdated: "Nov 15, 2026" },
   { id: "gbp-marcus", clientName: "Marcus Fuller", clientEmail: "", eventType: "Google Review (Nov 15)", reviewStatus: "completed", lastUpdated: "Nov 15, 2026" },
   { id: "gbp-chris", clientName: "Chris Hackett", clientEmail: "", eventType: "Google Review (Nov 15)", reviewStatus: "completed", lastUpdated: "Nov 15, 2026" },
   { id: "gbp-nel", clientName: "Nel C", clientEmail: "", eventType: "Google Review (Nov 15)", reviewStatus: "completed", lastUpdated: "Nov 15, 2026" },
@@ -51,7 +54,9 @@ export function AdminReviewSequencePanel({ isDay }: AdminReviewSequencePanelProp
               ? { ...c, vipThankYouSent: false }
               : c
           );
-          setContacts(sanitized);
+          const existingIds = new Set(sanitized.map((c) => c.id));
+          const missing = INITIAL_CONTACTS.filter((c) => !existingIds.has(c.id));
+          setContacts(missing.length > 0 ? [...missing, ...sanitized] : sanitized);
         }
       }
     } catch {}
