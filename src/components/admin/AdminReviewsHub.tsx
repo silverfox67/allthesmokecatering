@@ -90,10 +90,10 @@ export function AdminReviewsHub({ theme = "night", subTab }: AdminReviewsHubProp
         }
         summary={
           activeSubTab === "sequence"
-            ? "Send 24h guided review emails and VIP Thank-Yous without double-asking anyone."
+            ? "Sends a 24-hour guided email via Brevo with 3 easy prompts (plus a 4-day reminder), while keeping past Google reviewers safe from double-asks."
             : activeSubTab === "invite"
-            ? "This tool writes a ready-to-send review text message for you and opens your phone's Messages app so you don't have to type it out after a gig."
-            : "Tap any 1-line review row (▾) to expand the full quote, owner reply, and website toggle."
+            ? "Why use this: Texts get way more Google reviews than emails. Send this right after a gig while guests are full and happy—it writes the text and opens your phone's Messages app in 1 tap so you rank higher in Chicago Google Maps."
+            : "Your live 5-star Google reviews and website testimonials. Tap any 1-line row (▾) to read the full quote, your Owner Reply, or toggle Feature on Website."
         }
         steps={
           activeSubTab === "sequence"
@@ -104,9 +104,9 @@ export function AdminReviewsHub({ theme = "night", subTab }: AdminReviewsHubProp
               ]
             : activeSubTab === "invite"
             ? [
-                { title: "Pick where the link goes", desc: "Choose Google Review Link (fastest for building Google stars) or Website Feedback Form (/review)." },
-                { title: "Enter client name & phone", desc: "Typing their phone number unlocks the orange Open Messages button with their number and text pre-filled." },
-                { title: "Send or Copy", desc: "On your phone tap Open Messages and hit Send. On a computer tap Copy SMS or copy either quick link below." },
+                { title: "1. Pick Google Review Link (Default) or /review", desc: "Google Review Link sends happy clients straight to Google to build your 5-star rating. Website Feedback Form (/review) is a smart page on your site: 4–5 star ratings get prompted to post to Google, while any 1–3 star complaint stays private and comes straight to you instead of going public." },
+                { title: "2. Type their Name, Phone & Event", desc: "The message writes itself with your chosen link inside—no hunting for links or typing it out by hand." },
+                { title: "3. Tap Open Messages (or Copy SMS)", desc: "On your phone, typing a number unlocks the orange Open Messages button with their number and text pre-filled—just tap Send. On a computer, hit Copy SMS." },
               ]
             : [
                 { title: "Scan at a glance", desc: "Every review starts as a clean 1-line row showing stars, name, preview, and date." },
@@ -325,7 +325,7 @@ export function AdminReviewsHub({ theme = "night", subTab }: AdminReviewsHubProp
                 : "bg-zinc-900 border-zinc-700 text-stone-300"
             }`}
           >
-            📝 Website Feedback Form (/review)
+            📝 Smart Feedback Page (/review)
           </button>
         </div>
 
