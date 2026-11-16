@@ -44,7 +44,15 @@ export function AdminReviewSequencePanel({ isDay }: AdminReviewSequencePanelProp
       const raw = localStorage.getItem(STORAGE_KEY_SEQUENCE);
       if (raw) {
         const parsed: ReviewSequenceContact[] = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length > 0) setContacts(parsed);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // Never allow a false "VIP Thank-You Sent" checkmark if no email was entered
+          const sanitized = parsed.map((c) =>
+            !c.clientEmail?.trim() && c.vipThankYouSent
+              ? { ...c, vipThankYouSent: false }
+              : c
+          );
+          setContacts(sanitized);
+        }
       }
     } catch {}
   }, []);
@@ -278,11 +286,19 @@ export function AdminReviewSequencePanel({ isDay }: AdminReviewSequencePanelProp
                 <>
                   <button
                     type="button"
-                    disabled={sendingId === c.id}
+                    disabled={sendingId === c.id || !c.clientEmail.trim()}
                     onClick={() => triggerSequence(c, "vip-thankyou")}
-                    className="min-h-[40px] px-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold cursor-pointer"
+                    className={`min-h-[40px] px-3 rounded-lg text-xs font-bold ${
+                      !c.clientEmail.trim()
+                        ? "bg-zinc-800 text-zinc-400 border border-zinc-700 cursor-not-allowed"
+                        : "bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer"
+                    }`}
                   >
-                    {c.vipThankYouSent ? "✓ VIP Thank-You Sent" : "Send VIP Thank-You"}
+                    {!c.clientEmail.trim()
+                      ? "Add Email to Send"
+                      : c.vipThankYouSent
+                      ? "✓ VIP Email Sent"
+                      : "Send VIP Email"}
                   </button>
                   <button
                     type="button"
