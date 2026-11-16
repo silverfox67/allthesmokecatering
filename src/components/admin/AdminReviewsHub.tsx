@@ -12,9 +12,12 @@ import {
 
 export interface AdminReviewsHubProps {
   theme?: "day" | "night" | "dark" | "butcher-paper";
+  subTab?: string;
 }
 
-export function AdminReviewsHub({ theme = "night" }: AdminReviewsHubProps) {
+export function AdminReviewsHub({ theme = "night", subTab }: AdminReviewsHubProps) {
+  const activeSubTab =
+    subTab === "sequence" || subTab === "invite" ? subTab : "list";
   const isDay = theme === "day" || theme === "butcher-paper";
   const { reviews, toggleFeatured, deleteReview } = useCustomerReviews();
 
@@ -80,7 +83,7 @@ export function AdminReviewsHub({ theme = "night" }: AdminReviewsHubProps) {
         ]}
         tip="Ask right after a great event. That's when folks are happiest and most likely to write one."
       />
-      <AdminReviewSequencePanel isDay={isDay} />
+      {activeSubTab === "sequence" && <AdminReviewSequencePanel isDay={isDay} />}
       {/* HEADER SECTION */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-stone-200 dark:border-zinc-800">
         <div>
@@ -210,6 +213,7 @@ export function AdminReviewsHub({ theme = "night" }: AdminReviewsHubProps) {
       </div>
 
       {/* QUICK REVIEW INVITE GENERATOR (FOR SMS & GIG HOT-BOX CARDS) */}
+      {activeSubTab === "invite" && (
       <div
         className={`p-4 sm:p-5 rounded-2xl border shadow-sm space-y-3 ${
           isDay ? "bg-white border-stone-300" : "bg-[#141210] border-zinc-800"
@@ -312,8 +316,11 @@ export function AdminReviewsHub({ theme = "night" }: AdminReviewsHubProps) {
           </div>
         </div>
       </div>
+      )}
 
       {/* FILTER TABS & SEARCH */}
+      {activeSubTab === "list" && (
+      <>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-1.5 flex-wrap">
           <button
@@ -529,6 +536,8 @@ export function AdminReviewsHub({ theme = "night" }: AdminReviewsHubProps) {
           ))
         )}
       </div>
+      </>
+      )}
     </div>
   );
 }

@@ -86,6 +86,11 @@ const SUB_TABS: Partial<Record<AdminTab, SubTabDef[]>> = {
     { key: "review-card", label: "Review Card" },
     { key: "print", label: "Print Preview" },
   ],
+  google: [
+    { key: "list", label: "Google Reviews" },
+    { key: "sequence", label: "Email Sequence" },
+    { key: "invite", label: "SMS & Link Invite" },
+  ],
   workspace: [
     { key: "todos", label: "To-Do & Roadmap" },
     { key: "notes", label: "Pitmaster Notes" },
@@ -842,7 +847,9 @@ export function AdminPortal() {
             {activeTab === "qr-displays" && <AdminQRDisplays theme={theme} subTab={currentSubTab} />}
 
             {/* TAB: GOOGLE BUSINESS PROFILE & CUSTOMER REVIEWS (LIVE) */}
-            {activeTab === "google" && <AdminReviewsHub theme={theme} />}
+            {activeTab === "google" && (
+              <AdminReviewsHub theme={theme} subTab={currentSubTab} />
+            )}
 
             {/* TAB: WEEKEND DROPS & POP-UP SPECIALS (LIVE) */}
             {activeTab === "weekend-drop" && (
