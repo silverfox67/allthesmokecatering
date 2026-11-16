@@ -22,7 +22,7 @@ export const DEFAULT_WEEKEND_DROP: WeekendDrop = {
   deliveryNotes: "Chicagoland heated delivery available after 5:00 PM for standard zone delivery fee.",
   zellePhone: "773.707.9988",
   zelleEmail: "bbqcateringking83@gmail.com",
-  isActive: true,
+  isActive: false,
   notice: "1st come, 1st served. Pre-paid customers have 1st priority. Limited smoker batch—food sells out fast.",
   options: [
     {
@@ -76,6 +76,12 @@ export function saveStoredWeekendDrop(drop: WeekendDrop): void {
     localStorage.setItem(STORAGE_KEY_WEEKEND_DROP, JSON.stringify(drop));
     window.dispatchEvent(new CustomEvent(EVENT_DROP_UPDATED, { detail: drop }));
     window.dispatchEvent(new Event("storage"));
+
+    void fetch("/api/weekend-drop", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(drop),
+    }).catch((err) => console.warn("Remote weekend drop sync warning:", err));
   } catch (err) {
     console.error("Could not save weekend drop:", err);
   }
@@ -155,6 +161,19 @@ export function useWeekendDrop() {
   useEffect(() => {
     reload();
 
+    let cancelled = false;
+    fetch("/api/weekend-drop")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.success && data?.drop) {
+          setDrop(data.drop);
+          try {
+            localStorage.setItem(STORAGE_KEY_WEEKEND_DROP, JSON.stringify(data.drop));
+          } catch {}
+        }
+      })
+      .catch(() => {});
+
     const handleCustom = (e: Event) => {
       const custom = e as CustomEvent<WeekendDrop>;
       if (custom.detail) {
@@ -173,6 +192,7 @@ export function useWeekendDrop() {
     window.addEventListener(EVENT_DROP_UPDATED, handleCustom);
     window.addEventListener("storage", handleStorage);
     return () => {
+      cancelled = true;
       window.removeEventListener(EVENT_DROP_UPDATED, handleCustom);
       window.removeEventListener("storage", handleStorage);
     };
