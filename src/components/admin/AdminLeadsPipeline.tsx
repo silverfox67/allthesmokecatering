@@ -399,8 +399,8 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail, subT
         title="How the quote request list works"
         summary="Every catering request lands here. Tap one to read it and answer."
         steps={[
-          { title: "Check the new ones first", desc: "Tap \"New Only\" to see requests nobody has answered yet." },
-          { title: "Open the request", desc: "Tap a name to read what they asked for: date, guest count and package." },
+          { title: "Check where each lead came from", desc: "Every card is tagged by source (Website Quote, Direct Email, Phone Intake, or Order Tray)." },
+          { title: "Open the request", desc: "Tap a name to read what they asked for: date, guest count, package, or saved email notes." },
           { title: "Reply and send a quote", desc: "Use the text/email button to answer, or make an invoice when they are ready." },
           { title: "Move it along", desc: "Mark it Contacted, Quoted, then Booked so you always know where each one stands." },
         ]}

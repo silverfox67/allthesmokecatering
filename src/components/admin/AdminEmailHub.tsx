@@ -389,6 +389,52 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
     }
   };
 
+  const isInboundSavedAsCustomer = (senderEmail: string) =>
+    leads.some((l) => (l.email || "").toLowerCase() === senderEmail.toLowerCase());
+
+  const handleSaveInboundAsCustomer = (inb: InboundEmail) => {
+    const existing = leads.find(
+      (l) => (l.email || "").toLowerCase() === inb.senderEmail.toLowerCase()
+    );
+    if (existing) {
+      setSelectedLeadId(existing.id);
+      setSuccessAlert(`${existing.name} is already in your Customers & Leads list.`);
+      return;
+    }
+
+    const newLead: PitmasterLead = {
+      id: `lead-email-${Date.now()}`,
+      ticketId: `EML-${String(Date.now()).slice(-4)}`,
+      name: inb.senderName || inb.senderEmail,
+      email: inb.senderEmail,
+      phone: "",
+      eventType: inb.subject && inb.subject !== "(No Subject)" ? inb.subject : "Direct Email Inquiry",
+      guestCount: 0,
+      eventDate: "Date Pending",
+      packageName: "Direct Email",
+      serviceStyle: "Direct Email",
+      deliveryAddress: "",
+      notes: inb.body || "",
+      status: "new",
+      createdAt: inb.createdAt || new Date().toISOString(),
+      source: "Direct Email",
+      estimatedTotal: 0,
+    };
+
+    const updatedLeads = [newLead, ...leads];
+    setLeads(updatedLeads);
+    setSelectedLeadId(newLead.id);
+
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("ats_pitmaster_leads", JSON.stringify(updatedLeads));
+        window.dispatchEvent(new Event("storage"));
+      } catch {}
+    }
+
+    setSuccessAlert(`Saved ${newLead.name} to Leads & Quotes (Source: Direct Email)!`);
+  };
+
   const handleReplyToInbound = (inb: InboundEmail) => {
     const matched = leads.find(
       (l) => (l.email || "").toLowerCase() === inb.senderEmail.toLowerCase()
@@ -461,12 +507,12 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
           guideId="email-inbox"
           theme={isDay ? "day" : "night"}
           title="How your customer inbox works"
-          summary="Every catering inquiry and what you've already said back."
+          summary="Read incoming emails, save real customers to your list, or delete junk in 1 tap."
           steps={[
-            { title: "Find the customer", desc: "Scroll the list or search by name. Use the filters to see who still needs a reply." },
-            { title: "Tap their name", desc: "Their original request and any replies you've sent show up on the right." },
-            { title: "Need the whole picture?", desc: "Tap View Full Lead to see the date, guest count and their notes." },
-            { title: "Ready to answer", desc: "Open the Compose tab on the left to write back to the same person." },
+            { title: "Read Full or Delete", desc: "Tap Read Full (or click any email) to read it big. Tap Delete to clear spam or test emails." },
+            { title: "Save real customers", desc: "Tap + Save Customer to add someone straight to Leads & Quotes tagged Direct Email." },
+            { title: "See where each lead came from", desc: "Every person in the list has a Source Badge (Website, Direct Email, Phone, or Order Tray)." },
+            { title: "Reply in 1 tap", desc: "Tap Reply to write back from marion@ or info@. Replies save to Sent automatically." },
           ]}
           tip="Needs Reply shows everyone you haven't written back to yet."
         />
@@ -565,6 +611,17 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
                     }`}
                   >
                     Read Full
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSaveInboundAsCustomer(inb)}
+                    className={`min-h-[40px] px-3 py-1.5 rounded-lg text-xs font-bold border cursor-pointer ${
+                      isInboundSavedAsCustomer(inb.senderEmail)
+                        ? "bg-emerald-600/20 border-emerald-500/40 text-emerald-400"
+                        : "bg-emerald-600 hover:bg-emerald-500 border-emerald-500 text-white"
+                    }`}
+                  >
+                    {isInboundSavedAsCustomer(inb.senderEmail) ? "✓ Saved" : "+ Save Customer"}
                   </button>
                   {!inb.isRead && (
                     <button
@@ -796,16 +853,27 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
                         : "bg-[#141210] border-zinc-800/90 hover:border-zinc-700"
                     }`}
                   >
-                    {/* Top row: Client name + status badge */}
+                    {/* Top row: Client name + source & status badges */}
                     <div className="flex items-center justify-between gap-2">
                       <span className={`font-black text-sm truncate ${isDay ? "text-black" : "text-white"}`}>
                         {lead.name}
                       </span>
-                      <span
-                        className={`px-2 py-0.5 rounded-md text-[10px] font-bold border uppercase tracking-wider shrink-0 ${statusStyle.badgeClass}`}
-                      >
-                        {statusStyle.label}
-                      </span>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <span
+                          className={`px-2 py-0.5 rounded-md text-[10px] font-bold border ${
+                            (lead.source || "").toLowerCase().includes("email")
+                              ? "bg-sky-500/15 border-sky-500/40 text-sky-400"
+                              : "bg-amber-500/15 border-amber-500/40 text-amber-400"
+                          }`}
+                        >
+                          {lead.source || "Website"}
+                        </span>
+                        <span
+                          className={`px-2 py-0.5 rounded-md text-[10px] font-bold border uppercase tracking-wider ${statusStyle.badgeClass}`}
+                        >
+                          {statusStyle.label}
+                        </span>
+                      </div>
                     </div>
 
                     {/* Contact subline (crisp black in day mode) */}
@@ -1446,7 +1514,16 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
                 {deletingInboundId === readingInbound.id ? "Deleting..." : "Delete Email"}
               </button>
 
-              <div className="flex items-center gap-2.5">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => handleSaveInboundAsCustomer(readingInbound)}
+                  className="min-h-[48px] px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold cursor-pointer"
+                >
+                  {isInboundSavedAsCustomer(readingInbound.senderEmail)
+                    ? "✓ Saved in Customers"
+                    : "+ Save as Customer"}
+                </button>
                 <button
                   type="button"
                   onClick={() => setReadingInbound(null)}
