@@ -36,6 +36,7 @@ export function AdminReviewSequencePanel({ isDay }: AdminReviewSequencePanelProp
   const [eventType, setEventType] = useState("Catering Event");
   const [sendNow, setSendNow] = useState(false);
   const [sendingId, setSendingId] = useState<string | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
 
   useEffect(() => {
@@ -145,12 +146,9 @@ export function AdminReviewSequencePanel({ isDay }: AdminReviewSequencePanelProp
     const firstName = contact.clientName.trim().split(/\s+/)[0] || "there";
     const msg = `Hey ${firstName}, just wanted to personally say thank you for taking the time to drop us a 5-star review on Google! Whenever you've got another event, office lunch, or family cookout coming up, hit us up early so we can lock your date on the smoker calendar. – Marion, All The Smoke BBQ & Catering (773) 707-9988`;
     navigator.clipboard.writeText(msg);
-    persist(
-      contacts.map((c) =>
-        c.id === contact.id ? { ...c, vipThankYouSent: true } : c
-      )
-    );
-    setFeedback(`Copied VIP Thank-You text for ${contact.clientName} (ready to paste in SMS/DM)!`);
+    setCopiedId(contact.id);
+    setTimeout(() => setCopiedId((prev) => (prev === contact.id ? null : prev)), 3500);
+    setFeedback(`Copied for ${contact.clientName} — paste it into your Text/DM: "${msg}"`);
   };
 
   const pendingVipCount = contacts.filter(
@@ -290,12 +288,14 @@ export function AdminReviewSequencePanel({ isDay }: AdminReviewSequencePanelProp
                     type="button"
                     onClick={() => handleCopyVipText(c)}
                     className={`min-h-[40px] px-3 rounded-lg border text-xs font-bold cursor-pointer ${
-                      isDay
+                      copiedId === c.id
+                        ? "bg-amber-500/20 border-amber-500 text-amber-400"
+                        : isDay
                         ? "bg-stone-100 border-stone-300 text-stone-800 hover:bg-stone-200"
                         : "bg-zinc-900 border-zinc-700 text-stone-200 hover:bg-zinc-800"
                     }`}
                   >
-                    📋 Copy Text
+                    {copiedId === c.id ? "✓ Copied! Paste in Text/DM" : "📋 Copy Text"}
                   </button>
                 </>
               ) : (
