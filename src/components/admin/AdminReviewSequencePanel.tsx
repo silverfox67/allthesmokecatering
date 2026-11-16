@@ -141,6 +141,22 @@ export function AdminReviewSequencePanel({ isDay }: AdminReviewSequencePanelProp
     persist(contacts.map((c) => (c.id === id ? { ...c, clientEmail } : c)));
   };
 
+  const handleCopyVipText = (contact: ReviewSequenceContact) => {
+    const firstName = contact.clientName.trim().split(/\s+/)[0] || "there";
+    const msg = `Hey ${firstName}, just wanted to personally say thank you for taking the time to drop us a 5-star review on Google! Whenever you've got another event, office lunch, or family cookout coming up, hit us up early so we can lock your date on the smoker calendar. – Marion, All The Smoke BBQ & Catering (773) 707-9988`;
+    navigator.clipboard.writeText(msg);
+    persist(
+      contacts.map((c) =>
+        c.id === contact.id ? { ...c, vipThankYouSent: true } : c
+      )
+    );
+    setFeedback(`Copied VIP Thank-You text for ${contact.clientName} (ready to paste in SMS/DM)!`);
+  };
+
+  const pendingVipCount = contacts.filter(
+    (c) => c.reviewStatus === "completed" && !c.vipThankYouSent
+  ).length;
+
   const cardCls = isDay
     ? "bg-[#FAF8F5] border border-[#D8CEC1] text-[#1C1917]"
     : "bg-zinc-900/80 border border-zinc-800 text-zinc-100";
@@ -163,6 +179,17 @@ export function AdminReviewSequencePanel({ isDay }: AdminReviewSequencePanelProp
           </p>
         </div>
       </div>
+
+      {pendingVipCount > 0 && (
+        <div className="p-3.5 rounded-xl bg-[#EA580C]/15 border border-[#FF7A00]/50 text-xs space-y-1">
+          <p className="font-black text-[#FF7A00]">
+            ⏰ Action Needed: {pendingVipCount} Google {pendingVipCount === 1 ? "Reviewer Needs" : "Reviewers Need"} a VIP Thank-You
+          </p>
+          <p className={isDay ? "text-stone-800" : "text-stone-200"}>
+            These folks left Google reviews before being added to Leads, so their emails aren&apos;t on file yet. Grab their email from your texts/contacts, paste it below, and click <strong>Send VIP Thank-You</strong>—or tap <strong>Copy Text</strong> if you only have their phone number.
+          </p>
+        </div>
+      )}
 
       {feedback && (
         <div className="px-3.5 py-2.5 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-500 text-xs font-bold">
@@ -250,14 +277,27 @@ export function AdminReviewSequencePanel({ isDay }: AdminReviewSequencePanelProp
               </select>
 
               {c.reviewStatus === "completed" ? (
-                <button
-                  type="button"
-                  disabled={sendingId === c.id}
-                  onClick={() => triggerSequence(c, "vip-thankyou")}
-                  className="min-h-[40px] px-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold cursor-pointer"
-                >
-                  {c.vipThankYouSent ? "✓ VIP Thank-You Sent" : "Send VIP Thank-You"}
-                </button>
+                <>
+                  <button
+                    type="button"
+                    disabled={sendingId === c.id}
+                    onClick={() => triggerSequence(c, "vip-thankyou")}
+                    className="min-h-[40px] px-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold cursor-pointer"
+                  >
+                    {c.vipThankYouSent ? "✓ VIP Thank-You Sent" : "Send VIP Thank-You"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyVipText(c)}
+                    className={`min-h-[40px] px-3 rounded-lg border text-xs font-bold cursor-pointer ${
+                      isDay
+                        ? "bg-stone-100 border-stone-300 text-stone-800 hover:bg-stone-200"
+                        : "bg-zinc-900 border-zinc-700 text-stone-200 hover:bg-zinc-800"
+                    }`}
+                  >
+                    📋 Copy Text
+                  </button>
+                </>
               ) : (
                 <button
                   type="button"
