@@ -119,6 +119,7 @@ export function AdminReviewsHub({ theme = "night", subTab }: AdminReviewsHubProp
       {activeSubTab === "sequence" && <AdminReviewSequencePanel isDay={isDay} />}
       {/* HEADER SECTION */}
       {activeSubTab === "list" && (
+      <>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-stone-200 dark:border-zinc-800">
         <div>
           <div className="flex items-center gap-2">
