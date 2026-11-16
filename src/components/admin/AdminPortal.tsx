@@ -102,21 +102,21 @@ const WORKSPACE_GUIDES: Record<
   { title: string; summary: string; steps: { title: string; desc: string }[]; tip?: string }
 > = {
   todos: {
-    title: "How the To-Do & Roadmap works",
-    summary: "Your running list of what needs doing.",
+    title: "How To-Do & Roadmap works",
+    summary: "Why use this: Keeps your personal action items (like claiming Facebook, Instagram, Apple Maps, or buying supplies) in one clean checklist so nothing gets forgotten.",
     steps: [
-      { title: "Add a task", desc: "Type it in and tap Add. Keep each one short and clear." },
-      { title: "Check it off", desc: "Tap the box when it's done. Finished items move out of the way." },
-      { title: "Plan ahead", desc: "Use the roadmap items to see what we're building next for your site." },
+      { title: "1. Add a new task", desc: "Tap + Add New Item, type what needs doing, and save it." },
+      { title: "2. Mark Done or Delete", desc: "Tap Done ✓ to check an item off, or Delete to remove it completely once finished." },
+      { title: "3. Filter anytime", desc: "Use Pending / Completed pills at the top to see what's still left." },
     ],
   },
   notes: {
-    title: "How Pitmaster Notes work",
-    summary: "Leave notes for Todd and see his replies.",
+    title: "How Pitmaster Notes works",
+    summary: "Why use this: Gives you and Todd a direct message board inside your dashboard for menu changes, photo requests, or website tweaks—without losing things in long text threads.",
     steps: [
-      { title: "Write a note", desc: "Type what you need, like a menu change or a question, and send it." },
-      { title: "Pick a category", desc: "Choose a category so notes are easy to find later." },
-      { title: "Check replies", desc: "Todd's answers show up in the same thread." },
+      { title: "1. Write a note", desc: "Type what you need changed or updated and pick a category." },
+      { title: "2. Attach context if needed", desc: "Mention the exact dish, price, or page so Todd can knock it out fast." },
+      { title: "3. Check replies", desc: "Todd's replies appear right in the same thread." },
     ],
   },
 };

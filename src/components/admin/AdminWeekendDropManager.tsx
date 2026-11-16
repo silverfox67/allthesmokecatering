@@ -122,28 +122,27 @@ Notes: ${formData.notice}`;
         <AdminGuide
           guideId="weekend-current"
           theme={isDay ? "day" : "night"}
-          title="How to post a weekend dinner drop"
-          summary="Set up this Saturday's plates, then flip it live."
+          title="How Weekend Drops & Pop-Ups works"
+          summary="Why use this: Lets you sell limited-run Saturday dinner plates or holiday specials on your homepage without building a whole new menu—and hides itself completely whenever you aren't running a drop."
           steps={[
-            { title: "Fill in the basics", desc: "Give the drop a headline, the date, when orders close, and where and when folks pick up." },
-            { title: "Set your plates and prices", desc: "Name each dinner option, write what comes with it, and set the price." },
-            { title: "Add your Zelle info", desc: "Put in the phone and email customers should send payment to." },
-            { title: "Save and go live", desc: "Hit Save & Publish, and make sure the Live switch at the top is on so customers can see it." },
+            { title: "1. Pick your dates & times with the calendars", desc: "Use the Event Date and Pre-Order Cutoff calendars + time dropdowns so customers know exactly when orders close and when delivery/service starts." },
+            { title: "2. Edit your plates, prices & Zelle info", desc: "Update each dinner plate's title, description, price, and confirm your Zelle phone/email so pre-paid orders go straight to you." },
+            { title: "3. Flip 'Live on Website' ON or OFF", desc: "When the drop is over, flip the switch to Draft (Hidden) and hit Save—it disappears from the live website for all visitors. When you're ready for the next drop, flip it ON and Save." },
           ]}
-          tip="Not ready yet? Leave the switch on Draft and nothing shows on the website."
+          tip="Your last drop stays saved as a template, so next time you just pick the new date on the calendar and flip it Live."
         />
       ) : (
         <AdminGuide
           guideId="weekend-popups"
           theme={isDay ? "day" : "night"}
-          title="Checking your pop-up dinner preview and orders"
-          summary="See what customers see, and who has ordered."
+          title="How Pop-Up Preview & Pre-Orders works"
+          summary="Why use this: Shows you the exact Weekend Drop card customers see on the homepage, plus a live list of everyone who reserved a plate so you can prep the exact count."
           steps={[
-            { title: "Look at the preview card", desc: "This is how your drop looks on the website. Check the headline, date and prices read right." },
-            { title: "Check the published tag", desc: "PUBLISHED means customers can order. DRAFT means it is hidden." },
-            { title: "Read the pre-orders", desc: "Each order shows the name, phone, pickup or delivery, and what they ordered." },
+            { title: "1. Check the live preview card", desc: "Verify your headline, date, cutoff deadline, and plate prices look right before sharing on TikTok or Instagram." },
+            { title: "2. Confirm PUBLISHED vs. DRAFT", desc: "PUBLISHED (green) means visitors can order on the homepage right now. DRAFT means it is hidden." },
+            { title: "3. Use the Pre-Orders list as your cook sheet", desc: "Every reservation shows the customer's name, phone, delivery details, and plate count so you know how much meat to throw on the smoker." },
           ]}
-          tip="Use the pre-order list as your prep sheet before Saturday's cook."
+          tip="Confirm Zelle payments against the Pre-Orders list before firing up the pit."
         />
       )}
 

@@ -227,43 +227,42 @@ export function AdminQRDisplays({ theme, subTab }: AdminQRDisplaysProps) {
         <AdminGuide
           guideId="qr-templates"
           theme={isDay ? "day" : "night"}
-          title="How to make a table sign or banner"
-          summary="Pick a style, pick where the QR code goes, and watch the preview."
+          title="How QR Templates works"
+          summary="Why use this: Turns every buffet table, catering tray, and trailer stop into repeat bookings—guests scan the QR code with their phone camera and go straight to your menu, quote form, or Google review page."
           steps={[
-            { title: "Pick the kind of sign", desc: "Table tent, trailer banner, take-home card or stickers." },
-            { title: "Pick where the code sends people", desc: "Your menu, the quote form or the review page." },
-            { title: "Change the words", desc: "Edit the headline and note so it sounds like All The Smoke." },
-            { title: "Check the preview", desc: "What you see on the right is what comes out of the printer." },
+            { title: "1. Pick a sign format", desc: "Choose Table Tent, Trailer Banner, Take-Home Card, or Stickers." },
+            { title: "2. Choose where the QR code sends people", desc: "Point it to your Menu, Quote Form, or Reviews page." },
+            { title: "3. Customize the headline & check the preview", desc: "Edit the text and scan the preview with your phone camera before printing." },
           ]}
-          tip="Test the code with your own phone before you print a whole stack."
+          tip="Always test-scan the QR code with your own phone camera before printing a full stack."
         />
       )}
       {tab === "review-card" && (
         <AdminGuide
           guideId="qr-review-card"
           theme={isDay ? "day" : "night"}
-          title="How the pocket card works"
-          summary="The little card you hand out so happy guests can find you and leave a review."
+          title="How the Review Pocket Card works"
+          summary="Why use this: Handing a small card with every catering delivery or plate gets 5-star Google reviews while guests are still raving about the food—pushing you higher in Chicago Google Maps."
           steps={[
-            { title: "Choose the look", desc: "Dark smokehouse style or light butcher-paper style." },
-            { title: "Flip front and back", desc: "Check both sides. The back has the QR code." },
-            { title: "Download or print", desc: "Use the buttons at the bottom of the card to print a full sheet of 10." },
+            { title: "1. Pick Dark Smokehouse or Butcher Paper style", desc: "Butcher Paper (light) uses way less ink if you're printing at home." },
+            { title: "2. Check both Front & Back", desc: "Confirm your phone number, website, and scannable QR code on the back." },
+            { title: "3. Print a sheet of 10 cards", desc: "Use the print button to print 10 pocket cards per page on heavy card stock." },
           ]}
-          tip="Hand one to every guest as the food goes out. Reviews come easiest while they are full and happy."
+          tip="Drop one card inside every catering packet or hand one to the event host before leaving."
         />
       )}
       {tab === "print" && (
         <AdminGuide
           guideId="qr-print"
           theme={isDay ? "day" : "night"}
-          title="How to print your signs"
-          summary="Tips for getting a clean print at home or at the print shop."
+          title="How Print Preview works"
+          summary="Why use this: Gives you print-ready PDFs sized for home printers or FedEx/Staples so your QR codes stay razor-sharp and scannable."
           steps={[
-            { title: "Use the buttons up top", desc: "Print Active Sheet makes a PDF you can print or save." },
-            { title: "Pick the right paper", desc: "Heavy card stock holds up on a table and around grease and sauce." },
-            { title: "Print at full size", desc: "Turn off \"fit to page\" so the QR code stays sharp and scannable." },
+            { title: "1. Click Print Active Sheet", desc: "Opens your browser print dialog—you can print directly or choose 'Save as PDF' to email to a print shop." },
+            { title: "2. Use heavy card stock", desc: "Card stock holds up on buffet tables and around BBQ sauce." },
+            { title: "3. Print at 100% (Actual Size)", desc: "Turn off 'Fit to Page' so the QR code stays crisp and easy to scan." },
           ]}
-          tip="Use the white ink-saver style when you are printing a lot of copies."
+          tip="Choose the white Butcher Paper style if you're printing large batches."
         />
       )}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-zinc-800">

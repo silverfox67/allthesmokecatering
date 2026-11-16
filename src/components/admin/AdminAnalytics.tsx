@@ -328,15 +328,14 @@ export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
       <AdminGuide
         guideId="analytics"
         theme={isDay ? "day" : "night"}
-        title="How to read your numbers"
-        summary="A simple look at how the business is doing."
+        title="How Revenue Analytics works"
+        summary="Why use this: Stops you from guessing how much money is in your pipeline. It pulls your real leads and bookings straight from Supabase so you can see total pipeline value, confirmed revenue, and which event types pay best."
         steps={[
-          { title: "Pick a time range", desc: "Use the controls at the top to look at a week, a month, or longer." },
-          { title: "Look at the big numbers", desc: "These show how many inquiries came in and how many turned into booked events." },
-          { title: "See where customers come from", desc: "The charts show which parties and event types bring in the most business." },
-          { title: "Spot what's working", desc: "Lean into the kinds of events you book most, and follow up on the ones slipping away." },
+          { title: "1. Pick a time range at the top", desc: "Switch between All Time, This Month, or Upcoming to see how your current month compares to your $25,000 monthly catering goal." },
+          { title: "2. Watch Pipeline vs. Confirmed Revenue", desc: "Pipeline counts every quote you've sent out; Confirmed Revenue counts jobs you marked Booked (and will update automatically once Stripe deposits are live)." },
+          { title: "3. See which events make the most money", desc: "The breakdown charts show whether weddings, corporate lunches, or private parties are bringing in your biggest checks." },
         ]}
-        tip="You don't need to check this daily. Once a week is plenty."
+        tip="Check this once a week—if Pipeline is high but Booked is low, jump back to Leads & Quotes and send a quick follow-up."
       />
       {/* 1. HEADER & CONTROLS */}
       <div

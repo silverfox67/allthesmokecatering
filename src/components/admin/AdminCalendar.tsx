@@ -293,29 +293,27 @@ export function AdminCalendar({ theme = "night", subTab }: AdminCalendarProps) {
         <AdminGuide
           guideId="calendar-month"
           theme={isDay ? "day" : "night"}
-          title="How to read your calendar"
-          summary="See every cook, delivery and prep day at a glance."
+          title="How Smoke Calendar (Month View) works"
+          summary="Why use this: Keeps you from double-booking your smoker trailer or forgetting a prep day. Every catering gig, meat prep, and wood delivery sits in one monthly schedule."
           steps={[
-            { title: "Look at the month", desc: "Each day shows little tags for gigs, meat prep, wood deliveries and consultations." },
-            { title: "Tap a day", desc: "Tap any date to pick it, then open the Day tab on the left to see everything planned for it." },
-            { title: "Add something new", desc: "Hit Schedule Event to put a gig, prep day or delivery on the calendar." },
-            { title: "Check the numbers", desc: "The cards at the top count what's coming up and how many bookings you have." },
+            { title: "1. Scan your busy weekends", desc: "Each date shows color-coded tags for catering gigs, prep days, wood deliveries, and tastings/consultations." },
+            { title: "2. Tap any date for the full Day Detail", desc: "Click a date on the calendar, then switch to Day Detail on the left to see every time, address, and prep note for that day." },
+            { title: "3. Add a manual cook or prep day", desc: "Click + Schedule Event at the top to block off a date for brisket prep, wood delivery, or a phone booking." },
           ]}
-          tip="Booked customers land here on their own, so you don't have to type them in twice."
+          tip="Items you mark 'Live Smoke' in Smoker Menu & Pricing also sync onto today's calendar automatically."
         />
       ) : (
         <AdminGuide
           guideId="calendar-day"
           theme={isDay ? "day" : "night"}
-          title="Working a single day"
-          summary="Everything planned for the day you picked."
+          title="How Day Detail works"
+          summary="Why use this: Gives you a clean run-sheet for one specific day—so at 4 AM on cook day, you have every start time, delivery address, and meat prep note in one view."
           steps={[
-            { title: "Check the day", desc: "The list shows each event with its time, place, and any notes for the cook." },
-            { title: "Open the details", desc: "Tap the expand button on an event for the full screen view with customer info and prep notes." },
-            { title: "Change or finish it", desc: "Use Edit to fix a time or note, and Mark Done once the job is finished." },
-            { title: "Pick another day", desc: "Go back to the Month tab and tap a different date." },
+            { title: "1. Review today's timeline", desc: "Each card lists the event time, guest count, venue/delivery notes, and client phone number." },
+            { title: "2. Edit or mark jobs Done", desc: "Tap Edit to adjust a time or prep note, and tap Mark Done once the cook or delivery is wrapped." },
+            { title: "3. Switch days anytime", desc: "Use the Month View tab on the left to tap another date and inspect its run-sheet." },
           ]}
-          tip="Use Schedule Event up top to add something right onto the day you're looking at."
+          tip="Use + Schedule Event at the top to drop a new prep task or delivery straight onto the day you're viewing."
         />
       )}
       {/* 1. TOP HEADER & SCHEDULE ACTIONS */}

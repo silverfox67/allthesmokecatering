@@ -20,40 +20,40 @@ const RIG_GUIDE: Record<
   { title: string; summary: string; steps: { title: string; desc: string }[]; tip?: string }
 > = {
   timers: {
-    title: "How the Smoke Timers work",
-    summary: "Start a timer when meat goes on the pit.",
+    title: "How Smoke Timers works",
+    summary: "Why use this: Keeps track of multiple meats on the smoker at once (brisket, ribs, pork butt, turkey) so you never miss a wrap, spritz, or rest window during a long 14-hour cook.",
     steps: [
-      { title: "Start the clock", desc: "Tap Start on the cut you just put on. The timer keeps running even if you leave the page." },
-      { title: "Follow the phases", desc: "Each card lists what to do and the temp to hit at each stage, like the wrap on brisket." },
-      { title: "Check it off", desc: "Tap a phase when you finish it so you always know where each rack stands." },
+      { title: "1. Tap Start when meat hits the pit", desc: "Pick the cut you just loaded and tap Start—the timer keeps running even if you switch tabs." },
+      { title: "2. Follow the stage milestones", desc: "Each timer lists the key stages (bark set, butcher paper wrap, pull temp, rest) so nothing gets rushed." },
+      { title: "3. Check off stages as you go", desc: "Tap each stage when done so you always know exactly where every rack stands." },
     ],
   },
   "status-flipper": {
-    title: "How the Menu Flipper works",
-    summary: "Tell customers what's ready right now.",
+    title: "How Menu Flipper works",
+    summary: "Why use this: Lets you flip meats to 'Live Smoke' or 'Sold Out' right from your phone at the trailer without digging through the full price editor.",
     steps: [
-      { title: "Pick a ready time", desc: "Choose the time the next batch comes off, like ~5:00 PM." },
-      { title: "Flip an item", desc: "Tap an item to mark it Ready, Coming Up, or Sold Out." },
-      { title: "It updates your site", desc: "Your public menu changes right away. No need to save." },
+      { title: "1. Pick a Ready Time", desc: "Choose when the next batch comes off the pit (like ~5:00 PM) so customers see an accurate ready badge." },
+      { title: "2. Tap In Stock, Live Smoke, or Sold Out", desc: "Updates the live availability badge for that cut." },
+      { title: "3. Syncs to your public menu", desc: "Your website menu reflects your live status right away." },
     ],
-    tip: "Flip items to Sold Out as the trailer line moves so customers never wait for food that's gone.",
+    tip: "Only mark items Live Smoke when you're actually smoking them that day—otherwise leave catering items In Stock.",
   },
   "cheat-sheet": {
-    title: "How the Temp Targets work",
-    summary: "Quick reference for every cut: pit temp, pull temp, rest.",
+    title: "How Temp Targets works",
+    summary: "Why use this: Gives you a 1-second reference chart for pit temp, internal pull temp, and rest times across every cut on your menu—great for training a helper at the pit.",
     steps: [
-      { title: "Find your cut", desc: "Each row is one meat from your menu." },
-      { title: "Read the targets", desc: "You'll see pit temp, the temp to pull it, and how to tell it's done by feel." },
-      { title: "Don't skip the rest", desc: "Resting time keeps the juices in. It's listed for every cut." },
+      { title: "1. Find the cut you're smoking", desc: "Every row covers one signature meat from your menu." },
+      { title: "2. Check pit temp, pull temp & feel", desc: "Shows target chamber temp, exact internal temp to pull, and probe-tender cues." },
+      { title: "3. Follow the rest window", desc: "Resting time in the hot-box is listed for every cut so brisket and ribs stay juicy." },
     ],
   },
   "fuel-log": {
-    title: "How the Wood & Pit Log works",
-    summary: "Track splits of wood and pit temp through the day.",
+    title: "How Wood & Pit Log works",
+    summary: "Why use this: Logs every split of wood and pit temp reading during a cook so you know how fast your trailer burns oak/hickory in Chicago weather and can plan fuel for future gigs.",
     steps: [
-      { title: "Tap +1 Split", desc: "Each time you add a split of wood to the firebox, tap once." },
-      { title: "Note the pit temp", desc: "Set the pit temp when you log it so you can see how the fire held." },
-      { title: "Review the day", desc: "The log shows what you burned and when, so you can plan wood for next cook." },
+      { title: "1. Tap +1 Split when you feed the firebox", desc: "Logs the exact time you added wood." },
+      { title: "2. Record the chamber temp", desc: "Enter the pit temp so you can see how steadily the fire held." },
+      { title: "3. Review after the cook", desc: "Use the log to estimate how much wood a 12-hour vs. 14-hour cook actually takes." },
     ],
   },
 };

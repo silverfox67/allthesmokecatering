@@ -545,29 +545,27 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
         <AdminGuide
           guideId="email-inbox"
           theme={isDay ? "day" : "night"}
-          title="How your customer inbox works"
-          summary="Read incoming emails, save real customers to your list, or delete junk in 1 tap."
+          title="How Client Emails (Inbox) works"
+          summary="Why use this: Lets you read and answer every email sent to marion@ and info@ right inside your dashboard—without juggling Zoho or Gmail. You can save real planners straight to your Leads list and delete junk in 1 tap."
           steps={[
-            { title: "Read Full or Delete", desc: "Tap Read Full (or click any email) to read it big. Tap Delete to clear spam or test emails." },
-            { title: "Save real customers", desc: "Tap + Save Customer to add someone straight to Leads & Quotes tagged Direct Email." },
-            { title: "See where each lead came from", desc: "Every person in the list has a Source Badge (Website, Direct Email, Phone, or Order Tray)." },
-            { title: "Reply in 1 tap", desc: "Tap Reply to write back from marion@ or info@. Replies save to Sent automatically." },
+            { title: "1. Read Full or Delete incoming emails", desc: "Tap Read Full (or click any email row) at the top to open the full message in a large reader. Tap Delete to remove test emails, spam, or system notices." },
+            { title: "2. Save real customers with + Save Customer", desc: "If someone emailed info@ or marion@ directly (not through the quote form), tap + Save Customer to add them to Leads & Quotes tagged Direct Email." },
+            { title: "3. Check Source Badges & Reply in 1 tap", desc: "Every card in the left list shows where the lead came from (Website, Direct Email, Phone, or Order Tray). Tap Reply on any email to jump straight to Compose." },
           ]}
-          tip="Needs Reply shows everyone you haven't written back to yet."
+          tip="Needs Reply shows every saved lead you haven't written back to yet."
         />
       ) : (
         <AdminGuide
           guideId="email-compose"
           theme={isDay ? "day" : "night"}
-          title="Writing a reply"
-          summary="Pick a quick template or write your own."
+          title="How Compose Email works"
+          summary="Why use this: Sends professional, branded All The Smoke emails (with your logo and header) straight from marion@ or info@ via Brevo—and any reply the customer sends comes right back into your Inbox."
           steps={[
-            { title: "Pick the customer", desc: "Make sure the right name is showing at the top of the composer." },
-            { title: "Start with a template", desc: "Tap one of the 1-tap buttons for a ready-made reply, then change anything you like." },
-            { title: "Check the subject and message", desc: "Read it over once. Add a personal line about their event." },
-            { title: "Send it", desc: "Tap Send Direct Reply. It goes out from your business email and replies come right back to you." },
+            { title: "1. Pick who you're emailing", desc: "Select a saved lead or type any custom email address and name into the To fields (great for wedding planners, vendors, or corporate contacts)." },
+            { title: "2. Choose a 1-tap template or write your own", desc: "Tap a quick template button (Follow-Up, Deposit Confirmed, Day-Of Check-In) to pre-fill the message, then tweak any details for their event." },
+            { title: "3. Pick your From address & Send", desc: "Choose marion@allthesmokecatering.com or info@allthesmokecatering.com and hit Send—it delivers immediately and saves a copy to Sent." },
           ]}
-          tip="A quick reply, even just a hello, is the best way to lock in a booking."
+          tip="A fast, personal reply—even just confirming you received their date—is the #1 way to lock in catering bookings."
         />
       )}
       {/* INBOUND CUSTOMER REPLIES BANNER (Live Zoho/Webhook Inbox) */}

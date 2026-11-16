@@ -396,15 +396,14 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail, subT
       <AdminGuide
         guideId="leads-pipeline"
         theme={isDay ? "day" : "night"}
-        title="How the quote request list works"
-        summary="Every catering request lands here. Tap one to read it and answer."
+        title="How Leads & Quotes (Pipeline) works"
+        summary="Why use this: Keeps every catering inquiry—whether from your website quote form, a direct email, or a phone call—in one organized list so no $2,000+ booking ever slips through the cracks."
         steps={[
-          { title: "Check where each lead came from", desc: "Every card is tagged by source (Website Quote, Direct Email, Phone Intake, or Order Tray)." },
-          { title: "Open the request", desc: "Tap a name to read what they asked for: date, guest count, package, or saved email notes." },
-          { title: "Reply and send a quote", desc: "Use the text/email button to answer, or make an invoice when they are ready." },
-          { title: "Move it along", desc: "Mark it Contacted, Quoted, then Booked so you always know where each one stands." },
+          { title: "1. Answer 'New' leads first", desc: "Use the filter pills at the top to see new inquiries nobody has answered yet. Each card shows its Source Badge (Website Quote, Direct Email, Phone, or Order Tray)." },
+          { title: "2. Open the full slip", desc: "Tap any client's name to read their event date, guest count, selected meats/sides, delivery ZIP, and notes." },
+          { title: "3. Reply & move them along", desc: "Use the Text/Email button to answer, then update their status from New → Contacted → Quoted → Booked so Revenue Analytics stays accurate." },
         ]}
-        tip="Answer within a few hours. Folks usually book the caterer who writes back first."
+        tip="Answer within a few hours—corporate planners and brides almost always book the first caterer who writes back."
       />
       {/* 1. TOP TOOLBAR: TITLE, SEARCH, INTAKE & PROMO LAUNCHERS */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -1060,14 +1059,14 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail, subT
           <AdminGuide
             guideId="leads-messages"
             theme={isDay ? "day" : "night"}
-            title="How quick messages work"
-            summary="Pick a customer and send a ready-made text or email in one tap."
+            title="How Quick Messages works"
+            summary="Why use this: Saves you from typing out the same text or email 20 times when you're busy on the smoker. Pick any customer and send a pre-written quote follow-up, day-of check-in, or review ask in seconds."
             steps={[
-              { title: "Find the customer", desc: "Type their name or phone number in the search box." },
-              { title: "Tap Text / Email", desc: "A window opens with ready-made messages like \"Got your request\" or \"Your quote is ready\"." },
-              { title: "Look it over", desc: "Change a word or two so it sounds like you, then send." },
+              { title: "1. Search for the customer", desc: "Type their name, phone number, or ticket number in the search bar." },
+              { title: "2. Tap 📲 Text / Email", desc: "Opens a popup with ready-to-send templates (Received Inquiry, Quote Follow-Up, Day-Of Delivery Check-In, Review Request)." },
+              { title: "3. Tweak & send", desc: "Customize a line if needed and send by email or open your phone's Messages app in 1 tap." },
             ]}
-            tip="Quick messages save your typing time on busy cook days."
+            tip="Use Day-Of Check-In the morning of a delivery so clients know your hot-boxes are on schedule."
           />
           <input
             type="text"
@@ -1118,15 +1117,14 @@ export function AdminLeadsPipeline({ theme = "night", onSelectLeadForEmail, subT
         <AdminGuide
           guideId="leads-promo"
           theme={isDay ? "day" : "night"}
-          title="How the seasonal special works"
-          summary="Send one offer to everyone on your list, like a slow-season deal."
+          title="How Seasonal Promo Blast works"
+          summary="Why use this: Past clients and unbooked leads are your easiest repeat money. Send one clean email blast to everyone on your list to fill slow weekends or holiday dates."
           steps={[
-            { title: "Write a short subject", desc: "Something plain like \"Open dates for spring cookouts\"." },
-            { title: "Write the offer", desc: "Say what you are offering and when it ends." },
-            { title: "Check who gets it", desc: "The box shows how many people with an email will receive it." },
-            { title: "Tap Dispatch", desc: "It goes out right away and Marion gets a copy." },
+            { title: "1. Write a clear, plain subject", desc: "Example: 'Open smoker dates for Thanksgiving & holiday parties' or '10% off corporate lunches this month'." },
+            { title: "2. Write one clear offer + deadline", desc: "Tell them what you're smoking, the deadline to lock in a date, and to reply or call (773) 707-9988." },
+            { title: "3. Check the recipient count & Dispatch", desc: "Confirm how many contacts with valid emails will receive it, then hit Dispatch (you get a copy too)." },
           ]}
-          tip="Keep it to one offer with one deadline. Short notes get more replies."
+          tip="One short offer with one clear deadline gets way more bookings than a long newsletter."
         />
       )}
 

@@ -227,23 +227,23 @@ export function AdminDirectoriesHub({ theme = "night" }: AdminDirectoriesHubProp
       <AdminGuide
         guideId="directories"
         theme={isDay ? "day" : "night"}
-        title="Directories & Apple Maps Verification"
-        summary="Keep your business license, kitchen lease, and directory listings organized in one private spot."
+        title="How Directories & Verification works"
+        summary="Why use this: Right now, out-of-state 'All The Smoke' businesses are showing up on Google and Facebook. Claiming your official Chicago profiles here (TikTok, Facebook, Instagram, Apple Maps, Bing, Yelp, ezCater) proves to Google and Apple that YOU are the real Chicago smokehouse."
         steps={[
           {
-            title: "Attach your verification docs below",
-            desc: "Apple Maps asks for your City of Chicago Business License or kitchen lease (never your SSN or EIN).",
+            title: "1. Attach your verification docs in the Vault below",
+            desc: "Apple Maps and ezCater require proof of your business—attach your City of Chicago Business License, Commercial Kitchen Lease, or Utility Bill (never store raw SSN or EIN numbers here).",
           },
           {
-            title: "Claim Bing Places in 2 minutes",
-            desc: "Bing Places imports straight from your verified Google Business Profile.",
+            title: "2. Claim Socials, Apple Maps & Bing in order",
+            desc: "Start at the top: set up Facebook Business and Instagram (@allthesmokebbq_catering), then click Claim on Bing Places (2-minute 1-click import from Google) and Apple Business Connect.",
           },
           {
-            title: "Save each live URL",
-            desc: "Once a listing goes live, update its status and paste the public link here.",
+            title: "3. Update status & paste your live URL",
+            desc: "As each listing goes live, change its dropdown to Live and paste the link—the button automatically turns into a green ✓ Complete button.",
           },
         ]}
-        tip="3401 N Orange Ave is strictly for private Apple/Bing verification—never shown as a walk-in storefront."
+        tip="3401 N Orange Ave is strictly for private Apple/Bing verification—never shown publicly as a walk-in storefront."
       />
 
       {savedNotice && (
