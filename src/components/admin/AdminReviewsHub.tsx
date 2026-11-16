@@ -26,6 +26,7 @@ export function AdminReviewsHub({ theme = "night", subTab }: AdminReviewsHubProp
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedLink, setCopiedLink] = useState<string | null>(null);
   const [showQrModal, setShowQrModal] = useState(false);
+  const [expandedReviewId, setExpandedReviewId] = useState<string | null>(null);
 
   // Quick review invite composer
   const [inviteClientName, setInviteClientName] = useState("");
@@ -72,19 +73,52 @@ export function AdminReviewsHub({ theme = "night", subTab }: AdminReviewsHubProp
   return (
     <div className="space-y-6">
       <AdminGuide
-        guideId="reviews"
+        guideId={`reviews-${activeSubTab}`}
         theme={isDay ? "day" : "night"}
-        title="How reviews work"
-        summary="See what customers say and share the good ones."
-        steps={[
-          { title: "Read what came in", desc: "New reviews from happy customers show up in the list." },
-          { title: "Approve the good ones", desc: "Only reviews you approve appear on your website." },
-          { title: "Share your review link", desc: "Send customers the link after an event so it's easy for them to leave a few words." },
-        ]}
-        tip="Ask right after a great event. That's when folks are happiest and most likely to write one."
+        title={
+          activeSubTab === "sequence"
+            ? "How the Review Email Sequence works"
+            : activeSubTab === "invite"
+            ? "How SMS & Link Invites work"
+            : "How Google Reviews work"
+        }
+        summary={
+          activeSubTab === "sequence"
+            ? "Send 24h guided review emails and VIP Thank-Yous without double-asking anyone."
+            : activeSubTab === "invite"
+            ? "Text a customer or copy your direct Google Review link right after an event."
+            : "Tap any 1-line review row (▾) to expand the full quote, owner reply, and website toggle."
+        }
+        steps={
+          activeSubTab === "sequence"
+            ? [
+                { title: "Queue a client", desc: "Enter their name, email, and event to schedule the 24h guided ask + 4-day bump." },
+                { title: "Completed reviewers stay safe", desc: "Anyone marked completed (like our 6 Google reviewers) can only get a VIP Thank-You." },
+                { title: "Keep it personal", desc: "Check Send Email 1 immediately if the event wrapped up yesterday." },
+              ]
+            : activeSubTab === "invite"
+            ? [
+                { title: "Fill in name & phone", desc: "Type the client's name, phone, and event type to build a ready-to-send text." },
+                { title: "Send in 1 tap", desc: "Tap Copy SMS or Open Messages to text them the review link right away." },
+                { title: "Or share your Google link", desc: "Use Copy Google Review Link above to send customers straight to Google Maps." },
+              ]
+            : [
+                { title: "Scan at a glance", desc: "Every review starts as a clean 1-line row showing stars, name, preview, and date." },
+                { title: "Tap ▾ to expand", desc: "Click any row or the down arrow to read the full review and your Owner Reply." },
+                { title: "Feature on Website", desc: "Check Feature on Website inside an expanded row to show it on the homepage." },
+              ]
+        }
+        tip={
+          activeSubTab === "sequence"
+            ? "Guided prompts help clients write 2–3 sentences mentioning brisket, ribs, or service."
+            : activeSubTab === "invite"
+            ? "Texting right after a great event gets the highest 5-star response rate."
+            : "Click any 1-line review row to open or close the full details."
+        }
       />
       {activeSubTab === "sequence" && <AdminReviewSequencePanel isDay={isDay} />}
       {/* HEADER SECTION */}
+      {activeSubTab === "list" && (
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-stone-200 dark:border-zinc-800">
         <div>
           <div className="flex items-center gap-2">
@@ -211,6 +245,8 @@ export function AdminReviewsHub({ theme = "night", subTab }: AdminReviewsHubProp
           </div>
         </div>
       </div>
+      </>
+      )}
 
       {/* QUICK REVIEW INVITE GENERATOR (FOR SMS & GIG HOT-BOX CARDS) */}
       {activeSubTab === "invite" && (
@@ -417,123 +453,149 @@ export function AdminReviewsHub({ theme = "night", subTab }: AdminReviewsHubProp
             )}
           </div>
         ) : (
-          filteredReviews.map((rev) => (
-            <div
-              key={rev.id}
-              className={`p-4 sm:p-5 rounded-2xl border transition-all space-y-3 shadow-xs ${
-                rev.rating <= 3
-                  ? "bg-red-950/20 border-red-800/40"
-                  : isDay
-                  ? "bg-white border-stone-300"
-                  : "bg-[#141210] border-zinc-800"
-              }`}
-            >
-              {/* Header: Stars + Client Name + Event Type + Date */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b pb-2.5 border-stone-200 dark:border-zinc-800">
-                <div className="flex items-center gap-2.5 flex-wrap">
-                  <div className="flex items-center text-amber-400 text-sm">
-                    {"★".repeat(rev.rating)}
-                    {"☆".repeat(5 - rev.rating)}
+          filteredReviews.map((rev) => {
+            const isExpanded = expandedReviewId === rev.id;
+            return (
+              <div
+                key={rev.id}
+                className={`rounded-2xl border transition-all shadow-xs overflow-hidden ${
+                  rev.rating <= 3
+                    ? "bg-red-950/20 border-red-800/40"
+                    : isDay
+                    ? "bg-white border-stone-300"
+                    : "bg-[#141210] border-zinc-800"
+                }`}
+              >
+                {/* 1-Line Compact Header Row (Click to Expand) */}
+                <button
+                  type="button"
+                  onClick={() => setExpandedReviewId(isExpanded ? null : rev.id)}
+                  className="w-full px-4 py-3 flex items-center justify-between gap-3 text-left cursor-pointer hover:bg-white/[0.03] transition-colors"
+                >
+                  <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                    <span className="text-amber-400 text-xs shrink-0">
+                      {"★".repeat(rev.rating)}
+                    </span>
+                    <span className={`font-black text-sm shrink-0 ${isDay ? "text-stone-900" : "text-white"}`}>
+                      {rev.clientName}
+                    </span>
+                    {!isExpanded && (
+                      <span className={`text-xs truncate ${isDay ? "text-stone-600" : "text-stone-400"}`}>
+                        — &ldquo;{rev.reviewText}&rdquo;
+                      </span>
+                    )}
                   </div>
 
-                  <span className={`font-black text-sm ${isDay ? "text-stone-900" : "text-white"}`}>
-                    {rev.clientName}
-                  </span>
-
-                  <span className="text-xs text-[#EA580C] font-bold">
-                    • {rev.eventType}
-                  </span>
-
-                  {rev.isFeatured && (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-[#FF7A00]/20 text-[#FF7A00] border border-[#FF7A00]/40">
-                      ★ Featured on Site
+                  <div className="flex items-center gap-2.5 shrink-0">
+                    {rev.isFeatured && (
+                      <span className="hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-[#FF7A00]/20 text-[#FF7A00] border border-[#FF7A00]/40">
+                        ★ Featured
+                      </span>
+                    )}
+                    <span className="text-[11px] text-stone-400 hidden sm:inline">
+                      {rev.displayDate || new Date(rev.submittedAt).toLocaleDateString()}
                     </span>
-                  )}
-
-                  {rev.status === "private-feedback" && (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-red-900/50 text-red-300 border border-red-700/60">
-                      🛡️ Private Feedback
-                    </span>
-                  )}
-                </div>
-
-                <div className="flex items-center gap-2 text-[11px] text-stone-400">
-                  <span>Source: {rev.source}</span>
-                  <span>•</span>
-                  <span>{new Date(rev.submittedAt).toLocaleDateString()}</span>
-                </div>
-              </div>
-
-              {/* Review Text */}
-              <div className={`text-xs sm:text-sm font-medium leading-relaxed italic ${isDay ? "text-stone-800" : "text-stone-200"}`}>
-                &ldquo;{rev.reviewText}&rdquo;
-              </div>
-
-              {/* Highlights Chips */}
-              {rev.favoriteHighlights && rev.favoriteHighlights.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {rev.favoriteHighlights.map((tag) => (
                     <span
-                      key={tag}
-                      className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#FF7A00]/10 text-amber-300 border border-[#FF7A00]/20"
+                      aria-hidden="true"
+                      className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold border ${
+                        isDay
+                          ? "bg-stone-100 border-stone-300 text-stone-700"
+                          : "bg-zinc-900 border-zinc-700 text-stone-300"
+                      }`}
                     >
-                      {tag}
+                      {isExpanded ? "▲" : "▾"}
                     </span>
-                  ))}
-                </div>
-              )}
+                  </div>
+                </button>
 
-              {/* Footer Actions: Feature Toggle, Contact, Delete */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 pt-2 border-t border-stone-200 dark:border-zinc-800 text-xs">
-                <div className="flex items-center gap-3">
-                  {/* Feature Toggle */}
-                  <label className="flex items-center gap-1.5 cursor-pointer font-bold select-none text-[11px]">
-                    <input
-                      type="checkbox"
-                      checked={rev.isFeatured}
-                      onChange={() => toggleFeatured(rev.id)}
-                      className="accent-[#FF7A00] w-3.5 h-3.5 rounded"
-                    />
-                    <span className={rev.isFeatured ? "text-amber-400" : "text-stone-400"}>
-                      Feature on Website
-                    </span>
-                  </label>
+                {/* Expanded Full Review Details */}
+                {isExpanded && (
+                  <div className="px-4 pb-4 pt-2 border-t border-stone-200 dark:border-zinc-800 space-y-3">
+                    <div className="flex items-center justify-between gap-2 text-[11px] text-stone-400 flex-wrap">
+                      <span className="text-[#EA580C] font-bold">{rev.eventType}</span>
+                      <span>
+                        Source: {rev.source} • {rev.displayDate || new Date(rev.submittedAt).toLocaleDateString()}
+                      </span>
+                    </div>
 
-                  {rev.clientPhone && (
-                    <a
-                      href={`tel:${rev.clientPhone}`}
-                      className="text-stone-400 hover:text-white flex items-center gap-1 font-bold text-[11px]"
-                    >
-                      <span>📞 Call ({rev.clientPhone})</span>
-                    </a>
-                  )}
+                    <div className={`text-xs sm:text-sm font-medium leading-relaxed italic ${isDay ? "text-stone-800" : "text-stone-200"}`}>
+                      &ldquo;{rev.reviewText}&rdquo;
+                    </div>
 
-                  {rev.clientEmail && (
-                    <a
-                      href={`mailto:${rev.clientEmail}?subject=Thank%20You%20from%20All%20The%20Smoke%20BBQ`}
-                      className="text-stone-400 hover:text-white flex items-center gap-1 font-bold text-[11px]"
-                    >
-                      <span>✉️ Email</span>
-                    </a>
-                  )}
-                </div>
+                    {rev.adminResponse && (
+                      <div className={`rounded-xl p-3 text-xs border-l-4 border-l-[#EA580C] ${isDay ? "bg-stone-50 text-stone-800" : "bg-zinc-900/90 text-stone-200"}`}>
+                        <span className="block font-extrabold uppercase tracking-wider text-[10px] text-[#EA580C] mb-1">
+                          Owner Reply
+                        </span>
+                        <p>{rev.adminResponse}</p>
+                      </div>
+                    )}
 
-                <div className="flex items-center gap-2 self-end sm:self-auto">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (confirm(`Remove review from ${rev.clientName}?`)) {
-                        deleteReview(rev.id);
-                      }
-                    }}
-                    className="text-red-500 hover:text-red-400 text-[11px] font-bold cursor-pointer"
-                  >
-                    Delete Review
-                  </button>
-                </div>
+                    {rev.favoriteHighlights && rev.favoriteHighlights.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {rev.favoriteHighlights.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#FF7A00]/10 text-amber-300 border border-[#FF7A00]/20"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 pt-2 border-t border-stone-200 dark:border-zinc-800 text-xs">
+                      <div className="flex items-center gap-3">
+                        <label className="flex items-center gap-1.5 cursor-pointer font-bold select-none text-[11px]">
+                          <input
+                            type="checkbox"
+                            checked={rev.isFeatured}
+                            onChange={() => toggleFeatured(rev.id)}
+                            className="accent-[#FF7A00] w-3.5 h-3.5 rounded"
+                          />
+                          <span className={rev.isFeatured ? "text-amber-400" : "text-stone-400"}>
+                            Feature on Website
+                          </span>
+                        </label>
+
+                        {rev.clientPhone && (
+                          <a
+                            href={`tel:${rev.clientPhone}`}
+                            className="text-stone-400 hover:text-white flex items-center gap-1 font-bold text-[11px]"
+                          >
+                            <span>📞 Call ({rev.clientPhone})</span>
+                          </a>
+                        )}
+
+                        {rev.clientEmail && (
+                          <a
+                            href={`mailto:${rev.clientEmail}?subject=Thank%20You%20from%20All%20The%20Smoke%20BBQ`}
+                            className="text-stone-400 hover:text-white flex items-center gap-1 font-bold text-[11px]"
+                          >
+                            <span>✉️ Email</span>
+                          </a>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-2 self-end sm:self-auto">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (confirm(`Remove review from ${rev.clientName}?`)) {
+                              deleteReview(rev.id);
+                            }
+                          }}
+                          className="text-red-500 hover:text-red-400 text-[11px] font-bold cursor-pointer"
+                        >
+                          Delete Review
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
       </>
