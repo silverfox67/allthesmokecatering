@@ -341,6 +341,12 @@ export function AdminPriceConfigurator({ theme, subTab }: AdminPriceConfigurator
       });
 
       saveStoredLiveMenuOverrides(liveOverrides);
+
+      void fetch("/api/menu-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ liveOverrides, priceConfig: updated }),
+      }).catch((err) => console.warn("Remote price config sync warning:", err));
     }
 
     setSaveToast(true);

@@ -98,6 +98,12 @@ export function saveStoredLiveMenuOverrides(
 
     // Dispatch custom event for same-window reactive updates
     window.dispatchEvent(new CustomEvent(EVENT_MENU_UPDATED, { detail: items }));
+
+    void fetch("/api/menu-config", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ liveOverrides: items }),
+    }).catch((err) => console.warn("Remote menu config sync warning:", err));
   } catch (err) {
     console.error("Could not save live smoker status:", err);
   }
@@ -171,6 +177,25 @@ export function useLiveSmokerStatus() {
   useEffect(() => {
     reload();
 
+    let cancelled = false;
+    fetch("/api/menu-config")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.success && data?.liveOverrides) {
+          setOverrides(data.liveOverrides);
+          try {
+            localStorage.setItem(
+              STORAGE_KEY_LIVE_STATUS,
+              JSON.stringify({
+                lastUpdated: new Date().toISOString(),
+                items: data.liveOverrides,
+              })
+            );
+          } catch {}
+        }
+      })
+      .catch(() => {});
+
     const handleCustomEvent = (event: Event) => {
       const custom = event as CustomEvent<Record<string, LiveSmokerItemOverride>>;
       if (custom.detail) {
@@ -190,6 +215,7 @@ export function useLiveSmokerStatus() {
     window.addEventListener("storage", handleStorageEvent);
 
     return () => {
+      cancelled = true;
       window.removeEventListener(EVENT_MENU_UPDATED, handleCustomEvent);
       window.removeEventListener("storage", handleStorageEvent);
     };
