@@ -17,6 +17,7 @@ import { AdminReviewsHub } from "./AdminReviewsHub";
 import { AdminDirectoriesHub } from "./AdminDirectoriesHub";
 import { AdminWeekendDropManager } from "./AdminWeekendDropManager";
 import { AdminInventory } from "./AdminInventory";
+import { AdminStripeSetup } from "./AdminStripeSetup";
 import { AdminGuide } from "./AdminGuide";
 import { SITE_CONFIG } from "@/config/site-config";
 
@@ -36,7 +37,8 @@ export type AdminTab =
   | "notes"
   | "workspace"
   | "pitmaster-app"
-  | "inventory";
+  | "inventory"
+  | "stripe";
 
 interface SubTabDef {
   key: string;
@@ -357,6 +359,17 @@ export function AdminPortal() {
     {
       groupTitle: "Admin & Tools",
       items: [
+        {
+          key: "stripe" as AdminTab,
+          label: "Stripe Setup",
+          status: "Setup",
+          badgeColor: "amber",
+          icon: (
+            <svg className="w-4 h-4 shrink-0 text-[#FF7A00]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+            </svg>
+          ),
+        },
         {
           key: "workspace" as AdminTab,
           label: "Workspace",
@@ -882,6 +895,10 @@ export function AdminPortal() {
 
             {activeTab === "inventory" && (
               <AdminInventory theme={theme} subTab={currentSubTab} />
+            )}
+
+            {activeTab === "stripe" && (
+              <AdminStripeSetup theme={theme} />
             )}
           </div>
         </main>
