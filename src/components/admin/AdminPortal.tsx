@@ -18,6 +18,7 @@ import { AdminDirectoriesHub } from "./AdminDirectoriesHub";
 import { AdminWeekendDropManager } from "./AdminWeekendDropManager";
 import { AdminInventory } from "./AdminInventory";
 import { AdminStripeSetup } from "./AdminStripeSetup";
+import { AiRoiScoreboardBanner } from "./AiRoiScoreboardBanner";
 import { AdminGuide } from "./AdminGuide";
 import { SITE_CONFIG } from "@/config/site-config";
 
@@ -812,6 +813,7 @@ export function AdminPortal() {
         {/* 3. MAIN DASHBOARD CONTENT AREA */}
         <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto">
           <div className="max-w-7xl mx-auto w-full">
+            <AiRoiScoreboardBanner theme={theme} />
             {/* TAB 1: LEADS PIPELINE (LIVE) */}
             {activeTab === "leads" && (
               <AdminLeadsPipeline

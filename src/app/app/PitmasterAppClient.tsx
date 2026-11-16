@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import QRCode from "qrcode";
 import { AdminLogin } from "@/components/admin/AdminLogin";
+import { AiRoiScoreboardBanner } from "@/components/admin/AiRoiScoreboardBanner";
 import { SITE_CONFIG } from "@/config/site-config";
 import { IOSInstallModal } from "@/components/pwa/IOSInstallModal";
 
@@ -339,6 +340,8 @@ END:VCARD`;
               </div>
             )}
           </div>
+
+          <AiRoiScoreboardBanner compact />
 
           {/* PRIMARY VERTICAL ACTION BUTTONS */}
           <div className="flex flex-col gap-3 pt-1">
