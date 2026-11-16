@@ -34,6 +34,15 @@ const STORAGE_KEY_VAULT = "ats_blueprint_q_vault_v1";
 
 const DEFAULT_DIRECTORIES: DirectoryEntry[] = [
   {
+    id: "google-business-profile",
+    name: "Google Business Profile (Google Maps)",
+    requiredProof: "Verified Service-Area Profile + Matching NAP & Website",
+    claimUrl: "https://business.google.com/",
+    status: "Live",
+    liveUrl: "https://www.google.com/maps?cid=14408245977024191985",
+    notes: "Verified master NAP reference. Powers Google Maps 3-Pack, Reviews, and Bing Places 1-click import.",
+  },
+  {
     id: "tiktok-business",
     name: "TikTok (@allthesmokebbq_catering)",
     requiredProof: "Live Bio Link to https://allthesmokecatering.com + Matching Phone",
@@ -146,7 +155,14 @@ export function AdminDirectoriesHub({ theme = "night" }: AdminDirectoriesHubProp
       const rawDirs = localStorage.getItem(STORAGE_KEY_DIRS);
       if (rawDirs) {
         const parsed: DirectoryEntry[] = JSON.parse(rawDirs);
-        if (Array.isArray(parsed) && parsed.length > 0) setDirectories(parsed);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const byId = new Map(parsed.map((d) => [d.id, d]));
+          const merged = DEFAULT_DIRECTORIES.map((def) => byId.get(def.id) ?? def);
+          for (const item of parsed) {
+            if (!DEFAULT_DIRECTORIES.some((d) => d.id === item.id)) merged.push(item);
+          }
+          setDirectories(merged);
+        }
       }
       const rawVault = localStorage.getItem(STORAGE_KEY_VAULT);
       if (rawVault) {
