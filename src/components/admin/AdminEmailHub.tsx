@@ -165,6 +165,8 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
   const [leads, setLeads] = useState<PitmasterLead[]>([]);
   const [messages, setMessages] = useState<SentMessage[]>([]);
   const [inboundEmails, setInboundEmails] = useState<InboundEmail[]>([]);
+  const [readingInbound, setReadingInbound] = useState<InboundEmail | null>(null);
+  const [deletingInboundId, setDeletingInboundId] = useState<string | null>(null);
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
 
   // Filters & Search
@@ -348,6 +350,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
     setInboundEmails((prev) =>
       prev.map((item) => (item.id === emailId ? { ...item, isRead } : item))
     );
+    setReadingInbound((prev) => (prev && prev.id === emailId ? { ...prev, isRead } : prev));
     try {
       await fetch("/api/admin/inbound-email", {
         method: "PATCH",
@@ -356,6 +359,33 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
       });
     } catch (err) {
       console.warn("Mark inbound read failed:", err);
+    }
+  };
+
+  const handleDeleteInbound = async (emailId: string) => {
+    setDeletingInboundId(emailId);
+    try {
+      const res = await fetch(`/api/admin/inbound-email?id=${encodeURIComponent(emailId)}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setInboundEmails((prev) => prev.filter((item) => item.id !== emailId));
+        setReadingInbound((prev) => (prev && prev.id === emailId ? null : prev));
+      } else {
+        setErrorAlert("Could not delete email. Please try again.");
+      }
+    } catch (err) {
+      console.warn("Delete inbound email failed:", err);
+      setErrorAlert("Network error deleting email.");
+    } finally {
+      setDeletingInboundId(null);
+    }
+  };
+
+  const handleOpenInbound = (inb: InboundEmail) => {
+    setReadingInbound(inb);
+    if (!inb.isRead) {
+      void handleMarkInboundRead(inb.id, true);
     }
   };
 
@@ -491,32 +521,56 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
                     : "bg-zinc-950/60 border-zinc-800 opacity-85"
                 }`}
               >
-                <div className="min-w-0 flex-1">
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => handleOpenInbound(inb)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      handleOpenInbound(inb);
+                    }
+                  }}
+                  className="min-w-0 flex-1 cursor-pointer group"
+                >
                   <div className="flex items-center gap-2 flex-wrap">
                     {!inb.isRead && (
                       <span className="w-2 h-2 rounded-full bg-[#EA580C] shrink-0" />
                     )}
-                    <span className="font-black truncate">{inb.senderName}</span>
-                    <span className={`text-[10px] truncate ${isDay ? "text-stone-600" : "text-stone-400"}`}>
+                    <span className="font-black text-sm truncate group-hover:text-[#FF7A00] transition-colors">
+                      {inb.senderName}
+                    </span>
+                    <span className={`text-xs truncate ${isDay ? "text-stone-600" : "text-stone-400"}`}>
                       &lt;{inb.senderEmail}&gt;
                     </span>
-                    <span className={`text-[10px] font-bold ${isDay ? "text-stone-500" : "text-stone-500"}`}>
+                    <span className={`text-xs font-bold ${isDay ? "text-stone-500" : "text-stone-400"}`}>
                       • {new Date(inb.createdAt).toLocaleString()}
                     </span>
                   </div>
-                  <p className={`font-bold text-[11px] mt-0.5 truncate ${isDay ? "text-[#C84A0A]" : "text-[#FF8C38]"}`}>
+                  <p className={`font-bold text-xs mt-1 truncate ${isDay ? "text-[#C84A0A]" : "text-[#FF8C38]"}`}>
                     {inb.subject}
                   </p>
-                  <p className={`text-[11px] line-clamp-2 mt-0.5 ${isDay ? "text-stone-700" : "text-stone-300"}`}>
+                  <p className={`text-xs line-clamp-2 mt-0.5 leading-relaxed ${isDay ? "text-stone-700" : "text-stone-300"}`}>
                     {inb.body}
                   </p>
                 </div>
-                <div className="flex items-center gap-1.5 shrink-0">
+                <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={() => handleOpenInbound(inb)}
+                    className={`min-h-[40px] px-3 py-1.5 rounded-lg text-xs font-bold border cursor-pointer ${
+                      isDay
+                        ? "bg-white border-[#C8A97E] text-[#1C1917] hover:bg-stone-100"
+                        : "bg-[#FAF8F5] border-[#C8A97E] text-[#1C1917] hover:bg-white"
+                    }`}
+                  >
+                    Read Full
+                  </button>
                   {!inb.isRead && (
                     <button
                       type="button"
                       onClick={() => handleMarkInboundRead(inb.id, true)}
-                      className={`px-2.5 py-1.5 rounded-lg text-[10px] font-bold border cursor-pointer ${
+                      className={`min-h-[40px] px-3 py-1.5 rounded-lg text-xs font-bold border cursor-pointer ${
                         isDay
                           ? "bg-stone-100 border-stone-300 text-black hover:bg-stone-200"
                           : "bg-zinc-800 border-zinc-700 text-stone-200 hover:bg-zinc-700"
@@ -528,9 +582,17 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
                   <button
                     type="button"
                     onClick={() => handleReplyToInbound(inb)}
-                    className="px-2.5 py-1.5 rounded-lg text-[10px] font-black bg-[#EA580C] hover:bg-[#C84A0A] text-white cursor-pointer"
+                    className="min-h-[40px] px-3 py-1.5 rounded-lg text-xs font-black bg-[#EA580C] hover:bg-[#C84A0A] text-white cursor-pointer"
                   >
                     Reply
+                  </button>
+                  <button
+                    type="button"
+                    disabled={deletingInboundId === inb.id}
+                    onClick={() => handleDeleteInbound(inb.id)}
+                    className="min-h-[40px] px-3 py-1.5 rounded-lg text-xs font-bold border border-red-500/40 bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-pointer"
+                  >
+                    {deletingInboundId === inb.id ? "..." : "Delete"}
                   </button>
                 </div>
               </div>
@@ -1330,6 +1392,80 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
               >
                 Close Full Slip
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* FULL INBOUND EMAIL READER MODAL */}
+      {readingInbound && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs"
+          onClick={() => setReadingInbound(null)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-2xl rounded-2xl bg-[#FAF8F5] text-[#1C1917] border-2 border-[#C8A97E] shadow-2xl overflow-hidden flex flex-col max-h-[88vh]"
+          >
+            <div className="px-5 py-4 bg-[#141210] text-white border-b border-[#C8A97E]/40 flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#FF7A00] block">
+                  Inbound Email • To: {readingInbound.recipientEmail}
+                </span>
+                <h3 className="font-display text-lg sm:text-xl font-bold mt-0.5 break-words">
+                  {readingInbound.subject}
+                </h3>
+                <p className="text-xs text-stone-300 mt-1">
+                  From: <strong>{readingInbound.senderName}</strong> &lt;{readingInbound.senderEmail}&gt; •{" "}
+                  {new Date(readingInbound.createdAt).toLocaleString()}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setReadingInbound(null)}
+                className="min-h-[40px] min-w-[40px] rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-bold flex items-center justify-center shrink-0 cursor-pointer"
+                aria-label="Close email reader"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="p-5 sm:p-6 overflow-y-auto flex-1">
+              <div className="rounded-xl bg-white border border-[#E4DDD2] p-4 sm:p-5 text-sm sm:text-base text-[#1C1917] leading-relaxed whitespace-pre-wrap break-words">
+                {readingInbound.body || "(Empty message body)"}
+              </div>
+            </div>
+
+            <div className="px-5 py-4 bg-white border-t border-[#E4DDD2] flex flex-wrap items-center justify-between gap-3">
+              <button
+                type="button"
+                disabled={deletingInboundId === readingInbound.id}
+                onClick={() => handleDeleteInbound(readingInbound.id)}
+                className="min-h-[48px] px-4 rounded-xl border border-red-300 bg-red-50 hover:bg-red-600 text-red-700 hover:text-white text-xs sm:text-sm font-bold transition-colors cursor-pointer"
+              >
+                {deletingInboundId === readingInbound.id ? "Deleting..." : "Delete Email"}
+              </button>
+
+              <div className="flex items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setReadingInbound(null)}
+                  className="min-h-[48px] px-4 rounded-xl border border-[#C8A97E] bg-[#FAF8F5] hover:bg-stone-100 text-[#1C1917] text-xs sm:text-sm font-bold cursor-pointer"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const target = readingInbound;
+                    setReadingInbound(null);
+                    handleReplyToInbound(target);
+                  }}
+                  className="min-h-[48px] px-5 rounded-xl bg-[radial-gradient(ellipse_at_center,_#C84A0A_0%,_#7E2605_60%,_#2A0D02_100%)] border-2 border-[#FF7A00] text-white text-xs sm:text-sm font-bold uppercase tracking-wider cursor-pointer"
+                >
+                  Reply Now →
+                </button>
+              </div>
             </div>
           </div>
         </div>
