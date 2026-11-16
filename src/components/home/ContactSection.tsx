@@ -247,6 +247,7 @@ export function ContactSection() {
                     <input
                       id="contact-firstName"
                       type="text"
+                      autoComplete="given-name"
                       required
                       value={formData.firstName}
                       onChange={(e) => handleInputChange("firstName", e.target.value)}
@@ -261,6 +262,7 @@ export function ContactSection() {
                     <input
                       id="contact-lastName"
                       type="text"
+                      autoComplete="family-name"
                       required
                       value={formData.lastName}
                       onChange={(e) => handleInputChange("lastName", e.target.value)}
@@ -279,6 +281,7 @@ export function ContactSection() {
                     <input
                       id="contact-email"
                       type="email"
+                      autoComplete="email"
                       required
                       value={formData.email}
                       onChange={(e) => handleInputChange("email", e.target.value)}
@@ -293,6 +296,7 @@ export function ContactSection() {
                     <input
                       id="contact-phone"
                       type="tel"
+                      autoComplete="tel"
                       required
                       value={formData.phone}
                       onChange={(e) => handleInputChange("phone", e.target.value)}

@@ -613,6 +613,7 @@ export function QuoteModal({
                     <input
                       id="modal-venue-address"
                       type="text"
+                      autoComplete="street-address"
                       value={venueAddress}
                       onChange={(e) => setVenueAddress(e.target.value)}
                       placeholder="e.g. 1200 S Lake Shore Dr, Chicago"
@@ -627,6 +628,7 @@ export function QuoteModal({
                     <input
                       id="modal-venue-zip"
                       type="text"
+                      autoComplete="postal-code"
                       maxLength={5}
                       value={venueZip}
                       onChange={(e) => setVenueZip(e.target.value)}
@@ -665,6 +667,7 @@ export function QuoteModal({
                       <input
                         id="modal-client-name"
                         type="text"
+                        autoComplete="name"
                         required
                         value={clientName}
                         onChange={(e) => setClientName(e.target.value)}
@@ -680,6 +683,7 @@ export function QuoteModal({
                       <input
                         id="modal-client-phone"
                         type="tel"
+                        autoComplete="tel"
                         required
                         value={clientPhone}
                         onChange={(e) => setClientPhone(e.target.value)}
@@ -696,6 +700,7 @@ export function QuoteModal({
                     <input
                       id="modal-client-email"
                       type="email"
+                      autoComplete="email"
                       required
                       value={clientEmail}
                       onChange={(e) => setClientEmail(e.target.value)}
