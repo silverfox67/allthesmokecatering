@@ -5,7 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { ReviewsPageClient } from "@/components/reviews/ReviewsPageClient";
 
 export const metadata: Metadata = {
-  title: "Verified Google Reviews & Client Feedback | All The Smoke BBQ Chicago",
+  title: "Verified Google Reviews & Client Feedback",
   description:
     "Read verified Google reviews for Pitmaster Marion Bolden and All The Smoke BBQ & Catering in Chicagoland, or leave your own review.",
   alternates: {

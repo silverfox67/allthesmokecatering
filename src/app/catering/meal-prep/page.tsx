@@ -3,7 +3,7 @@ import { CategoryPageView } from "@/components/catering/CategoryPageView";
 import { SITE_CONFIG } from "@/config/site-config";
 
 export const metadata: Metadata = {
-  title: "Weekly Smoked BBQ Meal Prep Tiers | All The Smoke Catering",
+  title: "Weekly Smoked BBQ Meal Prep Tiers",
   description:
     "Vacuum-sealed, hardwood-smoked lean meats and wholesome clean sides. 5-pack, 10-pack, and bulk smokehouse tiers from $15.62/meal in Chicagoland.",
   alternates: {

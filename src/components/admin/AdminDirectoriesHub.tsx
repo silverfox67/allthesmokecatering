@@ -29,10 +29,37 @@ export interface VerificationDocItem {
   updatedAt?: string;
 }
 
-const STORAGE_KEY_DIRS = "ats_blueprint_q_directories_v1";
+const STORAGE_KEY_DIRS = "ats_blueprint_q_directories_v2";
 const STORAGE_KEY_VAULT = "ats_blueprint_q_vault_v1";
 
 const DEFAULT_DIRECTORIES: DirectoryEntry[] = [
+  {
+    id: "tiktok-business",
+    name: "TikTok (@allthesmokebbq_catering)",
+    requiredProof: "Live Bio Link to https://allthesmokecatering.com + Matching Phone",
+    claimUrl: "https://www.tiktok.com/@allthesmokebbq_catering",
+    status: "Live",
+    liveUrl: "https://www.tiktok.com/@allthesmokebbq_catering",
+    notes: "Already live and linked in website schema & GBP.",
+  },
+  {
+    id: "facebook-business",
+    name: "Facebook Business Page",
+    requiredProof: "Matching NAP, Hours (Tue–Sun 8AM–8PM), and Website",
+    claimUrl: "https://business.facebook.com/",
+    status: "Not Started",
+    liveUrl: "",
+    notes: "Priority #1: Replaces competitor 'All The Smoke' Facebook page on Google Page 1.",
+  },
+  {
+    id: "instagram-business",
+    name: "Instagram Business (@allthesmokebbq_catering)",
+    requiredProof: "Professional Account linked to Facebook Business + Bio Link",
+    claimUrl: "https://www.instagram.com/",
+    status: "Not Started",
+    liveUrl: "",
+    notes: "Match TikTok handle @allthesmokebbq_catering and link https://allthesmokecatering.com.",
+  },
   {
     id: "apple-business-connect",
     name: "Apple Business Connect (Apple Maps)",
@@ -59,24 +86,6 @@ const DEFAULT_DIRECTORIES: DirectoryEntry[] = [
     status: "Not Started",
     liveUrl: "",
     notes: "Match exact phone (773) 707-9988 and https://allthesmokecatering.com.",
-  },
-  {
-    id: "facebook-business",
-    name: "Facebook Business Page",
-    requiredProof: "Matching NAP, Hours (Tue–Sun 8AM–8PM), and Website",
-    claimUrl: "https://business.facebook.com/",
-    status: "Not Started",
-    liveUrl: "",
-    notes: "Reinforces Chicago local social citations and replaces competitor results.",
-  },
-  {
-    id: "instagram-business",
-    name: "Instagram Business (@allthesmokebbq_catering)",
-    requiredProof: "Professional Account linked to Facebook Business + Bio Link",
-    claimUrl: "https://www.instagram.com/",
-    status: "Not Started",
-    liveUrl: "",
-    notes: "Match TikTok handle @allthesmokebbq_catering and link https://allthesmokecatering.com.",
   },
   {
     id: "nextdoor-business",

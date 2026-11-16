@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { ReviewClient } from "./ReviewClient";
 
 export const metadata: Metadata = {
-  title: "Rate Your Catering Experience | All The Smoke BBQ Chicago",
+  title: "Rate Your Catering Experience",
   description:
     "Share your feedback on Marion Bolden's live-fire barbecue catering. Help other Chicago families and companies discover authentic pit-smoked craft BBQ.",
   openGraph: {

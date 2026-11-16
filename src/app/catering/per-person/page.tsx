@@ -3,7 +3,7 @@ import { CategoryPageView } from "@/components/catering/CategoryPageView";
 import { SITE_CONFIG } from "@/config/site-config";
 
 export const metadata: Metadata = {
-  title: "Per-Person Smokehouse Buffet Packages | All The Smoke Catering",
+  title: "Per-Person Smokehouse Buffet Packages",
   description:
     "Explore our 3 signature per-person BBQ catering packages starting at $24.95/person. Hardwood-smoked Texas brisket, ribs, scratch sides, and complete buffet setup across Chicagoland.",
   alternates: {

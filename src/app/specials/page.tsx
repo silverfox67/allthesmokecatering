@@ -4,7 +4,7 @@ import { WEEKLY_CHALKBOARD } from "@/data/pitmaster-menu";
 import { SpecialsClient } from "./SpecialsClient";
 
 export const metadata: Metadata = {
-  title: "Weekly Smoker Chalkboard Specials | All The Smoke BBQ & Catering Chicago",
+  title: "Weekly Smoker Chalkboard Specials",
   description:
     "Explore all 8 rotating pitmaster chalkboard specials smoked low-and-slow on Marion Bolden's trailer rig in Chicago. Burnt Ends, Cedar Salmon, Brisket Chili, Skillet Cornbread & more.",
   openGraph: {

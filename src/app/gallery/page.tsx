@@ -9,7 +9,7 @@ import { Footer } from "@/components/layout/Footer";
 import { QuoteModal } from "@/components/forms/QuoteModal";
 
 export const metadata: Metadata = {
-  title: "Live Smokehouse & Catering Gallery | All The Smoke Catering Chicago",
+  title: "Live Smokehouse & Catering Gallery",
   description:
     "Explore authentic photos and live-fire pit videos from All The Smoke Catering in Chicagoland. Prime brisket, St. Louis ribs, custom mobile trailer smoker, and full banquet spreads.",
   alternates: {
