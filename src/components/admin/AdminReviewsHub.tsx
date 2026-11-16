@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { AdminGuide } from "./AdminGuide";
+import { AdminReviewSequencePanel } from "./AdminReviewSequencePanel";
 import { CustomerReview } from "@/types/reviews";
 import {
   useCustomerReviews,
@@ -79,6 +80,7 @@ export function AdminReviewsHub({ theme = "night" }: AdminReviewsHubProps) {
         ]}
         tip="Ask right after a great event. That's when folks are happiest and most likely to write one."
       />
+      <AdminReviewSequencePanel isDay={isDay} />
       {/* HEADER SECTION */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-stone-200 dark:border-zinc-800">
         <div>

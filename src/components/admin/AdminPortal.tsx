@@ -14,6 +14,7 @@ import { AdminQRDisplays } from "./AdminQRDisplays";
 import { AdminPitmasterApp } from "./AdminPitmasterApp";
 import { AdminAnalytics } from "./AdminAnalytics";
 import { AdminReviewsHub } from "./AdminReviewsHub";
+import { AdminDirectoriesHub } from "./AdminDirectoriesHub";
 import { AdminWeekendDropManager } from "./AdminWeekendDropManager";
 import { AdminInventory } from "./AdminInventory";
 import { AdminGuide } from "./AdminGuide";
@@ -854,21 +855,7 @@ export function AdminPortal() {
             )}
 
             {activeTab === "directories" && (
-              <ComingSoonModule
-                title="Chicagoland Catering Directories & Vendor Hub"
-                subtitle="Centralized status tracking for local directories, corporate portals, and wedding registries"
-                icon="📁"
-                theme={theme}
-                features={[
-                  "Directory sync tracker: EzCater, Roaming Hunger, Yelp, The Knot, WeddingWire",
-                  "Profile update alerts to keep menu pricing consistent across external platforms",
-                  "Corporate vendor credential verification (licensed, insured, food handler certifications)",
-                  "Direct traffic and lead attribution reports per external directory",
-                ]}
-                actionTab="workspace"
-                actionLabel="Open Collaborator Notes →"
-                onAction={() => goTo("workspace", "notes")}
-              />
+              <AdminDirectoriesHub theme={theme} />
             )}
 
             {activeTab === "pitmaster-app" && (
