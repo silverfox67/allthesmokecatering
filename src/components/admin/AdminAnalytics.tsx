@@ -41,6 +41,22 @@ export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
   useEffect(() => {
     syncLeadsFromStorage();
 
+    let cancelled = false;
+    fetch("/api/lead")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.success && Array.isArray(data.leads) && data.leads.length > 0) {
+          setLeads((prev) => {
+            const existingIds = new Set(prev.map((l) => l.id));
+            const remoteNew = (data.leads as PitmasterLead[]).filter((l) => !existingIds.has(l.id));
+            const merged = remoteNew.length > 0 ? [...remoteNew, ...prev] : prev;
+            if (prev.length === 0) return data.leads;
+            return merged;
+          });
+        }
+      })
+      .catch(() => {});
+
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "ats_pitmaster_leads") {
         syncLeadsFromStorage();
@@ -48,7 +64,10 @@ export function AdminAnalytics({ theme }: AdminAnalyticsProps) {
     };
 
     window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
 
   // Filter leads based on selected timeframe

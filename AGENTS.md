@@ -28,7 +28,7 @@
 - **Hosting & Edge Delivery:** Cloudflare Pages & Cloudflare Edge Network
 - **Transactional Dispatch:** Brevo API via Next.js Route Handlers (`src/app/api/lead/route.ts`)[cite: 1]
 - **State & Database:** Supabase (`orders`, `leads`, `catering_inquiries`)
-- **Payments:** Stripe Checkout & Payment Links
+- **Payments:** Stripe Checkout & Payment Links (when Stripe is connected, wire `checkout.session.completed` webhook to update `allthesmoke.leads` / `allthesmoke.orders` status to `booked` / `paid` so Revenue Analytics updates automatically)
 
 ## 3. Strict Development Guardrails
 1. **Zero AI-Slop Visuals:** Only use authentic documentary photography and verified real smokehouse assets processed through `sharp`. Never render cartoony 3D meats, plastic sheen, or anatomically flawed AI hands.

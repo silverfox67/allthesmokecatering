@@ -1,6 +1,46 @@
 // Cloudflare Pages Function: /api/lead
 import { supabaseRequest } from './_supabase.js';
 
+export async function onRequestGet(context) {
+  const env = context.env || {};
+  const res = await supabaseRequest(env, 'leads', {
+    method: 'GET',
+    query: 'select=*&order=created_at.desc',
+  });
+
+  if (!res.ok) {
+    return new Response(
+      JSON.stringify({ success: false, leads: [], error: res.error, code: res.code }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  const rows = Array.isArray(res.data) ? res.data : [];
+  const leads = rows.map((row) => ({
+    id: String(row.id),
+    ticketId: row.ticket_id || `ATS-${String(row.id).slice(0, 4).toUpperCase()}`,
+    name: row.client_name || 'Unknown Client',
+    email: row.client_email || '',
+    phone: row.client_phone || '',
+    eventType: row.event_type || 'Catering Inquiry',
+    guestCount: Number(row.guest_count) || 0,
+    eventDate: row.event_date || 'Date Pending',
+    packageName: row.package_interest || 'Custom Inquiry',
+    serviceStyle: row.event_type || 'Full-Service Catering',
+    deliveryAddress: row.zip_code || '',
+    notes: row.notes || '',
+    status: row.status || 'new',
+    createdAt: row.created_at || new Date().toISOString(),
+    source: row.source || 'Website Quote Form',
+    estimatedTotal: Number(row.estimated_total) || 0,
+  }));
+
+  return new Response(JSON.stringify({ success: true, leads }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
 export async function onRequestPost(context) {
   try {
     const req = context.request;
