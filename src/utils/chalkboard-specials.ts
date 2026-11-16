@@ -39,6 +39,12 @@ export function saveStoredWeeklyChalkboard(chalkboard: WeeklyChalkboard): void {
       new CustomEvent(EVENT_CHALKBOARD_UPDATED, { detail: chalkboard })
     );
     window.dispatchEvent(new Event("storage"));
+
+    void fetch("/api/menu-config", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chalkboard }),
+    }).catch((err) => console.warn("Remote chalkboard sync warning:", err));
   } catch (err) {
     console.error("Could not save chalkboard specials:", err);
   }
@@ -53,6 +59,12 @@ export function resetStoredWeeklyChalkboard(): WeeklyChalkboard {
         new CustomEvent(EVENT_CHALKBOARD_UPDATED, { detail: WEEKLY_CHALKBOARD })
       );
       window.dispatchEvent(new Event("storage"));
+
+      void fetch("/api/menu-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chalkboard: WEEKLY_CHALKBOARD }),
+      }).catch(() => {});
     } catch (e) {
       console.warn("Could not reset chalkboard:", e);
     }
@@ -72,6 +84,25 @@ export function useWeeklyChalkboard(): {
     // Initial sync
     setChalkboard(getStoredWeeklyChalkboard());
 
+    let cancelled = false;
+    fetch("/api/menu-config")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (
+          !cancelled &&
+          data?.success &&
+          data?.chalkboard &&
+          Array.isArray(data.chalkboard.items) &&
+          data.chalkboard.items.length > 0
+        ) {
+          setChalkboard(data.chalkboard);
+          try {
+            localStorage.setItem(STORAGE_KEY_CHALKBOARD, JSON.stringify(data.chalkboard));
+          } catch {}
+        }
+      })
+      .catch(() => {});
+
     const handleUpdate = (e: Event) => {
       const customEvent = e as CustomEvent<WeeklyChalkboard>;
       if (customEvent.detail) {
@@ -85,6 +116,7 @@ export function useWeeklyChalkboard(): {
     window.addEventListener("storage", handleUpdate);
 
     return () => {
+      cancelled = true;
       window.removeEventListener(EVENT_CHALKBOARD_UPDATED, handleUpdate);
       window.removeEventListener("storage", handleUpdate);
     };

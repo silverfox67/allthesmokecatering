@@ -302,6 +302,18 @@ export function AdminPriceConfigurator({ theme, subTab }: AdminPriceConfigurator
       } catch (e) {
         console.warn("Could not load smoker config state:", e);
       }
+
+      fetch("/api/menu-config")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (data?.success && data?.priceConfig && Array.isArray(data.priceConfig.menuItems)) {
+            setConfig(data.priceConfig);
+            try {
+              localStorage.setItem(STORAGE_KEY_PRICE_CONFIG, JSON.stringify(data.priceConfig));
+            } catch {}
+          }
+        })
+        .catch(() => {});
     }
   }, []);
 
