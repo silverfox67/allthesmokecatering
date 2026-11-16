@@ -68,7 +68,7 @@ export function TestimonialSection() {
           {featuredReviews.map((rev) => (
             <article
               key={rev.id}
-              className="h-full p-6 sm:p-7 rounded-2xl bg-[#FAF8F5] border border-[#C8A97E]/60 border-t-4 border-t-[#EA580C] shadow-xl flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1"
+              className="h-full p-6 sm:p-7 rounded-2xl bg-[#FAF8F5] border border-[#C8A97E]/60 border-t-4 border-t-[#EA580C] shadow-xl flex flex-col transition-transform duration-300 hover:-translate-y-1"
             >
               <div className="space-y-4 pb-5">
                 {/* Star Row & Google Attribution */}
@@ -124,7 +124,7 @@ export function TestimonialSection() {
                 </div>
 
                 {rev.adminResponse && (
-                  <div className="md:min-h-[128px] rounded-xl bg-white/90 border border-[#C8A97E]/50 border-l-4 border-l-[#EA580C] p-3 text-xs text-stone-800 leading-relaxed">
+                  <div className="md:min-h-[156px] rounded-xl bg-white/90 border border-[#C8A97E]/50 border-l-4 border-l-[#EA580C] p-3 text-xs text-stone-800 leading-relaxed">
                     <span className="block font-extrabold uppercase tracking-wider text-[10px] text-[#C84A0A] mb-1">
                       Owner Reply
                     </span>
