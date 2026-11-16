@@ -32,6 +32,7 @@ export function AdminReviewsHub({ theme = "night", subTab }: AdminReviewsHubProp
   const [inviteClientName, setInviteClientName] = useState("");
   const [invitePhone, setInvitePhone] = useState("");
   const [inviteEventType, setInviteEventType] = useState("Corporate Event");
+  const [inviteDestination, setInviteDestination] = useState<"google" | "intake">("google");
   const [copiedInvite, setCopiedInvite] = useState(false);
 
   // Calculate stats
@@ -66,9 +67,14 @@ export function AdminReviewsHub({ theme = "night", subTab }: AdminReviewsHubProp
     setTimeout(() => setCopiedLink(null), 2500);
   };
 
-  const generatedInviteSms = `Hi ${inviteClientName || "there"}! Thank you for choosing All The Smoke BBQ for your ${inviteEventType}. Would you take 30 seconds to let us know how we did? https://allthesmokecatering.com/review?name=${encodeURIComponent(
-    inviteClientName.trim()
-  )}&event=${encodeURIComponent(inviteEventType)} - Pitmaster Marion (773) 707-9988 🔥`;
+  const generatedInviteUrl =
+    inviteDestination === "google"
+      ? GOOGLE_REVIEW_URL
+      : `https://allthesmokecatering.com/review?name=${encodeURIComponent(
+          inviteClientName.trim()
+        )}&event=${encodeURIComponent(inviteEventType)}`;
+
+  const generatedInviteSms = `Hi ${inviteClientName || "there"}! Thank you for choosing All The Smoke BBQ for your ${inviteEventType}. Would you take 30 seconds to drop us a quick review? ${generatedInviteUrl} - Pitmaster Marion (773) 707-9988`;
 
   return (
     <div className="space-y-6">
@@ -86,7 +92,7 @@ export function AdminReviewsHub({ theme = "night", subTab }: AdminReviewsHubProp
           activeSubTab === "sequence"
             ? "Send 24h guided review emails and VIP Thank-Yous without double-asking anyone."
             : activeSubTab === "invite"
-            ? "Text a customer or copy your direct Google Review link right after an event."
+            ? "This tool writes a ready-to-send review text message for you and opens your phone's Messages app so you don't have to type it out after a gig."
             : "Tap any 1-line review row (▾) to expand the full quote, owner reply, and website toggle."
         }
         steps={
@@ -98,9 +104,9 @@ export function AdminReviewsHub({ theme = "night", subTab }: AdminReviewsHubProp
               ]
             : activeSubTab === "invite"
             ? [
-                { title: "Fill in name & phone", desc: "Type the client's name, phone, and event type to build a ready-to-send text." },
-                { title: "Send in 1 tap", desc: "Tap Copy SMS or Open Messages to text them the review link right away." },
-                { title: "Or share your Google link", desc: "Use Copy Google Review Link above to send customers straight to Google Maps." },
+                { title: "Pick where the link goes", desc: "Choose Google Review Link (fastest for building Google stars) or Website Feedback Form (/review)." },
+                { title: "Enter client name & phone", desc: "Typing their phone number unlocks the orange Open Messages button with their number and text pre-filled." },
+                { title: "Send or Copy", desc: "On your phone tap Open Messages and hit Send. On a computer tap Copy SMS or copy either quick link below." },
               ]
             : [
                 { title: "Scan at a glance", desc: "Every review starts as a clean 1-line row showing stars, name, preview, and date." },
@@ -256,16 +262,71 @@ export function AdminReviewsHub({ theme = "night", subTab }: AdminReviewsHubProp
           isDay ? "bg-white border-stone-300" : "bg-[#141210] border-zinc-800"
         }`}
       >
-        <div className="flex items-center justify-between border-b pb-2.5 border-stone-200 dark:border-zinc-800">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">📲</span>
-            <h3 className={`text-sm font-black uppercase tracking-wider ${isDay ? "text-stone-900" : "text-white"}`}>
-              1-Tap SMS Review Request Generator
-            </h3>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b pb-3 border-stone-200 dark:border-zinc-800">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-lg">📲</span>
+              <h3 className={`text-sm font-black uppercase tracking-wider ${isDay ? "text-stone-900" : "text-white"}`}>
+                1-Tap SMS Review Request Generator
+              </h3>
+            </div>
+            <p className={`text-xs mt-0.5 ${isDay ? "text-stone-600" : "text-stone-400"}`}>
+              Builds a ready-to-send text message and opens your phone&apos;s Messages app with the client&apos;s number &amp; link pre-filled.
+            </p>
           </div>
-          <span className={`text-[11px] ${isDay ? "text-stone-600" : "text-stone-400"}`}>
-            Pre-fills customer details into the /review form
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              type="button"
+              onClick={() => handleCopy(GOOGLE_REVIEW_URL, "google")}
+              className="min-h-[40px] px-3 py-1.5 rounded-xl border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs font-bold cursor-pointer"
+            >
+              {copiedLink === "google" ? "✓ Google Link Copied!" : "⭐ Copy Google Link"}
+            </button>
+            <button
+              type="button"
+              onClick={() => handleCopy("https://allthesmokecatering.com/review", "direct")}
+              className={`min-h-[40px] px-3 py-1.5 rounded-xl border text-xs font-bold cursor-pointer ${
+                isDay
+                  ? "bg-stone-100 border-stone-300 text-stone-800 hover:bg-stone-200"
+                  : "bg-zinc-900 border-zinc-700 text-stone-200 hover:bg-zinc-800"
+              }`}
+            >
+              {copiedLink === "direct" ? "✓ Intake Link Copied!" : "🔗 Copy /review Link"}
+            </button>
+          </div>
+        </div>
+
+        {/* Link Destination Toggle */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className={`text-[11px] font-bold uppercase tracking-wider ${isDay ? "text-stone-700" : "text-stone-300"}`}>
+            Send Client To:
           </span>
+          <button
+            type="button"
+            onClick={() => setInviteDestination("google")}
+            className={`min-h-[36px] px-3 py-1 rounded-lg text-xs font-bold border cursor-pointer ${
+              inviteDestination === "google"
+                ? "bg-[#EA580C] border-[#FF7A00] text-white"
+                : isDay
+                ? "bg-stone-100 border-stone-300 text-stone-700"
+                : "bg-zinc-900 border-zinc-700 text-stone-300"
+            }`}
+          >
+            ⭐ Google Review Link (Direct)
+          </button>
+          <button
+            type="button"
+            onClick={() => setInviteDestination("intake")}
+            className={`min-h-[36px] px-3 py-1 rounded-lg text-xs font-bold border cursor-pointer ${
+              inviteDestination === "intake"
+                ? "bg-[#EA580C] border-[#FF7A00] text-white"
+                : isDay
+                ? "bg-stone-100 border-stone-300 text-stone-700"
+                : "bg-zinc-900 border-zinc-700 text-stone-300"
+            }`}
+          >
+            📝 Website Feedback Form (/review)
+          </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
