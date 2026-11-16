@@ -167,6 +167,7 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
   const [inboundEmails, setInboundEmails] = useState<InboundEmail[]>([]);
   const [readingInbound, setReadingInbound] = useState<InboundEmail | null>(null);
   const [deletingInboundId, setDeletingInboundId] = useState<string | null>(null);
+  const [deletingSentId, setDeletingSentId] = useState<string | null>(null);
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
 
   // Filters & Search
@@ -379,6 +380,44 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
       setErrorAlert("Network error deleting email.");
     } finally {
       setDeletingInboundId(null);
+    }
+  };
+
+  const handleFollowUpSent = (msg: SentMessage) => {
+    const matched = leads.find(
+      (l) => (l.email || "").toLowerCase() === (msg.recipient || "").toLowerCase()
+    );
+    if (matched) {
+      setSelectedLeadId(matched.id);
+    }
+    setCustomRecipientEmail(msg.recipient);
+    setCustomRecipientName(matched?.name || "");
+    setReplySubject(
+      msg.subject && msg.subject.toLowerCase().startsWith("re:")
+        ? msg.subject
+        : `Re: ${msg.subject || "All The Smoke BBQ & Catering"}`
+    );
+    setLocalTabOverride("compose");
+  };
+
+  const handleDeleteSent = async (msgId: string) => {
+    setDeletingSentId(msgId);
+    try {
+      await fetch(`/api/admin/messages?id=${encodeURIComponent(msgId)}`, {
+        method: "DELETE",
+      });
+    } catch (err) {
+      console.warn("Delete sent message warning:", err);
+    } finally {
+      const updatedMsgs = messages.filter((m) => m.id !== msgId);
+      setMessages(updatedMsgs);
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.setItem("ats_admin_sent_messages", JSON.stringify(updatedMsgs));
+          window.dispatchEvent(new Event("storage"));
+        } catch {}
+      }
+      setDeletingSentId(null);
     }
   };
 
@@ -697,57 +736,91 @@ export function AdminEmailHub({ theme = "night", prefilledLead, subTab }: AdminE
 
       {/* SENT EMAILS VIEW */}
       {activeTab === "sent" && (
-        <div
-          className={`p-4 sm:p-5 rounded-2xl border space-y-3 ${
-            isDay
-              ? "bg-white border-stone-300 text-black shadow-2xs"
-              : "bg-zinc-900 border-zinc-800 text-stone-100"
-          }`}
-        >
-          <div className="flex items-center justify-between border-b pb-3 border-stone-200 dark:border-zinc-800">
-            <div>
-              <h3 className="text-sm font-black">📤 Sent Emails ({messages.length})</h3>
-              <p className={`text-[11px] font-bold ${isDay ? "text-stone-600" : "text-stone-400"}`}>
-                Every outbound email sent from your Pitmaster Dashboard
+        <div className="space-y-4">
+          <AdminGuide
+            guideId="email-sent"
+            theme={isDay ? "day" : "night"}
+            title="How Sent Emails works"
+            summary="Proof of every email you sent from the dashboard."
+            steps={[
+              { title: "Confirm delivery", desc: "Every quote, reply, and custom email you send is logged here with a timestamp." },
+              { title: "Follow up in 1 tap", desc: "Tap Follow Up → on any email to open Compose pre-filled for that same customer." },
+              { title: "Keep it tidy", desc: "Tap Delete to remove old test emails or clutter." },
+            ]}
+            tip="Use + New Email anytime you want to message someone fresh."
+          />
+
+          <div
+            className={`p-4 sm:p-5 rounded-2xl border space-y-3 ${
+              isDay
+                ? "bg-white border-stone-300 text-black shadow-2xs"
+                : "bg-zinc-900 border-zinc-800 text-stone-100"
+            }`}
+          >
+            <div className="flex items-center justify-between border-b pb-3 border-stone-200 dark:border-zinc-800">
+              <div>
+                <h3 className="text-sm font-black">📤 Sent Emails ({messages.length})</h3>
+                <p className={`text-[11px] font-bold ${isDay ? "text-stone-600" : "text-stone-400"}`}>
+                  Every outbound email sent from your Pitmaster Dashboard
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setLocalTabOverride("compose")}
+                className="min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-black bg-[#EA580C] hover:bg-[#C84A0A] text-white cursor-pointer"
+              >
+                + New Email
+              </button>
+            </div>
+            {messages.length === 0 ? (
+              <p className={`text-xs py-8 text-center font-bold ${isDay ? "text-stone-500" : "text-stone-400"}`}>
+                No sent emails logged yet. Click &ldquo;+ New Email&rdquo; to send your first message.
               </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setLocalTabOverride("compose")}
-              className="px-3 py-1.5 rounded-lg text-xs font-black bg-[#EA580C] hover:bg-[#C84A0A] text-white cursor-pointer"
-            >
-              + New Email
-            </button>
-          </div>
-          {messages.length === 0 ? (
-            <p className={`text-xs py-8 text-center font-bold ${isDay ? "text-stone-500" : "text-stone-400"}`}>
-              No sent emails logged yet. Click &ldquo;+ New Email&rdquo; to send your first message.
-            </p>
-          ) : (
-            <div className="space-y-2.5 max-h-[560px] overflow-y-auto">
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`p-3.5 rounded-xl border text-xs space-y-1.5 ${
-                    isDay ? "bg-stone-50 border-stone-200" : "bg-zinc-950/70 border-zinc-800"
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <span className="font-black">To: {msg.recipient}</span>
-                    <span className={`text-[10px] font-bold ${isDay ? "text-stone-600" : "text-stone-400"}`}>
-                      From {msg.sender} • {new Date(msg.createdAt).toLocaleString()}
-                    </span>
+            ) : (
+              <div className="space-y-2.5 max-h-[560px] overflow-y-auto">
+                {messages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`p-4 rounded-xl border text-xs space-y-2 ${
+                      isDay ? "bg-stone-50 border-stone-200" : "bg-zinc-950/70 border-zinc-800"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-3 flex-wrap">
+                      <div className="space-y-0.5 min-w-0">
+                        <span className="font-black text-sm block">To: {msg.recipient}</span>
+                        <span className={`text-[11px] font-bold block ${isDay ? "text-stone-600" : "text-stone-400"}`}>
+                          From {msg.sender} • {new Date(msg.createdAt).toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => handleFollowUpSent(msg)}
+                          className="min-h-[40px] px-3 py-1.5 rounded-lg text-xs font-black bg-[#EA580C] hover:bg-[#C84A0A] text-white cursor-pointer"
+                        >
+                          Follow Up →
+                        </button>
+                        <button
+                          type="button"
+                          disabled={deletingSentId === msg.id}
+                          onClick={() => handleDeleteSent(msg.id)}
+                          className="min-h-[40px] px-3 py-1.5 rounded-lg text-xs font-bold border border-red-500/40 bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-pointer"
+                        >
+                          {deletingSentId === msg.id ? "..." : "Delete"}
+                        </button>
+                      </div>
+                    </div>
+                    <p className={`font-black text-xs ${isDay ? "text-[#C84A0A]" : "text-[#FF8C38]"}`}>
+                      {msg.subject}
+                    </p>
+                    <p className={`whitespace-pre-wrap text-xs leading-relaxed ${isDay ? "text-stone-800" : "text-stone-300"}`}>
+                      {msg.body}
+                    </p>
                   </div>
-                  <p className={`font-black text-[11px] ${isDay ? "text-[#C84A0A]" : "text-[#FF8C38]"}`}>
-                    {msg.subject}
-                  </p>
-                  <p className={`whitespace-pre-wrap text-[11px] leading-relaxed ${isDay ? "text-stone-800" : "text-stone-300"}`}>
-                    {msg.body}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       )}
 

@@ -4,7 +4,7 @@ import { supabaseRequest } from "../_supabase.js";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
@@ -190,6 +190,41 @@ export async function onRequestPost(context) {
         dbError: dbRes.ok ? null : dbRes.error,
         message: messageRecord,
       }),
+      { status: 200, headers: { "Content-Type": "application/json", ...cors } }
+    );
+  } catch (err) {
+    return new Response(
+      JSON.stringify({ success: false, error: err.message || "Internal server error" }),
+      { status: 500, headers: { "Content-Type": "application/json", ...cors } }
+    );
+  }
+}
+
+export async function onRequestDelete(context) {
+  try {
+    const env = context.env || {};
+    const id = (new URL(context.request.url).searchParams.get("id") || "").trim();
+    if (!id) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Message id is required" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...cors } }
+      );
+    }
+
+    const dbRes = await supabaseRequest(env, "email_logs", {
+      method: "DELETE",
+      query: `id=eq.${encodeURIComponent(id)}`,
+    });
+
+    if (!dbRes.ok) {
+      return new Response(
+        JSON.stringify({ success: false, error: dbRes.error, code: dbRes.code }),
+        { status: dbRes.status || 500, headers: { "Content-Type": "application/json", ...cors } }
+      );
+    }
+
+    return new Response(
+      JSON.stringify({ success: true, id }),
       { status: 200, headers: { "Content-Type": "application/json", ...cors } }
     );
   } catch (err) {
