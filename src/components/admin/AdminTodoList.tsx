@@ -13,44 +13,7 @@ export interface TodoItem {
   createdAt: string;
 }
 
-const INITIAL_TODOS: TodoItem[] = [
-  {
-    id: "todo-1",
-    title: "Sitemap Cleanup & Page Inclusion",
-    description: "Remove URL hash fragments (#packages, #reels) from sitemap.ts so Google/Bing don't flag them, and add first-class index entries for /gallery (Priority: 0.9) and /specials (Priority: 0.8).",
-    category: "SEO",
-    priority: "High",
-    completed: false,
-    createdAt: "Nov 2, 2026",
-  },
-  {
-    id: "todo-2",
-    title: "Deploy public/llms.txt for AI Search Engines",
-    description: "Provide structured markdown documentation for ChatGPT Search, Perplexity, Claude, and Google AI Overviews detailing signature meats, $150 delivery minimum, trailer rig specs, and direct booking instructions.",
-    category: "AI Search",
-    priority: "High",
-    completed: false,
-    createdAt: "Nov 2, 2026",
-  },
-  {
-    id: "todo-3",
-    title: "Edge Caching & Strict-Transport-Security (HSTS)",
-    description: "Add 1-year immutable caching for /audio/* and /videos/* in public/_headers, and add Strict-Transport-Security (HSTS) for A+ SSL security score on Cloudflare Pages.",
-    category: "Security & Speed",
-    priority: "Medium",
-    completed: false,
-    createdAt: "Nov 2, 2026",
-  },
-  {
-    id: "todo-4",
-    title: "1-Tap Mobile Autofill on Quote Inputs",
-    description: "Add autoComplete='name', autoComplete='email', autoComplete='tel', and autoComplete='street-address' to QuoteModal and ContactSection so corporate event planners can submit quotes in under 15 seconds.",
-    category: "Conversion CRO",
-    priority: "Medium",
-    completed: false,
-    createdAt: "Nov 2, 2026",
-  },
-];
+const INITIAL_TODOS: TodoItem[] = [];
 
 interface AdminTodoListProps {
   theme: AdminTheme;
@@ -73,7 +36,7 @@ export function AdminTodoList({ theme }: AdminTodoListProps) {
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
+          if (Array.isArray(parsed)) {
             setTodos(parsed);
           }
         } catch (e) {
