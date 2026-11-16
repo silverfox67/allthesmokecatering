@@ -67,7 +67,16 @@ const DEFAULT_DIRECTORIES: DirectoryEntry[] = [
     claimUrl: "https://business.facebook.com/",
     status: "Not Started",
     liveUrl: "",
-    notes: "Reinforces Chicago local social citations.",
+    notes: "Reinforces Chicago local social citations and replaces competitor results.",
+  },
+  {
+    id: "instagram-business",
+    name: "Instagram Business (@allthesmokebbq_catering)",
+    requiredProof: "Professional Account linked to Facebook Business + Bio Link",
+    claimUrl: "https://www.instagram.com/",
+    status: "Not Started",
+    liveUrl: "",
+    notes: "Match TikTok handle @allthesmokebbq_catering and link https://allthesmokecatering.com.",
   },
   {
     id: "nextdoor-business",
