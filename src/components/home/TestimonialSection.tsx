@@ -64,11 +64,11 @@ export function TestimonialSection() {
         </div>
 
         {/* 3-Card Grid (Warm Butcher Paper Surface) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
           {featuredReviews.map((rev) => (
             <article
               key={rev.id}
-              className="p-6 sm:p-7 rounded-2xl bg-[#FAF8F5] border border-[#C8A97E]/60 border-t-4 border-t-[#EA580C] shadow-xl flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1"
+              className="h-full p-6 sm:p-7 rounded-2xl bg-[#FAF8F5] border border-[#C8A97E]/60 border-t-4 border-t-[#EA580C] shadow-xl flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1"
             >
               <div className="space-y-4">
                 {/* Star Row & Google Attribution */}

@@ -22,6 +22,8 @@ export const SEED_REVIEWS: CustomerReview[] = [
     submittedAt: "2026-11-16T02:00:00.000Z",
     source: "google",
     status: "published",
+    adminResponse:
+      "Serving you and your guests in Chicago was a pleasure, Cordel. We put real care into keeping both the food hot and the setup smooth for parties and anniversaries. Anytime you have another celebration coming up, give us a call. – Marion, All The Smoke",
   },
   {
     id: "gbp-jeanette-allen-2026-11-15",
@@ -37,6 +39,8 @@ export const SEED_REVIEWS: CustomerReview[] = [
     submittedAt: "2026-11-15T23:00:00.000Z",
     source: "google",
     status: "published",
+    adminResponse:
+      "Jeanette, that plate photo looks right. Mac and cheese, candied yams, and gravy-covered chicken take real time to season properly, so hearing you noticed every bite means a lot. Appreciate you sharing the love. – Chef Marion",
   },
   {
     id: "gbp-d-robinson-2026-11-15",
@@ -51,6 +55,8 @@ export const SEED_REVIEWS: CustomerReview[] = [
     submittedAt: "2026-11-15T22:55:00.000Z",
     source: "google",
     status: "published",
+    adminResponse:
+      "Glad the BBQ and the service both hit the spot. Everything comes off our Chicago pit smoked low over split wood, and we try to keep the hospitality just as steady. Hope we get to cook for you again soon!",
   },
   {
     id: "gbp-marcus-fuller-2026-11-15",
@@ -164,9 +170,16 @@ export function getStoredReviews(): CustomerReview[] {
     if (raw) {
       const parsed: CustomerReview[] = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        const existingIds = new Set(parsed.map((r) => r.id));
+        const seedById = new Map(SEED_REVIEWS.map((s) => [s.id, s]));
+        const synced = parsed.map((r) => {
+          const seed = seedById.get(r.id);
+          return seed && !r.adminResponse && seed.adminResponse
+            ? { ...r, adminResponse: seed.adminResponse }
+            : r;
+        });
+        const existingIds = new Set(synced.map((r) => r.id));
         const missingSeeds = SEED_REVIEWS.filter((s) => !existingIds.has(s.id));
-        return missingSeeds.length > 0 ? [...missingSeeds, ...parsed] : parsed;
+        return missingSeeds.length > 0 ? [...missingSeeds, ...synced] : synced;
       }
     }
   } catch (err) {

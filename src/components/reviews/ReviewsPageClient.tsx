@@ -75,7 +75,7 @@ export function ReviewsPageClient() {
           {publishedReviews.map((rev) => (
             <article
               key={rev.id}
-              className="p-6 sm:p-7 rounded-2xl bg-[#FAF8F5] border border-[#C8A97E]/60 border-t-4 border-t-[#EA580C] shadow-xl flex flex-col justify-between"
+              className="h-full p-6 sm:p-7 rounded-2xl bg-[#FAF8F5] border border-[#C8A97E]/60 border-t-4 border-t-[#EA580C] shadow-xl flex flex-col justify-between"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between gap-2">
