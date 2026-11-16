@@ -16,7 +16,7 @@ export const DEFAULT_WEEKEND_DROP: WeekendDrop = {
   orderCutoffDate: "2026-11-11",
   orderCutoffLabel: "Wednesday, Nov 11 (11:59 PM)",
   pickupTime: "4:00 PM",
-  pickupLocation: "Mason Ave Hub, Chicago (Address texted upon order)",
+  pickupLocation: "Chicagoland Delivery & Live-Fire Events",
   deliveryAvailable: true,
   deliveryStartTime: "5:00 PM",
   deliveryNotes: "Chicagoland heated delivery available after 5:00 PM for standard zone delivery fee.",

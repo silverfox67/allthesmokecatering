@@ -9,6 +9,60 @@ import {
 } from "@/utils/weekend-drop-store";
 import { WeekendDrop } from "@/types/weekend-drop";
 import { AdminGuide } from "./AdminGuide";
+import { CalendarDatePicker } from "@/components/forms/CalendarDatePicker";
+
+const PICKUP_TIME_OPTIONS = [
+  "11:00 AM",
+  "12:00 PM",
+  "1:00 PM",
+  "2:00 PM",
+  "3:00 PM",
+  "4:00 PM",
+  "5:00 PM",
+  "6:00 PM",
+  "7:00 PM",
+  "8:00 PM",
+];
+
+const CUTOFF_TIME_OPTIONS = [
+  "12:00 PM",
+  "3:00 PM",
+  "5:00 PM",
+  "8:00 PM",
+  "11:59 PM",
+];
+
+function getOrdinalSuffix(day: number): string {
+  if (day >= 11 && day <= 13) return "th";
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+}
+
+function formatEventDateLabel(dateStr: string): string {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
+  const [y, m, d] = dateStr.split("-").map(Number);
+  const dt = new Date(y, m - 1, d);
+  const weekday = dt.toLocaleDateString("en-US", { weekday: "long" });
+  const month = dt.toLocaleDateString("en-US", { month: "long" });
+  return `${weekday}, ${month} ${d}${getOrdinalSuffix(d)}`;
+}
+
+function formatCutoffLabel(dateStr: string, timeStr: string): string {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
+  const [y, m, d] = dateStr.split("-").map(Number);
+  const dt = new Date(y, m - 1, d);
+  const weekday = dt.toLocaleDateString("en-US", { weekday: "long" });
+  const month = dt.toLocaleDateString("en-US", { month: "short" });
+  return `${weekday}, ${month} ${d} (${timeStr})`;
+}
 
 export interface AdminWeekendDropManagerProps {
   theme?: "day" | "night" | "dark" | "butcher-paper";
@@ -23,6 +77,7 @@ export function AdminWeekendDropManager({ theme = "night", subTab }: AdminWeeken
   const [formData, setFormData] = useState<WeekendDrop>({ ...drop });
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [copiedReviewText, setCopiedReviewText] = useState(false);
+  const [cutoffTime, setCutoffTime] = useState("11:59 PM");
   const orders = getStoredDropOrders();
 
   const handleToggleActive = () => {
@@ -154,29 +209,78 @@ Notes: ${formData.notice}`;
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label className="text-[10px] text-stone-400 uppercase font-bold block mb-1">
-                  Event Date Label:
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-[10px] text-stone-400 uppercase font-bold block">
+                  Pick Event Date (Calendar):
                 </label>
+                <CalendarDatePicker
+                  id="weekend-drop-event-date"
+                  value={formData.eventDate}
+                  theme={isDay ? "light" : "dark"}
+                  placeholder="Select drop date..."
+                  onChange={(dateStr) =>
+                    setFormData({
+                      ...formData,
+                      eventDate: dateStr,
+                      eventDateLabel: formatEventDateLabel(dateStr),
+                    })
+                  }
+                />
                 <input
                   type="text"
+                  aria-label="Event Date Label"
                   value={formData.eventDateLabel}
                   onChange={(e) => setFormData({ ...formData, eventDateLabel: e.target.value })}
-                  placeholder="e.g. This Saturday, November 14th"
+                  placeholder="e.g. Saturday, November 21st"
                   className="w-full text-xs h-10 px-3 rounded-xl bg-black/50 border border-stone-700 text-white focus:border-[#EA580C] focus:outline-none"
                 />
               </div>
 
-              <div>
-                <label className="text-[10px] text-stone-400 uppercase font-bold block mb-1">
-                  Pre-Order Cutoff Deadline:
+              <div className="space-y-2">
+                <label className="text-[10px] text-stone-400 uppercase font-bold block">
+                  Pick Pre-Order Cutoff Date &amp; Time:
                 </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <CalendarDatePicker
+                    id="weekend-drop-cutoff-date"
+                    value={formData.orderCutoffDate}
+                    theme={isDay ? "light" : "dark"}
+                    placeholder="Select cutoff date..."
+                    onChange={(dateStr) =>
+                      setFormData({
+                        ...formData,
+                        orderCutoffDate: dateStr,
+                        orderCutoffLabel: formatCutoffLabel(dateStr, cutoffTime),
+                      })
+                    }
+                  />
+                  <select
+                    aria-label="Cutoff Time"
+                    value={cutoffTime}
+                    onChange={(e) => {
+                      const nextTime = e.target.value;
+                      setCutoffTime(nextTime);
+                      setFormData({
+                        ...formData,
+                        orderCutoffLabel: formatCutoffLabel(formData.orderCutoffDate, nextTime),
+                      });
+                    }}
+                    className="w-full min-h-[48px] text-xs px-3 rounded-xl bg-black/50 border border-stone-700 text-white font-bold focus:border-[#EA580C] focus:outline-none cursor-pointer"
+                  >
+                    {CUTOFF_TIME_OPTIONS.map((t) => (
+                      <option key={t} value={t}>
+                        Cutoff: {t}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <input
                   type="text"
+                  aria-label="Pre-Order Cutoff Deadline Label"
                   value={formData.orderCutoffLabel}
                   onChange={(e) => setFormData({ ...formData, orderCutoffLabel: e.target.value })}
-                  placeholder="e.g. Wednesday, Nov 11 (11:59 PM)"
+                  placeholder="e.g. Wednesday, Nov 18 (11:59 PM)"
                   className="w-full text-xs h-10 px-3 rounded-xl bg-black/50 border border-stone-700 text-white focus:border-[#EA580C] focus:outline-none"
                 />
               </div>
@@ -185,27 +289,33 @@ Notes: ${formData.notice}`;
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-[10px] text-stone-400 uppercase font-bold block mb-1">
-                  Pickup Location &amp; Time:
+                  Delivery / Event Area (No Storefront Pickup):
                 </label>
                 <input
                   type="text"
                   value={formData.pickupLocation}
                   onChange={(e) => setFormData({ ...formData, pickupLocation: e.target.value })}
-                  className="w-full text-xs h-10 px-3 rounded-xl bg-black/50 border border-stone-700 text-white focus:border-[#EA580C] focus:outline-none"
+                  placeholder="Chicagoland Delivery & Live-Fire Events"
+                  className="w-full min-h-[48px] text-xs px-3 rounded-xl bg-black/50 border border-stone-700 text-white focus:border-[#EA580C] focus:outline-none"
                 />
               </div>
 
               <div>
                 <label className="text-[10px] text-stone-400 uppercase font-bold block mb-1">
-                  Pickup Ready Time:
+                  Delivery / Service Start Time:
                 </label>
-                <input
-                  type="text"
-                  value={formData.pickupTime}
+                <select
+                  aria-label="Delivery / Service Start Time"
+                  value={PICKUP_TIME_OPTIONS.includes(formData.pickupTime) ? formData.pickupTime : "4:00 PM"}
                   onChange={(e) => setFormData({ ...formData, pickupTime: e.target.value })}
-                  placeholder="e.g. 4:00 PM"
-                  className="w-full text-xs h-10 px-3 rounded-xl bg-black/50 border border-stone-700 text-white focus:border-[#EA580C] focus:outline-none"
-                />
+                  className="w-full min-h-[48px] text-xs px-3 rounded-xl bg-black/50 border border-stone-700 text-white font-bold focus:border-[#EA580C] focus:outline-none cursor-pointer"
+                >
+                  {PICKUP_TIME_OPTIONS.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
