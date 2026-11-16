@@ -164,11 +164,12 @@ interface GuideCopy {
 const GUIDE_COPY: Record<MainTab, GuideCopy> = {
   menu: {
     title: "How the Smoker Menu works",
-    summary: "Turn items on or off and set what's ready today.",
+    summary: "Keep catering items In Stock, mark today's pit runs as Live Smoke, and only use Sold Out when unavailable.",
     steps: [
-      { title: "Check what's smoking", desc: "Flip an item to Available or Sold Out so customers only see what you can actually serve." },
-      { title: "Update a price", desc: "Tap a price, type the new number, and it changes everywhere on your site." },
-      { title: "Save", desc: "Hit Save Menu Changes at the top. Nothing goes live until you save." },
+      { title: "In Stock (Your Normal Default)", desc: "Leave items set to In Stock so wedding and corporate clients know they can book them with 48–72h notice." },
+      { title: "Live Smoke (Card Expands)", desc: "Tap Live Smoke when an item is actively on the pit today—the card opens to let you pick a Ready Time (e.g. ~5:00 PM)." },
+      { title: "Sold Out (Only When Unavailable)", desc: "Use Sold Out only when you cannot cook that item right now (shows a 'Sold Out Today • Pre-Order for Next Smoke' badge)." },
+      { title: "Edit Prices & Save", desc: "Tap any price to change it, then hit SAVE MENU CHANGES at the top." },
     ],
     tip: "Use Copy Client Price Sheet to text a customer your current prices in one tap.",
   },
