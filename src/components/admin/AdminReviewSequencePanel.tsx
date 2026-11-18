@@ -17,6 +17,8 @@ export interface ReviewSequenceContact {
 const STORAGE_KEY_SEQUENCE = "ats_review_sequence_contacts_v1";
 
 const INITIAL_CONTACTS: ReviewSequenceContact[] = [
+  { id: "gbp-pashian", clientName: "Pashian Hobson", clientEmail: "", eventType: "Google Review (Nov 17)", reviewStatus: "completed", lastUpdated: "Nov 17, 2026" },
+  { id: "gbp-tatiana", clientName: "Tatiana Johnson", clientEmail: "", eventType: "Google Review (Nov 17)", reviewStatus: "completed", lastUpdated: "Nov 17, 2026" },
   { id: "gbp-cordel", clientName: "Cordel Summers", clientEmail: "", eventType: "Google Review (Nov 15)", reviewStatus: "completed", lastUpdated: "Nov 15, 2026" },
   { id: "gbp-jeanette", clientName: "Jeanette Allen", clientEmail: "", eventType: "Google Review (Nov 15)", reviewStatus: "completed", lastUpdated: "Nov 15, 2026" },
   { id: "gbp-drobinson", clientName: "D. Robinson", clientEmail: "", eventType: "Google Review (Nov 15)", reviewStatus: "completed", lastUpdated: "Nov 15, 2026" },

@@ -9,6 +9,40 @@ export const GOOGLE_REVIEW_URL = "https://g.page/r/CfFd-sBgX_THECE/review";
 
 export const SEED_REVIEWS: CustomerReview[] = [
   {
+    id: "gbp-pashian-hobson-2026-11-17",
+    clientName: "Pashian Hobson",
+    eventType: "Graduation Party Catering",
+    displayDate: "Nov 17, 2026",
+    rating: 5,
+    reviewText:
+      "We had All The Smoke BBQ & Catering cater my son’s graduation party, and everything was amazing! The food was fresh, delicious, and seasoned perfectly. The prices were very reasonable, and the service took so much pressure off me. I didn’t have to worry about a thing when it came to food. All we had to do was show up and enjoy! Highly recommend!",
+    favoriteHighlights: ["🎓 Graduation Catering", "🔥 Fresh & Well Seasoned"],
+    permissionToFeature: true,
+    isFeatured: true,
+    submittedAt: "2026-11-17T20:00:00.000Z",
+    source: "google",
+    status: "published",
+    adminResponse:
+      "Pashian, taking that food pressure off you so your family could just show up and enjoy your son's graduation is exactly what we aim for. Glad the flavors and pricing hit the mark for everyone. Reach out anytime you're hosting again. – Chef Marion",
+  },
+  {
+    id: "gbp-tatiana-johnson-2026-11-17",
+    clientName: "Tatiana Johnson",
+    eventType: "Google Review",
+    displayDate: "Nov 17, 2026",
+    rating: 5,
+    reviewText:
+      "Those smoke beef ribs were delicious and tender. I must say every plate I've ordered from All the Smoke has been a treat and a delight. It does not disappoint. I always wish I ordered more.",
+    favoriteHighlights: ["🍖 Smoked Beef Ribs", "🔥 Tender & Delicious"],
+    permissionToFeature: true,
+    isFeatured: true,
+    submittedAt: "2026-11-17T19:30:00.000Z",
+    source: "google",
+    status: "published",
+    adminResponse:
+      "Those smoked beef ribs get plenty of love on the pit, Tatiana, so we're glad every plate has kept you coming back. Whenever you're ready for another round, we'll have the smoker rolling for you! – Marion, All The Smoke",
+  },
+  {
     id: "gbp-cordel-summers-2026-11-15",
     clientName: "Cordel Summers",
     eventType: "Google Review",
